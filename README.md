@@ -1,5 +1,5 @@
 # 2017-Competition
-Repository to house 2017 competition code
+Repository housing the 2017 competition code
 
 This year, we will...
 
