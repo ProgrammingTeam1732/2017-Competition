@@ -38,12 +38,12 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void robotInit() {
 		driveTrain = new DriveTrain();
-		ballIntake = new BallIntake();
-		climber = new Climber();
-		feeder = new Feeder();
-		flywheel = new Flywheel();
-		gearIntake = new GearIntake();
-		otherShooter = new OtherShooter();
+		// ballIntake = new BallIntake();
+		// climber = new Climber();
+		// feeder = new Feeder();
+		// flywheel = new Flywheel();
+		// gearIntake = new GearIntake();
+		// otherShooter = new OtherShooter();
 		oi = new OI();
 	}
 
