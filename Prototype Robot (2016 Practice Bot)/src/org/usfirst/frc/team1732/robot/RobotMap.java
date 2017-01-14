@@ -37,4 +37,12 @@ public class RobotMap {
 	// Hopper/Feeder/Index
 	public static final int FEEDER_MOTER_DEVICE_NUMBER = 0;
 
+	// Unused motors
+	public static final int	MOTOR_ONE_DEVICE_ID		= 12;
+	public static final int	MOTOR_TWO_DEVICE_ID		= 11;
+	public static final int	MOTOR_THREE_DEVICE_ID	= 10;
+	public static final int	MOTOR_FOUR_DEVICE_ID	= 18;
+	public static final int	MOTOR_FIVE_DEVICE_ID	= 17;
+	public static final int	MOTOR_SIX_DEVICE_ID		= 16;
+
 }
