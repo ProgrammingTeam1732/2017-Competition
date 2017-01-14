@@ -1,17 +1,20 @@
 
 package org.usfirst.frc.team1732.robot;
 
-import org.usfirst.frc.team1732.robot.subsystems.BallIntake;
-import org.usfirst.frc.team1732.robot.subsystems.Climber;
+import org.usfirst.frc.team1732.robot.commands.motors.RunMotor1;
 import org.usfirst.frc.team1732.robot.subsystems.DriveTrain;
-import org.usfirst.frc.team1732.robot.subsystems.Feeder;
-import org.usfirst.frc.team1732.robot.subsystems.Flywheel;
-import org.usfirst.frc.team1732.robot.subsystems.GearIntake;
-import org.usfirst.frc.team1732.robot.subsystems.OtherShooter;
+import org.usfirst.frc.team1732.robot.subsystems.motors.Motor1;
+import org.usfirst.frc.team1732.robot.subsystems.unused.BallIntake;
+import org.usfirst.frc.team1732.robot.subsystems.unused.Climber;
+import org.usfirst.frc.team1732.robot.subsystems.unused.Feeder;
+import org.usfirst.frc.team1732.robot.subsystems.unused.Flywheel;
+import org.usfirst.frc.team1732.robot.subsystems.unused.GearIntake;
+import org.usfirst.frc.team1732.robot.subsystems.unused.OtherShooter;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -30,6 +33,8 @@ public class Robot extends IterativeRobot {
 	public static Flywheel		flywheel;
 	public static GearIntake	gearIntake;
 	public static OtherShooter	otherShooter;
+	public static Motor1		motor1;
+	public static Motor1		motor2;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -37,6 +42,10 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
+		motor1 = new Motor1();
+		SmartDashboard.putData(new RunMotor1());
+		motor1 = new Motor1();
+		SmartDashboard.putData(new RunMotor2());
 		driveTrain = new DriveTrain();
 		// ballIntake = new BallIntake();
 		// climber = new Climber();

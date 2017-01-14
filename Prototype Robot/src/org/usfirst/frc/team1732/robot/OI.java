@@ -84,10 +84,12 @@ public class OI {
 	}
 
 	public double getLeftSpeed() {
-		return controller.getRawAxis(1);
+		return controller.getRawAxis(RobotMap.LEFT_JOYSTICK_AXIS)
+				* Math.abs(controller.getRawAxis(RobotMap.LEFT_JOYSTICK_AXIS));
 	}
 
 	public double getRightSpeed() {
-		return controller.getRawAxis(5);
+		return controller.getRawAxis(RobotMap.RIGHT_JOYSTICK_AXIS)
+				* Math.abs(controller.getRawAxis(RobotMap.RIGHT_JOYSTICK_AXIS));
 	}
 }

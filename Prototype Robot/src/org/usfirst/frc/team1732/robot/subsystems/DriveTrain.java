@@ -25,16 +25,20 @@ public class DriveTrain extends Subsystem {
 	private final CANTalon	right2		= new CANTalon(RobotMap.RIGHT_2_MOTOR_DEVICE_NUMBER);
 
 	public DriveTrain() {
-		left1.setInverted(true);
 		left1.changeControlMode(TalonControlMode.Follower);
 		left1.set(leftMaster.getDeviceID());
 		left2.changeControlMode(TalonControlMode.Follower);
 		left2.set(leftMaster.getDeviceID());
+		left1.reverseOutput(true);
+		left2.reverseOutput(true);
 
+		rightMaster.setInverted(true);
 		right1.changeControlMode(TalonControlMode.Follower);
 		right1.set(rightMaster.getDeviceID());
 		right2.changeControlMode(TalonControlMode.Follower);
 		right2.set(rightMaster.getDeviceID());
+		right1.reverseOutput(true);
+		right2.reverseOutput(true);
 	}
 
 	@Override
