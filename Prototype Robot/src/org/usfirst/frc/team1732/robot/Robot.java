@@ -2,6 +2,7 @@
 package org.usfirst.frc.team1732.robot;
 
 import org.usfirst.frc.team1732.robot.commands.motors.RunMotor1;
+import org.usfirst.frc.team1732.robot.commands.motors.RunMotor2;
 import org.usfirst.frc.team1732.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team1732.robot.subsystems.motors.Motor1;
 import org.usfirst.frc.team1732.robot.subsystems.unused.BallIntake;
