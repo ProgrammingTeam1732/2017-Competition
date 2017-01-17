@@ -15,10 +15,10 @@ public class GearTarget extends VisionTarget {
 		double leftWidthScore = scaleScore(left.width
 				* (boundingBox.width * leftWidthInches / GEAR_TARGET_WIDTH_INCHES));
 		// Difference between the left edges of the contours should be
-		// 8/10.25 of total width
-		double dLeftInches = 8;
+		// 8.25/10.25 of total width
+		double dLeftInches = 8.25;
 		double dLeft = right.x - left.x;
-		double dLeftScore = scaleScore(dLeft / (boundingBox.width * dLeftInches / GEAR_TARGET_WIDTH_INCHES));
+		double dLeftScore = scaleScore(dLeft * GEAR_TARGET_WIDTH_INCHES / (boundingBox.width * dLeftInches));
 		// Difference between the tops should be close to 0 relative to
 		// height
 		double dTop = top.y - bottom.y;
@@ -26,7 +26,9 @@ public class GearTarget extends VisionTarget {
 		// Widths and heights should be about the same
 		double widthRatioScore = scaleScore((double) left.width / right.width);
 		double heightRatioScore = scaleScore((double) left.height / right.height);
-		return leftWidthScore + dLeftScore + dTopScore + widthRatioScore + heightRatioScore;
+		double totalScore= leftWidthScore + dLeftScore + dTopScore + widthRatioScore + heightRatioScore;
+		//System.out.println(totalScore);
+		return totalScore;
 	}
 
 	public static GearTarget getBestVisionTarget(Rectangle[] rectangles) {
@@ -43,5 +45,9 @@ public class GearTarget extends VisionTarget {
 			}
 		}
 		return bestPair;
+	}
+	
+	public String toString(){
+		return String.valueOf(getScore());
 	}
 }

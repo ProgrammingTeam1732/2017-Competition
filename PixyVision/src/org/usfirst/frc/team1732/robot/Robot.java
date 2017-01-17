@@ -10,6 +10,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team1732.robot.commands.ExampleCommand;
 import org.usfirst.frc.team1732.robot.subsystems.ExampleSubsystem;
+import org.usfirst.frc.team1732.robot.vision.GearTarget;
+import org.usfirst.frc.team1732.robot.vision.VisionThread;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -21,6 +23,7 @@ import org.usfirst.frc.team1732.robot.subsystems.ExampleSubsystem;
 public class Robot extends IterativeRobot {
 
 	public static final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
+	public static VisionThread visionRunnable;
 	public static OI oi;
 
 	Command autonomousCommand;
@@ -33,6 +36,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void robotInit() {
 		oi = new OI();
+		visionRunnable = new VisionThread();
 		chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", chooser);
@@ -64,10 +68,13 @@ public class Robot extends IterativeRobot {
 	 * chooser code above (like the commented example) or additional comparisons
 	 * to the switch structure below with additional strings & commands.
 	 */
+
 	@Override
 	public void autonomousInit() {
 		autonomousCommand = chooser.getSelected();
-
+		Thread thread = new Thread(visionRunnable);
+		thread.setDaemon(true);
+		thread.start();
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",
 		 * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
@@ -86,6 +93,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
+		System.out.println("Auto:" + visionRunnable.getInchesToGearPeg());
 	}
 
 	@Override

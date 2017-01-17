@@ -38,6 +38,7 @@ public abstract class VisionTarget {
 	 */
 	public static double scaleScore(double score) {
 		return scaleScore(score, 1, 1);
+		// 1 - Math.abs(1 - score);
 	}
 
 	/**
@@ -61,35 +62,6 @@ public abstract class VisionTarget {
 
 	public static int getTotalHeight(Rectangle top, Rectangle bottom) {
 		return bottom.getBottomY() - top.y;
-	}
-
-	public static class Rectangle {
-
-		public final int x, y, width, height, signature;
-
-		public Rectangle(int signature, int x, int y, int width, int height) {
-			this.signature = signature;
-			this.x = x;
-			this.y = y;
-			this.width = width;
-			this.height = height;
-		}
-
-		public int getRightX() {
-			return x + width;
-		}
-
-		public int getBottomY() {
-			return y + height;
-		}
-
-		public int getCenterX() {
-			return x + width / 2;
-		}
-
-		public int getCenterY() {
-			return y + width / 2;
-		}
 	}
 
 	public double getVerticalDistance(double targetHeight, double verticalViewAngle, double imageHeight) {
