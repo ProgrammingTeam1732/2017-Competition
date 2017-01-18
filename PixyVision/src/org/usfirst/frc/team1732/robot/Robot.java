@@ -1,17 +1,16 @@
 
 package org.usfirst.frc.team1732.robot;
 
+import org.usfirst.frc.team1732.robot.commands.ExampleCommand;
+import org.usfirst.frc.team1732.robot.subsystems.ExampleSubsystem;
+import org.usfirst.frc.team1732.robot.vision.VisionThread;
+
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import org.usfirst.frc.team1732.robot.commands.ExampleCommand;
-import org.usfirst.frc.team1732.robot.subsystems.ExampleSubsystem;
-import org.usfirst.frc.team1732.robot.vision.GearTarget;
-import org.usfirst.frc.team1732.robot.vision.VisionThread;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -22,12 +21,12 @@ import org.usfirst.frc.team1732.robot.vision.VisionThread;
  */
 public class Robot extends IterativeRobot {
 
-	public static final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
-	public static VisionThread visionRunnable;
-	public static OI oi;
+	public static final ExampleSubsystem	exampleSubsystem	= new ExampleSubsystem();
+	public static VisionThread				visionRunnable;
+	public static OI						oi;
 
-	Command autonomousCommand;
-	SendableChooser<Command> chooser = new SendableChooser<>();
+	Command						autonomousCommand;
+	SendableChooser<Command>	chooser	= new SendableChooser<>();
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -93,7 +92,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
-		System.out.println("Auto:" + visionRunnable.getInchesToGearPeg());
+		// System.out.println("Auto:" + visionRunnable.getInchesToGearPeg());
 	}
 
 	@Override
