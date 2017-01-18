@@ -7,7 +7,7 @@ public class Arduino {
 
 	public Arduino() {
 		try {
-			serial = new SerialPort(9600, SerialPort.Port.kUSB1);
+			serial = new SerialPort(19200, SerialPort.Port.kUSB1);
 			this.serial.disableTermination();
 		} catch (Exception e) {
 			System.out.println("something went wrong, " + e.getMessage());
