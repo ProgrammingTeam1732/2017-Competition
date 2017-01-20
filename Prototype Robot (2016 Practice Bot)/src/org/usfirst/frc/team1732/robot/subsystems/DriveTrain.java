@@ -6,6 +6,9 @@ import org.usfirst.frc.team1732.robot.commands.DriveWithJoysticks;
 import com.ctre.CANTalon;
 import com.ctre.CANTalon.TalonControlMode;
 
+import edu.wpi.first.wpilibj.AnalogGyro;
+import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -24,6 +27,10 @@ public class DriveTrain extends Subsystem {
 	private final CANTalon	right1		= new CANTalon(RobotMap.RIGHT_1_MOTOR_DEVICE_NUMBER);
 	private final CANTalon	right2		= new CANTalon(RobotMap.RIGHT_2_MOTOR_DEVICE_NUMBER);
 
+	private final AnalogGyro	gyro			= new AnalogGyro(1);
+	private final PIDController	leftController	= new PIDController(0, 0, 0, gyro, leftMaster);
+	private final PIDController	rightController	= new PIDController(0, 0, 0, gyro, leftMaster);
+
 	public DriveTrain() {
 		left1.changeControlMode(TalonControlMode.Follower);
 		left1.set(leftMaster.getDeviceID());
@@ -39,6 +46,12 @@ public class DriveTrain extends Subsystem {
 		right2.set(rightMaster.getDeviceID());
 		right1.reverseOutput(true);
 		right2.reverseOutput(true);
+
+		gyro.initGyro();
+		gyro.calibrate();
+		gyro.setPIDSourceType(PIDSourceType.kDisplacement);
+		// gyro.setSensitivity(voltsPerDegreePerSecond);
+
 	}
 
 	@Override
@@ -46,8 +59,13 @@ public class DriveTrain extends Subsystem {
 		setDefaultCommand(new DriveWithJoysticks());
 	}
 
+	public void zeroGyro() {
+		// gyro.se
+	}
+
 	public void tankDrive(double left, double right) {
 		leftMaster.set(left);
 		rightMaster.set(right);
 	}
+
 }

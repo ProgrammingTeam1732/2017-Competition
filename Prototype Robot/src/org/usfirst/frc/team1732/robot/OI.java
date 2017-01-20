@@ -1,5 +1,9 @@
 package org.usfirst.frc.team1732.robot;
 
+import org.usfirst.frc.team1732.robot.commands.unused.FlywheelSetForward;
+import org.usfirst.frc.team1732.robot.commands.unused.FlywheelSetReverse;
+import org.usfirst.frc.team1732.robot.commands.unused.FlywheelSetStop;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -68,9 +72,9 @@ public class OI {
 		// feederReverse.whenPressed(new FeederSetReverse());
 		// feederStop.whenActive(new FeederSetStop());
 		//
-		// flywheelForward.whenPressed(new FlywheelSetForward());
-		// flywheelReverse.whenPressed(new FlywheelSetReverse());
-		// flywheelStop.whenActive(new FlywheelSetStop());
+		flywheelForward.whenPressed(new FlywheelSetForward());
+		flywheelReverse.whenPressed(new FlywheelSetReverse());
+		flywheelStop.whenActive(new FlywheelSetStop());
 		//
 		// gearIntakeForward.whenPressed(new GearIntakeSetForward());
 		// gearIntakeReverse.whenPressed(new GearIntakeSetReverse());
