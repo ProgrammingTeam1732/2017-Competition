@@ -1,5 +1,9 @@
 package org.usfirst.frc.team1732.robot;
 
+import org.usfirst.frc.team1732.robot.commands.unused.BallIntakeSetForward;
+import org.usfirst.frc.team1732.robot.commands.unused.BallIntakeSetReverse;
+import org.usfirst.frc.team1732.robot.commands.unused.BallIntakeSetStop;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -60,9 +64,9 @@ public class OI {
 	private final Button otherShooter = button10;
 
 	public OI() {
-		// ballIntakeForward.whenPressed(new BallIntakeSetForward());
-		// ballIntakeReverse.whenPressed(new BallIntakeSetReverse());
-		// ballIntakeStop.whenActive(new BallIntakeSetStop());
+		ballIntakeForward.whenPressed(new BallIntakeSetForward());
+		ballIntakeReverse.whenPressed(new BallIntakeSetReverse());
+		ballIntakeStop.whenActive(new BallIntakeSetStop());
 		//
 		// feederForward.whenPressed(new FeederSetForward());
 		// feederReverse.whenPressed(new FeederSetReverse());
