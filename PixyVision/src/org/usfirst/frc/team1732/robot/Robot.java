@@ -1,7 +1,10 @@
 
 package org.usfirst.frc.team1732.robot;
 
-import org.usfirst.frc.team1732.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardReciever;
+import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardSender;
+import org.usfirst.frc.team1732.robot.subsystems.drivetrain.DriveTrain;
+import org.usfirst.frc.team1732.robot.triggers.Triggers;
 import org.usfirst.frc.team1732.robot.vision.VisionMain;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -20,11 +23,8 @@ public class Robot extends IterativeRobot {
 	public static DriveTrain	driveTrain;
 	public static VisionMain	visionMain;
 	public static OI			oi;
+	public static Triggers		triggers;
 
-	/**
-	 * This function is run when the robot is first started up and should be
-	 * used for any initialization code.
-	 */
 	@Override
 	public void robotInit() {
 		driveTrain = new DriveTrain();
@@ -32,11 +32,17 @@ public class Robot extends IterativeRobot {
 		visionMain = new VisionMain();
 	}
 
-	/**
-	 * This function is called once each time the robot enters Disabled mode.
-	 * You can use it to reset any subsystem information you want to clear when
-	 * the robot is disabled.
-	 */
+	public static final SmartDashboardSender[]		smartDashboardSenders	= new SmartDashboardSender[] { driveTrain };
+	public static final SmartDashboardReciever[]	smartDashboardRecievers	= new SmartDashboardReciever[] {};
+
+	@Override
+	public void robotPeriodic() {
+		for (SmartDashboardSender sender : smartDashboardSenders)
+			sender.sendData();
+		for (SmartDashboardReciever reciever : smartDashboardRecievers)
+			reciever.recieveData();
+	}
+
 	@Override
 	public void disabledInit() {
 
@@ -47,26 +53,11 @@ public class Robot extends IterativeRobot {
 		Scheduler.getInstance().run();
 	}
 
-	/**
-	 * This autonomous (along with the chooser code above) shows how to select
-	 * between different autonomous modes using the dashboard. The sendable
-	 * chooser code works with the Java SmartDashboard. If you prefer the
-	 * LabVIEW Dashboard, remove all of the chooser code and uncomment the
-	 * getString code to get the auto name from the text box below the Gyro
-	 *
-	 * You can add additional auto modes by adding additional commands to the
-	 * chooser code above (like the commented example) or additional comparisons
-	 * to the switch structure below with additional strings & commands.
-	 */
-
 	@Override
 	public void autonomousInit() {
 
 	}
 
-	/**
-	 * This function is called periodically during autonomous
-	 */
 	@Override
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
@@ -75,18 +66,16 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopInit() {}
 
-	/**
-	 * This function is called periodically during operator control
-	 */
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-		driveTrain.updateSmartDashboard();
 	}
 
-	/**
-	 * This function is called periodically during test mode
-	 */
+	@Override
+	public void testInit() {
+
+	}
+
 	@Override
 	public void testPeriodic() {
 		LiveWindow.run();

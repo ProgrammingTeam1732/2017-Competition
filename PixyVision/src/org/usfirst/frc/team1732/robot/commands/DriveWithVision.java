@@ -12,11 +12,17 @@ public class DriveWithVision extends Command {
 
 	public final double targetDistanceInches;
 
+	public static final double DEFAULT_TARGET_INCHES = 25;
+
 	public DriveWithVision(double aTargetDistanceInches) {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
 		requires(driveTrain);
 		targetDistanceInches = aTargetDistanceInches;
+	}
+
+	public DriveWithVision() {
+		this(DEFAULT_TARGET_INCHES);
 	}
 
 	// Called just before this Command runs the first time
@@ -30,8 +36,10 @@ public class DriveWithVision extends Command {
 	protected void execute() {
 		visionMain.run();
 		double distance = visionMain.getInchesToGearPeg();
-		driveTrain.zeroEncoders();
-		driveTrain.setEncoderSetpoint(distance - targetDistanceInches);
+		if (distance != -1) {
+			driveTrain.zeroEncoders();
+			driveTrain.setEncoderSetpointInches(distance - targetDistanceInches);
+		}
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

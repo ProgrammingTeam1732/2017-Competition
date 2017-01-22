@@ -13,22 +13,30 @@ public class VisionMain {
 
 	public GearTarget	gearTarget;
 	public BoilerTarget	boilerTarget;
-	private String		total	= "";
-	private boolean		found	= false;
-	private boolean		started	= false;
-
-	private Rectangle[] rectangles = new Rectangle[0];
+	private Rectangle[]	rectangles	= new Rectangle[0];
 
 	public VisionMain() {
 		arduino = new Arduino();
 	}
 
+	/**
+	 * Reads and parses Arduino rectangle data, updates the gear target variable
+	 */
 	public void run() {
-		String s = arduino.getData();
-		parseData(s);
+		parseData(arduino.getData());
 		updateGearTarget();
 	}
 
+	private String	total	= "";
+	private boolean	found	= false;
+	private boolean	started	= false;
+
+	/**
+	 * Parses the data and puts found rectangles into rectangles array
+	 * 
+	 * @param s
+	 *            Data from the Arduino
+	 */
 	private void parseData(String s) {
 		if (s.contains("Starting"))
 			started = true;
@@ -58,6 +66,12 @@ public class VisionMain {
 		}
 	}
 
+	/**
+	 * Updates the gearTarget variable based on the newest rectangle
+	 * information. <br>
+	 * The gearTarget variable represents the two rectangles that most likely
+	 * makeup the gearTarget.
+	 */
 	private void updateGearTarget() {
 		try {
 			gearTarget = GearTarget.getBestVisionTarget(rectangles);
