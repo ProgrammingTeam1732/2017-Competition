@@ -115,7 +115,7 @@ public class DriveTrain extends Subsystem implements SmartDashboardSender {
 		gyro.reset();
 	}
 
-	public void setEncoderSetpointAngle(double setpoint) {
+	public void setGyroSetpointDegrees(double setpoint) {
 		gyroController.setSetpoint(setpoint);
 	}
 
