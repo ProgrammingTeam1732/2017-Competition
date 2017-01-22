@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1732.robot.subsystems.drivetrain;
+package org.usfirst.frc.team1732.robot.subsystems;
 
 import org.usfirst.frc.team1732.robot.RobotMap;
 import org.usfirst.frc.team1732.robot.commands.DriveWithJoysticks;

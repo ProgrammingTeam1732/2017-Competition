@@ -3,7 +3,7 @@ package org.usfirst.frc.team1732.robot;
 
 import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardReciever;
 import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardSender;
-import org.usfirst.frc.team1732.robot.subsystems.drivetrain.DriveTrain;
+import org.usfirst.frc.team1732.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team1732.robot.triggers.Triggers;
 import org.usfirst.frc.team1732.robot.vision.VisionMain;
 
