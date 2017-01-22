@@ -36,8 +36,11 @@ public class DriveTrain extends Subsystem implements SmartDashboardSender {
 																	};
 	public static final double	GYRO_VOLTS_PER_DEGREE_PER_SECOND	= 0.007;
 	// gyro controllers
-	private final PIDController	gyroController			= new PIDController(0.05, 0, 0, gyro, gyroOutput);
+	private final PIDController	gyroController			= new PIDController(gyroP, gyroI, gyroD, gyro, gyroOutput);
 	public static final double	GYRO_DEADBAND_DEGREES	= 5;
+	public static double		gyroP					= 0.1;
+	public static double		gyroI					= 0;
+	public static double		gyroD					= 0;
 
 	// encoders
 	// encoder sensors
@@ -45,9 +48,14 @@ public class DriveTrain extends Subsystem implements SmartDashboardSender {
 	private final Encoder		rightEncoder				= new Encoder(0, 1);
 	public static final double	INCHES_PER_ENCODER_COUNT	= 0.05;
 	// encoder controllers
-	private final PIDController	leftEncoderController	= new PIDController(0.5, 0, 0, leftEncoder, leftMaster);
-	private final PIDController	rightEncoderController	= new PIDController(0.5, 0, 0, rightEncoder, rightMaster);
+	private final PIDController	leftEncoderController	= new PIDController(encoderP, encoderI, encoderD, leftEncoder,
+																			leftMaster);
+	private final PIDController	rightEncoderController	= new PIDController(encoderP, encoderI, encoderD, rightEncoder,
+																			rightMaster);
 	public static final double	ENCODER_DEADBAND_INCHES	= 7;
+	public static double		encoderP				= 0.1;
+	public static double		encoderI				= 0;
+	public static double		encoderD				= 0;
 
 	public static final double	MAX_OUTPUT	= 1;
 	public static final double	MIN_OUTPUT	= -1;
