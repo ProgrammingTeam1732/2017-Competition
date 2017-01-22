@@ -1,6 +1,7 @@
 
 package org.usfirst.frc.team1732.robot;
 
+import org.usfirst.frc.team1732.robot.commands.DriveWithVision;
 import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardReciever;
 import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardSender;
 import org.usfirst.frc.team1732.robot.subsystems.DriveTrain;
@@ -55,7 +56,7 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void autonomousInit() {
-
+		Scheduler.getInstance().add(new DriveWithVision());
 	}
 
 	@Override
