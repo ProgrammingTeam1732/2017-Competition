@@ -136,13 +136,21 @@ public class DriveTrain extends Subsystem implements SmartDashboardSender {
 		rightEncoder.reset();
 	}
 
-	public void setEncoderSetpointInches(double setpoint) {
-		leftEncoderController.setSetpoint(setpoint);
-		rightEncoderController.setSetpoint(setpoint);
+	public void setEncoderSetpointInches(double leftSetpoint, double rightSetpoint) {
+		leftEncoderController.setSetpoint(leftSetpoint);
+		rightEncoderController.setSetpoint(rightSetpoint);
 	}
 
 	public boolean isAtEncoderSetpoint() {
 		return leftEncoderController.onTarget() && rightEncoderController.onTarget();
+	}
+
+	public double getLeftEncoderDistance() {
+		return leftEncoder.getDistance();
+	}
+
+	public double getRightEncoderDistance() {
+		return rightEncoder.getDistance();
 	}
 
 	public void setDriveManual() {

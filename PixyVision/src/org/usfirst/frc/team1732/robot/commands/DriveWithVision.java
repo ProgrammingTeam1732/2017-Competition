@@ -29,6 +29,7 @@ public class DriveWithVision extends Command {
 	@Override
 	protected void initialize() {
 		driveTrain.setDriveWithEncoders();
+		driveTrain.zeroEncoders();
 	}
 
 	// Called repeatedly when this Command is scheduled to run
@@ -37,8 +38,9 @@ public class DriveWithVision extends Command {
 		visionMain.run();
 		double distance = visionMain.getInchesToGearPeg();
 		if (distance != -1) {
-			driveTrain.zeroEncoders();
-			driveTrain.setEncoderSetpointInches(distance - targetDistanceInches);
+			double dDistance = distance - targetDistanceInches;
+			driveTrain.setEncoderSetpointInches(dDistance + driveTrain.getLeftEncoderDistance(),
+												dDistance + driveTrain.getRightEncoderDistance());
 		}
 	}
 
