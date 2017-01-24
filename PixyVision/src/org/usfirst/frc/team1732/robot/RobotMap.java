@@ -18,5 +18,9 @@ public class RobotMap {
 	public static final int	RIGHT_MASTER_MOTOR_DEVICE_NUMBER	= 21;
 	public static final int	RIGHT_1_MOTOR_DEVICE_NUMBER			= 19;
 	public static final int	RIGHT_2_MOTOR_DEVICE_NUMBER			= 20;
-
+	public static final int	GYRO_CHANNEL_NUMBER					= 1;
+	public static final int	LEFT_ENCODER_CHANNEL_A				= 3;
+	public static final int	LEFT_ENCODER_CHANNEL_B				= 2;
+	public static final int	RIGHT_ENCODER_CHANNEL_A				= 1;
+	public static final int	RIGHT_ENCODER_CHANNEL_B				= 0;
 }

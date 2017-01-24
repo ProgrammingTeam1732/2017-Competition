@@ -35,19 +35,20 @@ public class DriveWithVision extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		visionMain.run();
 		double distance = visionMain.getInchesToGearPeg();
 		if (distance != -1) {
 			double dDistance = distance - targetDistanceInches;
+			// FIXME (both use left)
 			driveTrain.setEncoderSetpointInches(dDistance + driveTrain.getLeftEncoderDistance(),
-												dDistance + driveTrain.getRightEncoderDistance());
+												dDistance + driveTrain.getLeftEncoderDistance());
 		}
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return driveTrain.isAtEncoderSetpoint();
+		return false;
+		// return driveTrain.isAtEncoderSetpoint();
 	}
 
 	// Called once after isFinished returns true

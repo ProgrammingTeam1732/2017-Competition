@@ -2,7 +2,7 @@ package org.usfirst.frc.team1732.robot.subsystems;
 
 import org.usfirst.frc.team1732.robot.RobotMap;
 import org.usfirst.frc.team1732.robot.commands.DriveWithJoysticks;
-import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardSender;
+import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardElement;
 
 import com.ctre.CANTalon;
 import com.ctre.CANTalon.TalonControlMode;
@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class DriveTrain extends Subsystem implements SmartDashboardSender {
+public class DriveTrain extends Subsystem implements SmartDashboardElement {
 
 	// motors
 	// left motors
@@ -29,12 +29,12 @@ public class DriveTrain extends Subsystem implements SmartDashboardSender {
 
 	// gyro
 	// gyro sensors
-	private final AnalogGyro	gyro								= new AnalogGyro(1);
+	private final AnalogGyro	gyro								= new AnalogGyro(RobotMap.GYRO_CHANNEL_NUMBER);
 	private final PIDOutput		gyroOutput							= speed -> {
 																		rightMaster.set(speed);
 																		leftMaster.set(-speed);
 																	};
-	public static final double	GYRO_VOLTS_PER_DEGREE_PER_SECOND	= 0.007;
+	public static final double	GYRO_VOLTS_PER_DEGREE_PER_SECOND	= 108 / 458.0;
 	// gyro controllers
 	private final PIDController	gyroController			= new PIDController(gyroP, gyroI, gyroD, gyro, gyroOutput);
 	public static final double	GYRO_DEADBAND_DEGREES	= 5;
@@ -44,13 +44,16 @@ public class DriveTrain extends Subsystem implements SmartDashboardSender {
 
 	// encoders
 	// encoder sensors
-	private final Encoder		leftEncoder					= new Encoder(2, 3);
-	private final Encoder		rightEncoder				= new Encoder(0, 1);
+	private final Encoder		leftEncoder					= new Encoder(	RobotMap.LEFT_ENCODER_CHANNEL_A,
+																			RobotMap.LEFT_ENCODER_CHANNEL_B);
+	private final Encoder		rightEncoder				= new Encoder(	RobotMap.RIGHT_ENCODER_CHANNEL_A,
+																			RobotMap.RIGHT_ENCODER_CHANNEL_B);
 	public static final double	INCHES_PER_ENCODER_COUNT	= 0.05;
 	// encoder controllers
-	private final PIDController	leftEncoderController	= new PIDController(encoderP, encoderI, encoderD, leftEncoder,
+	private final PIDController leftEncoderController = new PIDController(	encoderP, encoderI, encoderD, leftEncoder,
 																			leftMaster);
-	private final PIDController	rightEncoderController	= new PIDController(encoderP, encoderI, encoderD, rightEncoder,
+	// FIXME (both use left)
+	private final PIDController	rightEncoderController	= new PIDController(encoderP, encoderI, encoderD, leftEncoder,
 																			rightMaster);
 	public static final double	ENCODER_DEADBAND_INCHES	= 7;
 	private static double		encoderP				= 0.1;
@@ -62,20 +65,20 @@ public class DriveTrain extends Subsystem implements SmartDashboardSender {
 
 	public DriveTrain() {
 		super("Drive Train");
+		leftMaster.setInverted(true);
 		left1.changeControlMode(TalonControlMode.Follower);
 		left1.set(leftMaster.getDeviceID());
 		left2.changeControlMode(TalonControlMode.Follower);
 		left2.set(leftMaster.getDeviceID());
-		left1.reverseOutput(true);
-		left2.reverseOutput(true);
+		// left1.reverseOutput(true);
+		// left2.reverseOutput(true);
 
-		rightMaster.setInverted(true);
 		right1.changeControlMode(TalonControlMode.Follower);
 		right1.set(rightMaster.getDeviceID());
 		right2.changeControlMode(TalonControlMode.Follower);
 		right2.set(rightMaster.getDeviceID());
-		right1.reverseOutput(true);
-		right2.reverseOutput(true);
+		// right1.reverseOutput(true);
+		// right2.reverseOutput(true);
 
 		gyro.initGyro();
 		gyro.calibrate();
@@ -88,6 +91,8 @@ public class DriveTrain extends Subsystem implements SmartDashboardSender {
 
 		leftEncoder.setDistancePerPulse(INCHES_PER_ENCODER_COUNT);
 		rightEncoder.setDistancePerPulse(INCHES_PER_ENCODER_COUNT);
+		leftEncoder.setReverseDirection(true);
+		rightEncoder.setReverseDirection(true);
 		leftEncoder.setPIDSourceType(PIDSourceType.kDisplacement);
 		rightEncoder.setPIDSourceType(PIDSourceType.kDisplacement);
 
@@ -171,10 +176,25 @@ public class DriveTrain extends Subsystem implements SmartDashboardSender {
 		rightEncoderController.disable();
 	}
 
+	private static final String	leftEncoderCounts	= "Left Encoder Counts";
+	private static final String	rightEncoderCounts	= "Right Encoder Counts";
+
 	@Override
 	public void sendData() {
-		SmartDashboard.putNumber("Left Encoder counts", leftEncoder.get());
-		SmartDashboard.putNumber("Right Encoder counts", leftEncoder.get());
+		SmartDashboard.putNumber(leftEncoderCounts, leftEncoder.get());
+		SmartDashboard.putNumber(rightEncoderCounts, rightEncoder.get());
+		// System.out.println(leftEncoder.getRaw());
+		// System.out.println(rightEncoder.getRaw());
+		// System.out.println();
 	}
+
+	@Override
+	public void init() {
+		SmartDashboard.putNumber(leftEncoderCounts, leftEncoder.get());
+		SmartDashboard.putNumber(rightEncoderCounts, rightEncoder.get());
+	}
+
+	@Override
+	public void recieveData() {}
 
 }

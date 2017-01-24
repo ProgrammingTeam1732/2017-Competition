@@ -25,6 +25,7 @@ public class VisionMain {
 	public void run() {
 		parseData(arduino.getData());
 		updateGearTarget();
+		System.out.println("Running vision");
 	}
 
 	private String	total	= "";
