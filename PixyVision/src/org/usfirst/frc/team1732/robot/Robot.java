@@ -10,9 +10,9 @@ import org.usfirst.frc.team1732.robot.triggers.Triggers;
 import org.usfirst.frc.team1732.robot.vision.VisionMain;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -21,7 +21,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
  * creating this project, you must also update the manifest file in the resource
  * directory.
  */
-public class Robot extends IterativeRobot {
+public class Robot extends IterativeRobot implements SmartDashboardElement {
 
 	public static DriveTrain	driveTrain;
 	public static VisionMain	visionMain;
@@ -35,9 +35,8 @@ public class Robot extends IterativeRobot {
 		driveTrain = new DriveTrain();
 		oi = new OI();
 		visionMain = new VisionMain();
-		PowerDistributionPanel panel = new PowerDistributionPanel();
-		panel.clearStickyFaults();
 		smartDashboardElements.add(driveTrain);
+		// smartDashboardElements.add(Robot);
 		for (SmartDashboardElement element : smartDashboardElements) {
 			element.init();
 		}
@@ -45,7 +44,6 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void robotPeriodic() {
-		visionMain.run();
 		for (SmartDashboardElement element : smartDashboardElements) {
 			element.sendData();
 			element.recieveData();
@@ -64,7 +62,8 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void autonomousInit() {
-		Scheduler.getInstance().add(new DriveWithVision());
+		Scheduler.getInstance()
+				.add(new DriveWithVision(SmartDashboard.getNumber(targetDistanceString, targetDistanceInches)));
 	}
 
 	@Override
@@ -88,5 +87,23 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void testPeriodic() {
 		LiveWindow.run();
+	}
+
+	public static final String	targetDistanceString	= "Target Distance";
+	private static double		targetDistanceInches	= 100;
+
+	@Override
+	public void init() {
+		SmartDashboard.putNumber(targetDistanceString, targetDistanceInches);
+	}
+
+	@Override
+	public void sendData() {
+
+	}
+
+	@Override
+	public void recieveData() {
+
 	}
 }

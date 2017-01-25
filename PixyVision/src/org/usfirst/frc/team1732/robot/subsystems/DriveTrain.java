@@ -34,7 +34,7 @@ public class DriveTrain extends Subsystem implements SmartDashboardElement {
 																		rightMaster.set(speed);
 																		leftMaster.set(-speed);
 																	};
-	public static final double	GYRO_VOLTS_PER_DEGREE_PER_SECOND	= 108 / 458.0;
+	public static final double	GYRO_VOLTS_PER_DEGREE_PER_SECOND	= 0.007;
 	// gyro controllers
 	private final PIDController	gyroController			= new PIDController(gyroP, gyroI, gyroD, gyro, gyroOutput);
 	public static final double	GYRO_DEADBAND_DEGREES	= 5;
@@ -48,20 +48,22 @@ public class DriveTrain extends Subsystem implements SmartDashboardElement {
 																			RobotMap.LEFT_ENCODER_CHANNEL_B);
 	private final Encoder		rightEncoder				= new Encoder(	RobotMap.RIGHT_ENCODER_CHANNEL_A,
 																			RobotMap.RIGHT_ENCODER_CHANNEL_B);
-	public static final double	INCHES_PER_ENCODER_COUNT	= 0.05;
+	public static final double	INCHES_PER_ENCODER_COUNT	= 108.0 / (458.0 * 4);
+	public static final double	LEFT_MOTOR_OFFSET			= 1.1;
 	// encoder controllers
 	private final PIDController leftEncoderController = new PIDController(	encoderP, encoderI, encoderD, leftEncoder,
-																			leftMaster);
+																			d -> leftMaster
+																					.set(-d * LEFT_MOTOR_OFFSET));
 	// FIXME (both use left)
 	private final PIDController	rightEncoderController	= new PIDController(encoderP, encoderI, encoderD, leftEncoder,
-																			rightMaster);
+																			d -> rightMaster.set(-d));
 	public static final double	ENCODER_DEADBAND_INCHES	= 7;
-	private static double		encoderP				= 0.1;
+	private static double		encoderP				= 0.01;
 	private static double		encoderI				= 0;
 	private static double		encoderD				= 0;
 
-	public static final double	MAX_OUTPUT	= 1;
-	public static final double	MIN_OUTPUT	= -1;
+	public static final double	MAX_OUTPUT	= 0.5;
+	public static final double	MIN_OUTPUT	= -0.5;
 
 	public DriveTrain() {
 		super("Drive Train");
@@ -92,7 +94,7 @@ public class DriveTrain extends Subsystem implements SmartDashboardElement {
 		leftEncoder.setDistancePerPulse(INCHES_PER_ENCODER_COUNT);
 		rightEncoder.setDistancePerPulse(INCHES_PER_ENCODER_COUNT);
 		leftEncoder.setReverseDirection(true);
-		rightEncoder.setReverseDirection(true);
+		rightEncoder.setReverseDirection(false);
 		leftEncoder.setPIDSourceType(PIDSourceType.kDisplacement);
 		rightEncoder.setPIDSourceType(PIDSourceType.kDisplacement);
 
@@ -102,7 +104,6 @@ public class DriveTrain extends Subsystem implements SmartDashboardElement {
 		rightEncoderController.setContinuous(false);
 		leftEncoderController.setOutputRange(MIN_OUTPUT, MAX_OUTPUT);
 		rightEncoderController.setOutputRange(MIN_OUTPUT, MAX_OUTPUT);
-
 		setDriveManual();
 	}
 
@@ -176,13 +177,17 @@ public class DriveTrain extends Subsystem implements SmartDashboardElement {
 		rightEncoderController.disable();
 	}
 
-	private static final String	leftEncoderCounts	= "Left Encoder Counts";
-	private static final String	rightEncoderCounts	= "Right Encoder Counts";
+	private static final String	leftEncoderCounts		= "Left Encoder Counts";
+	private static final String	rightEncoderCounts		= "Right Encoder Counts";
+	private static final String	leftEncoderDistance		= "Left Encoder Distance";
+	private static final String	rightEncoderDistance	= "Right Encoder Distance";
 
 	@Override
 	public void sendData() {
 		SmartDashboard.putNumber(leftEncoderCounts, leftEncoder.get());
 		SmartDashboard.putNumber(rightEncoderCounts, rightEncoder.get());
+		SmartDashboard.putNumber(leftEncoderDistance, leftEncoder.getDistance());
+		SmartDashboard.putNumber(rightEncoderDistance, rightEncoder.getDistance());
 		// System.out.println(leftEncoder.getRaw());
 		// System.out.println(rightEncoder.getRaw());
 		// System.out.println();
