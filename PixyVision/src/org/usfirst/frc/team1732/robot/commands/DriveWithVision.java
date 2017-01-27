@@ -32,6 +32,7 @@ public class DriveWithVision extends Command {
 	protected void initialize() {
 		driveTrain.setDriveWithEncoders();
 		driveTrain.zeroEncoders();
+		driveTrain.setEncoderSetpointInches(0, 0);
 	}
 
 	private double lastGoodDistance;
