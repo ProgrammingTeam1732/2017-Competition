@@ -6,8 +6,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SmartDashboardBooleanSender extends SmartDashboardSender<Boolean> {
 
-	protected SmartDashboardBooleanSender(String key, Boolean value, Supplier<Boolean> supplier) {
-		super(key, value, supplier);
+	protected SmartDashboardBooleanSender(String key, Supplier<Boolean> supplier) {
+		super(key, supplier);
 	}
 
 	@Override

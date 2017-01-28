@@ -25,14 +25,6 @@ public abstract class SmartDashboardItem<T> {
 		this.key = key;
 		this.value = value;
 		this.supplier = supplier;
-	}
-
-	/**
-	 * Called once to display this on the SmartDashboard
-	 */
-	// not sure what happens when data with a different type is mapped to same
-	// key
-	protected void init() {
 		SmartDashboard.putString(key, value.toString());
 	}
 

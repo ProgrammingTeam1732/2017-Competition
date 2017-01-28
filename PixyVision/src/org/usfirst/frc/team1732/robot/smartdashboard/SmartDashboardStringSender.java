@@ -6,8 +6,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SmartDashboardStringSender extends SmartDashboardSender<String> {
 
-	protected SmartDashboardStringSender(String key, String value, Supplier<String> supplier) {
-		super(key, value, supplier);
+	protected SmartDashboardStringSender(String key, Supplier<String> supplier) {
+		super(key, supplier);
 	}
 
 	@Override

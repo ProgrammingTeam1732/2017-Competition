@@ -4,8 +4,8 @@ import java.util.function.Supplier;
 
 public abstract class SmartDashboardSender<T> extends SmartDashboardItem<T> {
 
-	protected SmartDashboardSender(String key, T value, Supplier<T> supplier) {
-		super(key, value, supplier);
+	protected SmartDashboardSender(String key, Supplier<T> supplier) {
+		super(key, supplier.get(), supplier);
 	}
 
 }

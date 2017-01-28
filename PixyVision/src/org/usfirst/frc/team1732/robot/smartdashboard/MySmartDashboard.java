@@ -7,8 +7,8 @@ public class MySmartDashboard {
 
 	private final ArrayList<SmartDashboardItem> items = new ArrayList<SmartDashboardItem>();
 
-	public SmartDashboardNumberSender addNumberSender(String key, Double value, Supplier<Double> supplier) {
-		SmartDashboardNumberSender s = new SmartDashboardNumberSender(key, value, supplier);
+	public SmartDashboardNumberSender addNumberSender(String key, Supplier<Double> supplier) {
+		SmartDashboardNumberSender s = new SmartDashboardNumberSender(key, supplier);
 		items.add(s);
 		return s;
 	}
@@ -19,8 +19,8 @@ public class MySmartDashboard {
 		return s;
 	}
 
-	public SmartDashboardBooleanSender addBooleanSender(String key, Boolean value, Supplier<Boolean> supplier) {
-		SmartDashboardBooleanSender s = new SmartDashboardBooleanSender(key, value, supplier);
+	public SmartDashboardBooleanSender addBooleanSender(String key, Supplier<Boolean> supplier) {
+		SmartDashboardBooleanSender s = new SmartDashboardBooleanSender(key, supplier);
 		items.add(s);
 		return s;
 	}
@@ -31,8 +31,8 @@ public class MySmartDashboard {
 		return s;
 	}
 
-	public SmartDashboardStringSender addStringSender(String key, String value, Supplier<String> supplier) {
-		SmartDashboardStringSender s = new SmartDashboardStringSender(key, value, supplier);
+	public SmartDashboardStringSender addStringSender(String key, Supplier<String> supplier) {
+		SmartDashboardStringSender s = new SmartDashboardStringSender(key, supplier);
 		items.add(s);
 		return s;
 	}
@@ -41,11 +41,6 @@ public class MySmartDashboard {
 		SmartDashboardStringReciever s = new SmartDashboardStringReciever(key, value);
 		items.add(s);
 		return s;
-	}
-
-	public void init() {
-		for (SmartDashboardItem item : items)
-			item.init();
 	}
 
 	public void run() {
