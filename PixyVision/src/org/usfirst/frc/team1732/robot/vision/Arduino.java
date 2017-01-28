@@ -22,8 +22,9 @@ public class Arduino {
 	}
 
 	public String getData() {
+		String s  = "";
 		try {
-			String s = this.serial.readString();
+			s = this.serial.readString();
 			while (!s.contains("\n")) {
 				s += this.serial.readString();
 				// System.out.println(s);
@@ -33,7 +34,7 @@ public class Arduino {
 		} catch (Exception e) {
 			System.out.println("something went wrong, " + e.getMessage());
 			// e.printStackTrace();
-			return null;
+			return s;
 		}
 	}
 }

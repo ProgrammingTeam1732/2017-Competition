@@ -62,7 +62,7 @@ public class GearTarget extends VisionTarget {
 						bestTarget = possiblePair;
 				}
 			}
-			System.out.println("Double score: " + bestTarget.getScore());
+			//System.out.println("Double score: " + bestTarget.getScore());
 			if (bestTarget.getScore() > MIN_TOTAL_SCORE) {
 				return bestTarget;
 			} else {

@@ -38,6 +38,9 @@ public class VisionMain {
 	 *            Data from the Arduino
 	 */
 	private void parseData(String s) {
+		if(s == null){
+			return;
+		}
 		if (s.contains("Starting"))
 			started = true;
 		for (int i = 0; i < s.length() && started; i++) {
@@ -88,6 +91,9 @@ public class VisionMain {
 	}
 
 	public double getAngleToGearPeg() {
+		if(gearTarget == null) {
+			return 0;
+		}
 		return gearTarget.getHorizontalAngle(HORIZONTAL_FIELD_OF_VIEW, IMAGE_WIDTH);
 	}
 }

@@ -1,3 +1,4 @@
+
 package org.usfirst.frc.team1732.robot.smartdashboard;
 
 import java.util.function.Supplier;
@@ -6,9 +7,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public abstract class SmartDashboardItem<T> {
 
-	private final String		key;
-	private T					value;
-	private final Supplier<T>	supplier;
+	private final String key;
+	private T value;
+	private final Supplier<T> supplier;
 	// if we ever find out we need to switch between sending and receiving data
 	// on the same key we can make this non-final
 
@@ -25,8 +26,9 @@ public abstract class SmartDashboardItem<T> {
 		this.key = key;
 		this.value = value;
 		this.supplier = supplier;
-		SmartDashboard.putString(key, value.toString());
 	}
+
+	protected abstract void init();
 
 	/**
 	 * Theoretically, when using the smartDashboard, one should only be sending
@@ -61,6 +63,11 @@ public abstract class SmartDashboardItem<T> {
 				setValue(supplierGet());
 				SmartDashboard.putNumber(getKey(), getValue());
 			}
+
+			@Override
+			protected void init() {
+				SmartDashboard.putNumber(getKey(), getValue());
+			}
 		};
 	}
 
@@ -69,6 +76,11 @@ public abstract class SmartDashboardItem<T> {
 			@Override
 			protected void run() {
 				setValue(SmartDashboard.getNumber(getKey(), getValue()));
+			}
+
+			@Override
+			protected void init() {
+				SmartDashboard.putNumber(getKey(), getValue());
 			}
 		};
 	}
@@ -80,6 +92,11 @@ public abstract class SmartDashboardItem<T> {
 				setValue(supplierGet());
 				SmartDashboard.putString(getKey(), getValue());
 			}
+			
+			@Override
+			protected void init() {
+				SmartDashboard.putString(getKey(), getValue());				
+			}
 		};
 	}
 
@@ -88,6 +105,11 @@ public abstract class SmartDashboardItem<T> {
 			@Override
 			protected void run() {
 				setValue(SmartDashboard.getString(getKey(), getValue()));
+			}
+			
+			@Override
+			protected void init() {
+				SmartDashboard.putString(getKey(), getValue());				
 			}
 		};
 	}
@@ -99,6 +121,10 @@ public abstract class SmartDashboardItem<T> {
 				setValue(supplierGet());
 				SmartDashboard.putBoolean(getKey(), getValue());
 			}
+			@Override
+			protected void init() {
+				SmartDashboard.putBoolean(getKey(), getValue());				
+			}
 		};
 	}
 
@@ -107,6 +133,9 @@ public abstract class SmartDashboardItem<T> {
 			@Override
 			protected void run() {
 				setValue(SmartDashboard.getBoolean(getKey(), getValue()));
+			}
+			protected void init() {
+				SmartDashboard.putBoolean(getKey(), getValue());				
 			}
 		};
 	}

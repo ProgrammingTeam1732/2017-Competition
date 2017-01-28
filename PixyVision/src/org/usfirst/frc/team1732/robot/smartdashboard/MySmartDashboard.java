@@ -42,6 +42,11 @@ public class MySmartDashboard {
 		items.add(s);
 		return s;
 	}
+	
+	public void init() {
+		for (SmartDashboardItem item : items)
+			item.init();
+	}
 
 	public void run() {
 		for (SmartDashboardItem item : items)

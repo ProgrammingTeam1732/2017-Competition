@@ -11,6 +11,7 @@ import org.usfirst.frc.team1732.robot.vision.VisionMain;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -42,18 +43,22 @@ public class Robot extends IterativeRobot {
 		dashboard.addDoubleSender("Left Encoder Distance", () -> driveTrain.getLeftEncoderDistance());
 		dashboard.addDoubleSender("Right Encoder Distance", () -> driveTrain.getRightEncoderDistance());
 		dashboard.addBooleanSender("At encoder setpoint?", () -> driveTrain.isAtEncoderSetpoint());
-		dashboard.addStringSender("Current Drive Train Command", () -> driveTrain.getCurrentCommand().toString());
+		//dashboard.addStringSender("Current Drive Train Command", () -> driveTrain.getCurrentCommand().toString());
 		dashboard.addDoubleSender("Left Encoder Setpoint", () -> driveTrain.getLeftEncoderSetpoint());
 		dashboard.addDoubleSender("Right Encoder Setpoint", () -> driveTrain.getRightEncoderSetpoint());
 		dashboard.addDoubleSender("Inches to gear peg", () -> visionMain.getInchesToGearPeg());
 		// Receivers
 		distanceSetpointReciever = dashboard.addDoubleReciever(	"Vision distance setpoint",
 																DriveWithVision.DEFAULT_TARGET_INCHES);
+		//dashboard.addDoubleSender("Vision Angle", () -> visionMain.getAngleToGearPeg());
+		dashboard.init();
 	}
 
 	@Override
 	public void robotPeriodic() {
-		dashboard.run();
+		//dashboard.run();
+		visionMain.run();
+		SmartDashboard.putNumber("Angle to gear", visionMain.getAngleToGearPeg());
 	}
 
 	@Override
@@ -68,7 +73,7 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void autonomousInit() {
-		Scheduler.getInstance().add(new DriveWithVision(distanceSetpointReciever.getValue()));
+		Scheduler.getInstance().add(new DriveWithVision(10));
 	}
 
 	@Override
