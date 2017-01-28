@@ -13,8 +13,19 @@ public abstract class VisionTarget {
 	public final Rectangle	top;
 	public final Rectangle	bottom;
 	public final Rectangle	boundingBox;
+	public final boolean	singleRectangle;
+
+	public VisionTarget(Rectangle rect) {
+		singleRectangle = true;
+		boundingBox = rect;
+		left = null;
+		right = null;
+		top = null;
+		bottom = null;
+	}
 
 	public VisionTarget(Rectangle a, Rectangle b) {
+		singleRectangle = false;
 		if (a.x < b.x) {
 			left = a;
 			right = b;
@@ -49,7 +60,8 @@ public abstract class VisionTarget {
 	 * @return 1 - Math.abs(1 - score);
 	 */
 	public static double scaleScore(double score) {
-		return scaleScore(score, 1, 1);
+		return 1 - Math.abs(1 - score);
+		// return scaleScore(score, 1, 1);
 	}
 
 	/**
@@ -63,9 +75,11 @@ public abstract class VisionTarget {
 	 * @return the score scaled so that a perfect score (score == targetScore)
 	 *         is scaled to a maxScore
 	 */
-	public static double scaleScore(double score, double maxScore, double targetScore) {
-		return maxScore - (maxScore * Math.abs(targetScore - score) / targetScore);
-	}
+	// public static double scaleScore(double score, double maxScore, double
+	// targetScore) {
+	// return maxScore - (maxScore * Math.abs(targetScore - score) /
+	// targetScore);
+	// }
 
 	/**
 	 * @param left

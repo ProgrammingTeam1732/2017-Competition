@@ -23,15 +23,12 @@ public class DriveWithVision extends Command {
 		targetDistanceInches = aTargetDistanceInches;
 	}
 
-	public DriveWithVision() {
-		this(DEFAULT_TARGET_INCHES);
-	}
-
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
 		driveTrain.setDriveWithEncoders();
 		driveTrain.zeroEncoders();
+		driveTrain.setEncoderSetpointInches(0, 0);
 	}
 
 	private double lastGoodDistance;
@@ -58,6 +55,7 @@ public class DriveWithVision extends Command {
 			double dDistance = distance - targetDistanceInches;
 			// FIXME (both use left)
 			double leftEncoderDistance = driveTrain.getLeftEncoderDistance();
+			// not sure if this math is correct
 			driveTrain.setEncoderSetpointInches(dDistance + leftEncoderDistance, dDistance + leftEncoderDistance);
 		}
 

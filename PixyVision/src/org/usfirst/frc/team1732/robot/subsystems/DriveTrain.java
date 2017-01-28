@@ -2,7 +2,6 @@ package org.usfirst.frc.team1732.robot.subsystems;
 
 import org.usfirst.frc.team1732.robot.RobotMap;
 import org.usfirst.frc.team1732.robot.commands.DriveWithJoysticks;
-import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardElement;
 
 import com.ctre.CANTalon;
 import com.ctre.CANTalon.TalonControlMode;
@@ -13,9 +12,8 @@ import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class DriveTrain extends Subsystem implements SmartDashboardElement {
+public class DriveTrain extends Subsystem {
 
 	// motors
 	// left motors
@@ -177,29 +175,20 @@ public class DriveTrain extends Subsystem implements SmartDashboardElement {
 		rightEncoderController.disable();
 	}
 
-	private static final String	leftEncoderCounts		= "Left Encoder Counts";
-	private static final String	rightEncoderCounts		= "Right Encoder Counts";
-	private static final String	leftEncoderDistance		= "Left Encoder Distance";
-	private static final String	rightEncoderDistance	= "Right Encoder Distance";
-
-	@Override
-	public void sendData() {
-		SmartDashboard.putNumber(leftEncoderCounts, leftEncoder.get());
-		SmartDashboard.putNumber(rightEncoderCounts, rightEncoder.get());
-		SmartDashboard.putNumber(leftEncoderDistance, leftEncoder.getDistance());
-		SmartDashboard.putNumber(rightEncoderDistance, rightEncoder.getDistance());
-		// System.out.println(leftEncoder.getRaw());
-		// System.out.println(rightEncoder.getRaw());
-		// System.out.println();
+	public double getLeftEncoderCount() {
+		return leftEncoder.get();
 	}
 
-	@Override
-	public void init() {
-		SmartDashboard.putNumber(leftEncoderCounts, leftEncoder.get());
-		SmartDashboard.putNumber(rightEncoderCounts, rightEncoder.get());
+	public double getRightEncoderCount() {
+		return rightEncoder.get();
 	}
 
-	@Override
-	public void recieveData() {}
+	public double getLeftEncoderSetpoint() {
+		return leftEncoderController.getSetpoint();
+	}
+
+	public double getRightEncoderSetpoint() {
+		return rightEncoderController.getSetpoint();
+	}
 
 }
