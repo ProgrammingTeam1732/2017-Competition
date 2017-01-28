@@ -12,7 +12,7 @@ public abstract class SmartDashboardItem<T> {
 	// if we ever find out we need to switch between sending and receiving data
 	// on the same key we can make this non-final
 
-	protected SmartDashboardItem(String key, T value, Supplier<T> supplier) {
+	private SmartDashboardItem(String key, T value, Supplier<T> supplier) {
 		if (key == null) {
 			throw new IllegalArgumentException("Key must be non-null");
 		}
@@ -52,6 +52,63 @@ public abstract class SmartDashboardItem<T> {
 
 	protected T supplierGet() {
 		return supplier.get();
+	}
+
+	protected static SmartDashboardItem<Double> newDoubleSender(String key, Supplier<Double> supplier) {
+		return new SmartDashboardItem<Double>(key, supplier.get(), supplier) {
+			@Override
+			protected void run() {
+				setValue(supplierGet());
+				SmartDashboard.putNumber(getKey(), getValue());
+			}
+		};
+	}
+
+	protected static SmartDashboardItem<Double> newDoubleReciever(String key, Double value) {
+		return new SmartDashboardItem<Double>(key, value, null) {
+			@Override
+			protected void run() {
+				setValue(SmartDashboard.getNumber(getKey(), getValue()));
+			}
+		};
+	}
+
+	protected static SmartDashboardItem<String> newStringSender(String key, Supplier<String> supplier) {
+		return new SmartDashboardItem<String>(key, supplier.get(), supplier) {
+			@Override
+			protected void run() {
+				setValue(supplierGet());
+				SmartDashboard.putString(getKey(), getValue());
+			}
+		};
+	}
+
+	protected static SmartDashboardItem<String> newStringReciever(String key, String value) {
+		return new SmartDashboardItem<String>(key, value, null) {
+			@Override
+			protected void run() {
+				setValue(SmartDashboard.getString(getKey(), getValue()));
+			}
+		};
+	}
+
+	protected static SmartDashboardItem<Boolean> newBooleanSender(String key, Supplier<Boolean> supplier) {
+		return new SmartDashboardItem<Boolean>(key, supplier.get(), supplier) {
+			@Override
+			protected void run() {
+				setValue(supplierGet());
+				SmartDashboard.putBoolean(getKey(), getValue());
+			}
+		};
+	}
+
+	protected static SmartDashboardItem<Boolean> newBooleanReciever(String key, Boolean value) {
+		return new SmartDashboardItem<Boolean>(key, value, null) {
+			@Override
+			protected void run() {
+				setValue(SmartDashboard.getBoolean(getKey(), getValue()));
+			}
+		};
 	}
 
 }

@@ -3,7 +3,7 @@ package org.usfirst.frc.team1732.robot;
 
 import org.usfirst.frc.team1732.robot.commands.DriveWithVision;
 import org.usfirst.frc.team1732.robot.smartdashboard.MySmartDashboard;
-import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardNumberReciever;
+import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardItem;
 import org.usfirst.frc.team1732.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team1732.robot.triggers.Triggers;
 import org.usfirst.frc.team1732.robot.vision.VisionMain;
@@ -26,7 +26,7 @@ public class Robot extends IterativeRobot {
 	public static OI							oi;
 	public static Triggers						triggers;
 	public static MySmartDashboard				dashboard;
-	public static SmartDashboardNumberReciever	distanceSetpointReciever;
+	public static SmartDashboardItem<Double>	distanceSetpointReciever;
 
 	@Override
 	public void robotInit() {
@@ -37,17 +37,17 @@ public class Robot extends IterativeRobot {
 		// Dashboard code
 		// Senders
 		dashboard = new MySmartDashboard();
-		dashboard.addNumberSender("Left Encoder Counts", () -> driveTrain.getLeftEncoderCount());
-		dashboard.addNumberSender("Right Encoder Counts", () -> driveTrain.getRightEncoderCount());
-		dashboard.addNumberSender("Left Encoder Distance", () -> driveTrain.getLeftEncoderDistance());
-		dashboard.addNumberSender("Right Encoder Distance", () -> driveTrain.getRightEncoderDistance());
+		dashboard.addDoubleSender("Left Encoder Counts", () -> driveTrain.getLeftEncoderCount());
+		dashboard.addDoubleSender("Right Encoder Counts", () -> driveTrain.getRightEncoderCount());
+		dashboard.addDoubleSender("Left Encoder Distance", () -> driveTrain.getLeftEncoderDistance());
+		dashboard.addDoubleSender("Right Encoder Distance", () -> driveTrain.getRightEncoderDistance());
 		dashboard.addBooleanSender("At encoder setpoint?", () -> driveTrain.isAtEncoderSetpoint());
 		dashboard.addStringSender("Current Drive Train Command", () -> driveTrain.getCurrentCommand().toString());
-		dashboard.addNumberSender("Left Encoder Setpoint", () -> driveTrain.getLeftEncoderSetpoint());
-		dashboard.addNumberSender("Right Encoder Setpoint", () -> driveTrain.getRightEncoderSetpoint());
-		dashboard.addNumberSender("Inches to gear peg", () -> visionMain.getInchesToGearPeg());
+		dashboard.addDoubleSender("Left Encoder Setpoint", () -> driveTrain.getLeftEncoderSetpoint());
+		dashboard.addDoubleSender("Right Encoder Setpoint", () -> driveTrain.getRightEncoderSetpoint());
+		dashboard.addDoubleSender("Inches to gear peg", () -> visionMain.getInchesToGearPeg());
 		// Receivers
-		distanceSetpointReciever = dashboard.addNumberReciever(	"Vision distance setpoint",
+		distanceSetpointReciever = dashboard.addDoubleReciever(	"Vision distance setpoint",
 																DriveWithVision.DEFAULT_TARGET_INCHES);
 	}
 

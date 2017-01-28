@@ -7,38 +7,38 @@ public class MySmartDashboard {
 
 	private final ArrayList<SmartDashboardItem> items = new ArrayList<SmartDashboardItem>();
 
-	public SmartDashboardNumberSender addNumberSender(String key, Supplier<Double> supplier) {
-		SmartDashboardNumberSender s = new SmartDashboardNumberSender(key, supplier);
+	public SmartDashboardItem<Double> addDoubleSender(String key, Supplier<Double> supplier) {
+		SmartDashboardItem<Double> s = SmartDashboardItem.newDoubleSender(key, supplier);
 		items.add(s);
 		return s;
 	}
 
-	public SmartDashboardNumberReciever addNumberReciever(String key, Double value) {
-		SmartDashboardNumberReciever s = new SmartDashboardNumberReciever(key, value);
+	public SmartDashboardItem<Double> addDoubleReciever(String key, Double value) {
+		SmartDashboardItem<Double> s = SmartDashboardItem.newDoubleReciever(key, value);
 		items.add(s);
 		return s;
 	}
 
-	public SmartDashboardBooleanSender addBooleanSender(String key, Supplier<Boolean> supplier) {
-		SmartDashboardBooleanSender s = new SmartDashboardBooleanSender(key, supplier);
+	public SmartDashboardItem<Boolean> addBooleanSender(String key, Supplier<Boolean> supplier) {
+		SmartDashboardItem<Boolean> s = SmartDashboardItem.newBooleanSender(key, supplier);
 		items.add(s);
 		return s;
 	}
 
-	public SmartDashboardBooleanReciever addBooleanReciever(String key, Boolean value) {
-		SmartDashboardBooleanReciever s = new SmartDashboardBooleanReciever(key, value);
+	public SmartDashboardItem<Boolean> addBooleanReciever(String key, Boolean value) {
+		SmartDashboardItem<Boolean> s = SmartDashboardItem.newBooleanReciever(key, value);
 		items.add(s);
 		return s;
 	}
 
-	public SmartDashboardStringSender addStringSender(String key, Supplier<String> supplier) {
-		SmartDashboardStringSender s = new SmartDashboardStringSender(key, supplier);
+	public SmartDashboardItem<String> addStringSender(String key, Supplier<String> supplier) {
+		SmartDashboardItem<String> s = SmartDashboardItem.newStringSender(key, supplier);
 		items.add(s);
 		return s;
 	}
 
-	public SmartDashboardStringReciever addStringReciever(String key, String value) {
-		SmartDashboardStringReciever s = new SmartDashboardStringReciever(key, value);
+	public SmartDashboardItem<String> addStringReciever(String key, String value) {
+		SmartDashboardItem<String> s = SmartDashboardItem.newStringReciever(key, value);
 		items.add(s);
 		return s;
 	}
