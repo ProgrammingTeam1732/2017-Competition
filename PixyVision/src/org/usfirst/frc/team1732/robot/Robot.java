@@ -1,10 +1,9 @@
 
 package org.usfirst.frc.team1732.robot;
 
-import java.util.ArrayList;
-
 import org.usfirst.frc.team1732.robot.commands.DriveWithVision;
-import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardElement;
+import org.usfirst.frc.team1732.robot.smartdashboard.MySmartDashboard;
+import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardNumberReciever;
 import org.usfirst.frc.team1732.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team1732.robot.triggers.Triggers;
 import org.usfirst.frc.team1732.robot.vision.VisionMain;
@@ -12,7 +11,6 @@ import org.usfirst.frc.team1732.robot.vision.VisionMain;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -21,33 +19,47 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * creating this project, you must also update the manifest file in the resource
  * directory.
  */
-public class Robot extends IterativeRobot implements SmartDashboardElement {
+public class Robot extends IterativeRobot {
 
-	public static DriveTrain	driveTrain;
-	public static VisionMain	visionMain;
-	public static OI			oi;
-	public static Triggers		triggers;
-
-	public static final ArrayList<SmartDashboardElement> smartDashboardElements = new ArrayList<SmartDashboardElement>();
+	public static DriveTrain					driveTrain;
+	public static VisionMain					visionMain;
+	public static OI							oi;
+	public static Triggers						triggers;
+	public static MySmartDashboard				dashboard;
+	public static SmartDashboardNumberReciever	distanceSetpointReciever;
 
 	@Override
 	public void robotInit() {
 		driveTrain = new DriveTrain();
 		oi = new OI();
 		visionMain = new VisionMain();
-		smartDashboardElements.add(driveTrain);
-		// smartDashboardElements.add(Robot);
-		for (SmartDashboardElement element : smartDashboardElements) {
-			element.init();
-		}
+		dashboard = new MySmartDashboard();
+		dashboard.addNumberSender(	"Left Encoder Counts", driveTrain.getLeftEncoderCount(),
+									() -> driveTrain.getLeftEncoderCount());
+		dashboard.addNumberSender(	"Right Encoder Counts", driveTrain.getRightEncoderCount(),
+									() -> driveTrain.getRightEncoderCount());
+		dashboard.addNumberSender(	"Left Encoder Distance", driveTrain.getLeftEncoderDistance(),
+									() -> driveTrain.getLeftEncoderDistance());
+		dashboard.addNumberSender(	"Right Encoder Distance", driveTrain.getRightEncoderDistance(),
+									() -> driveTrain.getRightEncoderDistance());
+		dashboard.addBooleanSender(	"At encoder setpoint?", driveTrain.isAtEncoderSetpoint(),
+									() -> driveTrain.isAtEncoderSetpoint());
+		dashboard.addStringSender(	"Current Drive Train Command", driveTrain.getCurrentCommand().toString(),
+									() -> driveTrain.getCurrentCommand().toString());
+		dashboard.addNumberSender(	"Left Encoder Setpoint", driveTrain.getLeftEncoderSetpoint(),
+									() -> driveTrain.getLeftEncoderSetpoint());
+		dashboard.addNumberSender(	"Right Encoder Setpoint", driveTrain.getRightEncoderSetpoint(),
+									() -> driveTrain.getRightEncoderSetpoint());
+		dashboard.addNumberSender(	"Inches to gear peg", visionMain.getInchesToGearPeg(),
+									() -> visionMain.getInchesToGearPeg());
+		distanceSetpointReciever = dashboard.addNumberReciever(	"Vision distance setpoint",
+																DriveWithVision.DEFAULT_TARGET_INCHES);
+		dashboard.init();
 	}
 
 	@Override
 	public void robotPeriodic() {
-		for (SmartDashboardElement element : smartDashboardElements) {
-			element.sendData();
-			element.recieveData();
-		}
+		dashboard.run();
 	}
 
 	@Override
@@ -62,8 +74,7 @@ public class Robot extends IterativeRobot implements SmartDashboardElement {
 
 	@Override
 	public void autonomousInit() {
-		Scheduler.getInstance()
-				.add(new DriveWithVision(SmartDashboard.getNumber(targetDistanceString, targetDistanceInches)));
+		Scheduler.getInstance().add(new DriveWithVision(distanceSetpointReciever.getValue()));
 	}
 
 	@Override
@@ -89,21 +100,4 @@ public class Robot extends IterativeRobot implements SmartDashboardElement {
 		LiveWindow.run();
 	}
 
-	public static final String	targetDistanceString	= "Target Distance";
-	private static double		targetDistanceInches	= 100;
-
-	@Override
-	public void init() {
-		SmartDashboard.putNumber(targetDistanceString, targetDistanceInches);
-	}
-
-	@Override
-	public void sendData() {
-
-	}
-
-	@Override
-	public void recieveData() {
-
-	}
 }
