@@ -16,9 +16,9 @@ import edu.wpi.first.wpilibj.buttons.Trigger;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
-	private Joystick buttons = new Joystick(0);
-	private Joystick left = new Joystick(1);
-	private Joystick right = new Joystick(2);
+	private Joystick buttons = new Joystick(RobotMap.BUTTONS_USB);
+	private Joystick left = new Joystick(RobotMap.LEFT_JOYSTICK_USB);
+	private Joystick right = new Joystick(RobotMap.RIGHT_JOYSTICK_USB);
 	//
 	// private final Button ballIntakeForward = button1;
 	// private final Button ballIntakeReverse = button2;
@@ -46,14 +46,10 @@ public class OI {
 	// return !(flywheelForward.get() || flywheelReverse.get());
 	// }
 	// };
-	private final Button gearIntakeDown = new JoystickButton(buttons, 13);
-	private final Trigger gearIntakeUp = new Trigger() {
-		public boolean get() {
-			return !gearIntakeDown.get();
-		}
-	};
-	private final Button gearIntakeForward = new JoystickButton(buttons, 14);
-	private final Button gearIntakeReverse = new JoystickButton(buttons, 15);;
+	private final Button gearIntakePosistionSwitch = new JoystickButton(buttons, 9);
+
+	private final Button gearIntakeForward = new JoystickButton(buttons, 11);
+	private final Button gearIntakeReverse = new JoystickButton(buttons, 10);;
 	private final Trigger gearIntakeStop = new Trigger() {
 		@Override
 		public boolean get() {
@@ -81,8 +77,8 @@ public class OI {
 		gearIntakeForward.whenPressed(new GearIntakeSetForward());
 		gearIntakeReverse.whenPressed(new GearIntakeSetReverse());
 		gearIntakeStop.whenActive(new GearIntakeSetStop());
-		gearIntakeUp.whenActive(new GearIntakeSetUp());
-		gearIntakeDown.whenActive(new GearIntakeSetDown());
+		gearIntakePosistionSwitch.whenPressed(new GearIntakeSetUp());
+		gearIntakePosistionSwitch.whenReleased(new GearIntakeSetDown());
 		//
 		// climber.whenPressed(new ClimberSetUp());
 		// climber.whenReleased(new ClimberSetStop());
@@ -92,10 +88,10 @@ public class OI {
 	}
 
 	public double getLeftSpeed() {
-		return left.getRawAxis(RobotMap.LEFT_JOYSTICK_AXIS);
+		return left.getRawAxis(RobotMap.LEFT_JOYSTICK_Y_AXIS);
 	}
 
 	public double getRightSpeed() {
-		return right.getRawAxis(RobotMap.RIGHT_JOYSTICK_AXIS);
+		return right.getRawAxis(RobotMap.RIGHT_JOYSTICK_Y_AXIS);
 	}
 }
