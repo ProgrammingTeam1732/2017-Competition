@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1732.robot.commands.unused;
+package org.usfirst.frc.team1732.robot.commands;
 
 import org.usfirst.frc.team1732.robot.Robot;
 

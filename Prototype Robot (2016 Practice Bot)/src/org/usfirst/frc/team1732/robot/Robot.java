@@ -4,12 +4,12 @@ package org.usfirst.frc.team1732.robot;
 import org.usfirst.frc.team1732.robot.commands.motors.RunMotor1;
 import org.usfirst.frc.team1732.robot.commands.motors.RunMotor2;
 import org.usfirst.frc.team1732.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team1732.robot.subsystems.Flywheel;
 import org.usfirst.frc.team1732.robot.subsystems.motors.Motor1;
 import org.usfirst.frc.team1732.robot.subsystems.motors.Motor2;
 import org.usfirst.frc.team1732.robot.subsystems.unused.BallIntake;
 import org.usfirst.frc.team1732.robot.subsystems.unused.Climber;
 import org.usfirst.frc.team1732.robot.subsystems.unused.Feeder;
-import org.usfirst.frc.team1732.robot.subsystems.unused.Flywheel;
 import org.usfirst.frc.team1732.robot.subsystems.unused.GearIntake;
 import org.usfirst.frc.team1732.robot.subsystems.unused.OtherShooter;
 
