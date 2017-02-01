@@ -37,27 +37,24 @@ public class Robot extends IterativeRobot {
 		// Dashboard code
 		// Senders
 		dashboard = new MySmartDashboard();
-		dashboard.addItem(SmartDashboardItem.newDoubleSender(	"Left Encoder Counts",
-																() -> driveTrain.getLeftEncoderCount()));
-		dashboard.addItem(SmartDashboardItem.newDoubleSender(	"Right Encoder Counts",
-																() -> driveTrain.getRightEncoderCount()));
+		dashboard.addItem(SmartDashboardItem.newDoubleSender("Left Encoder Counts", driveTrain::getLeftEncoderCount));
+		dashboard.addItem(SmartDashboardItem.newDoubleSender("Right Encoder Counts", driveTrain::getRightEncoderCount));
 		dashboard.addItem(SmartDashboardItem.newDoubleSender(	"Left Encoder Distance",
-																() -> driveTrain.getLeftEncoderDistance()));
+																driveTrain::getLeftEncoderDistance));
 		dashboard.addItem(SmartDashboardItem.newDoubleSender(	"Right Encoder Distance",
-																() -> driveTrain.getRightEncoderDistance()));
-		dashboard.addItem(SmartDashboardItem.newBooleanSender(	"At encoder setpoint?",
-																() -> driveTrain.isAtEncoderSetpoint()));
+																driveTrain::getRightEncoderDistance));
+		dashboard.addItem(SmartDashboardItem.newBooleanSender("At encoder setpoint?", driveTrain::isAtEncoderSetpoint));
 		dashboard.addItem(SmartDashboardItem.newDoubleSender(	"Left Encoder Setpoint",
-																() -> driveTrain.getLeftEncoderSetpoint()));
+																driveTrain::getLeftEncoderSetpoint));
 		dashboard.addItem(SmartDashboardItem.newDoubleSender(	"Right Encoder Setpoint",
-																() -> driveTrain.getRightEncoderSetpoint()));
-		dashboard.addItem(SmartDashboardItem.newDoubleSender(	"Inches to gear peg",
-																() -> visionMain.getInchesToGearPeg()));
+																driveTrain::getRightEncoderSetpoint));
+		dashboard.addItem(SmartDashboardItem.newDoubleSender("Inches to gear peg", visionMain::getInchesToGearPeg));
+
 		// Receivers
 		distanceSetpointReciever = dashboard.addItem(SmartDashboardItem
 				.newDoubleReciever(	"Vision distance setpoint", DriveWithVision.DEFAULT_TARGET_INCHES,
 									DriveWithVision::setSmartDashboardDistance));
-		dashboard.addItem(SmartDashboardItem.newDoubleSender("Vision Angle", () -> visionMain.getAngleToGearPeg()));
+		dashboard.addItem(SmartDashboardItem.newDoubleSender("Vision Angle", visionMain::getAngleToGearPeg));
 		dashboard.init();
 	}
 

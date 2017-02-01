@@ -74,8 +74,8 @@ public class Flywheel extends Subsystem {
 		return motor.getSpeed();
 	}
 
-	public double get() {
-		return motor.
+	public double getOutputVoltage() {
+		return motor.getOutputVoltage();
 	}
 
 }
