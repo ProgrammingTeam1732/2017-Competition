@@ -8,8 +8,11 @@ package org.usfirst.frc.team1732.robot;
  */
 public class RobotMap {
 	// Controller
-	public static final int	LEFT_JOYSTICK_AXIS	= 1;
-	public static final int	RIGHT_JOYSTICK_AXIS	= 5;
+	public static final int	LEFT_JOYSTICK_Y_AXIS	= 1;
+	public static final int	RIGHT_JOYSTICK_Y_AXIS	= 1;
+	public static final int	LEFT_JOYSTICK_USB		= 1;
+	public static final int	RIGHT_JOYSTICK_USB		= 2;
+	public static final int	BUTTONS_USB				= 0;
 
 	// Drive Train
 	public static final int	LEFT_MASTER_MOTOR_DEVICE_NUMBER		= 15;
@@ -20,7 +23,7 @@ public class RobotMap {
 	public static final int	RIGHT_2_MOTOR_DEVICE_NUMBER			= 20;
 
 	// Flywheel
-	public static final int FLYWHEEL_MOTER_DEVICE_NUMBER = 0;
+	public static final int FLYWHEEL_MOTER_DEVICE_NUMBER = 10;
 
 	// Other shooter
 	public static final int OTHER_SHOOTER_MOTER_DEVICE_NUMBER = 0;

@@ -31,6 +31,30 @@ public class Flywheel extends Subsystem {
 		motor.setPID(P, I, D);
 		motor.setSetpoint(setpoint);
 		motor.disable();
+		motor.startLiveWindowMode();
+		// SmartDashboard.putData(new NamedSendable() {
+		//
+		// @Override
+		// public void initTable(ITable subtable) {
+		// motor.initTable(subtable);
+		// }
+		//
+		// @Override
+		// public ITable getTable() {
+		// return motor.getTable();
+		// }
+		//
+		// @Override
+		// public String getSmartDashboardType() {
+		// return motor.getSmartDashboardType();
+		// }
+		//
+		// @Override
+		// public String getName() {
+		// return "Flywheel motor: " + motor.getDeviceID();
+		// }
+		//
+		// });
 		// motor.reverseSensor(true);
 	}
 
