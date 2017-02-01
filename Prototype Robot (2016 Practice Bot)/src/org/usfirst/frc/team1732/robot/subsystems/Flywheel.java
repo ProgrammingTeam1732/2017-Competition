@@ -20,21 +20,18 @@ public class Flywheel extends Subsystem {
 	public static final int	COUNTS_PER_REVOLUTION		= 1;
 	public static final int	COUNTS_PER_SECOND_TARGET	= 500;
 	public static final int	COUNTS_PER_SECOND_ERROR		= COUNTS_PER_SECOND_TARGET / 50;
-	private int				P							= 1;
-	private int				I							= 0;
-	private int				D							= 0;
+
+	private double	P			= 1;
+	private double	I			= 0;
+	private double	D			= 0;
+	private double	setpoint	= COUNTS_PER_SECOND_TARGET;
 
 	public Flywheel() {
 		motor.setFeedbackDevice(FeedbackDevice.QuadEncoder);
-		motor.disable();
 		motor.setPID(P, I, D);
+		motor.setSetpoint(setpoint);
+		motor.disable();
 		// motor.reverseSensor(true);
-		// motor.getSpeed();
-		// motor.setSetpoint(COUNTS_PER_SECOND_TARGET);
-		// motor.disable();
-		// motor.disableControl();
-		// motor.enable();
-		// motor.enableControl();
 	}
 
 	@Override
@@ -70,12 +67,24 @@ public class Flywheel extends Subsystem {
 		return motor.getSetpoint();
 	}
 
+	public void setSetpoint(double s) {
+		setpoint = s;
+		motor.setSetpoint(setpoint);
+	}
+
 	public double getSpeed() {
 		return motor.getSpeed();
 	}
 
 	public double getOutputVoltage() {
 		return motor.getOutputVoltage();
+	}
+
+	public void setPID(double p, double i, double d) {
+		P = p;
+		I = i;
+		D = d;
+		motor.setPID(P, I, D);
 	}
 
 }

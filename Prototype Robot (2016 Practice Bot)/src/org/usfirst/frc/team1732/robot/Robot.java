@@ -1,8 +1,6 @@
 
 package org.usfirst.frc.team1732.robot;
 
-import org.usfirst.frc.team1732.robot.commands.motors.RunMotor1;
-import org.usfirst.frc.team1732.robot.commands.motors.RunMotor2;
 import org.usfirst.frc.team1732.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team1732.robot.subsystems.Flywheel;
 import org.usfirst.frc.team1732.robot.subsystems.motors.Motor1;
@@ -16,7 +14,6 @@ import org.usfirst.frc.team1732.robot.subsystems.unused.OtherShooter;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -46,14 +43,10 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void robotInit() {
 		driveTrain = new DriveTrain();
-		motor1 = new Motor1();
-		SmartDashboard.putData(new RunMotor1());
-		motor2 = new Motor2();
-		SmartDashboard.putData(new RunMotor2());
 		// ballIntake = new BallIntake();
 		// climber = new Climber();
 		// feeder = new Feeder();
-		// flywheel = new Flywheel();
+		flywheel = new Flywheel();
 		// gearIntake = new GearIntake();
 		// otherShooter = new OtherShooter();
 		oi = new OI();
