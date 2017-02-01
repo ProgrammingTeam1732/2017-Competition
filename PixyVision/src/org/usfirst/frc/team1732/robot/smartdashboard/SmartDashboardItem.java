@@ -1,15 +1,16 @@
 
 package org.usfirst.frc.team1732.robot.smartdashboard;
 
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public abstract class SmartDashboardItem<T> {
 
-	private final String key;
-	private T value;
-	private final Supplier<T> supplier;
+	private final String		key;
+	private T					value;
+	private final Supplier<T>	supplier;
 	// if we ever find out we need to switch between sending and receiving data
 	// on the same key we can make this non-final
 
@@ -56,7 +57,7 @@ public abstract class SmartDashboardItem<T> {
 		return supplier.get();
 	}
 
-	protected static SmartDashboardItem<Double> newDoubleSender(String key, Supplier<Double> supplier) {
+	public static SmartDashboardItem<Double> newDoubleSender(String key, Supplier<Double> supplier) {
 		return new SmartDashboardItem<Double>(key, supplier.get(), supplier) {
 			@Override
 			protected void run() {
@@ -71,11 +72,12 @@ public abstract class SmartDashboardItem<T> {
 		};
 	}
 
-	protected static SmartDashboardItem<Double> newDoubleReciever(String key, Double value) {
+	public static SmartDashboardItem<Double> newDoubleReciever(String key, Double value, Consumer<Double> consumer) {
 		return new SmartDashboardItem<Double>(key, value, null) {
 			@Override
 			protected void run() {
 				setValue(SmartDashboard.getNumber(getKey(), getValue()));
+				consumer.accept(getValue());
 			}
 
 			@Override
@@ -85,57 +87,63 @@ public abstract class SmartDashboardItem<T> {
 		};
 	}
 
-	protected static SmartDashboardItem<String> newStringSender(String key, Supplier<String> supplier) {
+	public static SmartDashboardItem<String> newStringSender(String key, Supplier<String> supplier) {
 		return new SmartDashboardItem<String>(key, supplier.get(), supplier) {
 			@Override
 			protected void run() {
 				setValue(supplierGet());
 				SmartDashboard.putString(getKey(), getValue());
 			}
-			
+
 			@Override
 			protected void init() {
-				SmartDashboard.putString(getKey(), getValue());				
+				SmartDashboard.putString(getKey(), getValue());
 			}
 		};
 	}
 
-	protected static SmartDashboardItem<String> newStringReciever(String key, String value) {
+	public static SmartDashboardItem<String> newStringReciever(String key, String value, Consumer<String> consumer) {
 		return new SmartDashboardItem<String>(key, value, null) {
 			@Override
 			protected void run() {
 				setValue(SmartDashboard.getString(getKey(), getValue()));
+				consumer.accept(getValue());
 			}
-			
+
 			@Override
 			protected void init() {
-				SmartDashboard.putString(getKey(), getValue());				
+				SmartDashboard.putString(getKey(), getValue());
 			}
 		};
 	}
 
-	protected static SmartDashboardItem<Boolean> newBooleanSender(String key, Supplier<Boolean> supplier) {
+	public static SmartDashboardItem<Boolean> newBooleanSender(String key, Supplier<Boolean> supplier) {
 		return new SmartDashboardItem<Boolean>(key, supplier.get(), supplier) {
 			@Override
 			protected void run() {
 				setValue(supplierGet());
 				SmartDashboard.putBoolean(getKey(), getValue());
 			}
+
 			@Override
 			protected void init() {
-				SmartDashboard.putBoolean(getKey(), getValue());				
+				SmartDashboard.putBoolean(getKey(), getValue());
 			}
 		};
 	}
 
-	protected static SmartDashboardItem<Boolean> newBooleanReciever(String key, Boolean value) {
+	public static SmartDashboardItem<Boolean> newBooleanReciever(String key, Boolean value,
+			Consumer<Boolean> consumer) {
 		return new SmartDashboardItem<Boolean>(key, value, null) {
 			@Override
 			protected void run() {
 				setValue(SmartDashboard.getBoolean(getKey(), getValue()));
+				consumer.accept(getValue());
 			}
+
+			@Override
 			protected void init() {
-				SmartDashboard.putBoolean(getKey(), getValue());				
+				SmartDashboard.putBoolean(getKey(), getValue());
 			}
 		};
 	}

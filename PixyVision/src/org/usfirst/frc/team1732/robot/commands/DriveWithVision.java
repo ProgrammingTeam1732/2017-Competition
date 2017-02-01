@@ -3,8 +3,6 @@ package org.usfirst.frc.team1732.robot.commands;
 import static org.usfirst.frc.team1732.robot.Robot.driveTrain;
 import static org.usfirst.frc.team1732.robot.Robot.visionMain;
 
-import org.usfirst.frc.team1732.robot.Robot;
-
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -15,13 +13,22 @@ public class DriveWithVision extends Command {
 
 	public double targetDistanceInches;
 
-	public static final double DEFAULT_TARGET_INCHES = 10;
+	public static final double	DEFAULT_TARGET_INCHES	= 10;
+	private static double		smartDashboardDistance	= DEFAULT_TARGET_INCHES;
 
 	public DriveWithVision(double aTargetDistanceInches) {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
 		requires(driveTrain);
 		targetDistanceInches = aTargetDistanceInches;
+	}
+
+	public static void setSmartDashboardDistance(double distance) {
+		smartDashboardDistance = distance;
+	}
+
+	public static DriveWithVision newCommandUseSmartDashboardDistance() {
+		return new DriveWithVision(smartDashboardDistance);
 	}
 
 	// Called just before this Command runs the first time
@@ -48,9 +55,9 @@ public class DriveWithVision extends Command {
 	// boolean visionControllerEnabled = true;
 	// boolean encoderControllerEnabled = false;
 
-	public static final long MILLISECONDS_TO_WAIT = 500;
-	private long endTime = System.currentTimeMillis();
-	private boolean endTimeSet = false;
+	public static final long	MILLISECONDS_TO_WAIT	= 500;
+	private long				endTime					= System.currentTimeMillis();
+	private boolean				endTimeSet				= false;
 
 	@Override
 	protected void execute() {
@@ -87,7 +94,7 @@ public class DriveWithVision extends Command {
 				// encoderControllerEnabled = true;
 				// }
 				driveTrain.driveRaw(-driveTrain.getLeftEncoderControllerOutput(),
-						-driveTrain.getRightEncoderControllerOutput());
+									-driveTrain.getRightEncoderControllerOutput());
 				SmartDashboard.putBoolean("Is Correcting angle?", false);
 			}
 		}
