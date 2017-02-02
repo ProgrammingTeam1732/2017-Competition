@@ -1,6 +1,8 @@
 
 package org.usfirst.frc.team1732.robot;
 
+import org.usfirst.frc.team1732.robot.smartdashboard.MySmartDashboard;
+import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardItem;
 import org.usfirst.frc.team1732.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team1732.robot.subsystems.Flywheel;
 import org.usfirst.frc.team1732.robot.subsystems.motors.Motor1;
@@ -14,6 +16,7 @@ import org.usfirst.frc.team1732.robot.subsystems.unused.OtherShooter;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -36,12 +39,15 @@ public class Robot extends IterativeRobot {
 	public static GearIntake	gearIntake;
 	public static OtherShooter	otherShooter;
 
+	public static MySmartDashboard dashboard;
+
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
 	 */
 	@Override
 	public void robotInit() {
+		NetworkTable.globalDeleteAll();
 		driveTrain = new DriveTrain();
 		// ballIntake = new BallIntake();
 		// climber = new Climber();
@@ -50,6 +56,49 @@ public class Robot extends IterativeRobot {
 		// gearIntake = new GearIntake();
 		// otherShooter = new OtherShooter();
 		oi = new OI();
+		// Dashboard code
+		dashboard = new MySmartDashboard();
+		// dashboard.addItem(SmartDashboardItem.newDoubleReciever("Flywheel P",
+		// flywheel.getP(), flywheel::setP));
+		// dashboard.addItem(SmartDashboardItem.newDoubleReciever("Flywheel I",
+		// flywheel.getI(), flywheel::setI));
+		// dashboard.addItem(SmartDashboardItem.newDoubleReciever("Flywheel D",
+		// flywheel.getD(), flywheel::setD));
+		dashboard.addItem(SmartDashboardItem.newDoubleReciever(	"Flywheel Setpoint", flywheel.getSetpoint(),
+																flywheel::setSetpoint));
+		dashboard.addItem(SmartDashboardItem.newDoubleSender("Flywheel Speed", flywheel::getSpeed));
+		// dashboard.addItem(SmartDashboardItem.newDoubleReciever( "Set flywheel
+		// motor speed", 0.0,
+		// flywheel::setMotorSpeed));
+		dashboard.addItem(SmartDashboardItem.newDoubleSender("Flywheel Output", flywheel::getMotorOutput));
+
+		dashboard.init();
+		// Thread t = new Thread() {
+		// private long startTime = System.currentTimeMillis();
+		// private int iterations = 0;
+		//
+		// @Override
+		// public void run() {
+		// System.out.printf("Time: %s, Iter: %d%n", "" +
+		// (System.currentTimeMillis() - startTime), iterations++);
+		// startTime = System.currentTimeMillis();
+		// if (Robot.flywheel.getSpeed() < Robot.flywheel.getSetpoint()) {
+		// Robot.flywheel.setMotorSpeed(Robot.flywheel.BANG_BANG_UPPER);
+		// } else {
+		// Robot.flywheel.setMotorSpeed(Robot.flywheel.BANG_BANG_FF);
+		// }
+		// System.out.printf( "Speed: %f, Output: %f%n%n",
+		// Robot.flywheel.getSpeed(),
+		// Robot.flywheel.getMotorOutput());
+		// }
+		// };
+		// t.setDaemon(true);
+		// t.start();
+	}
+
+	@Override
+	public void robotPeriodic() {
+		dashboard.run();
 	}
 
 	/**
@@ -100,18 +149,14 @@ public class Robot extends IterativeRobot {
 	}
 
 	@Override
-	public void teleopInit() {
-		// This makes sure that the autonomous stops running when
-		// teleop starts running. If you want the autonomous to
-		// continue until interrupted by another command, remove
-		// this line or comment it out.
-	}
+	public void teleopInit() {}
 
 	/**
 	 * This function is called periodically during operator control
 	 */
 	@Override
 	public void teleopPeriodic() {
+		System.out.println("Running");
 		Scheduler.getInstance().run();
 	}
 

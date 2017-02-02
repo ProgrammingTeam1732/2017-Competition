@@ -1,7 +1,7 @@
 package org.usfirst.frc.team1732.robot;
 
 import org.usfirst.frc.team1732.robot.commands.DisableFlywheel;
-import org.usfirst.frc.team1732.robot.commands.EnableFlywheel;
+import org.usfirst.frc.team1732.robot.commands.FlywheelBangBang;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -61,7 +61,7 @@ public class OI {
 	// private final Button otherShooter = button10;
 
 	public OI() {
-		enableShooter.whenPressed(new EnableFlywheel());
+		enableShooter.whenPressed(new FlywheelBangBang());
 		enableShooter.whenReleased(new DisableFlywheel());
 
 		// ballIntakeForward.whenPressed(new BallIntakeSetForward());
