@@ -49,51 +49,31 @@ public class Robot extends IterativeRobot {
 	public void robotInit() {
 		NetworkTable.globalDeleteAll();
 		driveTrain = new DriveTrain();
-		// ballIntake = new BallIntake();
-		// climber = new Climber();
-		// feeder = new Feeder();
 		flywheel = new Flywheel();
-		// gearIntake = new GearIntake();
-		// otherShooter = new OtherShooter();
 		oi = new OI();
+
 		// Dashboard code
 		dashboard = new MySmartDashboard();
+		// Receivers
+		dashboard.addItem(SmartDashboardItem.newDoubleReciever(	"Set flywheel motor speed", 0.0,
+																Flywheel::SetSmartDashboardSpeed));
+		dashboard.addItem(SmartDashboardItem.newDoubleReciever(	"Set Flywheel Setpoint", flywheel.getSetpoint(),
+																flywheel::setSetpoint));
 		// dashboard.addItem(SmartDashboardItem.newDoubleReciever("Flywheel P",
 		// flywheel.getP(), flywheel::setP));
 		// dashboard.addItem(SmartDashboardItem.newDoubleReciever("Flywheel I",
 		// flywheel.getI(), flywheel::setI));
 		// dashboard.addItem(SmartDashboardItem.newDoubleReciever("Flywheel D",
 		// flywheel.getD(), flywheel::setD));
-		dashboard.addItem(SmartDashboardItem.newDoubleReciever(	"Flywheel Setpoint", flywheel.getSetpoint(),
-																flywheel::setSetpoint));
-		dashboard.addItem(SmartDashboardItem.newDoubleSender("Flywheel Speed", flywheel::getSpeed));
-		// dashboard.addItem(SmartDashboardItem.newDoubleReciever( "Set flywheel
-		// motor speed", 0.0,
-		// flywheel::setMotorSpeed));
+
+		// Senders
+		dashboard.addItem(SmartDashboardItem.newDoubleSender("Flywheel Speed (\"RPM\\CPM\")", flywheel::getSpeed));
+		dashboard.addItem(SmartDashboardItem.newDoubleSender("Flywheel Enc Vel", flywheel::getEncVelocity));
 		dashboard.addItem(SmartDashboardItem.newDoubleSender("Flywheel Output", flywheel::getMotorOutput));
+		dashboard.addItem(SmartDashboardItem.newDoubleSender("Flywheel Error", flywheel::getError));
+		dashboard.addItem(SmartDashboardItem.newDoubleSender("Flywheel Voltage", flywheel::getOutputVoltage));
 
 		dashboard.init();
-		// Thread t = new Thread() {
-		// private long startTime = System.currentTimeMillis();
-		// private int iterations = 0;
-		//
-		// @Override
-		// public void run() {
-		// System.out.printf("Time: %s, Iter: %d%n", "" +
-		// (System.currentTimeMillis() - startTime), iterations++);
-		// startTime = System.currentTimeMillis();
-		// if (Robot.flywheel.getSpeed() < Robot.flywheel.getSetpoint()) {
-		// Robot.flywheel.setMotorSpeed(Robot.flywheel.BANG_BANG_UPPER);
-		// } else {
-		// Robot.flywheel.setMotorSpeed(Robot.flywheel.BANG_BANG_FF);
-		// }
-		// System.out.printf( "Speed: %f, Output: %f%n%n",
-		// Robot.flywheel.getSpeed(),
-		// Robot.flywheel.getMotorOutput());
-		// }
-		// };
-		// t.setDaemon(true);
-		// t.start();
 	}
 
 	@Override
@@ -156,7 +136,6 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
-		System.out.println("Running");
 		Scheduler.getInstance().run();
 	}
 

@@ -1,8 +1,11 @@
 package org.usfirst.frc.team1732.robot.subsystems;
 
 import org.usfirst.frc.team1732.robot.RobotMap;
+import org.usfirst.frc.team1732.robot.commands.RunFlywheel;
 
 import com.ctre.CANTalon;
+import com.ctre.CANTalon.FeedbackDevice;
+import com.ctre.CANTalon.TalonControlMode;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -11,64 +14,46 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class Flywheel extends Subsystem {
 
-	private final CANTalon		motor			= new CANTalon(RobotMap.FLYWHEEL_MOTER_DEVICE_NUMBER);
-	public static final double	FORWARD_SPEED	= 1;
-	public static final double	STOP_SPEED		= 0;
-	public static final double	REVERSE_SPEED	= 1;
-	private double				motorSpeed		= 0;
+	private final CANTalon	motor				= new CANTalon(RobotMap.FLYWHEEL_MOTER_DEVICE_NUMBER);
+	private static double	smartDashboardSpeed	= 0;
 
-	public static final int	COUNTS_PER_REVOLUTION		= 1;
-	public static final int	COUNTS_PER_SECOND_TARGET	= 18000;
+	public static final double STOP_SPEED = 0;
+	// public static final double FORWARD_SPEED = 1;
+	// public static final double REVERSE_SPEED = 1;
+
+	// public static final int COUNTS_PER_REVOLUTION = 1;
+	public static final int	COUNTS_PER_SECOND_TARGET	= -18000;
 	public static final int	COUNTS_PER_SECOND_ERROR		= COUNTS_PER_SECOND_TARGET / 50;
 
-	private double	P			= 0;
-	private double	I			= 0;
-	private double	D			= 0;
-	private double	setpoint	= COUNTS_PER_SECOND_TARGET;
-
-	public static final double	BANG_BANG_UPPER	= 1;
-	public static final double	BANG_BANG_FF	= 0.485;	// 0.4;
+	private double				P					= Float.MAX_VALUE;
+	private double				I					= 0;
+	private double				D					= 0;
+	private double				setpoint			= COUNTS_PER_SECOND_TARGET;
+	public static final double	MAX_OUTPUT_VOLTAGE	= -8;
 
 	public Flywheel() {
-		// motor.setControlMode(CANTalon.TalonControlMode.Speed.value);
-		// motor.setFeedbackDevice(FeedbackDevice.QuadEncoder);
-		// motor.setPID(P, I, D);
-		// motor.setSetpoint(setpoint);
-		// motor.disableControl();
-		motor.reverseSensor(true);
-		motor.setInverted(true);
+		motor.setFeedbackDevice(FeedbackDevice.QuadEncoder);
+		motor.configNominalOutputVoltage(0, 0);
+		motor.configPeakOutputVoltage(0, MAX_OUTPUT_VOLTAGE);
+		motor.setPID(P, I, D);
+		// motor.setF(F);
+		motor.reverseSensor(false);
+		motor.enableBrakeMode(false);
+		// motor.changeControlMode(TalonControlMode.PercentVbus);
+		// motor.changeControlMode(CANTalon.TalonControlMode.Speed);
 	}
 
 	@Override
 	public void initDefaultCommand() {
-
+		setDefaultCommand(new RunFlywheel());
 	}
 
-	public void setForward() {
-		motor.set(FORWARD_SPEED);
+	public static void SetSmartDashboardSpeed(double s) {
+		smartDashboardSpeed = s;
 	}
 
-	public void setStop() {
-		motor.set(STOP_SPEED);
-	}
-
-	public void setReverse() {
-		motor.set(REVERSE_SPEED);
-	}
-
-	public void disable() {
-		// motor.disableControl();
-		motor.set(0);
-	}
-
-	public void enable() {
-		// motor.enableControl();
-		// motor.set(motorSpeed);
-	}
-
-	public void setMotorSpeed(double s) {
-		motorSpeed = s;
-		motor.set(s);
+	public void driveWithSmartDashboard() {
+		motor.set(smartDashboardSpeed);
 	}
 
 	public double getPosistion() {
@@ -76,13 +61,15 @@ public class Flywheel extends Subsystem {
 	}
 
 	public double getSetpoint() {
-		return setpoint;
-		// return motor.getSetpoint();
+		return motor.getSetpoint();
 	}
 
 	public void setSetpoint(double s) {
-		setpoint = s;
-		// motor.setSetpoint(setpoint);
+		motor.setSetpoint(s);
+	}
+
+	public double getEncVelocity() {
+		return motor.getEncVelocity();
 	}
 
 	public double getSpeed() {
@@ -94,7 +81,11 @@ public class Flywheel extends Subsystem {
 	}
 
 	public double getMotorOutput() {
-		return motor.get();
+		return motor.getOutputVoltage() / motor.getBusVoltage();
+	}
+
+	public double getError() {
+		return motor.getClosedLoopError();
 	}
 
 	public void setPID(double p, double i, double d) {
@@ -116,6 +107,10 @@ public class Flywheel extends Subsystem {
 		return motor.getD();
 	}
 
+	public double getF() {
+		return motor.getF();
+	}
+
 	public void setP(double p) {
 		P = p;
 		motor.setP(P);
@@ -130,5 +125,30 @@ public class Flywheel extends Subsystem {
 		D = d;
 		motor.setD(D);
 	}
+
+	public void disableAutoControl() {
+		motor.changeControlMode(TalonControlMode.PercentVbus);
+		motor.set(STOP_SPEED);
+	}
+
+	//
+	public void enableAutoControl() {
+		motor.changeControlMode(TalonControlMode.Speed);
+		motor.setSetpoint(setpoint);
+	}
+
+	// semi old methods
+
+	// public void setForward() {
+	// motor.set(FORWARD_SPEED);
+	// }
+	//
+	// public void setStop() {
+	// motor.set(STOP_SPEED);
+	// }
+	//
+	// public void setReverse() {
+	// motor.set(REVERSE_SPEED);
+	// }
 
 }

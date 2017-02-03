@@ -17,23 +17,13 @@ public class FlywheelBangBang extends Command {
 
 	// Called just before this Command runs the first time
 	@Override
-	protected void initialize() {}
-
-	private long	startTime	= System.currentTimeMillis();
-	private int		iterations	= 0;
+	protected void initialize() {
+		Robot.flywheel.enableAutoControl();
+	}
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
-	protected void execute() {
-		System.out.printf("Time: %s, Iter: %d%n", "" + (System.currentTimeMillis() - startTime), iterations++);
-		startTime = System.currentTimeMillis();
-		if (Robot.flywheel.getSpeed() < Robot.flywheel.getSetpoint()) {
-			Robot.flywheel.setMotorSpeed(Robot.flywheel.BANG_BANG_UPPER);
-		} else {
-			Robot.flywheel.setMotorSpeed(Robot.flywheel.BANG_BANG_FF);
-		}
-		System.out.printf("Speed: %f, Output: %f%n%n", Robot.flywheel.getSpeed(), Robot.flywheel.getMotorOutput());
-	}
+	protected void execute() {}
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
@@ -44,7 +34,7 @@ public class FlywheelBangBang extends Command {
 	// Called once after isFinished returns true
 	@Override
 	protected void end() {
-		Robot.flywheel.disable();
+		Robot.flywheel.disableAutoControl();
 	}
 
 	// Called when another command which requires one or more of the same
