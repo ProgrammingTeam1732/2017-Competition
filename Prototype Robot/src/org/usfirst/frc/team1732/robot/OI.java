@@ -1,14 +1,14 @@
 package org.usfirst.frc.team1732.robot;
 
-import org.usfirst.frc.team1732.robot.commands.GearIntakeSetDown;
-import org.usfirst.frc.team1732.robot.commands.GearIntakeSetForward;
-import org.usfirst.frc.team1732.robot.commands.GearIntakeSetReverse;
-import org.usfirst.frc.team1732.robot.commands.GearIntakeSetStop;
-import org.usfirst.frc.team1732.robot.commands.GearIntakeSetUp;
-import org.usfirst.frc.team1732.robot.commands.IntakeInDown;
-import org.usfirst.frc.team1732.robot.commands.IntakeInDownTimer;
-import org.usfirst.frc.team1732.robot.commands.IntakeOutDown;
-import org.usfirst.frc.team1732.robot.commands.IntakeOutDownTimer;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetDown;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetForward;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetReverse;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetStop;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetUp;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.IntakeInDown;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.IntakeInDownTimer;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.IntakeOutDown;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.IntakeOutDownTimer;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;

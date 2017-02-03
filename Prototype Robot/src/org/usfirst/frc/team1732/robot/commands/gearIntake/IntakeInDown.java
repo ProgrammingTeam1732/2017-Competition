@@ -1,15 +1,17 @@
-package org.usfirst.frc.team1732.robot.commands;
+package org.usfirst.frc.team1732.robot.commands.gearIntake;
 
 import org.usfirst.frc.team1732.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Scheduler;
 
 /**
  *
  */
-public class IntakeOutDown extends Command {
+public class IntakeInDown extends Command {
 
-    public IntakeOutDown() {
+    public IntakeInDown() {
+    	
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.gearIntake);
@@ -18,12 +20,11 @@ public class IntakeOutDown extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
     	Robot.gearIntake.setDown();
-    	Robot.gearIntake.setForward();
+    	Robot.gearIntake.setReverse();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.gearIntake.setForward();
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -32,10 +33,11 @@ public class IntakeOutDown extends Command {
     }
 
     // Called once after isFinished returns true
+    
     protected void end() {
     	Robot.gearIntake.setUp();
-    	//
-    	Robot.gearIntake.setStop();
+    //	Robot.gearIntake.setStop();
+    	Scheduler.getInstance().add(new IntakeInDownTimer());
     }
 
     // Called when another command which requires one or more of the same
