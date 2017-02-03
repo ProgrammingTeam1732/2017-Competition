@@ -5,6 +5,10 @@ import org.usfirst.frc.team1732.robot.commands.GearIntakeSetForward;
 import org.usfirst.frc.team1732.robot.commands.GearIntakeSetReverse;
 import org.usfirst.frc.team1732.robot.commands.GearIntakeSetStop;
 import org.usfirst.frc.team1732.robot.commands.GearIntakeSetUp;
+import org.usfirst.frc.team1732.robot.commands.IntakeInDown;
+import org.usfirst.frc.team1732.robot.commands.IntakeInDownTimer;
+import org.usfirst.frc.team1732.robot.commands.IntakeOutDown;
+import org.usfirst.frc.team1732.robot.commands.IntakeOutDownTimer;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -47,7 +51,8 @@ public class OI {
 	// }
 	// };
 	private final Button gearIntakePosistionSwitch = new JoystickButton(buttons, 9);
-
+	private final Button gearIntakeJoystickForward = new JoystickButton(left, 1);
+	private final Button gearIntakeJoystickReverse = new JoystickButton(right, 1);
 	private final Button gearIntakeForward = new JoystickButton(buttons, 11);
 	private final Button gearIntakeReverse = new JoystickButton(buttons, 10);;
 	private final Trigger gearIntakeStop = new Trigger() {
@@ -74,11 +79,17 @@ public class OI {
 		// flywheelReverse.whenPressed(new FlywheelSetReverse());
 		// flywheelStop.whenActive(new FlywheelSetStop());
 		//
-		gearIntakeForward.whenPressed(new GearIntakeSetForward());
-		gearIntakeReverse.whenPressed(new GearIntakeSetReverse());
-		gearIntakeStop.whenActive(new GearIntakeSetStop());
-		gearIntakePosistionSwitch.whenPressed(new GearIntakeSetUp());
-		gearIntakePosistionSwitch.whenReleased(new GearIntakeSetDown());
+//		gearIntakeReverse.whileHeld(new IntakeInDown());
+//		gearIntakeForward.whileHeld(new IntakeOutDown());
+		gearIntakeJoystickReverse.whileHeld(new IntakeInDown());
+		gearIntakeJoystickForward.whileHeld(new IntakeOutDown());
+//		gearIntakeReverse.whenReleased(new IntakeInDownTimer());
+//		gearIntakeForward.whenReleased(new IntakeOutDownTimer());
+		//gearIntakeForward.whenReleased(new GearIntakeSetUp());
+		//gearIntakeReverse.whenPressed(new GearIntakeSetReverse());
+		//gearIntakeStop.whenActive(new GearIntakeSetStop());
+		//gearIntakePosistionSwitch.whenPressed(new GearIntakeSetUp());
+		//gearIntakePosistionSwitch.whenReleased(new GearIntakeSetDown());
 		//
 		// climber.whenPressed(new ClimberSetUp());
 		// climber.whenReleased(new ClimberSetStop());

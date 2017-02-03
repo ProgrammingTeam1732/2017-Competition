@@ -2,11 +2,11 @@
 package org.usfirst.frc.team1732.robot;
 
 import org.usfirst.frc.team1732.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team1732.robot.subsystems.GearIntake;
 import org.usfirst.frc.team1732.robot.subsystems.unused.BallIntake;
 import org.usfirst.frc.team1732.robot.subsystems.unused.Climber;
 import org.usfirst.frc.team1732.robot.subsystems.unused.Feeder;
 import org.usfirst.frc.team1732.robot.subsystems.unused.Flywheel;
-import org.usfirst.frc.team1732.robot.subsystems.unused.GearIntake;
 import org.usfirst.frc.team1732.robot.subsystems.unused.OtherShooter;
 
 import edu.wpi.first.wpilibj.IterativeRobot;

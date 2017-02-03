@@ -11,8 +11,8 @@ public class RobotMap {
 	// Controller
 	public static final int LEFT_JOYSTICK_Y_AXIS = 1;
 	public static final int RIGHT_JOYSTICK_Y_AXIS = 1;
-	public static final int LEFT_JOYSTICK_USB = 1;
-	public static final int RIGHT_JOYSTICK_USB = 2;
+	public static final int LEFT_JOYSTICK_USB = 2;
+	public static final int RIGHT_JOYSTICK_USB = 1;
 	public static final int BUTTONS_USB = 0;
 
 	// Drive Train
