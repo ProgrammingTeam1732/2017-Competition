@@ -84,7 +84,10 @@ public class Robot extends IterativeRobot {
 		dashboard.addItem(SmartDashboardItem.newDoubleSender("Inches to gear peg", visionMain::getInchesToGearPeg));
 		dashboard.addItem(SmartDashboardItem.newDoubleSender("Vision Angle", visionMain::getAngleToGearPeg));
 		dashboard.addItem(SmartDashboardItem.newBooleanSender("At angle setpoint", driveTrain::isAtVisionSetpoint));
-		dashboard.addItem(SmartDashboardItem.newBooleanSender("At encoder setpoint?", driveTrain::isAtEncoderSetpoint));
+		dashboard.addItem(SmartDashboardItem.newBooleanSender(	"At left encoder setpoint?",
+																driveTrain::isAtLeftEncoderSetpoint));
+		dashboard.addItem(SmartDashboardItem.newBooleanSender(	"At right encoder setpoint?",
+																driveTrain::isAtRightEncoderSetpoint));
 		dashboard.addItem(SmartDashboardItem.newDoubleSender(	"Vision PID Output",
 																driveTrain::getVisionControllerOutput));
 		// dashboard.addItem(SmartDashboardItem.newDoubleSender("Light Ring
