@@ -1,7 +1,6 @@
 package org.usfirst.frc.team1732.robot.autocommands;
 
 import org.usfirst.frc.team1732.robot.commands.DriveWithVision;
-import org.usfirst.frc.team1732.robot.commands.gearIntake.AutoPlace;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 

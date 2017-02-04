@@ -1,6 +1,6 @@
 package org.usfirst.frc.team1732.robot;
 
-import org.usfirst.frc.team1732.robot.commands.gearIntake.AutoPlace;
+import org.usfirst.frc.team1732.robot.autocommands.AutoPlace;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetDownIn;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetDownOut;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetStop;

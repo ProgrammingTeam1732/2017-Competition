@@ -1,6 +1,8 @@
-package org.usfirst.frc.team1732.robot.commands.gearIntake;
+package org.usfirst.frc.team1732.robot.autocommands;
 
 import org.usfirst.frc.team1732.robot.commands.Drive1D;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeOutTime;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetDown;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
