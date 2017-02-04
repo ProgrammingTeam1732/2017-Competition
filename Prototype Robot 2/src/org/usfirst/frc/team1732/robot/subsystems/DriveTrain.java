@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -25,6 +26,10 @@ public class DriveTrain extends Subsystem {
 	private final CANTalon	rightMaster	= new CANTalon(RobotMap.RIGHT_MASTER_MOTOR_DEVICE_NUMBER);
 	private final CANTalon	right1		= new CANTalon(RobotMap.RIGHT_1_MOTOR_DEVICE_NUMBER);
 	private final CANTalon	right2		= new CANTalon(RobotMap.RIGHT_2_MOTOR_DEVICE_NUMBER);
+
+	private final Solenoid		shifter		= new Solenoid(RobotMap.SHIFTER_SOLENOID_NUMBER);
+	public static final boolean	LOW_GEAR	= true;
+	public static final boolean	HIGH_GEAR	= false;
 
 	// gyro
 	// gyro sensors
@@ -89,16 +94,12 @@ public class DriveTrain extends Subsystem {
 		left1.set(leftMaster.getDeviceID());
 		left2.changeControlMode(TalonControlMode.Follower);
 		left2.set(leftMaster.getDeviceID());
-		left1.reverseOutput(true);
-		left2.reverseOutput(true);
 
 		rightMaster.setInverted(true);
 		right1.changeControlMode(TalonControlMode.Follower);
 		right1.set(rightMaster.getDeviceID());
 		right2.changeControlMode(TalonControlMode.Follower);
 		right2.set(rightMaster.getDeviceID());
-		right1.reverseOutput(true);
-		right2.reverseOutput(true);
 
 		gyro.initGyro();
 		gyro.calibrate();
@@ -280,5 +281,13 @@ public class DriveTrain extends Subsystem {
 	}
 
 	private static void voidMethod(double d) {}
+
+	public void setHighGear() {
+		shifter.set(HIGH_GEAR);
+	}
+
+	public void setLowGear() {
+		shifter.set(LOW_GEAR);
+	}
 
 }

@@ -34,32 +34,17 @@ public class DriveTrain extends Subsystem {
 	private double				gyroP					= 0.1;
 	private double				gyroI					= 0;
 	private double				gyroD					= 0;
-	private final PIDController	gyroController			= new PIDController(gyroP, gyroI, gyroD, gyro, d -> {
-															return;
-														});
+	private final PIDController	gyroController			= new PIDController(gyroP, gyroI, gyroD, gyro,
+																			DriveTrain::voidMethod);
 	public static final double	GYRO_DEADBAND_DEGREES	= 5;
 
-	private final PIDSource		visionAngleSource		= new PIDSource() {
-															@Override
-															public void setPIDSourceType(PIDSourceType pidSource) {}
-
-															@Override
-															public PIDSourceType getPIDSourceType() {
-																return PIDSourceType.kDisplacement;
-															}
-
-															@Override
-															public double pidGet() {
-																return getVisionAngle();
-															}
-														};
+	// Vision Angle Stuff
+	private final PIDSource		visionAngleSource		= this.getVisionPIDSource();
 	private double				visionP					= 0.015;
 	private double				visionI					= 0;
 	private double				visionD					= 0;
 	private final PIDController	visionController		= new PIDController(visionP, visionI, visionD,
-																			visionAngleSource, d -> {
-																																	return;
-																																});
+																			visionAngleSource, DriveTrain::voidMethod);
 	public static final double	VISION_DEADBAND_DEGREES	= 5;
 
 	// encoders
@@ -68,8 +53,9 @@ public class DriveTrain extends Subsystem {
 																			RobotMap.LEFT_ENCODER_CHANNEL_B);
 	private final Encoder		rightEncoder				= new Encoder(	RobotMap.RIGHT_ENCODER_CHANNEL_A,
 																			RobotMap.RIGHT_ENCODER_CHANNEL_B);
-	public static final double	INCHES_PER_ENCODER_COUNT	= 108.0 / (458.0 * 4);
+	public static final double	INCHES_PER_ENCODER_COUNT	= 0.0134 * 4;
 	public static final double	LEFT_MOTOR_OFFSET			= 1.1;
+
 	// encoder controllers
 	private final PIDController	leftEncoderController	= new PIDController(encoderP, encoderI, encoderD, leftEncoder,
 																			DriveTrain::voidMethod);
@@ -111,13 +97,12 @@ public class DriveTrain extends Subsystem {
 
 		leftEncoder.setDistancePerPulse(INCHES_PER_ENCODER_COUNT);
 		rightEncoder.setDistancePerPulse(INCHES_PER_ENCODER_COUNT);
-		leftEncoder.setReverseDirection(true);
-		rightEncoder.setReverseDirection(false);
 		leftEncoder.setPIDSourceType(PIDSourceType.kDisplacement);
 		rightEncoder.setPIDSourceType(PIDSourceType.kDisplacement);
 
 		leftEncoder.setSamplesToAverage(3);
 		rightEncoder.setSamplesToAverage(3);
+		rightEncoder.setReverseDirection(true);
 
 		leftEncoderController.setAbsoluteTolerance(ENCODER_DEADBAND_INCHES);
 		rightEncoderController.setAbsoluteTolerance(ENCODER_DEADBAND_INCHES);
@@ -138,6 +123,8 @@ public class DriveTrain extends Subsystem {
 		gyroController.enable();
 
 		SmartDashboard.putData("Vision Controller", visionController);
+		SmartDashboard.putData("Left Encoder Controller", leftEncoderController);
+		SmartDashboard.putData("Right Encoder Controller", rightEncoderController);
 		// visionController.startLiveWindowMode();
 	}
 
@@ -253,12 +240,28 @@ public class DriveTrain extends Subsystem {
 		return rightEncoder.get();
 	}
 
+	public double getLeftEncoderRawCount() {
+		return leftEncoder.getRaw();
+	}
+
+	public double getRightEncoderRawCount() {
+		return rightEncoder.getRaw();
+	}
+
 	public double getLeftEncoderSetpoint() {
 		return leftEncoderController.getSetpoint();
 	}
 
 	public double getRightEncoderSetpoint() {
 		return rightEncoderController.getSetpoint();
+	}
+
+	public double getLeftEncoderError() {
+		return leftEncoderController.getError();
+	}
+
+	public double getRightEncoderError() {
+		return rightEncoderController.getError();
 	}
 
 	private double visionAngle = 0;
@@ -280,5 +283,22 @@ public class DriveTrain extends Subsystem {
 	}
 
 	private static void voidMethod(double d) {}
+
+	private PIDSource getVisionPIDSource() {
+		return new PIDSource() {
+			@Override
+			public void setPIDSourceType(PIDSourceType pidSource) {}
+
+			@Override
+			public PIDSourceType getPIDSourceType() {
+				return PIDSourceType.kDisplacement;
+			}
+
+			@Override
+			public double pidGet() {
+				return getVisionAngle();
+			}
+		};
+	}
 
 }

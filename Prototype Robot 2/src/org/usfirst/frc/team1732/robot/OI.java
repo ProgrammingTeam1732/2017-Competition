@@ -1,5 +1,8 @@
 package org.usfirst.frc.team1732.robot;
 
+import org.usfirst.frc.team1732.robot.commands.SetShifterHighGear;
+import org.usfirst.frc.team1732.robot.commands.SetShifterLowGear;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -52,12 +55,22 @@ public class OI {
 																		|| gearIntakeReverse.get());
 															}
 														};
+
+	private final Trigger gearShifter = new Trigger() {
+		@Override
+		public boolean get() {
+			return left.getRawButton(5) || right.getRawButton(6);
+		}
+	};
 	//
 	// private final Button climber = button9;
 	//
 	// private final Button otherShooter = button10;
 
 	public OI() {
+		gearShifter.whenActive(new SetShifterLowGear());
+		gearShifter.whenInactive(new SetShifterHighGear());
+
 		// ballIntakeForward.whenPressed(new BallIntakeSetForward());
 		// ballIntakeReverse.whenPressed(new BallIntakeSetReverse());
 		// ballIntakeStop.whenActive(new BallIntakeSetStop());
