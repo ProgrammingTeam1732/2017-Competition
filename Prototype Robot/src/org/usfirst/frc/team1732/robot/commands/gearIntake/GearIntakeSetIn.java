@@ -3,13 +3,14 @@ package org.usfirst.frc.team1732.robot.commands.gearIntake;
 import org.usfirst.frc.team1732.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.InstantCommand;
 
 /**
  *
  */
-public class GearIntakeSetReverse extends Command{
+public class GearIntakeSetIn extends InstantCommand{
 
-	public GearIntakeSetReverse() {
+	public GearIntakeSetIn() {
 		super();
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
@@ -19,25 +20,7 @@ public class GearIntakeSetReverse extends Command{
 	// Called once when the command executes
 	@Override
 	protected void initialize() {
-		Robot.gearIntake.setReverse();
-	}
-	
-	public void execute() {
-		
-	}
-
-	@Override
-	protected boolean isFinished() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
-	public void end() {
-		Robot.gearIntake.setStop();
-	}
-	
-	public void interrupted() {
-		end();
+		Robot.gearIntake.setIn();
 	}
 
 }

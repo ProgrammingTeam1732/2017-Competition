@@ -7,9 +7,9 @@ import edu.wpi.first.wpilibj.command.InstantCommand;
 /**
  *
  */
-public class GearIntakeSetForward extends InstantCommand {
+public class GearIntakeSetOut extends InstantCommand {
 
-	public GearIntakeSetForward() {
+	public GearIntakeSetOut() {
 		super();
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
@@ -19,7 +19,7 @@ public class GearIntakeSetForward extends InstantCommand {
 	// Called once when the command executes
 	@Override
 	protected void initialize() {
-		Robot.gearIntake.setForward();
+		Robot.gearIntake.setOut();
 	}
 
 }

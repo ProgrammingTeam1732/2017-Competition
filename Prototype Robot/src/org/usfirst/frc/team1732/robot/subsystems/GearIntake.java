@@ -13,9 +13,9 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class GearIntake extends Subsystem {
 
 	private final CANTalon motor = new CANTalon(RobotMap.GEAR_INTAKE_MOTER_DEVICE_NUMBER);
-	public static final double FORWARD_SPEED = -.75;
+	public static final double OUT_SPEED = -.5;
 	public static final double STOP_SPEED = 0;
-	public static final double REVERSE_SPEED = -FORWARD_SPEED;
+	public static final double IN_SPEED = -OUT_SPEED;
 	private final Solenoid gearManipulator = new Solenoid(RobotMap.GEAR_MANIPULATOR_SOLENOID_NUMBER);
 
 	public static final boolean UP = false;
@@ -36,15 +36,15 @@ public class GearIntake extends Subsystem {
 		gearManipulator.set(UP);
 	}
 
-	public void setForward() {
-		motor.set(FORWARD_SPEED);
+	public void setOut() {
+		motor.set(OUT_SPEED);
 	}
 	
 	public void setStop() {
 		motor.set(STOP_SPEED);
 	}
 
-	public void setReverse() {
-		motor.set(REVERSE_SPEED);
+	public void setIn() {
+		motor.set(IN_SPEED);
 	}
 }

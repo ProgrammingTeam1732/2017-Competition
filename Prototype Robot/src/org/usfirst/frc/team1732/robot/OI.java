@@ -1,15 +1,12 @@
 package org.usfirst.frc.team1732.robot;
 
-import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetDown;
-import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetForward;
-import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetReverse;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.AutoPlace;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetDownIn;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetDownOut;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetStop;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetUp;
-import org.usfirst.frc.team1732.robot.commands.gearIntake.IntakeInDown;
-import org.usfirst.frc.team1732.robot.commands.gearIntake.IntakeInDownTimer;
-import org.usfirst.frc.team1732.robot.commands.gearIntake.IntakeOutDown;
-import org.usfirst.frc.team1732.robot.commands.gearIntake.IntakeOutDownTimer;
-
+import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetUpStop;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetUpTimedIn;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -51,16 +48,9 @@ public class OI {
 	// }
 	// };
 	private final Button gearIntakePosistionSwitch = new JoystickButton(buttons, 9);
-	private final Button gearIntakeJoystickForward = new JoystickButton(left, 1);
-	private final Button gearIntakeJoystickReverse = new JoystickButton(right, 1);
-	private final Button gearIntakeForward = new JoystickButton(buttons, 11);
-	private final Button gearIntakeReverse = new JoystickButton(buttons, 10);;
-	private final Trigger gearIntakeStop = new Trigger() {
-		@Override
-		public boolean get() {
-			return !(gearIntakeForward.get() || gearIntakeReverse.get());
-		}
-	};
+	private final Button gearIntakeJoystickInDown = new JoystickButton(left, 1);
+	private final Button gearIntakeJoystickOutDown = new JoystickButton(right, 1);
+	private final Button autoPlace = new JoystickButton(buttons, 10);
 	//
 	// private final Button climber = button9;
 	//
@@ -79,17 +69,20 @@ public class OI {
 		// flywheelReverse.whenPressed(new FlywheelSetReverse());
 		// flywheelStop.whenActive(new FlywheelSetStop());
 		//
-//		gearIntakeReverse.whileHeld(new IntakeInDown());
-//		gearIntakeForward.whileHeld(new IntakeOutDown());
-		gearIntakeJoystickReverse.whileHeld(new IntakeInDown());
-		gearIntakeJoystickForward.whileHeld(new IntakeOutDown());
-//		gearIntakeReverse.whenReleased(new IntakeInDownTimer());
-//		gearIntakeForward.whenReleased(new IntakeOutDownTimer());
-		//gearIntakeForward.whenReleased(new GearIntakeSetUp());
-		//gearIntakeReverse.whenPressed(new GearIntakeSetReverse());
-		//gearIntakeStop.whenActive(new GearIntakeSetStop());
-		//gearIntakePosistionSwitch.whenPressed(new GearIntakeSetUp());
-		//gearIntakePosistionSwitch.whenReleased(new GearIntakeSetDown());
+		// gearIntakeReverse.whileHeld(new IntakeInDown());
+		// gearIntakeForward.whileHeld(new IntakeOutDown());
+		gearIntakeJoystickOutDown.whenPressed(new GearIntakeSetDownOut());
+		gearIntakeJoystickOutDown.whenReleased(new GearIntakeSetUpStop());
+		gearIntakeJoystickInDown.whenPressed(new GearIntakeSetDownIn());
+		gearIntakeJoystickInDown.whenReleased(new GearIntakeSetUpTimedIn(1));
+		autoPlace.whenPressed(new AutoPlace());
+		// gearIntakeReverse.whenReleased(new IntakeInDownTimer());
+		// gearIntakeForward.whenReleased(new IntakeOutDownTimer());
+		// gearIntakeForward.whenReleased(new GearIntakeSetUp());
+		// gearIntakeReverse.whenPressed(new GearIntakeSetReverse());
+		// gearIntakeStop.whenActive(new GearIntakeSetStop());
+		// gearIntakePosistionSwitch.whenPressed(new GearIntakeSetUp());
+		// gearIntakePosistionSwitch.whenReleased(new GearIntakeSetDown());
 		//
 		// climber.whenPressed(new ClimberSetUp());
 		// climber.whenReleased(new ClimberSetStop());

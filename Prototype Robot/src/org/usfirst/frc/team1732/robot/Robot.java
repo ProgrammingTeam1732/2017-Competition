@@ -6,6 +6,7 @@ import org.usfirst.frc.team1732.robot.smartdashboard.MySmartDashboard;
 import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardItem;
 import org.usfirst.frc.team1732.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team1732.robot.subsystems.GearIntake;
+import org.usfirst.frc.team1732.robot.subsystems.LightRing;
 import org.usfirst.frc.team1732.robot.subsystems.unused.BallIntake;
 import org.usfirst.frc.team1732.robot.subsystems.unused.Climber;
 import org.usfirst.frc.team1732.robot.subsystems.unused.Feeder;
@@ -39,7 +40,8 @@ public class Robot extends IterativeRobot {
 	public static VisionMain					visionMain;
 	public static MySmartDashboard				dashboard;
 	public static SmartDashboardItem<Double>	distanceSetpointReciever;
-
+	public static SmartDashboardItem<Double>    lightRingBrightness;
+	public static LightRing lightRing;
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
@@ -48,6 +50,7 @@ public class Robot extends IterativeRobot {
 	public void robotInit() {
 		NetworkTable.globalDeleteAll();
 		driveTrain = new DriveTrain();
+		lightRing = new LightRing();
 		// ballIntake = new BallIntake();
 		// climber = new Climber();
 		// feeder = new Feeder();
@@ -77,11 +80,12 @@ public class Robot extends IterativeRobot {
 		dashboard.addItem(SmartDashboardItem.newBooleanSender("At encoder setpoint?", driveTrain::isAtEncoderSetpoint));
 		dashboard.addItem(SmartDashboardItem.newDoubleSender(	"Vision PID Output",
 																driveTrain::getVisionControllerOutput));
-
+		//dashboard.addItem(SmartDashboardItem.newDoubleSender("Light Ring Brighness", lightRing::getBrightness));
 		// Receivers
 		distanceSetpointReciever = dashboard.addItem(SmartDashboardItem
 				.newDoubleReciever(	"Vision distance setpoint", DriveWithVision.DEFAULT_TARGET_INCHES,
 									DriveWithVision::setSmartDashboardDistance));
+		lightRingBrightness = dashboard.addItem(SmartDashboardItem.newDoubleReciever("Light Ring Brightness", .5, lightRing::setBrightness));
 		// Init
 		dashboard.init();
 	}
