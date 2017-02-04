@@ -72,10 +72,10 @@ public class DriveWithVision extends Command {
 			// FIXME Right encoder broken, change to right later
 			driveTrain.setRightEncoderSetpointInches(rightSetpoint);
 		}
-		double leftOutput = -driveTrain.getLeftEncoderControllerOutput();// +
-																			// driveTrain.getVisionControllerOutput();
-		double rightOutput = -driveTrain.getRightEncoderControllerOutput();// -
-																			// driveTrain.getVisionControllerOutput();
+		double leftOutput = -driveTrain.getLeftEncoderControllerOutput(); +
+																			 driveTrain.getVisionControllerOutput();
+		double rightOutput = -driveTrain.getRightEncoderControllerOutput(); -
+																			 driveTrain.getVisionControllerOutput();
 		double max = Math.abs(Math.max(leftOutput, rightOutput));
 		if (max >= 1) {
 			leftOutput = leftOutput / max;
