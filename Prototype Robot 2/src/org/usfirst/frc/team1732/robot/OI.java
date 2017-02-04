@@ -10,54 +10,52 @@ import edu.wpi.first.wpilibj.buttons.Trigger;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
-	private final Joystick controller = new Joystick(0);
-	// makes it easier to switch around buttons and functions
-	private final Button button1 = new JoystickButton(controller, 1), button2 = new JoystickButton(controller, 2),
-			button3 = new JoystickButton(controller, 3), button4 = new JoystickButton(controller, 4),
-			button5 = new JoystickButton(controller, 5), button6 = new JoystickButton(controller, 6),
-			button7 = new JoystickButton(controller, 7), button8 = new JoystickButton(controller, 8),
-			button9 = new JoystickButton(controller, 9), button10 = new JoystickButton(controller, 10),
-			button11 = new JoystickButton(controller, 11), button12 = new JoystickButton(controller, 12);
-
-	private final Button	ballIntakeForward	= button1;
-	private final Button	ballIntakeReverse	= button2;
-	private final Trigger	ballIntakeStop		= new Trigger() {
-													@Override
-													public boolean get() {
-														return !(ballIntakeForward.get() || ballIntakeReverse.get());
-													}
-												};
-
-	private final Button	feederForward	= button3;
-	private final Button	feederReverse	= button4;
-	private final Trigger	feederStop		= new Trigger() {
-												@Override
-												public boolean get() {
-													return !(feederForward.get() || feederReverse.get());
-												}
-											};
-
-	private final Button	flywheelForward	= button5;
-	private final Button	flywheelReverse	= button6;
-	private final Trigger	flywheelStop	= new Trigger() {
-												@Override
-												public boolean get() {
-													return !(flywheelForward.get() || flywheelReverse.get());
-												}
-											};
-
-	private final Button	gearIntakeForward	= button7;
-	private final Button	gearIntakeReverse	= button8;
-	private final Trigger	gearIntakeStop		= new Trigger() {
-													@Override
-													public boolean get() {
-														return !(gearIntakeForward.get() || gearIntakeReverse.get());
-													}
-												};
-
-	private final Button climber = button9;
-
-	private final Button otherShooter = button10;
+	private Joystick	buttons	= new Joystick(RobotMap.BUTTONS_USB);
+	private Joystick	left	= new Joystick(RobotMap.LEFT_JOYSTICK_USB);
+	private Joystick	right	= new Joystick(RobotMap.RIGHT_JOYSTICK_USB);
+	//
+	// private final Button ballIntakeForward = button1;
+	// private final Button ballIntakeReverse = button2;
+	// private final Trigger ballIntakeStop = new Trigger() {
+	// @Override
+	// public boolean get() {
+	// return !(ballIntakeForward.get() || ballIntakeReverse.get());
+	// }
+	// };
+	//
+	// private final Button feederForward = button3;
+	// private final Button feederReverse = button4;
+	// private final Trigger feederStop = new Trigger() {
+	// @Override
+	// public boolean get() {
+	// return !(feederForward.get() || feederReverse.get());
+	// }
+	// };
+	//
+	// private final Button flywheelForward = button5;
+	// private final Button flywheelReverse = button6;
+	// private final Trigger flywheelStop = new Trigger() {
+	// @Override
+	// public boolean get() {
+	// return !(flywheelForward.get() || flywheelReverse.get());
+	// }
+	// };
+	private final Button	gearIntakePosistionSwitch	= new JoystickButton(buttons, 9);
+	private final Button	gearIntakeJoystickForward	= new JoystickButton(left, 1);
+	private final Button	gearIntakeJoystickReverse	= new JoystickButton(right, 1);
+	private final Button	gearIntakeForward			= new JoystickButton(buttons, 11);
+	private final Button	gearIntakeReverse			= new JoystickButton(buttons, 10);;
+	private final Trigger	gearIntakeStop				= new Trigger() {
+															@Override
+															public boolean get() {
+																return !(gearIntakeForward.get()
+																		|| gearIntakeReverse.get());
+															}
+														};
+	//
+	// private final Button climber = button9;
+	//
+	// private final Button otherShooter = button10;
 
 	public OI() {
 		// ballIntakeForward.whenPressed(new BallIntakeSetForward());
@@ -67,14 +65,22 @@ public class OI {
 		// feederForward.whenPressed(new FeederSetForward());
 		// feederReverse.whenPressed(new FeederSetReverse());
 		// feederStop.whenActive(new FeederSetStop());
-		//
+		// //
 		// flywheelForward.whenPressed(new FlywheelSetForward());
 		// flywheelReverse.whenPressed(new FlywheelSetReverse());
 		// flywheelStop.whenActive(new FlywheelSetStop());
 		//
-		// gearIntakeForward.whenPressed(new GearIntakeSetForward());
+		// gearIntakeReverse.whileHeld(new IntakeInDown());
+		// gearIntakeForward.whileHeld(new IntakeOutDown());
+		// gearIntakeJoystickReverse.whileHeld(new IntakeInDown());
+		// gearIntakeJoystickForward.whileHeld(new IntakeOutDown());
+		// gearIntakeReverse.whenReleased(new IntakeInDownTimer());
+		// gearIntakeForward.whenReleased(new IntakeOutDownTimer());
+		// gearIntakeForward.whenReleased(new GearIntakeSetUp());
 		// gearIntakeReverse.whenPressed(new GearIntakeSetReverse());
 		// gearIntakeStop.whenActive(new GearIntakeSetStop());
+		// gearIntakePosistionSwitch.whenPressed(new GearIntakeSetUp());
+		// gearIntakePosistionSwitch.whenReleased(new GearIntakeSetDown());
 		//
 		// climber.whenPressed(new ClimberSetUp());
 		// climber.whenReleased(new ClimberSetStop());
@@ -84,12 +90,10 @@ public class OI {
 	}
 
 	public double getLeftSpeed() {
-		return controller.getRawAxis(RobotMap.LEFT_JOYSTICK_AXIS)
-				* Math.abs(controller.getRawAxis(RobotMap.LEFT_JOYSTICK_AXIS));
+		return left.getRawAxis(RobotMap.LEFT_JOYSTICK_Y_AXIS);
 	}
 
 	public double getRightSpeed() {
-		return controller.getRawAxis(RobotMap.RIGHT_JOYSTICK_AXIS)
-				* Math.abs(controller.getRawAxis(RobotMap.RIGHT_JOYSTICK_AXIS));
+		return right.getRawAxis(RobotMap.RIGHT_JOYSTICK_Y_AXIS);
 	}
 }

@@ -1,21 +1,20 @@
 
 package org.usfirst.frc.team1732.robot;
 
-import org.usfirst.frc.team1732.robot.commands.motors.RunMotor1;
-import org.usfirst.frc.team1732.robot.commands.motors.RunMotor2;
+import org.usfirst.frc.team1732.robot.smartdashboard.MySmartDashboard;
+import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardItem;
 import org.usfirst.frc.team1732.robot.subsystems.DriveTrain;
-import org.usfirst.frc.team1732.robot.subsystems.motors.Motor1;
+import org.usfirst.frc.team1732.robot.subsystems.GearIntake;
 import org.usfirst.frc.team1732.robot.subsystems.unused.BallIntake;
 import org.usfirst.frc.team1732.robot.subsystems.unused.Climber;
 import org.usfirst.frc.team1732.robot.subsystems.unused.Feeder;
 import org.usfirst.frc.team1732.robot.subsystems.unused.Flywheel;
-import org.usfirst.frc.team1732.robot.subsystems.unused.GearIntake;
 import org.usfirst.frc.team1732.robot.subsystems.unused.OtherShooter;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -34,8 +33,9 @@ public class Robot extends IterativeRobot {
 	public static Flywheel		flywheel;
 	public static GearIntake	gearIntake;
 	public static OtherShooter	otherShooter;
-	public static Motor1		motor1;
-	public static Motor1		motor2;
+
+	public static MySmartDashboard				dashboard;
+	public static SmartDashboardItem<Double>	distanceSetpointReciever;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -43,18 +43,43 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
-		motor1 = new Motor1();
-		SmartDashboard.putData(new RunMotor1());
-		motor1 = new Motor1();
-		SmartDashboard.putData(new RunMotor2());
+		NetworkTable.globalDeleteAll();
 		driveTrain = new DriveTrain();
 		// ballIntake = new BallIntake();
 		// climber = new Climber();
 		// feeder = new Feeder();
 		// flywheel = new Flywheel();
-		// gearIntake = new GearIntake();
+		gearIntake = new GearIntake();
 		// otherShooter = new OtherShooter();
 		oi = new OI();
+
+		// Dashboard code
+		dashboard = new MySmartDashboard();
+		// Senders
+		dashboard = new MySmartDashboard();
+		dashboard.addItem(SmartDashboardItem.newDoubleSender("Left Encoder Counts", driveTrain::getLeftEncoderCount));
+		dashboard.addItem(SmartDashboardItem.newDoubleSender("Right Encoder Counts", driveTrain::getRightEncoderCount));
+		dashboard.addItem(SmartDashboardItem.newDoubleSender(	"Left Encoder Distance",
+																driveTrain::getLeftEncoderDistance));
+		dashboard.addItem(SmartDashboardItem.newDoubleSender(	"Right Encoder Distance",
+																driveTrain::getRightEncoderDistance));
+		dashboard.addItem(SmartDashboardItem.newDoubleSender(	"Left Encoder Setpoint",
+																driveTrain::getLeftEncoderSetpoint));
+		dashboard.addItem(SmartDashboardItem.newDoubleSender(	"Right Encoder Setpoint",
+																driveTrain::getRightEncoderSetpoint));
+		dashboard.addItem(SmartDashboardItem.newBooleanSender("At angle setpoint", driveTrain::isAtVisionSetpoint));
+		dashboard.addItem(SmartDashboardItem.newBooleanSender("At encoder setpoint?", driveTrain::isAtEncoderSetpoint));
+
+		// Receivers
+
+		// Init
+		dashboard.init();
+	}
+
+	@Override
+	public void robotPeriodic() {
+		// visionMain.run();
+		dashboard.run();
 	}
 
 	/**
@@ -94,6 +119,7 @@ public class Robot extends IterativeRobot {
 		 */
 
 		// schedule the autonomous command (example)
+		// Scheduler.getInstance().add(DriveWithVision.newCommandUseSmartDashboardDistance());
 	}
 
 	/**
