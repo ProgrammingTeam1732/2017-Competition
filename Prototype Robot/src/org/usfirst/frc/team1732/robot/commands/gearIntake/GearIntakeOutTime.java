@@ -8,36 +8,40 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class GearIntakeOutTime extends Command {
-	
-    public GearIntakeOutTime(double timeSeconds) {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-    	requires(Robot.gearIntake);
-    	setTimeout(timeSeconds);
-    }
 
-    // Called just before this Command runs the first time
-    protected void initialize() {
-    	Robot.gearIntake.setOut();
-    }
+	public GearIntakeOutTime(double timeSeconds) {
+		// Use requires() here to declare subsystem dependencies
+		// eg. requires(chassis);
+		requires(Robot.gearIntake);
+		setTimeout(timeSeconds);
+	}
 
-    // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
-    }
+	// Called just before this Command runs the first time
+	@Override
+	protected void initialize() {
+		Robot.gearIntake.setOut();
+	}
 
-    // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-        return isTimedOut();
-    }
+	// Called repeatedly when this Command is scheduled to run
+	@Override
+	protected void execute() {}
 
-    // Called once after isFinished returns true
-    protected void end() {
-    	Robot.gearIntake.setStop();
-    }
+	// Make this return true when this Command no longer needs to run execute()
+	@Override
+	protected boolean isFinished() {
+		return isTimedOut();
+	}
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
-    	end();
-    }
+	// Called once after isFinished returns true
+	@Override
+	protected void end() {
+		Robot.gearIntake.setStop();
+	}
+
+	// Called when another command which requires one or more of the same
+	// subsystems is scheduled to run
+	@Override
+	protected void interrupted() {
+		end();
+	}
 }

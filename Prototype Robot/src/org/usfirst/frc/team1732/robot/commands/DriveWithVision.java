@@ -130,7 +130,8 @@ public class DriveWithVision extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return driveTrain.isAtEncoderSetpoint() && driveTrain.isAtVisionSetpoint();
+		return driveTrain.isAtRightEncoderSetpoint() && driveTrain.isAtLeftEncoderSetpoint()
+				&& driveTrain.isAtVisionSetpoint();
 	}
 
 	// Called once after isFinished returns true

@@ -175,8 +175,12 @@ public class DriveTrain extends Subsystem {
 		rightEncoderController.setSetpoint(rightSetpoint);
 	}
 
-	public boolean isAtEncoderSetpoint() {
-		return leftEncoderController.onTarget() && rightEncoderController.onTarget();
+	public boolean isAtLeftEncoderSetpoint() {
+		return leftEncoderController.onTarget();
+	}
+
+	public boolean isAtRightEncoderSetpoint() {
+		return rightEncoderController.onTarget();
 	}
 
 	public double getLeftEncoderDistance() {
