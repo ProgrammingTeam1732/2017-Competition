@@ -24,8 +24,8 @@ public class RobotMap {
 	public static final int	RIGHT_2_MOTOR_DEVICE_NUMBER			= 23;
 	public static final int	LEFT_ENCODER_CHANNEL_A				= 6;
 	public static final int	LEFT_ENCODER_CHANNEL_B				= 7;
-	public static final int	RIGHT_ENCODER_CHANNEL_A				= 8;
-	public static final int	RIGHT_ENCODER_CHANNEL_B				= 9;
+	public static final int	RIGHT_ENCODER_CHANNEL_A				= 9;
+	public static final int	RIGHT_ENCODER_CHANNEL_B				= 8;
 	public static final int	GYRO_CHANNEL_NUMBER					= 0;
 
 	// Flywheel
@@ -50,9 +50,9 @@ public class RobotMap {
 	// Available motors IDs:
 	public static final int	MOTOR_ONE_DEVICE_ID	= 12;
 	public static final int	MOTOR_TWO_DEVICE_ID	= 24;
-	
-	//Light Ring IDs:
-	
+
+	// Light Ring IDs:
+
 	public static final int LIGHT_RING_MOTOR_NUMBER = 12;
 
 }

@@ -40,8 +40,9 @@ public class Robot extends IterativeRobot {
 	public static VisionMain					visionMain;
 	public static MySmartDashboard				dashboard;
 	public static SmartDashboardItem<Double>	distanceSetpointReciever;
-	public static SmartDashboardItem<Double>    lightRingBrightness;
-	public static LightRing lightRing;
+	public static SmartDashboardItem<Double>	lightRingBrightness;
+	public static LightRing						lightRing;
+
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
@@ -64,6 +65,10 @@ public class Robot extends IterativeRobot {
 		dashboard = new MySmartDashboard();
 		// Senders
 		dashboard = new MySmartDashboard();
+		dashboard.addItem(SmartDashboardItem.newDoubleSender(	"Left Encoder Raw Counts",
+																driveTrain::getLeftEncoderRawCount));
+		dashboard.addItem(SmartDashboardItem.newDoubleSender(	"Right Encoder Raw Counts",
+																driveTrain::getRightEncoderRawCount));
 		dashboard.addItem(SmartDashboardItem.newDoubleSender("Left Encoder Counts", driveTrain::getLeftEncoderCount));
 		dashboard.addItem(SmartDashboardItem.newDoubleSender("Right Encoder Counts", driveTrain::getRightEncoderCount));
 		dashboard.addItem(SmartDashboardItem.newDoubleSender(	"Left Encoder Distance",
@@ -74,18 +79,22 @@ public class Robot extends IterativeRobot {
 																driveTrain::getLeftEncoderSetpoint));
 		dashboard.addItem(SmartDashboardItem.newDoubleSender(	"Right Encoder Setpoint",
 																driveTrain::getRightEncoderSetpoint));
+		dashboard.addItem(SmartDashboardItem.newDoubleSender("Right Error", driveTrain::getRightEncoderError));
+		dashboard.addItem(SmartDashboardItem.newDoubleSender("Left Error", driveTrain::getRightEncoderError));
 		dashboard.addItem(SmartDashboardItem.newDoubleSender("Inches to gear peg", visionMain::getInchesToGearPeg));
 		dashboard.addItem(SmartDashboardItem.newDoubleSender("Vision Angle", visionMain::getAngleToGearPeg));
 		dashboard.addItem(SmartDashboardItem.newBooleanSender("At angle setpoint", driveTrain::isAtVisionSetpoint));
 		dashboard.addItem(SmartDashboardItem.newBooleanSender("At encoder setpoint?", driveTrain::isAtEncoderSetpoint));
 		dashboard.addItem(SmartDashboardItem.newDoubleSender(	"Vision PID Output",
 																driveTrain::getVisionControllerOutput));
-		//dashboard.addItem(SmartDashboardItem.newDoubleSender("Light Ring Brighness", lightRing::getBrightness));
+		// dashboard.addItem(SmartDashboardItem.newDoubleSender("Light Ring
+		// Brighness", lightRing::getBrightness));
 		// Receivers
 		distanceSetpointReciever = dashboard.addItem(SmartDashboardItem
 				.newDoubleReciever(	"Vision distance setpoint", DriveWithVision.DEFAULT_TARGET_INCHES,
 									DriveWithVision::setSmartDashboardDistance));
-		lightRingBrightness = dashboard.addItem(SmartDashboardItem.newDoubleReciever("Light Ring Brightness", .5, lightRing::setBrightness));
+		lightRingBrightness = dashboard
+				.addItem(SmartDashboardItem.newDoubleReciever("Light Ring Brightness", .5, lightRing::setBrightness));
 		// Init
 		dashboard.init();
 	}

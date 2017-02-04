@@ -66,33 +66,46 @@ public class DriveWithVision extends Command {
 		double dDistance = distance - targetDistanceInches;
 		double leftSetpoint = dDistance + driveTrain.getLeftEncoderDistance();
 		double rightSetpoint = dDistance + driveTrain.getRightEncoderDistance();
-
-		driveTrain.setVisionAngle(angle);
-		driveTrain.setLeftEncoderSetpointInches(leftSetpoint);
-		// FIXME Right encoder broken, change to right later
-		driveTrain.setRightEncoderSetpointInches(rightSetpoint);
-		if (!driveTrain.isAtVisionSetpoint()) {
-			endTimeSet = false;
-			// if (!visionControllerEnabled) {
-			// driveTrain.setDriveWithVisionController();
-			// visionControllerEnabled = true;
-			// encoderControllerEnabled = false;
-			// }
-			driveTrain.driveRaw(driveTrain.getVisionControllerOutput(), -driveTrain.getVisionControllerOutput());
-		} else {
-			if (!endTimeSet)
-				endTime = System.currentTimeMillis();
-			endTimeSet = true;
-			if (distance != -1 && finishedWait()) {
-				// if(!encoderControllerEnabled) {
-				// driveTrain.setDriveWithEncoders();
-				// visionControllerEnabled = false;
-				// encoderControllerEnabled = true;
-				// }
-				driveTrain.driveRaw(-driveTrain.getLeftEncoderControllerOutput(),
-									-driveTrain.getRightEncoderControllerOutput());
-			}
+		if (distance != -1) {
+			driveTrain.setVisionAngle(angle);
+			driveTrain.setLeftEncoderSetpointInches(leftSetpoint);
+			// FIXME Right encoder broken, change to right later
+			driveTrain.setRightEncoderSetpointInches(rightSetpoint);
 		}
+		double leftOutput = -driveTrain.getLeftEncoderControllerOutput();// +
+																			// driveTrain.getVisionControllerOutput();
+		double rightOutput = -driveTrain.getRightEncoderControllerOutput();// -
+																			// driveTrain.getVisionControllerOutput();
+		double max = Math.abs(Math.max(leftOutput, rightOutput));
+		if (max >= 1) {
+			leftOutput = leftOutput / max;
+			rightOutput = rightOutput / max;
+		}
+		driveTrain.driveRaw(leftOutput, rightOutput);
+
+		// if (!driveTrain.isAtVisionSetpoint()) {
+		// endTimeSet = false;
+		// // if (!visionControllerEnabled) {
+		// // driveTrain.setDriveWithVisionController();
+		// // visionControllerEnabled = true;
+		// // encoderControllerEnabled = false;
+		// // }
+		// driveTrain.driveRaw(driveTrain.getVisionControllerOutput(),
+		// -driveTrain.getVisionControllerOutput());
+		// } else {
+		// if (!endTimeSet)
+		// endTime = System.currentTimeMillis();
+		// endTimeSet = true;
+		// if (distance != -1 && finishedWait()) {
+		// // if(!encoderControllerEnabled) {
+		// // driveTrain.setDriveWithEncoders();
+		// // visionControllerEnabled = false;
+		// // encoderControllerEnabled = true;
+		// // }
+		// driveTrain.driveRaw(-driveTrain.getLeftEncoderControllerOutput(),
+		// -driveTrain.getRightEncoderControllerOutput());
+		// }
+		// }
 		// double distance = visionMain.getInchesToGearPeg();
 		// System.out.println("Running auto vision: " + distance);
 		// /*if ((!goodDistanceInitialized || Math.abs(distance -
@@ -112,15 +125,14 @@ public class DriveWithVision extends Command {
 
 	}
 
-	public boolean finishedWait() {
+	private boolean finishedWait() {
 		return System.currentTimeMillis() > endTime + MILLISECONDS_TO_WAIT;
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return false;
-		// return driveTrain.isAtEncoderSetpoint();
+		return driveTrain.isAtEncoderSetpoint() && driveTrain.isAtVisionSetpoint();
 	}
 
 	// Called once after isFinished returns true
