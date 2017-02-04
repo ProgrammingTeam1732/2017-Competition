@@ -29,9 +29,9 @@ public class AutoPlace extends CommandGroup {
 		// a CommandGroup containing them would require both the chassis and the
 		// arm.
 		requires(Robot.gearIntake);
-		addSequential(new Drive1D(0.7, false));
+		addSequential(new Drive1D(0.7, true));
 		addSequential(new GearIntakeSetDown());
 		addParallel(new GearIntakeOutTime(0.5));
-		addParallel(new Drive1D(0.7, true));
+		addParallel(new Drive1D(0.7, false));
 	}
 }
