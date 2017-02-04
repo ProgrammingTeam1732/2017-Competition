@@ -1,16 +1,16 @@
-package org.usfirst.frc.team1732.robot.commands.gearIntake;
+package org.usfirst.frc.team1732.robot.autocommands;
 
-import org.usfirst.frc.team1732.robot.commands.Drive1D;
+import org.usfirst.frc.team1732.robot.commands.DriveWithVision;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.AutoPlace;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
  *
  */
-public class AutoPlace extends CommandGroup {
+public class VisionPlaceGear extends CommandGroup {
 
-	public AutoPlace() {
-		long time = System.currentTimeMillis();
+	public VisionPlaceGear() {
 		// Add Commands here:
 		// e.g. addSequential(new Command1());
 		// addSequential(new Command2());
@@ -27,9 +27,7 @@ public class AutoPlace extends CommandGroup {
 		// e.g. if Command1 requires chassis, and Command2 requires arm,
 		// a CommandGroup containing them would require both the chassis and the
 		// arm.
-		// addSequential(new Drive1D(0.7, true));
-		addSequential(new GearIntakeSetDown());
-		addParallel(new GearIntakeOutTime(0.5));
-		addParallel(new Drive1D(0.7, false));
+		addSequential(new DriveWithVision(1));
+		addSequential(new AutoPlace());
 	}
 }
