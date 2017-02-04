@@ -62,7 +62,7 @@ public class DriveTrain extends Subsystem {
 	private final PIDController	rightEncoderController	= new PIDController(encoderP, encoderI, encoderD, rightEncoder,
 																			DriveTrain::voidMethod);
 	public static final double	ENCODER_DEADBAND_INCHES	= 7;
-	private static double		encoderP				= 0.01;
+	private static double		encoderP				= 0.025;
 	private static double		encoderI				= 0;
 	private static double		encoderD				= 0;
 
@@ -232,7 +232,6 @@ public class DriveTrain extends Subsystem {
 	}
 
 	public double getVisionControllerOutput() {
-		SmartDashboard.putBoolean("Vision controller enabled", visionController.isEnabled());
 		return visionController.get();
 	}
 

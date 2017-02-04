@@ -1,7 +1,7 @@
 
 package org.usfirst.frc.team1732.robot;
 
-import org.usfirst.frc.team1732.robot.commands.DriveWithVision;
+import org.usfirst.frc.team1732.robot.autocommands.VisionPlaceGear;
 import org.usfirst.frc.team1732.robot.smartdashboard.MySmartDashboard;
 import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardItem;
 import org.usfirst.frc.team1732.robot.subsystems.DriveTrain;
@@ -17,7 +17,6 @@ import org.usfirst.frc.team1732.robot.vision.VisionMain;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -49,9 +48,9 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
-		NetworkTable.globalDeleteAll();
+		// NetworkTable.globalDeleteAll();
 		driveTrain = new DriveTrain();
-		lightRing = new LightRing();
+		// lightRing = new LightRing();
 		// ballIntake = new BallIntake();
 		// climber = new Climber();
 		// feeder = new Feeder();
@@ -88,16 +87,19 @@ public class Robot extends IterativeRobot {
 																driveTrain::isAtLeftEncoderSetpoint));
 		dashboard.addItem(SmartDashboardItem.newBooleanSender(	"At right encoder setpoint?",
 																driveTrain::isAtRightEncoderSetpoint));
-		dashboard.addItem(SmartDashboardItem.newDoubleSender(	"Vision PID Output",
+		dashboard.addItem(SmartDashboardItem.newDoubleSender(	"Vision PID Angle Output",
 																driveTrain::getVisionControllerOutput));
 		// dashboard.addItem(SmartDashboardItem.newDoubleSender("Light Ring
 		// Brighness", lightRing::getBrightness));
 		// Receivers
-		distanceSetpointReciever = dashboard.addItem(SmartDashboardItem
-				.newDoubleReciever(	"Vision distance setpoint", DriveWithVision.DEFAULT_TARGET_INCHES,
-									DriveWithVision::setSmartDashboardDistance));
-		lightRingBrightness = dashboard
-				.addItem(SmartDashboardItem.newDoubleReciever("Light Ring Brightness", .5, lightRing::setBrightness));
+		// distanceSetpointReciever = dashboard.addItem(SmartDashboardItem
+		// .newDoubleReciever( "Vision distance setpoint",
+		// DriveWithVision.DEFAULT_TARGET_INCHES,
+		// DriveWithVision::setSmartDashboardDistance));
+		// lightRingBrightness = dashboard
+		// .addItem(SmartDashboardItem.newDoubleReciever("Light Ring
+		// Brightness", .5, lightRing::setBrightness));
+
 		// Init
 		dashboard.init();
 	}
@@ -145,7 +147,7 @@ public class Robot extends IterativeRobot {
 		 */
 
 		// schedule the autonomous command (example)
-		Scheduler.getInstance().add(DriveWithVision.newCommandUseSmartDashboardDistance());
+		Scheduler.getInstance().add(new VisionPlaceGear());
 	}
 
 	/**
@@ -169,6 +171,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
+		// System.out.println("running");
 		Scheduler.getInstance().run();
 	}
 

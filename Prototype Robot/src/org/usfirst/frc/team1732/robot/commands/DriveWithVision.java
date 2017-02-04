@@ -15,6 +15,8 @@ public class DriveWithVision extends Command {
 	public static final double	DEFAULT_TARGET_INCHES	= 10;
 	private static double		smartDashboardDistance	= DEFAULT_TARGET_INCHES;
 
+	private boolean foundOnce = false;
+
 	public DriveWithVision(double aTargetDistanceInches) {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
@@ -67,13 +69,16 @@ public class DriveWithVision extends Command {
 		double leftSetpoint = dDistance + driveTrain.getLeftEncoderDistance();
 		double rightSetpoint = dDistance + driveTrain.getRightEncoderDistance();
 		if (distance != -1) {
+			foundOnce = true;
 			driveTrain.setVisionAngle(angle);
 			driveTrain.setLeftEncoderSetpointInches(leftSetpoint);
 			// FIXME Right encoder broken, change to right later
 			driveTrain.setRightEncoderSetpointInches(rightSetpoint);
 		}
-		double leftOutput = -driveTrain.getLeftEncoderControllerOutput() + driveTrain.getVisionControllerOutput();
-		double rightOutput = -driveTrain.getRightEncoderControllerOutput() - driveTrain.getVisionControllerOutput();
+		double leftOutput = -driveTrain.getLeftEncoderControllerOutput();// +
+																			// driveTrain.getVisionControllerOutput();
+		double rightOutput = -driveTrain.getRightEncoderControllerOutput();// -
+																			// driveTrain.getVisionControllerOutput();
 		double max = Math.abs(Math.max(leftOutput, rightOutput));
 		if (max >= 1) {
 			leftOutput = leftOutput / max;
@@ -131,7 +136,8 @@ public class DriveWithVision extends Command {
 	@Override
 	protected boolean isFinished() {
 		return driveTrain.isAtRightEncoderSetpoint() && driveTrain.isAtLeftEncoderSetpoint()
-				&& driveTrain.isAtVisionSetpoint();
+		// && driveTrain.isAtVisionSetpoint()
+				&& foundOnce;
 	}
 
 	// Called once after isFinished returns true

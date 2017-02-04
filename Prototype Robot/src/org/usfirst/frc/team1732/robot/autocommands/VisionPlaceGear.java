@@ -30,10 +30,10 @@ public class VisionPlaceGear extends CommandGroup {
 		// e.g. if Command1 requires chassis, and Command2 requires arm,
 		// a CommandGroup containing them would require both the chassis and the
 		// arm.
-		addSequential(new DriveWithVision(1));
+		addSequential(new DriveWithVision(15));
 		addSequential(new GearIntakeSetDown());
 		addParallel(new GearIntakeOutTime(2));
-		addSequential(new Drive1DEncoders(-20, -20));
+		addSequential(new Drive1DEncoders(-40, -40));
 		addSequential(new GearIntakeSetUp());
 	}
 }

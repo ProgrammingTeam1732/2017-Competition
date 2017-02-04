@@ -27,6 +27,7 @@ public class Drive1DEncoders extends Command {
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
+		driveTrain.zeroEncoders();
 		driveTrain.setLeftEncoderSetpointInches(leftDistance);
 		driveTrain.setRightEncoderSetpointInches(rightDistance);
 	}
@@ -36,7 +37,7 @@ public class Drive1DEncoders extends Command {
 	protected void execute() {
 		double leftOutput = driveTrain.getLeftEncoderControllerOutput();
 		double rightOutput = driveTrain.getRightEncoderControllerOutput();
-		driveTrain.driveRaw(leftOutput, rightOutput);
+		driveTrain.driveRaw(-leftOutput, -rightOutput);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
