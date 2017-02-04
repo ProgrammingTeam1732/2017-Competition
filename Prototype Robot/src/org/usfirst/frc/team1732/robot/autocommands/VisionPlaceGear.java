@@ -1,6 +1,10 @@
 package org.usfirst.frc.team1732.robot.autocommands;
 
+import org.usfirst.frc.team1732.robot.commands.Drive1DEncoders;
 import org.usfirst.frc.team1732.robot.commands.DriveWithVision;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeOutTime;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetDown;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetUp;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -27,6 +31,9 @@ public class VisionPlaceGear extends CommandGroup {
 		// a CommandGroup containing them would require both the chassis and the
 		// arm.
 		addSequential(new DriveWithVision(1));
-		addSequential(new AutoPlace());
+		addSequential(new GearIntakeSetDown());
+		addParallel(new GearIntakeOutTime(2));
+		addSequential(new Drive1DEncoders(-20, -20));
+		addSequential(new GearIntakeSetUp());
 	}
 }

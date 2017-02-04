@@ -1,16 +1,13 @@
 package org.usfirst.frc.team1732.robot;
 
-import org.usfirst.frc.team1732.robot.autocommands.AutoPlace;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetDownIn;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetDownOut;
-import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetStop;
-import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetUp;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetUpStop;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetUpTimedIn;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.buttons.Trigger;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -75,7 +72,6 @@ public class OI {
 		gearIntakeJoystickOutDown.whenReleased(new GearIntakeSetUpStop());
 		gearIntakeJoystickInDown.whenPressed(new GearIntakeSetDownIn());
 		gearIntakeJoystickInDown.whenReleased(new GearIntakeSetUpTimedIn(1));
-		autoPlace.whenPressed(new AutoPlace());
 		// gearIntakeReverse.whenReleased(new IntakeInDownTimer());
 		// gearIntakeForward.whenReleased(new IntakeOutDownTimer());
 		// gearIntakeForward.whenReleased(new GearIntakeSetUp());
