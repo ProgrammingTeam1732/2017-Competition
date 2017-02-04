@@ -1,6 +1,6 @@
 package org.usfirst.frc.team1732.robot.autocommands;
 
-import org.usfirst.frc.team1732.robot.commands.Drive1D;
+import org.usfirst.frc.team1732.robot.commands.Drive1DTime;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeOutTime;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetDown;
 
@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class AutoPlace extends CommandGroup {
 
 	public AutoPlace() {
-		long time = System.currentTimeMillis();
 		// Add Commands here:
 		// e.g. addSequential(new Command1());
 		// addSequential(new Command2());
@@ -32,6 +31,6 @@ public class AutoPlace extends CommandGroup {
 		// addSequential(new Drive1D(0.7, true));
 		addSequential(new GearIntakeSetDown());
 		addParallel(new GearIntakeOutTime(0.5));
-		addParallel(new Drive1D(0.7, false));
+		addParallel(new Drive1DTime(0.7, false));
 	}
 }
