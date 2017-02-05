@@ -38,7 +38,7 @@ public class VisionMain {
 	 *            Data from the Arduino
 	 */
 	private void parseData(String s) {
-		if(s == null){
+		if (s == null) {
 			return;
 		}
 		if (s.contains("Starting"))
@@ -83,6 +83,9 @@ public class VisionMain {
 		}
 	}
 
+	/**
+	 * @return the distance or -1 to indicate not data
+	 */
 	public double getInchesToGearPeg() {
 		if (gearTarget == null)
 			return -1;
@@ -90,9 +93,12 @@ public class VisionMain {
 												IMAGE_WIDTH);
 	}
 
+	/**
+	 * @return the angle or 180 to indicate no data
+	 */
 	public double getAngleToGearPeg() {
-		if(gearTarget == null) {
-			return 0;
+		if (gearTarget == null) {
+			return 180;
 		}
 		return gearTarget.getHorizontalAngle(HORIZONTAL_FIELD_OF_VIEW, IMAGE_WIDTH);
 	}

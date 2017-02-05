@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1732.robot.commands;
+package org.usfirst.frc.team1732.robot.commands.vision;
 
 import static org.usfirst.frc.team1732.robot.Robot.driveTrain;
 import static org.usfirst.frc.team1732.robot.Robot.visionMain;
@@ -68,7 +68,7 @@ public class DriveWithVision extends Command {
 		double dDistance = distance - targetDistanceInches;
 		double leftSetpoint = dDistance + driveTrain.getLeftEncoderDistance();
 		double rightSetpoint = dDistance + driveTrain.getRightEncoderDistance();
-		if (distance != -1) {
+		if (distance != -1 && angle != 180) {
 			foundOnce = true;
 			driveTrain.setVisionAngle(angle);
 			driveTrain.setLeftEncoderSetpointInches(leftSetpoint);

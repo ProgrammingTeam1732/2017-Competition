@@ -1,10 +1,10 @@
 package org.usfirst.frc.team1732.robot.autocommands;
 
-import org.usfirst.frc.team1732.robot.commands.Drive1DEncoders;
-import org.usfirst.frc.team1732.robot.commands.DriveWithVision;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.Drive1DEncoders;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeOutTime;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetDown;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetUp;
+import org.usfirst.frc.team1732.robot.commands.vision.DriveWithVision;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 

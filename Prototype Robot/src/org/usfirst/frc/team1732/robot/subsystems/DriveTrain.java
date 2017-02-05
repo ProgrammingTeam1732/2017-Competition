@@ -1,7 +1,7 @@
 package org.usfirst.frc.team1732.robot.subsystems;
 
 import org.usfirst.frc.team1732.robot.RobotMap;
-import org.usfirst.frc.team1732.robot.commands.DriveWithJoysticks;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveWithJoysticks;
 
 import com.ctre.CANTalon;
 import com.ctre.CANTalon.TalonControlMode;
@@ -45,7 +45,7 @@ public class DriveTrain extends Subsystem {
 	private double				visionD					= 0;
 	private final PIDController	visionController		= new PIDController(visionP, visionI, visionD,
 																			visionAngleSource, DriveTrain::voidMethod);
-	public static final double	VISION_DEADBAND_DEGREES	= 5;
+	public static final double	VISION_DEADBAND_DEGREES	= 3;
 
 	// encoders
 	// encoder sensors
@@ -61,7 +61,7 @@ public class DriveTrain extends Subsystem {
 																			DriveTrain::voidMethod);
 	private final PIDController	rightEncoderController	= new PIDController(encoderP, encoderI, encoderD, rightEncoder,
 																			DriveTrain::voidMethod);
-	public static final double	ENCODER_DEADBAND_INCHES	= 7;
+	public static final double	ENCODER_DEADBAND_INCHES	= 5;
 	private static double		encoderP				= 0.025;
 	private static double		encoderI				= 0;
 	private static double		encoderD				= 0;
@@ -125,7 +125,6 @@ public class DriveTrain extends Subsystem {
 		SmartDashboard.putData("Vision Controller", visionController);
 		SmartDashboard.putData("Left Encoder Controller", leftEncoderController);
 		SmartDashboard.putData("Right Encoder Controller", rightEncoderController);
-		// visionController.startLiveWindowMode();
 	}
 
 	@Override
