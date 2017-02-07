@@ -27,20 +27,20 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
  */
 public class Robot extends IterativeRobot {
 
-	public static OI			oi;
-	public static DriveTrain	driveTrain;
-	public static BallIntake	ballIntake;
-	public static Climber		climber;
-	public static Feeder		feeder;
-	public static Flywheel		flywheel;
-	public static GearIntake	gearIntake;
-	public static OtherShooter	otherShooter;
+	public static OI oi;
+	public static DriveTrain driveTrain;
+	public static BallIntake ballIntake;
+	public static Climber climber;
+	public static Feeder feeder;
+	public static Flywheel flywheel;
+	public static GearIntake gearIntake;
+	public static OtherShooter otherShooter;
 
-	public static VisionMain					visionMain;
-	public static MySmartDashboard				dashboard;
-	public static SmartDashboardItem<Double>	distanceSetpointReciever;
-	public static SmartDashboardItem<Double>	lightRingBrightness;
-	public static LightRing						lightRing;
+	public static VisionMain visionMain;
+	public static MySmartDashboard dashboard;
+	public static SmartDashboardItem<Double> distanceSetpointReciever;
+	public static SmartDashboardItem<Double> lightRingBrightness;
+	public static LightRing lightRing;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -54,7 +54,7 @@ public class Robot extends IterativeRobot {
 		// ballIntake = new BallIntake();
 		// climber = new Climber();
 		// feeder = new Feeder();
-		// flywheel = new Flywheel();
+		flywheel = new Flywheel();
 		gearIntake = new GearIntake();
 		// otherShooter = new OtherShooter();
 		oi = new OI();
@@ -62,37 +62,38 @@ public class Robot extends IterativeRobot {
 
 		// Dashboard code
 		dashboard = new MySmartDashboard();
+
 		// Senders
 		dashboard = new MySmartDashboard();
-		dashboard.addItem(SmartDashboardItem.newDoubleSender(	"Left Encoder Raw Counts",
-																driveTrain::getLeftEncoderRawCount));
-		dashboard.addItem(SmartDashboardItem.newDoubleSender(	"Right Encoder Raw Counts",
-																driveTrain::getRightEncoderRawCount));
+		dashboard.addItem(
+				SmartDashboardItem.newDoubleSender("Left Encoder Raw Counts", driveTrain::getLeftEncoderRawCount));
+		dashboard.addItem(
+				SmartDashboardItem.newDoubleSender("Right Encoder Raw Counts", driveTrain::getRightEncoderRawCount));
 		dashboard.addItem(SmartDashboardItem.newDoubleSender("Left Encoder Counts", driveTrain::getLeftEncoderCount));
 		dashboard.addItem(SmartDashboardItem.newDoubleSender("Right Encoder Counts", driveTrain::getRightEncoderCount));
-		dashboard.addItem(SmartDashboardItem.newDoubleSender(	"Left Encoder Distance",
-																driveTrain::getLeftEncoderDistance));
-		dashboard.addItem(SmartDashboardItem.newDoubleSender(	"Right Encoder Distance",
-																driveTrain::getRightEncoderDistance));
-		dashboard.addItem(SmartDashboardItem.newDoubleSender(	"Left Encoder Setpoint",
-																driveTrain::getLeftEncoderSetpoint));
-		dashboard.addItem(SmartDashboardItem.newDoubleSender(	"Right Encoder Setpoint",
-																driveTrain::getRightEncoderSetpoint));
+		dashboard.addItem(
+				SmartDashboardItem.newDoubleSender("Left Encoder Distance", driveTrain::getLeftEncoderDistance));
+		dashboard.addItem(
+				SmartDashboardItem.newDoubleSender("Right Encoder Distance", driveTrain::getRightEncoderDistance));
+		dashboard.addItem(
+				SmartDashboardItem.newDoubleSender("Left Encoder Setpoint", driveTrain::getLeftEncoderSetpoint));
+		dashboard.addItem(
+				SmartDashboardItem.newDoubleSender("Right Encoder Setpoint", driveTrain::getRightEncoderSetpoint));
 		dashboard.addItem(SmartDashboardItem.newDoubleSender("Right Error", driveTrain::getRightEncoderError));
 		dashboard.addItem(SmartDashboardItem.newDoubleSender("Left Error", driveTrain::getLeftEncoderError));
 		dashboard.addItem(SmartDashboardItem.newDoubleSender("Inches to gear peg", visionMain::getInchesToGearPeg));
 		dashboard.addItem(SmartDashboardItem.newDoubleSender("Vision Angle", visionMain::getAngleToGearPeg));
 		dashboard.addItem(SmartDashboardItem.newBooleanSender("At angle setpoint", driveTrain::isAtVisionSetpoint));
-		dashboard.addItem(SmartDashboardItem.newBooleanSender(	"At left encoder setpoint?",
-																driveTrain::isAtLeftEncoderSetpoint));
-		dashboard.addItem(SmartDashboardItem.newBooleanSender(	"At right encoder setpoint?",
-																driveTrain::isAtRightEncoderSetpoint));
-		dashboard.addItem(SmartDashboardItem.newDoubleSender(	"Vision PID Angle Output",
-																driveTrain::getVisionControllerOutput));
-		dashboard.addItem(SmartDashboardItem.newDoubleSender(	"Right Controller Output",
-																driveTrain::getRightEncoderControllerOutput));
-		dashboard.addItem(SmartDashboardItem.newDoubleSender(	"Left Controller Output",
-																driveTrain::getLeftEncoderControllerOutput));
+		dashboard.addItem(
+				SmartDashboardItem.newBooleanSender("At left encoder setpoint?", driveTrain::isAtLeftEncoderSetpoint));
+		dashboard.addItem(SmartDashboardItem.newBooleanSender("At right encoder setpoint?",
+				driveTrain::isAtRightEncoderSetpoint));
+		dashboard.addItem(
+				SmartDashboardItem.newDoubleSender("Vision PID Angle Output", driveTrain::getVisionControllerOutput));
+		dashboard.addItem(SmartDashboardItem.newDoubleSender("Right Controller Output",
+				driveTrain::getRightEncoderControllerOutput));
+		dashboard.addItem(SmartDashboardItem.newDoubleSender("Left Controller Output",
+				driveTrain::getLeftEncoderControllerOutput));
 
 		// dashboard.addItem(SmartDashboardItem.newDoubleSender("Light Ring
 		// Brighness", lightRing::getBrightness));
