@@ -2,7 +2,7 @@ package org.usfirst.frc.team1732.robot.vision;
 
 public class VisionMain {
 
-	public static final double	HORIZONTAL_FIELD_OF_VIEW	= 75;
+	public static final double	HORIZONTAL_FIELD_OF_VIEW	= 70;
 	public static final double	VERTICAL_FIELD_OF_VIEW		= 47;
 
 	// double check

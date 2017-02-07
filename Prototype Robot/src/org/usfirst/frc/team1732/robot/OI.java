@@ -14,9 +14,9 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
-	private Joystick buttons = new Joystick(RobotMap.BUTTONS_USB);
-	private Joystick left = new Joystick(RobotMap.LEFT_JOYSTICK_USB);
-	private Joystick right = new Joystick(RobotMap.RIGHT_JOYSTICK_USB);
+	private Joystick	buttons	= new Joystick(RobotMap.BUTTONS_USB);
+	private Joystick	left	= new Joystick(RobotMap.LEFT_JOYSTICK_USB);
+	private Joystick	right	= new Joystick(RobotMap.RIGHT_JOYSTICK_USB);
 	//
 	// private final Button ballIntakeForward = button1;
 	// private final Button ballIntakeReverse = button2;
@@ -44,10 +44,10 @@ public class OI {
 	// return !(flywheelForward.get() || flywheelReverse.get());
 	// }
 	// };
-	private final Button gearIntakePosistionSwitch = new JoystickButton(buttons, 9);
-	private final Button gearIntakeJoystickInDown = new JoystickButton(left, 1);
-	private final Button gearIntakeJoystickOutDown = new JoystickButton(right, 1);
-	private final Button autoPlace = new JoystickButton(buttons, 10);
+	private final Button	gearIntakePosistionSwitch	= new JoystickButton(buttons, 9);
+	private final Button	gearIntakeJoystickInDown	= new JoystickButton(left, 1);
+	private final Button	gearIntakeJoystickOutDown	= new JoystickButton(right, 1);
+	private final Button	autoPlace					= new JoystickButton(buttons, 10);
 	//
 	// private final Button climber = button9;
 	//
@@ -88,10 +88,10 @@ public class OI {
 	}
 
 	public double getLeftSpeed() {
-		return left.getRawAxis(RobotMap.LEFT_JOYSTICK_Y_AXIS);
+		return -left.getRawAxis(RobotMap.LEFT_JOYSTICK_Y_AXIS);
 	}
 
 	public double getRightSpeed() {
-		return right.getRawAxis(RobotMap.RIGHT_JOYSTICK_Y_AXIS);
+		return -right.getRawAxis(RobotMap.RIGHT_JOYSTICK_Y_AXIS);
 	}
 }

@@ -79,7 +79,7 @@ public class Robot extends IterativeRobot {
 		dashboard.addItem(SmartDashboardItem.newDoubleSender(	"Right Encoder Setpoint",
 																driveTrain::getRightEncoderSetpoint));
 		dashboard.addItem(SmartDashboardItem.newDoubleSender("Right Error", driveTrain::getRightEncoderError));
-		dashboard.addItem(SmartDashboardItem.newDoubleSender("Left Error", driveTrain::getRightEncoderError));
+		dashboard.addItem(SmartDashboardItem.newDoubleSender("Left Error", driveTrain::getLeftEncoderError));
 		dashboard.addItem(SmartDashboardItem.newDoubleSender("Inches to gear peg", visionMain::getInchesToGearPeg));
 		dashboard.addItem(SmartDashboardItem.newDoubleSender("Vision Angle", visionMain::getAngleToGearPeg));
 		dashboard.addItem(SmartDashboardItem.newBooleanSender("At angle setpoint", driveTrain::isAtVisionSetpoint));
@@ -89,6 +89,11 @@ public class Robot extends IterativeRobot {
 																driveTrain::isAtRightEncoderSetpoint));
 		dashboard.addItem(SmartDashboardItem.newDoubleSender(	"Vision PID Angle Output",
 																driveTrain::getVisionControllerOutput));
+		dashboard.addItem(SmartDashboardItem.newDoubleSender(	"Right Controller Output",
+																driveTrain::getRightEncoderControllerOutput));
+		dashboard.addItem(SmartDashboardItem.newDoubleSender(	"Left Controller Output",
+																driveTrain::getLeftEncoderControllerOutput));
+
 		// dashboard.addItem(SmartDashboardItem.newDoubleSender("Light Ring
 		// Brighness", lightRing::getBrightness));
 		// Receivers

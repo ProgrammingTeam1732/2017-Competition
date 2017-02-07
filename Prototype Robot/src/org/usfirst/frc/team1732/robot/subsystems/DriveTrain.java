@@ -67,7 +67,7 @@ public class DriveTrain extends Subsystem {
 	private static double		encoderD				= 0;
 
 	public static final double	MAX_OUTPUT	= 0.5;
-	public static final double	MIN_OUTPUT	= -0.5;
+	public static final double	MIN_OUTPUT	= -MAX_OUTPUT;
 
 	public DriveTrain() {
 		super("Drive Train");
@@ -111,6 +111,9 @@ public class DriveTrain extends Subsystem {
 		leftEncoderController.setOutputRange(MIN_OUTPUT, MAX_OUTPUT);
 		rightEncoderController.setOutputRange(MIN_OUTPUT, MAX_OUTPUT);
 
+		leftEncoderController.setSetpoint(100);
+		rightEncoderController.setSetpoint(100);
+
 		visionController.setAbsoluteTolerance(VISION_DEADBAND_DEGREES);
 		visionController.setContinuous(false);
 		visionController.setOutputRange(MIN_OUTPUT, MAX_OUTPUT);
@@ -133,12 +136,17 @@ public class DriveTrain extends Subsystem {
 	}
 
 	public void tankDrive(double left, double right) {
-		driveRaw(left, right);
+		driveRawNoLimit(left, right);
+	}
+
+	public void driveRawNoLimit(double left, double right) {
+		leftMaster.set(-left);
+		rightMaster.set(-right);
 	}
 
 	public void driveRaw(double left, double right) {
-		leftMaster.set(limit(left));
-		rightMaster.set(limit(right));
+		leftMaster.set(limit(-left));
+		rightMaster.set(limit(-right));
 	}
 
 	private double limit(double speed) {
