@@ -8,24 +8,22 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class Drive1DTime extends Command {
-	private boolean	direction;	// Forward (true or backwards(false)
-	private double	SPEED;
+	private double	left;
+	private double	right;
 
-	public Drive1DTime(double sec, boolean direction) {
+	public Drive1DTime(double sec, double leftSpeed, double rightSpeed) {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
 		requires(driveTrain);
 		setTimeout(sec);
-		if (direction)
-			SPEED = -.5;
-		else
-			SPEED = .5;
+		left = leftSpeed;
+		right = rightSpeed;
 	}
 
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-		driveTrain.tankDrive(SPEED, SPEED);
+		driveTrain.driveRaw(left, right);
 	}
 
 	// Called repeatedly when this Command is scheduled to run
@@ -41,7 +39,7 @@ public class Drive1DTime extends Command {
 	// Called once after isFinished returns true
 	@Override
 	protected void end() {
-		driveTrain.tankDrive(0, 0);
+		driveTrain.driveRaw(0, 0);
 	}
 
 	@Override
