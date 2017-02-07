@@ -30,6 +30,7 @@ public class DriveTrain extends Subsystem {
 	// gyro sensors
 	private final AnalogGyro	gyro								= new AnalogGyro(RobotMap.GYRO_CHANNEL_NUMBER);
 	public static final double	GYRO_VOLTS_PER_DEGREE_PER_SECOND	= 0.007;
+
 	// gyro controllers
 	private double				gyroP					= 0.1;
 	private double				gyroI					= 0;
