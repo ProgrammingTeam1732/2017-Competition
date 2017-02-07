@@ -5,12 +5,12 @@ import org.usfirst.frc.team1732.robot.autocommands.VisionPlaceGear;
 import org.usfirst.frc.team1732.robot.smartdashboard.MySmartDashboard;
 import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardItem;
 import org.usfirst.frc.team1732.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team1732.robot.subsystems.Flywheel;
 import org.usfirst.frc.team1732.robot.subsystems.GearIntake;
 import org.usfirst.frc.team1732.robot.subsystems.LightRing;
 import org.usfirst.frc.team1732.robot.subsystems.unused.BallIntake;
 import org.usfirst.frc.team1732.robot.subsystems.unused.Climber;
 import org.usfirst.frc.team1732.robot.subsystems.unused.Feeder;
-import org.usfirst.frc.team1732.robot.subsystems.unused.Flywheel;
 import org.usfirst.frc.team1732.robot.subsystems.unused.OtherShooter;
 import org.usfirst.frc.team1732.robot.vision.VisionMain;
 
