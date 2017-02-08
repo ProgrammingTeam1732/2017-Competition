@@ -42,8 +42,4 @@ public class Drive1DTime extends Command {
 		driveTrain.driveRaw(0, 0);
 	}
 
-	@Override
-	protected void interrupted() {
-		end();
-	}
 }

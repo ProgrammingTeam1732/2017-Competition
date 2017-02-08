@@ -10,8 +10,6 @@ import edu.wpi.first.wpilibj.command.Command;
 public class FlywheelBangBang extends Command {
 
 	public FlywheelBangBang() {
-		// Use requires() here to declare subsystem dependencies
-		// eg. requires(chassis);
 		requires(Robot.flywheel);
 	}
 
@@ -19,11 +17,6 @@ public class FlywheelBangBang extends Command {
 	@Override
 	protected void initialize() {
 		Robot.flywheel.enableAutoControl();
-	}
-
-	// Called repeatedly when this Command is scheduled to run
-	@Override
-	protected void execute() {
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
@@ -38,10 +31,4 @@ public class FlywheelBangBang extends Command {
 		Robot.flywheel.disableAutoControl();
 	}
 
-	// Called when another command which requires one or more of the same
-	// subsystems is scheduled to run
-	@Override
-	protected void interrupted() {
-		end();
-	}
 }

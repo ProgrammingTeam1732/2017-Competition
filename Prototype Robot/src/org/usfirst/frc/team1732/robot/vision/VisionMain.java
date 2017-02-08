@@ -1,6 +1,15 @@
 package org.usfirst.frc.team1732.robot.vision;
 
-public class VisionMain {
+import org.usfirst.frc.team1732.robot.smartdashboard.MySmartDashboard;
+import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardGroup;
+import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardItem;
+
+import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDSource;
+import edu.wpi.first.wpilibj.PIDSourceType;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+public class VisionMain implements SmartDashboardGroup {
 
 	public static final double	HORIZONTAL_FIELD_OF_VIEW	= 70;
 	public static final double	VERTICAL_FIELD_OF_VIEW		= 47;
@@ -11,12 +20,28 @@ public class VisionMain {
 
 	private Arduino arduino;
 
-	public GearTarget	gearTarget;
-	public BoilerTarget	boilerTarget;
-	private Rectangle[]	rectangles	= new Rectangle[0];
+	private GearTarget		gearTarget;
+	private BoilerTarget	boilerTarget;
+	private Rectangle[]		rectangles	= new Rectangle[0];
+
+	// Vision Angle Stuff
+	public final PIDSource		visionAngleSource		= this.getVisionPIDSource();
+	public final PIDController	visionPID				= new PIDController(0.015, 0, 0, visionAngleSource,
+																			VisionMain::voidMethod);
+	public static final double	VISION_DEADBAND_DEGREES	= 3;
+	public static final double	MAX_OUTPUT				= 0.5;
+	public static final double	MIN_OUTPUT				= -MAX_OUTPUT;
+
+	public static final String NAME = "Vision Main";
 
 	public VisionMain() {
 		arduino = new Arduino();
+
+		// Vision PID
+		visionPID.setAbsoluteTolerance(VISION_DEADBAND_DEGREES);
+		visionPID.setContinuous(false);
+		visionPID.setOutputRange(MIN_OUTPUT, MAX_OUTPUT);
+		visionPID.enable();
 	}
 
 	/**
@@ -94,12 +119,58 @@ public class VisionMain {
 	}
 
 	/**
-	 * @return the angle or 180 to indicate no data
+	 * Yes this does overlap in case it does see it
+	 * 
+	 * @return the angle or 0 to indicate no data
 	 */
 	public double getAngleToGearPeg() {
 		if (gearTarget == null) {
-			return 180;
+			return 0;
 		}
 		return gearTarget.getHorizontalAngle(HORIZONTAL_FIELD_OF_VIEW, IMAGE_WIDTH);
+	}
+
+	public boolean canSeeGearPeg() {
+		return gearTarget != null;
+	}
+
+	private PIDSource getVisionPIDSource() {
+		return new PIDSource() {
+			@Override
+			public void setPIDSourceType(PIDSourceType pidSource) {}
+
+			@Override
+			public PIDSourceType getPIDSourceType() {
+				return PIDSourceType.kDisplacement;
+			}
+
+			@Override
+			public double pidGet() {
+				return getAngleToGearPeg();
+			}
+		};
+	}
+
+	private static void voidMethod(double d) {}
+
+	@Override
+	public void addToSmartDashboard(MySmartDashboard dashboard) {
+		String directory = NAME + "/";
+		String visionDirectory = directory + "vision/";
+
+		dashboard.addItem(SmartDashboardItem.newNumberSender(	visionDirectory + "Vision inches",
+																this::getInchesToGearPeg));
+		dashboard.addItem(SmartDashboardItem.newNumberSender(	visionDirectory + "Vision degrees",
+																this::getAngleToGearPeg));
+		dashboard
+				.addItem(SmartDashboardItem.newBooleanSender(visionDirectory + "Can see target?", this::canSeeGearPeg));
+
+		dashboard.addItem(SmartDashboardItem.newNumberSender(	visionDirectory + "Vision Setpoint",
+																visionPID::getSetpoint));
+		dashboard.addItem(SmartDashboardItem.newNumberSender(visionDirectory + "Vision Error", visionPID::getError));
+		dashboard.addItem(SmartDashboardItem.newBooleanSender(	visionDirectory + "At vision setpoint?",
+																visionPID::onTarget));
+		dashboard.addItem(SmartDashboardItem.newNumberSender(visionDirectory + "Vision PID Output", visionPID::get));
+		SmartDashboard.putData("Vision PID", visionPID);
 	}
 }

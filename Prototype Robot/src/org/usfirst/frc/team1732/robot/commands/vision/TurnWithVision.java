@@ -20,7 +20,7 @@ public class TurnWithVision extends Command {
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-		driveTrain.setVisionSetpoint(angleSetpoint);
+		visionMain.visionPID.setSetpoint(angleSetpoint);
 	}
 
 	private boolean foundOnce = false;
@@ -29,10 +29,9 @@ public class TurnWithVision extends Command {
 	@Override
 	protected void execute() {
 		double angle = visionMain.getAngleToGearPeg();
-		if (angle != 180) {
+		if (visionMain.canSeeGearPeg()) {
 			foundOnce = true;
-			driveTrain.setVisionAngle(angle);
-			double output = driveTrain.getVisionControllerOutput();
+			double output = visionMain.visionPID.get();
 			driveTrain.driveRaw(-output, output);
 		}
 	}
@@ -40,19 +39,12 @@ public class TurnWithVision extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return driveTrain.isAtVisionSetpoint();
+		return visionMain.visionPID.onTarget();
 	}
 
 	// Called once after isFinished returns true
 	@Override
 	protected void end() {
 		driveTrain.driveRaw(0, 0);
-	}
-
-	// Called when another command which requires one or more of the same
-	// subsystems is scheduled to run
-	@Override
-	protected void interrupted() {
-		end();
 	}
 }

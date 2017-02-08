@@ -11,8 +11,6 @@ public class GearIntakeSetOut extends InstantCommand {
 
 	public GearIntakeSetOut() {
 		super();
-		// Use requires() here to declare subsystem dependencies
-		// eg. requires(chassis);
 		requires(Robot.gearIntake);
 	}
 

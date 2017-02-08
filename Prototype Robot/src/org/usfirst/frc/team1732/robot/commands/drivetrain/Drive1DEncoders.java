@@ -27,31 +27,30 @@ public class Drive1DEncoders extends Command {
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-		driveTrain.zeroEncoders();
-		driveTrain.setLeftEncoderSetpointInches(leftDistance);
-		driveTrain.setRightEncoderSetpointInches(rightDistance);
+		driveTrain.leftEncoder.reset();
+		driveTrain.rightEncoder.reset();
+		driveTrain.leftEncoderPID.setSetpoint(leftDistance);
+		driveTrain.rightEncoderPID.setSetpoint(rightDistance);
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		double leftOutput = driveTrain.getLeftEncoderControllerOutput();
-		double rightOutput = driveTrain.getRightEncoderControllerOutput();
+		double leftOutput = driveTrain.leftEncoderPID.get();
+		double rightOutput = driveTrain.rightEncoderPID.get();
 		driveTrain.driveRaw(leftOutput, rightOutput);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return driveTrain.isAtRightEncoderSetpoint() && driveTrain.isAtLeftEncoderSetpoint();
+		return driveTrain.leftEncoderPID.onTarget() && driveTrain.rightEncoderPID.onTarget();
 	}
 
 	// Called once after isFinished returns true
 	@Override
-	protected void end() {}
+	protected void end() {
+		driveTrain.driveRaw(0, 0);
+	}
 
-	// Called when another command which requires one or more of the same
-	// subsystems is scheduled to run
-	@Override
-	protected void interrupted() {}
 }

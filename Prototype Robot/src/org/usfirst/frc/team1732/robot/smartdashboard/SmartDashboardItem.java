@@ -51,17 +51,17 @@ public abstract class SmartDashboardItem<T> {
 		this.value = value;
 	}
 
-	public static SmartDashboardItem<Double> newDoubleSender(String key, Supplier<Double> supplier) {
-		return new SmartDashboardItem<Double>(key, supplier.get()) {
+	public static SmartDashboardItem<Number> newNumberSender(String key, Supplier<Number> supplier) {
+		return new SmartDashboardItem<Number>(key, supplier.get()) {
 			@Override
 			protected void run() {
 				setValue(supplier.get());
-				SmartDashboard.putNumber(getKey(), getValue());
+				SmartDashboard.putNumber(getKey(), getValue().doubleValue());
 			}
 
 			@Override
 			protected void init() {
-				SmartDashboard.putNumber(getKey(), getValue());
+				SmartDashboard.putNumber(getKey(), getValue().doubleValue());
 			}
 		};
 	}
@@ -76,7 +76,21 @@ public abstract class SmartDashboardItem<T> {
 
 			@Override
 			protected void init() {
-				SmartDashboard.putNumber(getKey(), getValue());
+				SmartDashboard.putNumber(getKey(), getValue().doubleValue());
+			}
+		};
+	}
+
+	public static SmartDashboardItem<Double> newDoubleReciever(String key, Double value) {
+		return new SmartDashboardItem<Double>(key, value) {
+			@Override
+			protected void run() {
+				setValue(SmartDashboard.getNumber(getKey(), getValue()));
+			}
+
+			@Override
+			protected void init() {
+				SmartDashboard.putNumber(getKey(), getValue().doubleValue());
 			}
 		};
 	}
@@ -111,6 +125,20 @@ public abstract class SmartDashboardItem<T> {
 		};
 	}
 
+	public static SmartDashboardItem<String> newStringReciever(String key, String value) {
+		return new SmartDashboardItem<String>(key, value) {
+			@Override
+			protected void run() {
+				setValue(SmartDashboard.getString(getKey(), getValue()));
+			}
+
+			@Override
+			protected void init() {
+				SmartDashboard.putString(getKey(), getValue());
+			}
+		};
+	}
+
 	public static SmartDashboardItem<Boolean> newBooleanSender(String key, Supplier<Boolean> supplier) {
 		return new SmartDashboardItem<Boolean>(key, supplier.get()) {
 			@Override
@@ -133,6 +161,20 @@ public abstract class SmartDashboardItem<T> {
 			protected void run() {
 				setValue(SmartDashboard.getBoolean(getKey(), getValue()));
 				consumer.accept(getValue());
+			}
+
+			@Override
+			protected void init() {
+				SmartDashboard.putBoolean(getKey(), getValue());
+			}
+		};
+	}
+
+	public static SmartDashboardItem<Boolean> newBooleanReciever(String key, Boolean value) {
+		return new SmartDashboardItem<Boolean>(key, value) {
+			@Override
+			protected void run() {
+				setValue(SmartDashboard.getBoolean(getKey(), getValue()));
 			}
 
 			@Override

@@ -2,6 +2,9 @@ package org.usfirst.frc.team1732.robot.subsystems;
 
 import org.usfirst.frc.team1732.robot.RobotMap;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveWithJoysticks;
+import org.usfirst.frc.team1732.robot.smartdashboard.MySmartDashboard;
+import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardGroup;
+import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardItem;
 
 import com.ctre.CANTalon;
 import com.ctre.CANTalon.TalonControlMode;
@@ -9,12 +12,11 @@ import com.ctre.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class DriveTrain extends Subsystem {
+public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 
 	// motors
 	// left motors
@@ -28,50 +30,40 @@ public class DriveTrain extends Subsystem {
 
 	// gyro
 	// gyro sensors
-	private final AnalogGyro	gyro								= new AnalogGyro(RobotMap.GYRO_CHANNEL_NUMBER);
+	public final AnalogGyro		gyro								= new AnalogGyro(RobotMap.GYRO_CHANNEL_NUMBER);
 	public static final double	GYRO_VOLTS_PER_DEGREE_PER_SECOND	= 0.007;
 
 	// gyro controllers
-	private double				gyroP					= 0.1;
-	private double				gyroI					= 0;
-	private double				gyroD					= 0;
-	private final PIDController	gyroController			= new PIDController(gyroP, gyroI, gyroD, gyro,
-																			DriveTrain::voidMethod);
+	public final PIDController	gyroPID					= new PIDController(0.1, 0, 0, gyro, DriveTrain::voidMethod);
 	public static final double	GYRO_DEADBAND_DEGREES	= 5;
-
-	// Vision Angle Stuff
-	private final PIDSource		visionAngleSource		= this.getVisionPIDSource();
-	private double				visionP					= 0.015;
-	private double				visionI					= 0;
-	private double				visionD					= 0;
-	private final PIDController	visionController		= new PIDController(visionP, visionI, visionD,
-																			visionAngleSource, DriveTrain::voidMethod);
-	public static final double	VISION_DEADBAND_DEGREES	= 3;
 
 	// encoders
 	// encoder sensors
-	private final Encoder		leftEncoder					= new Encoder(	RobotMap.LEFT_ENCODER_CHANNEL_A,
+	public final Encoder		leftEncoder					= new Encoder(	RobotMap.LEFT_ENCODER_CHANNEL_A,
 																			RobotMap.LEFT_ENCODER_CHANNEL_B);
-	private final Encoder		rightEncoder				= new Encoder(	RobotMap.RIGHT_ENCODER_CHANNEL_A,
+	public final Encoder		rightEncoder				= new Encoder(	RobotMap.RIGHT_ENCODER_CHANNEL_A,
 																			RobotMap.RIGHT_ENCODER_CHANNEL_B);
 	public static final double	INCHES_PER_ENCODER_COUNT	= 0.0134 * 4;
 	public static final double	LEFT_MOTOR_OFFSET			= 1.1;
 
 	// encoder controllers
-	private final PIDController	leftEncoderController	= new PIDController(encoderP, encoderI, encoderD, leftEncoder,
+	public final PIDController	leftEncoderPID			= new PIDController(encoderP, encoderI, encoderD, leftEncoder,
 																			DriveTrain::voidMethod);
-	private final PIDController	rightEncoderController	= new PIDController(encoderP, encoderI, encoderD, rightEncoder,
+	public final PIDController	rightEncoderPID			= new PIDController(encoderP, encoderI, encoderD, rightEncoder,
 																			DriveTrain::voidMethod);
+	private static final double	encoderP				= 0.025;
+	private static final double	encoderI				= 0;
+	private static final double	encoderD				= 0;
 	public static final double	ENCODER_DEADBAND_INCHES	= 5;
-	private static double		encoderP				= 0.025;
-	private static double		encoderI				= 0;
-	private static double		encoderD				= 0;
 
+	// Min and max output
 	public static final double	MAX_OUTPUT	= 0.5;
 	public static final double	MIN_OUTPUT	= -MAX_OUTPUT;
 
+	public static final String NAME = "Drive Train";
+
 	public DriveTrain() {
-		super("Drive Train");
+		super(NAME);
 		left1.changeControlMode(TalonControlMode.Follower);
 		left1.set(leftMaster.getDeviceID());
 		left2.changeControlMode(TalonControlMode.Follower);
@@ -87,15 +79,6 @@ public class DriveTrain extends Subsystem {
 		right1.reverseOutput(true);
 		right2.reverseOutput(true);
 
-		gyro.initGyro();
-		gyro.calibrate();
-		gyro.setPIDSourceType(PIDSourceType.kDisplacement);
-		gyro.setSensitivity(GYRO_VOLTS_PER_DEGREE_PER_SECOND);
-
-		gyroController.setAbsoluteTolerance(GYRO_DEADBAND_DEGREES);
-		gyroController.setContinuous(false);
-		gyroController.setOutputRange(MIN_OUTPUT, MAX_OUTPUT);
-
 		leftEncoder.setDistancePerPulse(INCHES_PER_ENCODER_COUNT);
 		rightEncoder.setDistancePerPulse(INCHES_PER_ENCODER_COUNT);
 		leftEncoder.setPIDSourceType(PIDSourceType.kDisplacement);
@@ -105,30 +88,29 @@ public class DriveTrain extends Subsystem {
 		rightEncoder.setSamplesToAverage(3);
 		rightEncoder.setReverseDirection(true);
 
-		leftEncoderController.setAbsoluteTolerance(ENCODER_DEADBAND_INCHES);
-		rightEncoderController.setAbsoluteTolerance(ENCODER_DEADBAND_INCHES);
-		leftEncoderController.setContinuous(false);
-		rightEncoderController.setContinuous(false);
-		leftEncoderController.setOutputRange(MIN_OUTPUT, MAX_OUTPUT);
-		rightEncoderController.setOutputRange(MIN_OUTPUT, MAX_OUTPUT);
+		leftEncoderPID.setAbsoluteTolerance(ENCODER_DEADBAND_INCHES);
+		rightEncoderPID.setAbsoluteTolerance(ENCODER_DEADBAND_INCHES);
+		leftEncoderPID.setContinuous(false);
+		rightEncoderPID.setContinuous(false);
+		leftEncoderPID.setOutputRange(MIN_OUTPUT, MAX_OUTPUT);
+		rightEncoderPID.setOutputRange(MIN_OUTPUT, MAX_OUTPUT);
 
-		leftEncoderController.setSetpoint(100);
-		rightEncoderController.setSetpoint(100);
+		leftEncoderPID.setSetpoint(100);
+		rightEncoderPID.setSetpoint(100);
 
-		visionController.setAbsoluteTolerance(VISION_DEADBAND_DEGREES);
-		visionController.setContinuous(false);
-		visionController.setOutputRange(MIN_OUTPUT, MAX_OUTPUT);
+		// Gyro
+		gyro.initGyro();
+		gyro.calibrate();
+		gyro.setPIDSourceType(PIDSourceType.kDisplacement);
+		gyro.setSensitivity(GYRO_VOLTS_PER_DEGREE_PER_SECOND);
 
-		visionController.enable();
-		// System.out.println("Vision Controller Enabled: " +
-		// visionController.isEnabled());
-		leftEncoderController.enable();
-		rightEncoderController.enable();
-		gyroController.enable();
+		gyroPID.setAbsoluteTolerance(GYRO_DEADBAND_DEGREES);
+		gyroPID.setContinuous(false);
+		gyroPID.setOutputRange(MIN_OUTPUT, MAX_OUTPUT);
+		gyroPID.enable();
 
-		SmartDashboard.putData("Vision Controller", visionController);
-		SmartDashboard.putData("Left Encoder Controller", leftEncoderController);
-		SmartDashboard.putData("Right Encoder Controller", rightEncoderController);
+		leftEncoderPID.enable();
+		rightEncoderPID.enable();
 	}
 
 	@Override
@@ -154,162 +136,53 @@ public class DriveTrain extends Subsystem {
 		return speed < MIN_OUTPUT ? MIN_OUTPUT : (speed > MAX_OUTPUT ? MAX_OUTPUT : speed);
 	}
 
-	public void zeroGyro() {
-		gyro.reset();
-	}
-
-	public void setGyroSetpointDegrees(double setpoint) {
-		gyroController.setSetpoint(setpoint);
-	}
-
-	public boolean isAtGyroSetpoint() {
-		return gyroController.onTarget();
-	}
-
-	public double getGyroAngle() {
-		return gyro.getAngle();
-	}
-
-	public void zeroEncoders() {
-		leftEncoder.reset();
-		rightEncoder.reset();
-	}
-
-	public void setLeftEncoderSetpointInches(double leftSetpoint) {
-		leftEncoderController.setSetpoint(leftSetpoint);
-	}
-
-	public void setRightEncoderSetpointInches(double rightSetpoint) {
-		rightEncoderController.setSetpoint(rightSetpoint);
-	}
-
-	public boolean isAtLeftEncoderSetpoint() {
-		return leftEncoderController.onTarget();
-	}
-
-	public boolean isAtRightEncoderSetpoint() {
-		return rightEncoderController.onTarget();
-	}
-
-	public double getLeftEncoderDistance() {
-		return leftEncoder.getDistance();
-	}
-
-	public double getRightEncoderDistance() {
-		return rightEncoder.getDistance();
-	}
-
-	// public void setDriveManual() {
-	// gyroController.disable();
-	// leftEncoderController.disable();
-	// rightEncoderController.disable();
-	// visionController.disable();
-	// }
-	//
-	// public void setDriveWithEncoders() {
-	// gyroController.disable();
-	// leftEncoderController.enable();
-	// rightEncoderController.enable();
-	// visionController.disable();
-	// }
-	//
-	// public void setDriveWithGyros() {
-	// gyroController.enable();
-	// leftEncoderController.disable();
-	// rightEncoderController.disable();
-	// visionController.disable();
-	// }
-	//
-	// public void setDriveWithVisionController() {
-	// gyroController.disable();
-	// leftEncoderController.disable();
-	// rightEncoderController.disable();
-	// visionController.enable();
-	// }
-
-	public double getLeftEncoderControllerOutput() {
-		return leftEncoderController.get();
-	}
-
-	public double getRightEncoderControllerOutput() {
-		return rightEncoderController.get();
-	}
-
-	public double getGyroControllerOutput() {
-		return gyroController.get();
-	}
-
-	public double getVisionControllerOutput() {
-		return visionController.get();
-	}
-
-	public double getLeftEncoderCount() {
-		return leftEncoder.get();
-	}
-
-	public double getRightEncoderCount() {
-		return rightEncoder.get();
-	}
-
-	public double getLeftEncoderRawCount() {
-		return leftEncoder.getRaw();
-	}
-
-	public double getRightEncoderRawCount() {
-		return rightEncoder.getRaw();
-	}
-
-	public double getLeftEncoderSetpoint() {
-		return leftEncoderController.getSetpoint();
-	}
-
-	public double getRightEncoderSetpoint() {
-		return rightEncoderController.getSetpoint();
-	}
-
-	public double getLeftEncoderError() {
-		return leftEncoderController.getError();
-	}
-
-	public double getRightEncoderError() {
-		return rightEncoderController.getError();
-	}
-
-	private double visionAngle = 0;
-
-	public void setVisionSetpoint(double angle) {
-		visionController.setSetpoint(angle);
-	}
-
-	public boolean isAtVisionSetpoint() {
-		return visionController.onTarget();
-	}
-
-	public void setVisionAngle(double angle) {
-		visionAngle = angle;
-	}
-
-	public double getVisionAngle() {
-		return visionAngle;
-	}
-
 	private static void voidMethod(double d) {}
 
-	private PIDSource getVisionPIDSource() {
-		return new PIDSource() {
-			@Override
-			public void setPIDSourceType(PIDSourceType pidSource) {}
+	@Override
+	public void addToSmartDashboard(MySmartDashboard dashboard) {
+		String directory = NAME + "/";
 
-			@Override
-			public PIDSourceType getPIDSourceType() {
-				return PIDSourceType.kDisplacement;
-			}
+		// Left
+		String leftDirectory = directory + "Left/";
+		dashboard.addItem(SmartDashboardItem.newNumberSender(	leftDirectory + "Left Encoder Raw Counts",
+																leftEncoder::getRaw));
+		dashboard.addItem(SmartDashboardItem.newNumberSender(leftDirectory + "Left Encoder Counts", leftEncoder::get));
+		dashboard.addItem(SmartDashboardItem.newNumberSender(	leftDirectory + "Left Encoder Distance",
+																leftEncoder::getDistance));
+		dashboard.addItem(SmartDashboardItem.newNumberSender(	leftDirectory + "Left Encoder Setpoint",
+																leftEncoderPID::getSetpoint));
+		dashboard.addItem(SmartDashboardItem.newNumberSender(leftDirectory + "Left Error", leftEncoderPID::getError));
+		dashboard.addItem(SmartDashboardItem.newBooleanSender(	leftDirectory + "At left setpoint?",
+																leftEncoderPID::onTarget));
+		dashboard.addItem(SmartDashboardItem.newNumberSender(leftDirectory + "Left PID Output", leftEncoderPID::get));
+		SmartDashboard.putData("Left PID", leftEncoderPID);
 
-			@Override
-			public double pidGet() {
-				return getVisionAngle();
-			}
-		};
+		// Right
+		String rightDirectory = directory + "Right/";
+		dashboard.addItem(SmartDashboardItem.newNumberSender(	rightDirectory + "Right Encoder Raw Counts",
+																rightEncoder::getRaw));
+		dashboard.addItem(SmartDashboardItem.newNumberSender(	rightDirectory + "Right Encoder Counts",
+																rightEncoder::get));
+		dashboard.addItem(SmartDashboardItem.newNumberSender(	rightDirectory + "Right Encoder Distance",
+																rightEncoder::getDistance));
+		dashboard.addItem(SmartDashboardItem.newNumberSender(	rightDirectory + "Right Encoder Setpoint",
+																rightEncoderPID::getSetpoint));
+		dashboard
+				.addItem(SmartDashboardItem.newNumberSender(rightDirectory + "Right Error", rightEncoderPID::getError));
+		dashboard.addItem(SmartDashboardItem.newBooleanSender(	rightDirectory + "At right setpoint?",
+																rightEncoderPID::onTarget));
+		dashboard
+				.addItem(SmartDashboardItem.newNumberSender(rightDirectory + "Right PID Output", rightEncoderPID::get));
+		SmartDashboard.putData("Right PID", rightEncoderPID);
+
+		// Gyro
+		String gyroDirectory = directory + "gyro/";
+		dashboard.addItem(SmartDashboardItem.newNumberSender(gyroDirectory + "Gyro Degrees", gyro::getAngle));
+		dashboard.addItem(SmartDashboardItem.newNumberSender(gyroDirectory + "Gyro Setpoint", gyroPID::getSetpoint));
+		dashboard.addItem(SmartDashboardItem.newNumberSender(gyroDirectory + "Gyro Error", gyroPID::getError));
+		dashboard.addItem(SmartDashboardItem.newBooleanSender(gyroDirectory + "At gyro setpoint?", gyroPID::onTarget));
+		dashboard.addItem(SmartDashboardItem.newNumberSender(directory + "Gyro PID Output", gyroPID::get));
+		SmartDashboard.putData("Gyro PID", gyroPID);
 	}
 
 }

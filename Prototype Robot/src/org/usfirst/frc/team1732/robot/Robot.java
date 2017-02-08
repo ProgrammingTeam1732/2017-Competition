@@ -7,7 +7,6 @@ import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardItem;
 import org.usfirst.frc.team1732.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team1732.robot.subsystems.Flywheel;
 import org.usfirst.frc.team1732.robot.subsystems.GearIntake;
-import org.usfirst.frc.team1732.robot.subsystems.LightRing;
 import org.usfirst.frc.team1732.robot.subsystems.unused.BallIntake;
 import org.usfirst.frc.team1732.robot.subsystems.unused.Climber;
 import org.usfirst.frc.team1732.robot.subsystems.unused.Feeder;
@@ -27,20 +26,18 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
  */
 public class Robot extends IterativeRobot {
 
-	public static OI oi;
-	public static DriveTrain driveTrain;
-	public static BallIntake ballIntake;
-	public static Climber climber;
-	public static Feeder feeder;
-	public static Flywheel flywheel;
-	public static GearIntake gearIntake;
-	public static OtherShooter otherShooter;
+	public static OI			oi;
+	public static DriveTrain	driveTrain;
+	public static BallIntake	ballIntake;
+	public static Climber		climber;
+	public static Feeder		feeder;
+	public static Flywheel		flywheel;
+	public static GearIntake	gearIntake;
+	public static OtherShooter	otherShooter;
 
-	public static VisionMain visionMain;
-	public static MySmartDashboard dashboard;
-	public static SmartDashboardItem<Double> distanceSetpointReciever;
-	public static SmartDashboardItem<Double> lightRingBrightness;
-	public static LightRing lightRing;
+	public static VisionMain					visionMain;
+	public static MySmartDashboard				dashboard;
+	public static SmartDashboardItem<Double>	distanceSetpointReciever;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -48,65 +45,18 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
-		// NetworkTable.globalDeleteAll();
 		driveTrain = new DriveTrain();
-		// lightRing = new LightRing();
-		// ballIntake = new BallIntake();
-		// climber = new Climber();
-		// feeder = new Feeder();
 		flywheel = new Flywheel();
 		gearIntake = new GearIntake();
-		// otherShooter = new OtherShooter();
 		oi = new OI();
 		visionMain = new VisionMain();
 
-		// Dashboard code
+		// Smartdashboard code
 		dashboard = new MySmartDashboard();
-
-		// Senders
-		dashboard = new MySmartDashboard();
-		dashboard.addItem(
-				SmartDashboardItem.newDoubleSender("Left Encoder Raw Counts", driveTrain::getLeftEncoderRawCount));
-		dashboard.addItem(
-				SmartDashboardItem.newDoubleSender("Right Encoder Raw Counts", driveTrain::getRightEncoderRawCount));
-		dashboard.addItem(SmartDashboardItem.newDoubleSender("Left Encoder Counts", driveTrain::getLeftEncoderCount));
-		dashboard.addItem(SmartDashboardItem.newDoubleSender("Right Encoder Counts", driveTrain::getRightEncoderCount));
-		dashboard.addItem(
-				SmartDashboardItem.newDoubleSender("Left Encoder Distance", driveTrain::getLeftEncoderDistance));
-		dashboard.addItem(
-				SmartDashboardItem.newDoubleSender("Right Encoder Distance", driveTrain::getRightEncoderDistance));
-		dashboard.addItem(
-				SmartDashboardItem.newDoubleSender("Left Encoder Setpoint", driveTrain::getLeftEncoderSetpoint));
-		dashboard.addItem(
-				SmartDashboardItem.newDoubleSender("Right Encoder Setpoint", driveTrain::getRightEncoderSetpoint));
-		dashboard.addItem(SmartDashboardItem.newDoubleSender("Right Error", driveTrain::getRightEncoderError));
-		dashboard.addItem(SmartDashboardItem.newDoubleSender("Left Error", driveTrain::getLeftEncoderError));
-		dashboard.addItem(SmartDashboardItem.newDoubleSender("Inches to gear peg", visionMain::getInchesToGearPeg));
-		dashboard.addItem(SmartDashboardItem.newDoubleSender("Vision Angle", visionMain::getAngleToGearPeg));
-		dashboard.addItem(SmartDashboardItem.newBooleanSender("At angle setpoint", driveTrain::isAtVisionSetpoint));
-		dashboard.addItem(
-				SmartDashboardItem.newBooleanSender("At left encoder setpoint?", driveTrain::isAtLeftEncoderSetpoint));
-		dashboard.addItem(SmartDashboardItem.newBooleanSender("At right encoder setpoint?",
-				driveTrain::isAtRightEncoderSetpoint));
-		dashboard.addItem(
-				SmartDashboardItem.newDoubleSender("Vision PID Angle Output", driveTrain::getVisionControllerOutput));
-		dashboard.addItem(SmartDashboardItem.newDoubleSender("Right Controller Output",
-				driveTrain::getRightEncoderControllerOutput));
-		dashboard.addItem(SmartDashboardItem.newDoubleSender("Left Controller Output",
-				driveTrain::getLeftEncoderControllerOutput));
-
-		// dashboard.addItem(SmartDashboardItem.newDoubleSender("Light Ring
-		// Brighness", lightRing::getBrightness));
-		// Receivers
-		// distanceSetpointReciever = dashboard.addItem(SmartDashboardItem
-		// .newDoubleReciever( "Vision distance setpoint",
-		// DriveWithVision.DEFAULT_TARGET_INCHES,
-		// DriveWithVision::setSmartDashboardDistance));
-		// lightRingBrightness = dashboard
-		// .addItem(SmartDashboardItem.newDoubleReciever("Light Ring
-		// Brightness", .5, lightRing::setBrightness));
-
-		// Init
+		// Add items to smartdashboard
+		driveTrain.addToSmartDashboard(dashboard);
+		visionMain.addToSmartDashboard(dashboard);
+		// Initialize smartdashboard
 		dashboard.init();
 	}
 
@@ -116,49 +66,22 @@ public class Robot extends IterativeRobot {
 		dashboard.run();
 	}
 
-	/**
-	 * This function is called once each time the robot enters Disabled mode.
-	 * You can use it to reset any subsystem information you want to clear when
-	 * the robot is disabled.
-	 */
 	@Override
-	public void disabledInit() {
-
-	}
+	public void disabledInit() {}
 
 	@Override
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
 	}
 
-	/**
-	 * This autonomous (along with the chooser code above) shows how to select
-	 * between different autonomous modes using the dashboard. The sendable
-	 * chooser code works with the Java SmartDashboard. If you prefer the
-	 * LabVIEW Dashboard, remove all of the chooser code and uncomment the
-	 * getString code to get the auto name from the text box below the Gyro
-	 *
-	 * You can add additional auto modes by adding additional commands to the
-	 * chooser code above (like the commented example) or additional comparisons
-	 * to the switch structure below with additional strings & commands.
-	 */
 	@Override
 	public void autonomousInit() {
+		Scheduler.getInstance().removeAll(); // Cancels commands
 
-		/*
-		 * String autoSelected = SmartDashboard.getString("Auto Selector",
-		 * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
-		 * = new MyAutoCommand(); break; case "Default Auto": default:
-		 * autonomousCommand = new ExampleCommand(); break; }
-		 */
-
-		// schedule the autonomous command (example)
+		// Can use a SmartDashboard chooser to select auto command
 		Scheduler.getInstance().add(new VisionPlaceGear());
 	}
 
-	/**
-	 * This function is called periodically during autonomous
-	 */
 	@Override
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
@@ -166,24 +89,17 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void teleopInit() {
-		// This makes sure that the autonomous stops running when
-		// teleop starts running. If you want the autonomous to
-		// continue until interrupted by another command, remove
-		// this line or comment it out.
+		Scheduler.getInstance().removeAll(); // Cancels commands
 	}
 
-	/**
-	 * This function is called periodically during operator control
-	 */
 	@Override
 	public void teleopPeriodic() {
-		// System.out.println("running");
 		Scheduler.getInstance().run();
 	}
 
-	/**
-	 * This function is called periodically during test mode
-	 */
+	@Override
+	public void testInit() {}
+
 	@Override
 	public void testPeriodic() {
 		LiveWindow.run();

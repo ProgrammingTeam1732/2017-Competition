@@ -21,32 +21,26 @@ public class TurnWithGyro extends Command {
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-		Robot.driveTrain.setGyroSetpointDegrees(setpoint);
+		Robot.driveTrain.gyro.reset();
+		Robot.driveTrain.gyroPID.setSetpoint(setpoint);
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		double output = Robot.driveTrain.getGyroControllerOutput();
+		double output = Robot.driveTrain.gyroPID.get();
 		Robot.driveTrain.driveRaw(output, -output);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return Robot.driveTrain.isAtGyroSetpoint();
+		return Robot.driveTrain.gyroPID.onTarget();
 	}
 
 	// Called once after isFinished returns true
 	@Override
 	protected void end() {
 		Robot.driveTrain.driveRaw(0, 0);
-	}
-
-	// Called when another command which requires one or more of the same
-	// subsystems is scheduled to run
-	@Override
-	protected void interrupted() {
-		end();
 	}
 }

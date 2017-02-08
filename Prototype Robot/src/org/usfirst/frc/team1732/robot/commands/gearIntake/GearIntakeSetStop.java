@@ -11,8 +11,6 @@ public class GearIntakeSetStop extends InstantCommand {
 
 	public GearIntakeSetStop() {
 		super();
-		// Use requires() here to declare subsystem dependencies
-		// eg. requires(chassis);
 		requires(Robot.gearIntake);
 	}
 
