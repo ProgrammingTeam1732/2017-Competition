@@ -34,8 +34,8 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 	public static final double	GYRO_VOLTS_PER_DEGREE_PER_SECOND	= 0.007;
 
 	// gyro controllers
-	public final PIDController	gyroPID					= new PIDController(0.1, 0, 0, gyro, DriveTrain::voidMethod);
-	public static final double	GYRO_DEADBAND_DEGREES	= 3;
+	public final PIDController	gyroPID					= new PIDController(-0.01, 0, 0, gyro, DriveTrain::voidMethod);
+	public static final double	GYRO_DEADBAND_DEGREES	= 5;
 
 	// encoders
 	// encoder sensors
@@ -51,7 +51,7 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 																			DriveTrain::voidMethod);
 	public final PIDController	rightEncoderPID			= new PIDController(encoderP, encoderI, encoderD, rightEncoder,
 																			DriveTrain::voidMethod);
-	private static final double	encoderP				= 0.025;
+	private static final double	encoderP				= 0.02;
 	private static final double	encoderI				= 0;
 	private static final double	encoderD				= 0;
 	public static final double	ENCODER_DEADBAND_INCHES	= 5;
@@ -103,7 +103,7 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 		gyro.calibrate();
 		gyro.setPIDSourceType(PIDSourceType.kDisplacement);
 		gyro.setSensitivity(GYRO_VOLTS_PER_DEGREE_PER_SECOND);
-
+		
 		gyroPID.setAbsoluteTolerance(GYRO_DEADBAND_DEGREES);
 		gyroPID.setContinuous(false);
 		gyroPID.setOutputRange(MIN_OUTPUT, MAX_OUTPUT);

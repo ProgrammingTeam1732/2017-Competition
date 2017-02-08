@@ -15,7 +15,7 @@ public class GearIntake extends Subsystem {
 	private final CANTalon		motor			= new CANTalon(RobotMap.GEAR_INTAKE_MOTER_DEVICE_NUMBER);
 	public static final double	OUT_SPEED		= -.5;
 	public static final double	STOP_SPEED		= 0;
-	public static final double	IN_SPEED		= -OUT_SPEED;
+	public static final double	IN_SPEED		= 0.6;
 	private final Solenoid		gearManipulator	= new Solenoid(RobotMap.GEAR_MANIPULATOR_SOLENOID_NUMBER);
 
 	public static final boolean	UP		= false;

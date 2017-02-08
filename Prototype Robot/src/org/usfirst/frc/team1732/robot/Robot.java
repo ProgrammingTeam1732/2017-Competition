@@ -2,6 +2,7 @@
 package org.usfirst.frc.team1732.robot;
 
 import org.usfirst.frc.team1732.robot.autocommands.VisionPlaceGear;
+import org.usfirst.frc.team1732.robot.commands.vision.DriveWithVision;
 import org.usfirst.frc.team1732.robot.smartdashboard.MySmartDashboard;
 import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardItem;
 import org.usfirst.frc.team1732.robot.subsystems.DriveTrain;
@@ -56,6 +57,7 @@ public class Robot extends IterativeRobot {
 		// Add items to smartdashboard
 		driveTrain.addToSmartDashboard(dashboard);
 		visionMain.addToSmartDashboard(dashboard);
+		dashboard.addItem(SmartDashboardItem.newDoubleReciever("Turning P Slope", DriveWithVision.slope, DriveWithVision::setSlope));
 		// Initialize smartdashboard
 		dashboard.init();
 	}
