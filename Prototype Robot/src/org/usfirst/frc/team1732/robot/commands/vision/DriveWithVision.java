@@ -54,16 +54,19 @@ public class DriveWithVision extends Command {
 		double dDistance = distance - targetDistanceInches;
 		double leftSetpoint = dDistance + driveTrain.leftEncoder.getDistance();
 		double rightSetpoint = dDistance + driveTrain.rightEncoder.getDistance();
+
+		double angleSetpoint = angle + driveTrain.gyro.getAngle();
 		// if it still sees it calculate the new output, otherwise keep doing
 		// what it was doing
 		if (visionMain.canSeeGearPeg()) {
 			foundOnce = true;
+			driveTrain.gyroPID.setSetpoint(angleSetpoint);
 			driveTrain.leftEncoderPID.setSetpoint(leftSetpoint);
 			driveTrain.rightEncoderPID.setSetpoint(rightSetpoint);
 		}
-		double visionOutput = visionMain.visionPID.get();
-		double leftOutput = driveTrain.leftEncoderPID.get() - visionOutput;
-		double rightOutput = driveTrain.rightEncoderPID.get() + visionOutput;
+		double angleOutput = driveTrain.gyroPID.get();
+		double leftOutput = driveTrain.leftEncoderPID.get() - angleOutput;
+		double rightOutput = driveTrain.rightEncoderPID.get() + angleOutput;
 		double max = Math.abs(Math.max(leftOutput, rightOutput));
 		if (max >= 1) {
 			leftOutput = leftOutput / max;
@@ -76,8 +79,7 @@ public class DriveWithVision extends Command {
 	@Override
 	protected boolean isFinished() {
 		return driveTrain.rightEncoderPID.onTarget() && driveTrain.leftEncoderPID.onTarget()
-		// && driveTrain.isAtVisionSetpoint()
-				&& foundOnce;
+				&& driveTrain.gyroPID.onTarget() && foundOnce;
 	}
 
 	@Override
