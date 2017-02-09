@@ -1,7 +1,7 @@
 
 package org.usfirst.frc.team1732.robot;
 
-import org.usfirst.frc.team1732.robot.autocommands.VisionPlaceGear;
+import org.usfirst.frc.team1732.robot.autocommands.Score10BallsAndGear;
 import org.usfirst.frc.team1732.robot.commands.vision.DriveWithVision;
 import org.usfirst.frc.team1732.robot.smartdashboard.MySmartDashboard;
 import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardItem;
@@ -59,11 +59,11 @@ public class Robot extends IterativeRobot {
 		visionMain.addToSmartDashboard(dashboard);
 		dashboard.addItem(SmartDashboardItem.newDoubleReciever(	"Turning P Slope", DriveWithVision.slope,
 																DriveWithVision::setSlope));
-		dashboard.addItem(SmartDashboardItem.newDoubleReciever(	"Turning P Lower", DriveWithVision.slope,
+		dashboard.addItem(SmartDashboardItem.newDoubleReciever(	"Turning P Lower", DriveWithVision.lower,
 																DriveWithVision::setLower));
-		dashboard.addItem(SmartDashboardItem.newDoubleReciever(	"Turning P Upper", DriveWithVision.slope,
+		dashboard.addItem(SmartDashboardItem.newDoubleReciever(	"Turning P Upper", DriveWithVision.upper,
 																DriveWithVision::setUpper));
-		dashboard.addItem(SmartDashboardItem.newDoubleReciever(	"Turning P Middle", DriveWithVision.slope,
+		dashboard.addItem(SmartDashboardItem.newDoubleReciever(	"Turning P Middle", DriveWithVision.middle,
 																DriveWithVision::setMiddle));
 		// Initialize smartdashboard
 		dashboard.init();
@@ -88,7 +88,7 @@ public class Robot extends IterativeRobot {
 		Scheduler.getInstance().removeAll(); // Cancels commands
 
 		// Can use a SmartDashboard chooser to select auto command
-		Scheduler.getInstance().add(new VisionPlaceGear());
+		Scheduler.getInstance().add(new Score10BallsAndGear(true));
 	}
 
 	@Override

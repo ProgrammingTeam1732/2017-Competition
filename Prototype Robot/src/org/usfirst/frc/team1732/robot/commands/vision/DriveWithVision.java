@@ -54,6 +54,7 @@ public class DriveWithVision extends Command {
 	public static double	upper	= 0.04;
 	public static double	slope	= 0.1;
 
+	// Add a safeguard to make sure we don't get stuck
 	// public static double slope = 0.03/75;
 	@Override
 	protected void execute() {

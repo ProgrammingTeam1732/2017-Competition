@@ -114,7 +114,11 @@ public class VisionMain implements SmartDashboardGroup {
 	public double getInchesToGearPeg() {
 		if (gearTarget == null)
 			return -1;
-		return gearTarget.getHorizontalDistance(GearTarget.GEAR_TARGET_WIDTH_INCHES, HORIZONTAL_FIELD_OF_VIEW,
+		// return gearTarget.getVerticalDistance(
+		// GearTarget.GEAR_TARGET_HEIGHT_INCHES, VERTICAL_FIELD_OF_VIEW,
+		// IMAGE_HEIGHT);
+
+		return gearTarget.getVerticalDistance(	GearTarget.GEAR_TARGET_HEIGHT_INCHES, HORIZONTAL_FIELD_OF_VIEW,
 												IMAGE_WIDTH);
 	}
 
