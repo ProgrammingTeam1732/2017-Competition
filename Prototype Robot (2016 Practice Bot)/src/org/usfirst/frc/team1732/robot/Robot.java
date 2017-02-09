@@ -5,13 +5,6 @@ import org.usfirst.frc.team1732.robot.smartdashboard.MySmartDashboard;
 import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardItem;
 import org.usfirst.frc.team1732.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team1732.robot.subsystems.Flywheel;
-import org.usfirst.frc.team1732.robot.subsystems.motors.Motor1;
-import org.usfirst.frc.team1732.robot.subsystems.motors.Motor2;
-import org.usfirst.frc.team1732.robot.subsystems.unused.BallIntake;
-import org.usfirst.frc.team1732.robot.subsystems.unused.Climber;
-import org.usfirst.frc.team1732.robot.subsystems.unused.Feeder;
-import org.usfirst.frc.team1732.robot.subsystems.unused.GearIntake;
-import org.usfirst.frc.team1732.robot.subsystems.unused.OtherShooter;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -29,15 +22,8 @@ public class Robot extends IterativeRobot {
 
 	public static OI			oi;
 	public static DriveTrain	driveTrain;
-	public static Motor1		motor1;
-	public static Motor2		motor2;
-
-	public static BallIntake	ballIntake;
-	public static Climber		climber;
-	public static Feeder		feeder;
+	
 	public static Flywheel		flywheel;
-	public static GearIntake	gearIntake;
-	public static OtherShooter	otherShooter;
 
 	public static MySmartDashboard dashboard;
 
@@ -67,11 +53,11 @@ public class Robot extends IterativeRobot {
 		// flywheel.getD(), flywheel::setD));
 
 		// Senders
-		dashboard.addItem(SmartDashboardItem.newDoubleSender("Flywheel Speed (\"RPM\\CPM\")", flywheel::getSpeed));
-		dashboard.addItem(SmartDashboardItem.newDoubleSender("Flywheel Enc Vel", flywheel::getEncVelocity));
-		dashboard.addItem(SmartDashboardItem.newDoubleSender("Flywheel Output", flywheel::getMotorOutput));
-		dashboard.addItem(SmartDashboardItem.newDoubleSender("Flywheel Error", flywheel::getError));
-		dashboard.addItem(SmartDashboardItem.newDoubleSender("Flywheel Voltage", flywheel::getOutputVoltage));
+		dashboard.addItem(SmartDashboardItem.newNumberSender("Flywheel Speed (\"RPM\\CPM\")", flywheel::getSpeed));
+		dashboard.addItem(SmartDashboardItem.newNumberSender("Flywheel Enc Vel", flywheel::getEncVelocity));
+		dashboard.addItem(SmartDashboardItem.newNumberSender("Flywheel Output", flywheel::getMotorOutput));
+		dashboard.addItem(SmartDashboardItem.newNumberSender("Flywheel Error", flywheel::getError));
+		dashboard.addItem(SmartDashboardItem.newNumberSender("Flywheel Voltage", flywheel::getOutputVoltage));
 
 		dashboard.init();
 	}
