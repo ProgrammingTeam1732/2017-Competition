@@ -41,18 +41,19 @@ public class Robot extends IterativeRobot {
 		// Dashboard code
 		dashboard = new MySmartDashboard();
 		// Receivers
-		dashboard.addItem(SmartDashboardItem.newDoubleReciever(	"Set flywheel motor speed", 0.0,
-																Flywheel::SetSmartDashboardSpeed));
-		dashboard.addItem(SmartDashboardItem.newDoubleReciever(	"Set Flywheel Setpoint", flywheel.getSetpoint(),
-																flywheel::setSetpoint));
-		// dashboard.addItem(SmartDashboardItem.newDoubleReciever("Flywheel P",
+//		dashboard.addItem(SmartDashboardItem.newDoubleReciever(	"Set flywheel motor speed", 0.0,
+//																Flywheel::SetSmartDashboardSpeed));
+//		dashboard.addItem(SmartDashboardItem.newDoubleReciever(	"Set Flywheel Setpoint", flywheel.getSetpoint(),
+//																flywheel::setSetpoint));
+//		// dashboard.addItem(SmartDashboardItem.newDoubleReciever("Flywheel P",
 		// flywheel.getP(), flywheel::setP));
 		// dashboard.addItem(SmartDashboardItem.newDoubleReciever("Flywheel I",
 		// flywheel.getI(), flywheel::setI));
 		// dashboard.addItem(SmartDashboardItem.newDoubleReciever("Flywheel D",
 		// flywheel.getD(), flywheel::setD));
-
-		// Senders
+		dashboard.addItem(SmartDashboardItem.newDoubleReciever("Set flywheel speed", 0.0, d -> flywheel.SetSmartDashboardSpeed(d)));
+		dashboard.addItem(SmartDashboardItem.newDoubleReciever("Set flywheel setpoint", Flywheel.COUNTS_PER_SECOND_TARGET, d -> flywheel.setSetpoint(d)));
+//		// Senders
 		dashboard.addItem(SmartDashboardItem.newNumberSender("Flywheel Speed (\"RPM\\CPM\")", flywheel::getSpeed));
 		dashboard.addItem(SmartDashboardItem.newNumberSender("Flywheel Enc Vel", flywheel::getEncVelocity));
 		dashboard.addItem(SmartDashboardItem.newNumberSender("Flywheel Output", flywheel::getMotorOutput));
