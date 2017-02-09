@@ -57,7 +57,14 @@ public class Robot extends IterativeRobot {
 		// Add items to smartdashboard
 		driveTrain.addToSmartDashboard(dashboard);
 		visionMain.addToSmartDashboard(dashboard);
-		dashboard.addItem(SmartDashboardItem.newDoubleReciever("Turning P Slope", DriveWithVision.slope, DriveWithVision::setSlope));
+		dashboard.addItem(SmartDashboardItem.newDoubleReciever(	"Turning P Slope", DriveWithVision.slope,
+																DriveWithVision::setSlope));
+		dashboard.addItem(SmartDashboardItem.newDoubleReciever(	"Turning P Lower", DriveWithVision.slope,
+																DriveWithVision::setLower));
+		dashboard.addItem(SmartDashboardItem.newDoubleReciever(	"Turning P Upper", DriveWithVision.slope,
+																DriveWithVision::setUpper));
+		dashboard.addItem(SmartDashboardItem.newDoubleReciever(	"Turning P Middle", DriveWithVision.slope,
+																DriveWithVision::setMiddle));
 		// Initialize smartdashboard
 		dashboard.init();
 	}

@@ -48,32 +48,38 @@ public class DriveWithVision extends Command {
 	}
 
 	private double previousAngleOutput = 0;
-	public static double slope = 0.03/75;
+
+	public static double	middle	= 35;
+	public static double	lower	= 0.01;
+	public static double	upper	= 0.04;
+	public static double	slope	= 0.1;
+
+	// public static double slope = 0.03/75;
 	@Override
 	protected void execute() {
 
-//		double angle = visionMain.getAngleToGearPeg();
+		// double angle = visionMain.getAngleToGearPeg();
 		double distance = visionMain.getInchesToGearPeg();
-		
-		double P = 0.01 + slope*distance;
-		driveTrain.leftEncoderPID.setPID(P, 0, 0);
-		driveTrain.rightEncoderPID.setPID(P, 0, 0);
 
 		double dDistance = distance - targetDistanceInches;
 		double leftSetpoint = dDistance + driveTrain.leftEncoder.getDistance();
 		double rightSetpoint = dDistance + driveTrain.rightEncoder.getDistance();
 
-//		double angleSetpoint = angle + driveTrain.gyro.getAngle();
+		// double angleSetpoint = angle + driveTrain.gyro.getAngle();
 		// if it still sees it calculate the new output, otherwise keep doing
 		// what it was doing
 		if (visionMain.canSeeGearPeg()) {
+			// double P = 0.01 + slope * distance;
+			double P = lower + (upper - lower) / (1 + Math.exp(-slope * (distance - middle)));
+			driveTrain.leftEncoderPID.setPID(P, 0, 0);
+			driveTrain.rightEncoderPID.setPID(P, 0, 0);
 			foundOnce = true;
 			previousAngleOutput = Robot.visionMain.visionPID.get();
-//			driveTrain.gyroPID.setSetpoint(angleSetpoint);
+			// driveTrain.gyroPID.setSetpoint(angleSetpoint);
 			driveTrain.leftEncoderPID.setSetpoint(leftSetpoint);
 			driveTrain.rightEncoderPID.setSetpoint(rightSetpoint);
 		}
-//		double angleOutput = driveTrain.gyroPID.get();
+		// double angleOutput = driveTrain.gyroPID.get();
 		double leftOutput = driveTrain.leftEncoderPID.get() - previousAngleOutput;
 		double rightOutput = driveTrain.rightEncoderPID.get() + previousAngleOutput;
 		double max = Math.abs(Math.max(leftOutput, rightOutput));
@@ -88,11 +94,23 @@ public class DriveWithVision extends Command {
 	@Override
 	protected boolean isFinished() {
 		return foundOnce && driveTrain.rightEncoderPID.onTarget() && driveTrain.leftEncoderPID.onTarget();
-//				&& driveTrain.gyroPID.onTarget() && 
+		// && driveTrain.gyroPID.onTarget() &&
 	}
-	
-	public static void setSlope(double s) {
-		slope = s;
+
+	public static void setSlope(double slope) {
+		DriveWithVision.slope = slope;
+	}
+
+	public static void setMiddle(double middle) {
+		DriveWithVision.middle = middle;
+	}
+
+	public static void setLower(double lower) {
+		DriveWithVision.lower = lower;
+	}
+
+	public static void setUpper(double upper) {
+		DriveWithVision.upper = upper;
 	}
 
 	@Override
