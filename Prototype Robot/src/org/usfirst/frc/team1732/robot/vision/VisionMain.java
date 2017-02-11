@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class VisionMain implements SmartDashboardGroup {
 
-	public static final double	HORIZONTAL_FIELD_OF_VIEW	= 70;
+	public static final double	HORIZONTAL_FIELD_OF_VIEW	= 68;
 	public static final double	VERTICAL_FIELD_OF_VIEW		= 47;
 
 	// double check

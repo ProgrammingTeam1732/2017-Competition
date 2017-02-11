@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class VisionPlaceGear extends CommandGroup {
 
 	public VisionPlaceGear() {
-		addSequential(new DriveWithVision(15));
+		addSequential(new DriveWithVision(10));
 		// addSequential(new TurnWithVision(0));
 		// addSequential(new
 		// Drive1DEncoders(Robot.visionMain.getInchesToGearPeg()));

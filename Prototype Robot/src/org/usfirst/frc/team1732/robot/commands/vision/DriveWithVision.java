@@ -3,8 +3,6 @@ package org.usfirst.frc.team1732.robot.commands.vision;
 import static org.usfirst.frc.team1732.robot.Robot.driveTrain;
 import static org.usfirst.frc.team1732.robot.Robot.visionMain;
 
-import org.usfirst.frc.team1732.robot.Robot;
-
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -24,6 +22,7 @@ public class DriveWithVision extends Command {
 		// eg. requires(chassis);
 		requires(driveTrain);
 		targetDistanceInches = aTargetDistanceInches;
+		// visionMain.visionPID.setPID(0.01, 0, 0);
 	}
 
 	public static void setSmartDashboardDistance(double distance) {
@@ -49,10 +48,10 @@ public class DriveWithVision extends Command {
 
 	private double previousAngleOutput = 0;
 
-	public static double	middle	= 35;
-	public static double	lower	= 0.01;
-	public static double	upper	= 0.04;
-	public static double	slope	= 0.1;
+	public static double	middle	= 70;
+	public static double	lower	= 0.0075;	// 0.01
+	public static double	upper	= 0.025;
+	public static double	slope	= 0.0001;	// 0.01
 
 	// Add a safeguard to make sure we don't get stuck
 	// public static double slope = 0.03/75;
@@ -70,12 +69,12 @@ public class DriveWithVision extends Command {
 		// if it still sees it calculate the new output, otherwise keep doing
 		// what it was doing
 		if (visionMain.canSeeGearPeg()) {
-			// double P = 0.01 + slope * distance;
-			double P = lower + (upper - lower) / (1 + Math.exp(-slope * (distance - middle)));
-			driveTrain.leftEncoderPID.setPID(P, 0, 0);
-			driveTrain.rightEncoderPID.setPID(P, 0, 0);
+			double P = lower + slope * distance;
+			// double P = lower + (upper - lower) / (1 + Math.exp(-slope *
+			// (distance - middle)));
+			visionMain.visionPID.setPID(P, 0, 0);
 			foundOnce = true;
-			previousAngleOutput = Robot.visionMain.visionPID.get();
+			previousAngleOutput = visionMain.visionPID.get();
 			// driveTrain.gyroPID.setSetpoint(angleSetpoint);
 			driveTrain.leftEncoderPID.setSetpoint(leftSetpoint);
 			driveTrain.rightEncoderPID.setSetpoint(rightSetpoint);
@@ -94,7 +93,7 @@ public class DriveWithVision extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return foundOnce && driveTrain.rightEncoderPID.onTarget() && driveTrain.leftEncoderPID.onTarget();
+		return foundOnce && (driveTrain.isErrorNegative() || driveTrain.encodersOnTarget());
 		// && driveTrain.gyroPID.onTarget() &&
 	}
 

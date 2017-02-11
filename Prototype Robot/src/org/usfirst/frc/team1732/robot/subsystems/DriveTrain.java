@@ -1,5 +1,7 @@
 package org.usfirst.frc.team1732.robot.subsystems;
 
+import static org.usfirst.frc.team1732.robot.Robot.driveTrain;
+
 import org.usfirst.frc.team1732.robot.RobotMap;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveWithJoysticks;
 import org.usfirst.frc.team1732.robot.smartdashboard.MySmartDashboard;
@@ -36,7 +38,7 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 	// gyro controllers
 	public final PIDController	gyroPID					= new PIDController(gyroP, gyroI, gyroD, gyro,
 																			DriveTrain::voidMethod);
-	public static final double	GYRO_DEADBAND_DEGREES	= 5;
+	public static final double	GYRO_DEADBAND_DEGREES	= 3;
 	public static final double	gyroP					= -0.01;
 	public static final double	gyroI					= 0;
 	public static final double	gyroD					= 0;
@@ -58,10 +60,10 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 	public static final double	encoderP				= 0.02;
 	public static final double	encoderI				= 0;
 	public static final double	encoderD				= 0;
-	public static final double	ENCODER_DEADBAND_INCHES	= 5;
+	public static final double	ENCODER_DEADBAND_INCHES	= 4;
 
 	// Min and max output
-	public static final double	MAX_OUTPUT	= 0.5;
+	public static final double	MAX_OUTPUT	= 1;
 	public static final double	MIN_OUTPUT	= -MAX_OUTPUT;
 
 	public static final String NAME = "Drive Train";
@@ -187,6 +189,18 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 		dashboard.addItem(SmartDashboardItem.newBooleanSender(gyroDirectory + "At gyro setpoint?", gyroPID::onTarget));
 		dashboard.addItem(SmartDashboardItem.newNumberSender(directory + "Gyro PID Output", gyroPID::get));
 		SmartDashboard.putData("Gyro PID", gyroPID);
+	}
+
+	public void resetGyroPID() {
+		gyroPID.setPID(gyroP, gyroI, gyroD);
+	}
+
+	public boolean isErrorNegative() {
+		return driveTrain.rightEncoderPID.getError() < 0 && driveTrain.leftEncoderPID.getError() < 0;
+	}
+
+	public boolean encodersOnTarget() {
+		return driveTrain.rightEncoderPID.onTarget() && driveTrain.leftEncoderPID.onTarget();
 	}
 
 }
