@@ -23,7 +23,7 @@ public class RobotMap {
 	public static final int	RIGHT_2_MOTOR_DEVICE_NUMBER			= 20;
 
 	// Flywheel
-	public static final int FLYWHEEL_MOTER_DEVICE_NUMBER = 10;
+	public static final int FLYWHEEL_MOTER_DEVICE_NUMBER = 11;
 
 	// Other shooter
 	public static final int OTHER_SHOOTER_MOTER_DEVICE_NUMBER = 0;

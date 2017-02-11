@@ -49,9 +49,9 @@ public class DriveWithVision extends Command {
 	private double previousAngleOutput = 0;
 
 	public static double	middle	= 70;
-	public static double	lower	= 0.0075;	// 0.01
+	public static double	lower	= 0.0075;	// 0.001
 	public static double	upper	= 0.025;
-	public static double	slope	= 0.0001;	// 0.01
+	public static double	slope	= 0.0001;	// 0.001
 
 	// Add a safeguard to make sure we don't get stuck
 	// public static double slope = 0.03/75;

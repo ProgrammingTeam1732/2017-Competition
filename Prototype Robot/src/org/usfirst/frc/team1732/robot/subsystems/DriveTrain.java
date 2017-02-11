@@ -63,7 +63,7 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 	public static final double	ENCODER_DEADBAND_INCHES	= 4;
 
 	// Min and max output
-	public static final double	MAX_OUTPUT	= 1;
+	public static final double	MAX_OUTPUT	= 0.5;
 	public static final double	MIN_OUTPUT	= -MAX_OUTPUT;
 
 	public static final String NAME = "Drive Train";
