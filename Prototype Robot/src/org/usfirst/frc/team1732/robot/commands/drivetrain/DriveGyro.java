@@ -7,15 +7,17 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class Drive1DTime extends Command {
-	private double	left;
-	private double	right;
+public class DriveGyro extends Command {
 
-	public Drive1DTime(double sec, double leftSpeed, double rightSpeed) {
+	private final double	left;
+	private final double	right;
+	private final double	setpoint;
+
+	public DriveGyro(double angleSetpoint, double leftSpeed, double rightSpeed) {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
 		requires(driveTrain);
-		setTimeout(sec);
+		setpoint = angleSetpoint;
 		left = leftSpeed;
 		right = rightSpeed;
 	}
@@ -23,6 +25,12 @@ public class Drive1DTime extends Command {
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
+		driveTrain.gyro.reset();
+		double p = driveTrain.gyroP;
+		double i = driveTrain.gyroI;
+		double d = driveTrain.gyroD;
+		driveTrain.gyroPID.setPID(p, i, d);
+		driveTrain.gyroPID.setSetpoint(setpoint);
 		driveTrain.driveRaw(left, right);
 	}
 
@@ -33,7 +41,7 @@ public class Drive1DTime extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return isTimedOut();
+		return driveTrain.gyroPID.onTarget();
 	}
 
 	// Called once after isFinished returns true
@@ -42,4 +50,8 @@ public class Drive1DTime extends Command {
 		driveTrain.driveRaw(0, 0);
 	}
 
+	// Called when another command which requires one or more of the same
+	// subsystems is scheduled to run
+	@Override
+	protected void interrupted() {}
 }

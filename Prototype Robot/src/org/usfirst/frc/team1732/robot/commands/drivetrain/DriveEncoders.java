@@ -7,16 +7,16 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class Drive1DEncoders extends Command {
+public class DriveEncoders extends Command {
 
 	private final double	leftDistance;
 	private final double	rightDistance;
 
-	public Drive1DEncoders(double distanceInches) {
+	public DriveEncoders(double distanceInches) {
 		this(distanceInches, distanceInches);
 	}
 
-	public Drive1DEncoders(double leftInches, double rightInches) {
+	public DriveEncoders(double leftInches, double rightInches) {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
 		requires(driveTrain);
