@@ -21,15 +21,17 @@ public class Arduino {
 		}
 	}
 
+	private long	startTime	= System.currentTimeMillis();
+	private long	maxWait		= 500;
+
 	public String getData() {
-		String s  = "";
+		String s = "";
 		try {
 			s = this.serial.readString();
-			while (!s.contains("\n")) {
+			startTime = System.currentTimeMillis();
+			while (System.currentTimeMillis() - startTime < maxWait && !s.contains("\n")) {
 				s += this.serial.readString();
-				// System.out.println(s);
 			}
-			// System.out.println(s);
 			return s;
 		} catch (Exception e) {
 			System.out.println("something went wrong, " + e.getMessage());

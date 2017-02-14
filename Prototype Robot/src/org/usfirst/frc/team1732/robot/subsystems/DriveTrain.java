@@ -39,8 +39,8 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 	public final PIDController	gyroPID					= new PIDController(gyroP, gyroI, gyroD, gyro,
 																			DriveTrain::voidMethod);
 	public static final double	GYRO_DEADBAND_DEGREES	= 3;
-	public static final double	gyroP					= -0.01;
-	public static final double	gyroI					= 0;
+	public static final double	gyroP					= 0.02;
+	public static final double	gyroI					= 0.2;
 	public static final double	gyroD					= 0;
 
 	// encoders
@@ -57,10 +57,10 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 																			DriveTrain::voidMethod);
 	public final PIDController	rightEncoderPID			= new PIDController(encoderP, encoderI, encoderD, rightEncoder,
 																			DriveTrain::voidMethod);
-	public static final double	encoderP				= 0.02;
+	public static final double	encoderP				= 0.03;
 	public static final double	encoderI				= 0;
 	public static final double	encoderD				= 0;
-	public static final double	ENCODER_DEADBAND_INCHES	= 4;
+	public static final double	ENCODER_DEADBAND_INCHES	= 6;
 
 	// Min and max output
 	public static final double	MAX_OUTPUT	= 0.5;
@@ -201,6 +201,20 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 
 	public boolean encodersOnTarget() {
 		return driveTrain.rightEncoderPID.onTarget() && driveTrain.leftEncoderPID.onTarget();
+	}
+
+	public void resetEncoderPID() {
+		leftEncoderPID.setPID(encoderP, encoderI, encoderD);
+		rightEncoderPID.setPID(encoderP, encoderI, encoderD);
+	}
+
+	public void setBrakeMode(boolean brake) {
+		rightMaster.enableBrakeMode(brake);
+		right1.enableBrakeMode(brake);
+		right2.enableBrakeMode(brake);
+		leftMaster.enableBrakeMode(brake);
+		left1.enableBrakeMode(brake);
+		left2.enableBrakeMode(brake);
 	}
 
 }

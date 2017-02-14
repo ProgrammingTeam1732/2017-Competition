@@ -49,15 +49,14 @@ public class DriveWithVision extends Command {
 	private double previousAngleOutput = 0;
 
 	public static double	middle	= 70;
-	public static double	lower	= 0.0075;	// 0.001
+	public static double	lower	= 0.003;	// 0.001
 	public static double	upper	= 0.025;
-	public static double	slope	= 0.0001;	// 0.001
+	public static double	slope	= 2.0E-4;	// 0.03 / 75;// 0.0001;
 
 	// Add a safeguard to make sure we don't get stuck
 	// public static double slope = 0.03/75;
 	@Override
 	protected void execute() {
-
 		// double angle = visionMain.getAngleToGearPeg();
 		double distance = visionMain.getInchesToGearPeg();
 
@@ -69,9 +68,14 @@ public class DriveWithVision extends Command {
 		// if it still sees it calculate the new output, otherwise keep doing
 		// what it was doing
 		if (visionMain.canSeeGearPeg()) {
-			double P = lower + slope * distance;
+			// double P = lower + slope * distance;
 			// double P = lower + (upper - lower) / (1 + Math.exp(-slope *
 			// (distance - middle)));
+			// double distance = visionMain.getInchesToGearPeg();
+
+			double P = lower + slope * distance;
+			// driveTrain.leftEncoderPID.setPID(P, 0, 0);
+			// driveTrain.rightEncoderPID.setPID(P, 0, 0);
 			visionMain.visionPID.setPID(P, 0, 0);
 			foundOnce = true;
 			previousAngleOutput = visionMain.visionPID.get();
@@ -116,6 +120,9 @@ public class DriveWithVision extends Command {
 	@Override
 	protected void end() {
 		driveTrain.driveRaw(0, 0);
+		driveTrain.resetEncoderPID();
+		driveTrain.resetGyroPID();
+		visionMain.resetPID();
 	}
 
 }

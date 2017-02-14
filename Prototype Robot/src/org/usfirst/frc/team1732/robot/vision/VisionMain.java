@@ -25,9 +25,13 @@ public class VisionMain implements SmartDashboardGroup {
 	private Rectangle[]		rectangles	= new Rectangle[0];
 
 	// Vision Angle Stuff
-	public final PIDSource		visionAngleSource		= this.getVisionPIDSource();
-	public final PIDController	visionPID				= new PIDController(0.015, 0, 0, visionAngleSource,
-																			VisionMain::voidMethod);
+	public final PIDSource		visionAngleSource	= this.getVisionPIDSource();
+	public final PIDController	visionPID			= new PIDController(visionP, visionI, visionD, visionAngleSource,
+																		VisionMain::voidMethod);
+	public static final double	visionP				= 0.02;
+	public static final double	visionI				= 0;
+	public static final double	visionD				= 0;
+
 	public static final double	VISION_DEADBAND_DEGREES	= 3;
 	public static final double	MAX_OUTPUT				= 0.5;
 	public static final double	MIN_OUTPUT				= -MAX_OUTPUT;
@@ -85,7 +89,7 @@ public class VisionMain implements SmartDashboardGroup {
 							rectangles[j] = new Rectangle(	Integer.parseInt(data[1]), Integer.parseInt(data[3]),
 															Integer.parseInt(data[5]), Integer.parseInt(data[7]),
 															Integer.parseInt(data[9]));
-							System.out.println(j + ": " + rectangles[j]);
+							// System.out.println(j + ": " + rectangles[j]);
 						} catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {}
 					}
 				}
@@ -176,5 +180,9 @@ public class VisionMain implements SmartDashboardGroup {
 																visionPID::onTarget));
 		dashboard.addItem(SmartDashboardItem.newNumberSender(visionDirectory + "Vision PID Output", visionPID::get));
 		SmartDashboard.putData("Vision PID", visionPID);
+	}
+
+	public void resetPID() {
+		visionPID.setPID(visionP, visionI, visionD);
 	}
 }

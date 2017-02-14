@@ -31,7 +31,7 @@ public class DriveGyro extends Command {
 		double d = driveTrain.gyroD;
 		driveTrain.gyroPID.setPID(p, i, d);
 		driveTrain.gyroPID.setSetpoint(setpoint);
-		driveTrain.driveRaw(left, right);
+		driveTrain.driveRawNoLimit(left, right);
 	}
 
 	// Called repeatedly when this Command is scheduled to run

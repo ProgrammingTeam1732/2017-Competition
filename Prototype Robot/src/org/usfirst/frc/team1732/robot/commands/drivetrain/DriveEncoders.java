@@ -38,7 +38,7 @@ public class DriveEncoders extends Command {
 	protected void execute() {
 		double leftOutput = driveTrain.leftEncoderPID.get();
 		double rightOutput = driveTrain.rightEncoderPID.get();
-		driveTrain.driveRaw(leftOutput, rightOutput);
+		driveTrain.driveRawNoLimit(leftOutput, rightOutput);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

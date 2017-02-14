@@ -15,15 +15,15 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class VisionPlaceGear extends CommandGroup {
 
 	public VisionPlaceGear() {
-		addSequential(new DriveWithVision(10));
-		// addSequential(new TurnWithVision(0));
-		// addSequential(new
-		// Drive1DEncoders(Robot.visionMain.getInchesToGearPeg()));
+		addSequential(new DriveWithVision(15));
 		addSequential(new Wait(0.1));
-		addParallel(new DriveEncoders(-40, -40));
-		// addSequential(new Wait(0.0.));
 		addSequential(new GearIntakeSetDown());
-		addSequential(new GearIntakeOutTime(2));
-		addSequential(new GearIntakeSetUp());
+		addParallel(new CommandGroup() {
+			{
+				addSequential(new GearIntakeOutTime(1));
+				addSequential(new GearIntakeSetUp());
+			}
+		});
+		addSequential(new DriveEncoders(-40, -40));
 	}
 }
