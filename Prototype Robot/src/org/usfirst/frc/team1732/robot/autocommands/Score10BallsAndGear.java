@@ -32,6 +32,6 @@ public class Score10BallsAndGear extends CommandGroup {
 		addSequential(new DriveEncoders(-15, -15));
 		addSequential(new DriveGyro(-150, -1, -0.2));
 		addSequential(new DriveEncoders(-15, -15));
-		addSequential(new VisionPlaceGear());
+		addSequential(new VisionPlaceGear(-40));
 	}
 }

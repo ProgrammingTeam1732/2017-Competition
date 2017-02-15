@@ -1,6 +1,8 @@
 package org.usfirst.frc.team1732.robot.autocommands;
 
+import org.usfirst.frc.team1732.robot.commands.Wait;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveEncoders;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveUntilEncoders;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.TurnWithGyro;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -11,12 +13,11 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class ScoreGearAnd10Balls extends CommandGroup {
 
 	public ScoreGearAnd10Balls() {
-		// addSequential(new SetDriveTrainBrakeMode(true));
 		addSequential(new ScoreSideGearLeft());
-		addSequential(new TurnWithGyro(165));
-		// addSequential(new SetDriveTrainBrakeMode(false));
-		// addSequential(new DriveUntilEncoders(70, 1, 1));
-		addSequential(new DriveEncoders(90));
-		// addSequential(new SetDriveTrainBrakeMode(true));
+		addSequential(new Wait(0.1));
+		addSequential(new TurnWithGyro(125));
+		addSequential(new Wait(0.2));
+		addSequential(new DriveUntilEncoders(70, 0.7, 0.7, false));
+		addSequential(new DriveEncoders(40));
 	}
 }

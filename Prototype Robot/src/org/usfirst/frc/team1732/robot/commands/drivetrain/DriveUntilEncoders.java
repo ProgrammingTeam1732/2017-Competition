@@ -12,12 +12,14 @@ public class DriveUntilEncoders extends Command {
 	private final double	setpointInches;
 	private final double	left;
 	private final double	right;
+	private boolean			stop;
 
-	public DriveUntilEncoders(double distanceInches, double leftSpeed, double rightSpeed) {
+	public DriveUntilEncoders(double distanceInches, double leftSpeed, double rightSpeed, boolean stop) {
 		requires(Robot.driveTrain);
 		setpointInches = distanceInches;
 		left = leftSpeed;
 		right = rightSpeed;
+		this.stop = stop;
 	}
 
 	// Called just before this Command runs the first time
@@ -44,6 +46,7 @@ public class DriveUntilEncoders extends Command {
 	// Called once after isFinished returns true
 	@Override
 	protected void end() {
-		Robot.driveTrain.driveRaw(0, 0);
+		if (stop)
+			Robot.driveTrain.driveRaw(0, 0);
 	}
 }

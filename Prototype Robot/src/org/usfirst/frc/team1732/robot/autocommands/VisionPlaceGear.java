@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  */
 public class VisionPlaceGear extends CommandGroup {
 
-	public VisionPlaceGear() {
+	public VisionPlaceGear(double driveBackDistance) {
 		addSequential(new DriveWithVision(15));
 		addSequential(new Wait(0.1));
 		addSequential(new GearIntakeSetDown());
@@ -24,6 +24,6 @@ public class VisionPlaceGear extends CommandGroup {
 				addSequential(new GearIntakeSetUp());
 			}
 		});
-		addSequential(new DriveEncoders(-40, -40));
+		addSequential(new DriveEncoders(driveBackDistance, driveBackDistance));
 	}
 }
