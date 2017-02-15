@@ -26,12 +26,8 @@ public class DriveGyro extends Command {
 	@Override
 	protected void initialize() {
 		driveTrain.gyro.reset();
-		double p = driveTrain.gyroP;
-		double i = driveTrain.gyroI;
-		double d = driveTrain.gyroD;
-		driveTrain.gyroPID.setPID(p, i, d);
 		driveTrain.gyroPID.setSetpoint(setpoint);
-		driveTrain.driveRawNoLimit(left, right);
+		driveTrain.driveRaw(left, right);
 	}
 
 	// Called repeatedly when this Command is scheduled to run

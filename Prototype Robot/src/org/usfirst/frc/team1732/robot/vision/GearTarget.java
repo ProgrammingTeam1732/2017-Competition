@@ -51,7 +51,7 @@ public class GearTarget extends VisionTarget {
 	}
 
 	public static GearTarget getBestVisionTarget(Rectangle[] rectangles) {
-		if (rectangles.length < 2) {
+		if (rectangles == null || rectangles.length < 2) {
 			return null;
 		} else {// else if (rectangles.length > 1) {
 			GearTarget bestTarget = new GearTarget(rectangles[0], rectangles[1]);
@@ -62,7 +62,7 @@ public class GearTarget extends VisionTarget {
 						bestTarget = possiblePair;
 				}
 			}
-			//System.out.println("Double score: " + bestTarget.getScore());
+			// System.out.println("Double score: " + bestTarget.getScore());
 			if (bestTarget.getScore() > MIN_TOTAL_SCORE) {
 				return bestTarget;
 			} else {

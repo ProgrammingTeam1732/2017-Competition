@@ -24,7 +24,9 @@ public class TurnWithGyro extends Command {
 		System.out.println("Running turn");
 		Robot.driveTrain.gyro.reset();
 		// Robot.driveTrain.resetGyroPID();
+		Robot.driveTrain.clearEncoderIntgral();
 		Robot.driveTrain.gyroPID.setSetpoint(setpoint);
+		System.out.println(setpoint);
 	}
 
 	// Called repeatedly when this Command is scheduled to run

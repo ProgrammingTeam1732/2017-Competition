@@ -38,6 +38,8 @@ public class VisionMain implements SmartDashboardGroup {
 
 	public static final String NAME = "Vision Main";
 
+	private boolean disableCamera = false;
+
 	public VisionMain() {
 		arduino = new Arduino();
 
@@ -52,8 +54,10 @@ public class VisionMain implements SmartDashboardGroup {
 	 * Reads and parses Arduino rectangle data, updates the gear target variable
 	 */
 	public void run() {
-		parseData(arduino.getData());
-		updateGearTarget();
+		if (!disableCamera) {
+			parseData(arduino.getData());
+			updateGearTarget();
+		}
 	}
 
 	private String	total	= "";
@@ -179,10 +183,21 @@ public class VisionMain implements SmartDashboardGroup {
 		dashboard.addItem(SmartDashboardItem.newBooleanSender(	visionDirectory + "At vision setpoint?",
 																visionPID::onTarget));
 		dashboard.addItem(SmartDashboardItem.newNumberSender(visionDirectory + "Vision PID Output", visionPID::get));
+		dashboard.addItem(SmartDashboardItem.newBooleanSender(	visionDirectory + "Camera Enabled",
+																this::isCameraEnabled));
 		SmartDashboard.putData("Vision PID", visionPID);
 	}
 
 	public void resetPID() {
 		visionPID.setPID(visionP, visionI, visionD);
+	}
+
+	public void disableCamera() {
+		disableCamera = true;
+		rectangles = null;
+	}
+
+	public boolean isCameraEnabled() {
+		return !disableCamera;
 	}
 }

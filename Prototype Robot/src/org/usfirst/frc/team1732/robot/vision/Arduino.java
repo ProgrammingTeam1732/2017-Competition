@@ -1,5 +1,7 @@
 package org.usfirst.frc.team1732.robot.vision;
 
+import org.usfirst.frc.team1732.robot.Robot;
+
 import edu.wpi.first.wpilibj.SerialPort;
 
 public class Arduino {
@@ -22,7 +24,7 @@ public class Arduino {
 	}
 
 	private long	startTime	= System.currentTimeMillis();
-	private long	maxWait		= 500;
+	private long	maxWait		= 1000;
 
 	public String getData() {
 		String s = "";
@@ -31,6 +33,9 @@ public class Arduino {
 			startTime = System.currentTimeMillis();
 			while (System.currentTimeMillis() - startTime < maxWait && !s.contains("\n")) {
 				s += this.serial.readString();
+			}
+			if (System.currentTimeMillis() - startTime > maxWait) {
+				Robot.visionMain.disableCamera();
 			}
 			return s;
 		} catch (Exception e) {
