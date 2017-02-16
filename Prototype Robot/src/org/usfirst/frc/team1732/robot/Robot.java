@@ -1,7 +1,9 @@
 
 package org.usfirst.frc.team1732.robot;
 
+import org.usfirst.frc.team1732.robot.autocommands.Score10BallsAndGear;
 import org.usfirst.frc.team1732.robot.autocommands.ScoreGearAnd10Balls;
+import org.usfirst.frc.team1732.robot.autocommands.VisionPlaceGear;
 import org.usfirst.frc.team1732.robot.commands.vision.DriveWithVision;
 import org.usfirst.frc.team1732.robot.smartdashboard.MySmartDashboard;
 import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardItem;

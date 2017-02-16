@@ -24,7 +24,7 @@ public class Arduino {
 	}
 
 	private long	startTime	= System.currentTimeMillis();
-	private long	maxWait		= 1000;
+	private long	maxWait		= 5000;
 
 	public String getData() {
 		String s = "";

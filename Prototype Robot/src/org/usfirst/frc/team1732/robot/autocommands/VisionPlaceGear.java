@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class VisionPlaceGear extends CommandGroup {
 
 	public VisionPlaceGear(double driveBackDistance) {
-		addSequential(new DriveWithVision(15));
+		addSequential(new DriveWithVision(15));//15
 		addSequential(new Wait(0.1));
 		addSequential(new GearIntakeSetDown());
 		addParallel(new CommandGroup() {

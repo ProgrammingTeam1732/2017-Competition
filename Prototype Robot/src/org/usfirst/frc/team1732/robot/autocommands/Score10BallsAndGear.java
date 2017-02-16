@@ -23,6 +23,7 @@ public class Score10BallsAndGear extends CommandGroup {
 		// }
 
 		// addSequential(new Wait(4));
+		addSequential(new DriveEncoders(13, 13));
 		addSequential(new DriveGyro(-85, -.2, .6));
 		// shoot commands
 		addSequential(new EnableFlywheel());
@@ -30,7 +31,7 @@ public class Score10BallsAndGear extends CommandGroup {
 		addSequential(new DisableFlywheel());
 		// drive backwards slightly to avoid knocking wall
 		addSequential(new DriveEncoders(-15, -15));
-		addSequential(new DriveGyro(-150, -1, -0.2));
+		addSequential(new DriveGyro(-150, -1, -0.15));
 		addSequential(new DriveEncoders(-15, -15));
 		addSequential(new VisionPlaceGear(-40));
 	}

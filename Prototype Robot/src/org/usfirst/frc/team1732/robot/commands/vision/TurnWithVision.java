@@ -31,8 +31,8 @@ public class TurnWithVision extends Command {
 		double angle = visionMain.getAngleToGearPeg();
 		if (visionMain.canSeeGearPeg()) {
 			foundOnce = true;
-			double output = visionMain.visionPID.get();
-			driveTrain.driveRaw(-output, output);
+			double output = visionMain.visionPID.get();//1 - Math.abs(angle/angleSetpoint);
+			driveTrain.driveRaw(-output/2, output/2);
 		}
 	}
 

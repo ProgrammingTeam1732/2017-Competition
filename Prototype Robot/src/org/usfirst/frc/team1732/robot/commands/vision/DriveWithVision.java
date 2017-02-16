@@ -47,11 +47,13 @@ public class DriveWithVision extends Command {
 	}
 
 	private double previousAngleOutput = 0;
+	
+	public static final double stopInputDistance = 20;
 
 	public static double	middle	= 70;
 	public static double	lower	= 0.001;	// 0.001
 	public static double	upper	= 0.025;
-	public static double	slope	= 2.0E-4;	// 0.03 / 75;// 0.0001;
+	public static double	slope	= 1.2E-4;	//Wed. 2-15-17 changed to 1.2// 0.03 / 75;// 0.0001;
 
 	// Add a safeguard to make sure we don't get stuck
 	// public static double slope = 0.03/75;
@@ -67,7 +69,7 @@ public class DriveWithVision extends Command {
 		// double angleSetpoint = angle + driveTrain.gyro.getAngle();
 		// if it still sees it calculate the new output, otherwise keep doing
 		// what it was doing
-		if (visionMain.canSeeGearPeg()) {
+		if (visionMain.canSeeGearPeg() && !(distance < stopInputDistance && foundOnce)) {
 			// double P = lower + slope * distance;
 			// double P = lower + (upper - lower) / (1 + Math.exp(-slope *
 			// (distance - middle)));
