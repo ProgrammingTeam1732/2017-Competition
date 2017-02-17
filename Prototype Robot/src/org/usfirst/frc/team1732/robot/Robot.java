@@ -1,8 +1,10 @@
 
 package org.usfirst.frc.team1732.robot;
 
-import org.usfirst.frc.team1732.robot.autocommands.Score10BallsAndGear;
-import org.usfirst.frc.team1732.robot.autocommands.ScoreGearAnd10Balls;
+import org.usfirst.frc.team1732.robot.autocommands.Score10BallsAndGearLeft;
+import org.usfirst.frc.team1732.robot.autocommands.Score10BallsAndGearRight;
+import org.usfirst.frc.team1732.robot.autocommands.ScoreGearAnd10BallsLeft;
+import org.usfirst.frc.team1732.robot.autocommands.ScoreGearAnd10BallsRight;
 import org.usfirst.frc.team1732.robot.autocommands.ScoreSideGearLeft;
 import org.usfirst.frc.team1732.robot.autocommands.ScoreSideGearRight;
 import org.usfirst.frc.team1732.robot.autocommands.VisionPlaceGear;
@@ -65,7 +67,7 @@ public class Robot extends IterativeRobot {
 		gearIntake = new GearIntake();
 		oi = new OI();
 		visionMain = new VisionMain();
-
+		isRedAlliance = DriverStation.getInstance().getAlliance().equals(Alliance.Red);//SmartDashboard.getBoolean("IsRedAlliance?", false);
 		// Smartdashboard code
 		dashboard = new MySmartDashboard();
 		// Add items to smartdashboard
@@ -84,13 +86,13 @@ public class Robot extends IterativeRobot {
 		autoChooser.addDefault("Vision Place Gear", new VisionPlaceGear(-40));
 		autoChooser.addObject("Score Side Gear Right", new ScoreSideGearRight());
 		autoChooser.addObject("Score Side Gear Left", new ScoreSideGearLeft());
-		autoChooser.addObject("Score Gear and 10 Balls", new ScoreGearAnd10Balls());
-		autoChooser.addObject("Score 10 Balls and Gear", new Score10BallsAndGear());
+		autoChooser.addObject("Score Gear and 10 Balls", isRedAlliance ? new ScoreGearAnd10BallsRight() : new ScoreGearAnd10BallsLeft());
+		autoChooser.addObject("Score 10 Balls and Gear", isRedAlliance ? new Score10BallsAndGearRight() : new Score10BallsAndGearLeft());
 		SmartDashboard.putData("Autonomous Chooser", autoChooser);
 		//SmartDashboard.putBoolean("IsRedAlliance?", false);
 		autoCommand = new VisionPlaceGear(-40);
-		isRedAlliance = DriverStation.getInstance().getAlliance().equals(Alliance.Red);//SmartDashboard.getBoolean("IsRedAlliance?", false);
 		SmartDashboard.putString("Current Command", autoCommand.getName());
+		SmartDashboard.putBoolean("IsRedAlliance", isRedAlliance);
 		// Initialize smartdashboard
 		dashboard.init();
 	}
@@ -101,6 +103,7 @@ public class Robot extends IterativeRobot {
 		dashboard.run();
 		SmartDashboard.putString("Current Command", autoChooser.getSelected().getName());
 		isRedAlliance = DriverStation.getInstance().getAlliance().equals(Alliance.Red);
+		SmartDashboard.putBoolean("IsRedAlliance", isRedAlliance);
 		//System.out.println(isRedAlliance);
 	}
 	

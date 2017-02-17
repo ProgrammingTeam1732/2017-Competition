@@ -12,9 +12,9 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 /**
  *
  */
-public class Score10BallsAndGear extends CommandGroup {
+public class Score10BallsAndGearLeft extends CommandGroup {
 
-	public Score10BallsAndGear() {
+	public Score10BallsAndGearLeft() {
 		//double speed = 0.5;
 		//double time = 5;
 		// if (isRedAlliance) {
