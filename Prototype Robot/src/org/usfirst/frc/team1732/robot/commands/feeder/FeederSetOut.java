@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1732.robot.commands.unused;
+package org.usfirst.frc.team1732.robot.commands.feeder;
 
 import org.usfirst.frc.team1732.robot.Robot;
 
@@ -7,9 +7,9 @@ import edu.wpi.first.wpilibj.command.InstantCommand;
 /**
  *
  */
-public class FeederSetReverse extends InstantCommand {
+public class FeederSetOut extends InstantCommand {
 
-	public FeederSetReverse() {
+	public FeederSetOut() {
 		super();
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
@@ -19,7 +19,7 @@ public class FeederSetReverse extends InstantCommand {
 	// Called once when the command executes
 	@Override
 	protected void initialize() {
-		Robot.feeder.setReverse();
+		Robot.feeder.setOut();
 	}
 
 }

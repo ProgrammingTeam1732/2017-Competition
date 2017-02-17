@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1732.robot.autocommands;
 
+import org.usfirst.frc.team1732.robot.Robot;
 import org.usfirst.frc.team1732.robot.commands.Wait;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveEncoders;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveUntilEncoders;
@@ -13,10 +14,19 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class ScoreGearAnd10Balls extends CommandGroup {
 
 	public ScoreGearAnd10Balls() {
-		addSequential(new ScoreSideGearLeft());
-		addSequential(new Wait(0.1));
-		addSequential(new TurnWithGyro(125));
-		addSequential(new Wait(0.2));
+		// System.out.println(Robot.isRedAlliance());
+		// addSequential(new ScoreSideGearLeft());
+		// addSequential(new Wait(0.1));
+		//if (!Robot.isRedAlliance()) {
+		//	System.out.println("ScoreGearLeft");
+			addSequential(new ScoreSideGearLeft());
+			addSequential(new TurnWithGyro(120));
+		//} else {
+		//	System.out.println("ScoreGearRight");
+		//	addSequential(new ScoreSideGearRight());
+		//	addSequential(new TurnWithGyro(-120));
+		//}
+		// addSequential(new Wait(0.2));
 		addSequential(new DriveUntilEncoders(70, 0.7, 0.7, false));
 		addSequential(new DriveEncoders(40));
 	}

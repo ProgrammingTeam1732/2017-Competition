@@ -69,7 +69,7 @@ public class DriveWithVision extends Command {
 		// double angleSetpoint = angle + driveTrain.gyro.getAngle();
 		// if it still sees it calculate the new output, otherwise keep doing
 		// what it was doing
-		if (visionMain.canSeeGearPeg() && !(distance < stopInputDistance && foundOnce)) {
+		if (visionMain.canSeeGearPeg() /*&& !(distance < stopInputDistance && foundOnce)*/) {
 			// double P = lower + slope * distance;
 			// double P = lower + (upper - lower) / (1 + Math.exp(-slope *
 			// (distance - middle)));

@@ -62,7 +62,9 @@ public class Flywheel extends Subsystem implements SmartDashboardGroup {
 		motor.changeControlMode(TalonControlMode.Speed);
 		motor.setSetpoint(setpoint);
 	}
-
+	public boolean atSetpoint(){
+		return Math.abs(motor.getSpeed() - motor.getSetpoint()) < .05 * motor.getSetpoint();
+	}
 	@Override
 	public void addToSmartDashboard(MySmartDashboard dashboard) {
 		// TODO Auto-generated method stub

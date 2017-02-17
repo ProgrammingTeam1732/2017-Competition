@@ -39,7 +39,7 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 	public final PIDController	gyroPID					= new PIDController(gyroP, gyroI, gyroD, gyro,
 																			DriveTrain::voidMethod);
 	public static final double	GYRO_DEADBAND_DEGREES	= 6;
-	public static final double	gyroP					= 0.01;
+	public static final double	gyroP					= 0.013;
 	public static final double	gyroI					= 0.00001;
 	public static final double	gyroD					= 0;
 

@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1732.robot.commands.unused;
+package org.usfirst.frc.team1732.robot.commands.climber;
 
 import org.usfirst.frc.team1732.robot.Robot;
 
@@ -7,19 +7,19 @@ import edu.wpi.first.wpilibj.command.InstantCommand;
 /**
  *
  */
-public class BallIntakeSetReverse extends InstantCommand {
+public class ClimberSetStop extends InstantCommand {
 
-	public BallIntakeSetReverse() {
+	public ClimberSetStop() {
 		super();
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
-		requires(Robot.ballIntake);
+		requires(Robot.climber);
 	}
 
 	// Called once when the command executes
 	@Override
 	protected void initialize() {
-		Robot.ballIntake.setReverse();
+		Robot.climber.setStop();
 	}
 
 }

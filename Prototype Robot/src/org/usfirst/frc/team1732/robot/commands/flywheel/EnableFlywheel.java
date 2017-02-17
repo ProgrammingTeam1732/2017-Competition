@@ -18,6 +18,10 @@ public class EnableFlywheel extends InstantCommand {
 	@Override
 	protected void initialize() {
 		Robot.flywheel.enableAutoControl();
+		if (Robot.flywheel.atSetpoint()) {
+			Robot.ballIntake.setIn();
+			Robot.feeder.setOut();
+		}
 	}
 
 }

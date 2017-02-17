@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1732.robot.subsystems.unused;
+package org.usfirst.frc.team1732.robot.subsystems;
 
 import org.usfirst.frc.team1732.robot.RobotMap;
 
@@ -21,7 +21,7 @@ public class Feeder extends Subsystem {
 
 	}
 
-	public void setForward() {
+	public void setIn() {
 		motor.set(FORWARD_SPEED);
 	}
 
@@ -29,7 +29,7 @@ public class Feeder extends Subsystem {
 		motor.set(STOP_SPEED);
 	}
 
-	public void setReverse() {
+	public void setOut() {
 		motor.set(REVERSE_SPEED);
 	}
 }
