@@ -1,14 +1,13 @@
 
 package org.usfirst.frc.team1732.robot;
 
-import org.usfirst.frc.team1732.robot.autocommands.Score10BallsAndGearLeft;
-import org.usfirst.frc.team1732.robot.autocommands.Score10BallsAndGearRight;
-import org.usfirst.frc.team1732.robot.autocommands.ScoreGearAnd10BallsLeft;
-import org.usfirst.frc.team1732.robot.autocommands.ScoreGearAnd10BallsRight;
+import org.usfirst.frc.team1732.robot.autocommands.Score10BallsAndGearBlue;
+import org.usfirst.frc.team1732.robot.autocommands.Score10BallsAndGearRed;
+import org.usfirst.frc.team1732.robot.autocommands.ScoreGearAnd10BallsBlue;
+import org.usfirst.frc.team1732.robot.autocommands.ScoreGearAnd10BallsRed;
 import org.usfirst.frc.team1732.robot.autocommands.ScoreSideGearLeft;
 import org.usfirst.frc.team1732.robot.autocommands.ScoreSideGearRight;
 import org.usfirst.frc.team1732.robot.autocommands.VisionPlaceGear;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.TurnWithGyro;
 import org.usfirst.frc.team1732.robot.commands.vision.DriveWithVision;
 import org.usfirst.frc.team1732.robot.smartdashboard.MySmartDashboard;
 import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardItem;
@@ -19,7 +18,6 @@ import org.usfirst.frc.team1732.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team1732.robot.subsystems.Feeder;
 import org.usfirst.frc.team1732.robot.subsystems.Flywheel;
 import org.usfirst.frc.team1732.robot.subsystems.GearIntake;
-import org.usfirst.frc.team1732.robot.subsystems.unused.OtherShooter;
 import org.usfirst.frc.team1732.robot.vision.VisionMain;
 
 import edu.wpi.first.wpilibj.DriverStation;
@@ -47,15 +45,15 @@ public class Robot extends IterativeRobot {
 	public static Feeder		feeder;
 	public static Flywheel		flywheel;
 	public static GearIntake	gearIntake;
-	public static OtherShooter	otherShooter;
-	public static Arm 			arm;
+	public static Arm			arm;
 
-	public static VisionMain					visionMain;
-	public static MySmartDashboard				dashboard;
-	public static SmartDashboardItem<Double>	distanceSetpointReciever;
-	private Command autoCommand;
-	private SendableChooser<Command> autoChooser;
-	private static boolean isRedAlliance;
+	public static VisionMain		visionMain;
+	private static MySmartDashboard	dashboard;
+	// public static SmartDashboardItem<Double> distanceSetpointReciever;
+	private static Command						autoCommand;
+	private static SendableChooser<Command>		autoChooser;
+	private static SmartDashboardItem<Boolean>	isRedAlliance;
+
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
@@ -64,10 +62,14 @@ public class Robot extends IterativeRobot {
 	public void robotInit() {
 		driveTrain = new DriveTrain();
 		flywheel = new Flywheel();
+		ballIntake = new BallIntake();
+		climber = new Climber();
+		feeder = new Feeder();
+
 		gearIntake = new GearIntake();
 		oi = new OI();
 		visionMain = new VisionMain();
-		isRedAlliance = DriverStation.getInstance().getAlliance().equals(Alliance.Red);//SmartDashboard.getBoolean("IsRedAlliance?", false);
+
 		// Smartdashboard code
 		dashboard = new MySmartDashboard();
 		// Add items to smartdashboard
@@ -81,18 +83,30 @@ public class Robot extends IterativeRobot {
 																DriveWithVision::setUpper));
 		dashboard.addItem(SmartDashboardItem.newDoubleReciever(	"Turning P Middle", DriveWithVision.middle,
 																DriveWithVision::setMiddle));
+		// Command related SmartDashboardItems
+		isRedAlliance = dashboard.addItem(SmartDashboardItem
+				.newBooleanSender(	"Is Red Alliance?",
+									() -> DriverStation.getInstance().getAlliance().equals(Alliance.Red)));
+		dashboard.addItem(SmartDashboardItem.newStringSender("Selected Auto Command", () -> {
+			try {
+				return autoChooser.getSelected().getName();
+			} catch (Exception e) {
+				return "null";
+			}
+		}));
+
 		// Add auto chooser
-		autoChooser = new SendableChooser<>();
+		autoChooser = new SendableChooser<Command>();
 		autoChooser.addDefault("Vision Place Gear", new VisionPlaceGear(-40));
 		autoChooser.addObject("Score Side Gear Right", new ScoreSideGearRight());
 		autoChooser.addObject("Score Side Gear Left", new ScoreSideGearLeft());
-		autoChooser.addObject("Score Gear and 10 Balls", isRedAlliance ? new ScoreGearAnd10BallsRight() : new ScoreGearAnd10BallsLeft());
-		autoChooser.addObject("Score 10 Balls and Gear", isRedAlliance ? new Score10BallsAndGearRight() : new Score10BallsAndGearLeft());
-		SmartDashboard.putData("Autonomous Chooser", autoChooser);
-		//SmartDashboard.putBoolean("IsRedAlliance?", false);
+		autoChooser.addObject("Score Gear then 10 Balls", new ScoreGearAnd10BallsRed());
+		autoChooser.addObject("Score 10 Balls then Gear", new Score10BallsAndGearRed());
+		SmartDashboard.putData("AutonomousChooser", autoChooser);
+		// SmartDashboard.putBoolean("IsRedAlliance?", false);
 		autoCommand = new VisionPlaceGear(-40);
 		SmartDashboard.putString("Current Command", autoCommand.getName());
-		SmartDashboard.putBoolean("IsRedAlliance", isRedAlliance);
+
 		// Initialize smartdashboard
 		dashboard.init();
 	}
@@ -101,15 +115,12 @@ public class Robot extends IterativeRobot {
 	public void robotPeriodic() {
 		visionMain.run();
 		dashboard.run();
-		SmartDashboard.putString("Current Command", autoChooser.getSelected().getName());
-		isRedAlliance = DriverStation.getInstance().getAlliance().equals(Alliance.Red);
-		SmartDashboard.putBoolean("IsRedAlliance", isRedAlliance);
-		//System.out.println(isRedAlliance);
 	}
-	
-	public static boolean isRedAlliance(){
-		return isRedAlliance;
+
+	public static boolean isRedAlliance() {
+		return isRedAlliance.getValue();
 	}
+
 	@Override
 	public void disabledInit() {}
 
@@ -123,11 +134,20 @@ public class Robot extends IterativeRobot {
 		Scheduler.getInstance().removeAll(); // Cancels commands
 
 		// Can use a SmartDashboard chooser to select auto command
-		isRedAlliance = DriverStation.getInstance().getAlliance().equals(Alliance.Red);//SmartDashboard.getBoolean("IsRedAlliance?", false);
-		autoCommand = (Command) autoChooser.getSelected();
-		autoCommand.start();
+		// SmartDashboard.getBoolean("IsRedAlliance?", false);
+
+		autoCommand = autoChooser.getSelected();
+
+		if (autoCommand.getName().equals(new ScoreGearAnd10BallsRed().getName()))
+			if (!isRedAlliance.getValue())
+				autoCommand = new ScoreGearAnd10BallsBlue();
+
+		if (autoCommand.getName().equals(new Score10BallsAndGearRed().getName()))
+			if (!isRedAlliance.getValue())
+				autoCommand = new Score10BallsAndGearBlue();
+
 		Scheduler.getInstance().add(autoCommand);
-	} 
+	}
 
 	@Override
 	public void autonomousPeriodic() {

@@ -43,4 +43,8 @@ public class GearIntake extends Subsystem {
 	public void setIn() {
 		motor.set(IN_SPEED);
 	}
+
+	public boolean isDown() {
+		return gearManipulator.get() == DOWN;
+	}
 }

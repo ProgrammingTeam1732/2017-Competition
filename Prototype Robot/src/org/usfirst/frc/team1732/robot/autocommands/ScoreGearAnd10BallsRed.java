@@ -6,8 +6,8 @@ import org.usfirst.frc.team1732.robot.commands.drivetrain.TurnWithGyro;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class ScoreGearAnd10BallsRight extends CommandGroup {
-	public ScoreGearAnd10BallsRight(){
+public class ScoreGearAnd10BallsRed extends CommandGroup {
+	public ScoreGearAnd10BallsRed(){
 		addSequential(new ScoreSideGearRight());
 		addSequential(new TurnWithGyro(-120));
 		// addSequential(new Wait(0.2));

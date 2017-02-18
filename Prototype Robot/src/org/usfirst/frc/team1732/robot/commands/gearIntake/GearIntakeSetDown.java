@@ -12,10 +12,14 @@ public class GearIntakeSetDown extends InstantCommand {
 	public GearIntakeSetDown() {
 		super();
 		requires(Robot.gearIntake);
+		requires(Robot.ballIntake);
 	}
 
 	@Override
 	protected void initialize() {
+		if (Robot.ballIntake.isDown()) {
+			Robot.ballIntake.setUp();
+		}
 		Robot.gearIntake.setDown();
 	}
 }
