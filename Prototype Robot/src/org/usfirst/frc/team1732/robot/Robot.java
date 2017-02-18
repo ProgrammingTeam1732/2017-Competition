@@ -3,6 +3,7 @@ package org.usfirst.frc.team1732.robot;
 
 import org.usfirst.frc.team1732.robot.autocommands.GrabBallsAndShootBlue;
 import org.usfirst.frc.team1732.robot.autocommands.GrabBallsAndShootRed;
+import org.usfirst.frc.team1732.robot.autocommands.GrabBallsBackwardAndShoot;
 import org.usfirst.frc.team1732.robot.autocommands.Score10BallsAndGearBlue;
 import org.usfirst.frc.team1732.robot.autocommands.Score10BallsAndGearRed;
 import org.usfirst.frc.team1732.robot.autocommands.ScoreGearAnd10BallsBlue;
@@ -105,6 +106,7 @@ public class Robot extends IterativeRobot {
 		autoChooser.addObject("Score Gear then 10 Balls", new ScoreGearAnd10BallsRed());
 		autoChooser.addObject("Score 10 Balls then Gear", new Score10BallsAndGearRed());
 		autoChooser.addObject("Grab Balls then Shoot", new GrabBallsAndShootRed());
+		autoChooser.addObject("Grab Balls Backward then Shoot", new GrabBallsBackwardAndShoot());
 		SmartDashboard.putData("AutonomousChooser", autoChooser);
 		// SmartDashboard.putBoolean("IsRedAlliance?", false);
 		autoCommand = new VisionPlaceGear(-40);
