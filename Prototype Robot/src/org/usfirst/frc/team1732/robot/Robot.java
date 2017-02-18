@@ -1,6 +1,8 @@
 
 package org.usfirst.frc.team1732.robot;
 
+import org.usfirst.frc.team1732.robot.autocommands.GrabBallsAndShootBlue;
+import org.usfirst.frc.team1732.robot.autocommands.GrabBallsAndShootRed;
 import org.usfirst.frc.team1732.robot.autocommands.Score10BallsAndGearBlue;
 import org.usfirst.frc.team1732.robot.autocommands.Score10BallsAndGearRed;
 import org.usfirst.frc.team1732.robot.autocommands.ScoreGearAnd10BallsBlue;
@@ -102,6 +104,7 @@ public class Robot extends IterativeRobot {
 		autoChooser.addObject("Score Side Gear Left", new ScoreSideGearLeft());
 		autoChooser.addObject("Score Gear then 10 Balls", new ScoreGearAnd10BallsRed());
 		autoChooser.addObject("Score 10 Balls then Gear", new Score10BallsAndGearRed());
+		autoChooser.addObject("Grab Balls then Shoot", new GrabBallsAndShootRed());
 		SmartDashboard.putData("AutonomousChooser", autoChooser);
 		// SmartDashboard.putBoolean("IsRedAlliance?", false);
 		autoCommand = new VisionPlaceGear(-40);
@@ -145,6 +148,10 @@ public class Robot extends IterativeRobot {
 		if (autoCommand.getName().equals(new Score10BallsAndGearRed().getName()))
 			if (!isRedAlliance.getValue())
 				autoCommand = new Score10BallsAndGearBlue();
+
+		if (autoCommand.getName().equals(new GrabBallsAndShootRed().getName()))
+			if (!isRedAlliance.getValue())
+				autoCommand = new GrabBallsAndShootBlue();
 
 		Scheduler.getInstance().add(autoCommand);
 	}
