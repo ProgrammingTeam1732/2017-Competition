@@ -17,8 +17,8 @@ public class GearIntakeSetDown extends InstantCommand {
 
 	@Override
 	protected void initialize() {
-		if (Robot.ballIntake.isPosistionDown()) {
-			Robot.ballIntake.setPosistionUp();
+		if (Robot.ballIntake.isPosistionUp()) {
+			Robot.ballIntake.setPosistionDown();
 		}
 		Robot.gearIntake.setDown();
 	}
