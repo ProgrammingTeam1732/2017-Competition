@@ -45,6 +45,7 @@ public class RobotMap {
 	// Gear Intake (Floor/Chute)
 	public static final int	GEAR_INTAKE_MOTER_DEVICE_NUMBER		= 24;
 	public static final int	GEAR_MANIPULATOR_SOLENOID_NUMBER	= 6;
+	public static final int GEAR_MANIPULATOR_STORAGE_NUMBER 	= 0;
 
 	// Hopper/Feeder/Index
 	public static final int FEEDER_MOTER_DEVICE_NUMBER = 0;

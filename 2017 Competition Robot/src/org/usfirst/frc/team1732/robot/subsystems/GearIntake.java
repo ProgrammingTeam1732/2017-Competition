@@ -17,9 +17,11 @@ public class GearIntake extends Subsystem {
 	public static final double	STOP_SPEED		= 0;
 	public static final double	IN_SPEED		= 0.6;
 	private final Solenoid		gearManipulator	= new Solenoid(RobotMap.GEAR_MANIPULATOR_SOLENOID_NUMBER);
-
+	private final Solenoid 		gearManipStorage= new Solenoid(RobotMap.GEAR_MANIPULATOR_STORAGE_NUMBER);
 	public static final boolean	UP		= false;
 	public static final boolean	DOWN	= true;
+	public static final boolean	IN		= true;
+	public static final boolean	OUT		= false;
 
 	@Override
 	public void initDefaultCommand() {}
@@ -50,5 +52,13 @@ public class GearIntake extends Subsystem {
 
 	public boolean isUp() {
 		return gearManipulator.get() == UP;
+	}
+	
+	public void setStorageIn(){
+		gearManipStorage.set(IN);
+	}
+	
+	public void setStorageOut(){
+		gearManipStorage.set(OUT);
 	}
 }
