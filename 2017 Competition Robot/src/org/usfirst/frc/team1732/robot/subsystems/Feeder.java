@@ -11,18 +11,16 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class Feeder extends Subsystem {
 
-	private final CANTalon		motor			= new CANTalon(RobotMap.FEEDER_MOTER_DEVICE_NUMBER);
-	public static final double	FORWARD_SPEED	= 1;
-	public static final double	STOP_SPEED		= 0;
-	public static final double	REVERSE_SPEED	= 1;
+	private final CANTalon		motor		= new CANTalon(RobotMap.FEEDER_MOTOR_DEVICE_NUMBER);
+	public static final double	IN_SPEED	= 1;
+	public static final double	STOP_SPEED	= 0;
+	public static final double	OUT_SPEED	= -1;
 
 	@Override
-	public void initDefaultCommand() {
-
-	}
+	public void initDefaultCommand() {}
 
 	public void setIn() {
-		motor.set(FORWARD_SPEED);
+		motor.set(IN_SPEED);
 	}
 
 	public void setStop() {
@@ -30,6 +28,6 @@ public class Feeder extends Subsystem {
 	}
 
 	public void setOut() {
-		motor.set(REVERSE_SPEED);
+		motor.set(OUT_SPEED);
 	}
 }

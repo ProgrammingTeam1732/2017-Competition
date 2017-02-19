@@ -9,16 +9,15 @@ import edu.wpi.first.wpilibj.command.InstantCommand;
  */
 public class BallIntakeSetUp extends InstantCommand {
 
-    public BallIntakeSetUp() {
-        super();
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-        requires(Robot.ballIntake);
-    }
+	public BallIntakeSetUp() {
+		requires(Robot.ballIntake);
+	}
 
-    // Called once when the command executes
-    protected void initialize() {
-    	Robot.ballIntake.setUp();
-    }
+	@Override
+	protected void initialize() {
+		if (!Robot.gearIntake.isDown()) {
+			Robot.ballIntake.setPosistionUp();
+		}
+	}
 
 }

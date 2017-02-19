@@ -32,11 +32,11 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 
 	// gyro
 	// gyro sensors
-	public final AnalogGyro		gyro								= new AnalogGyro(RobotMap.GYRO_CHANNEL_NUMBER);
+	private final AnalogGyro	gyro								= new AnalogGyro(RobotMap.GYRO_CHANNEL_NUMBER);
 	public static final double	GYRO_VOLTS_PER_DEGREE_PER_SECOND	= 0.007;
 
 	// gyro controllers
-	public final PIDController	gyroPID					= new PIDController(gyroP, gyroI, gyroD, gyro,
+	private final PIDController	gyroPID					= new PIDController(gyroP, gyroI, gyroD, gyro,
 																			DriveTrain::voidMethod);
 	public static final double	GYRO_DEADBAND_DEGREES	= 6;
 	public static final double	gyroP					= 0.013;
@@ -45,17 +45,17 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 
 	// encoders
 	// encoder sensors
-	public final Encoder		leftEncoder					= new Encoder(	RobotMap.LEFT_ENCODER_CHANNEL_A,
+	private final Encoder		leftEncoder					= new Encoder(	RobotMap.LEFT_ENCODER_CHANNEL_A,
 																			RobotMap.LEFT_ENCODER_CHANNEL_B);
-	public final Encoder		rightEncoder				= new Encoder(	RobotMap.RIGHT_ENCODER_CHANNEL_A,
+	private final Encoder		rightEncoder				= new Encoder(	RobotMap.RIGHT_ENCODER_CHANNEL_A,
 																			RobotMap.RIGHT_ENCODER_CHANNEL_B);
 	public static final double	INCHES_PER_ENCODER_COUNT	= 0.0134 * 4;
 	public static final double	LEFT_MOTOR_OFFSET			= 1.1;
 
 	// encoder controllers
-	public final PIDController	leftEncoderPID			= new PIDController(encoderP, encoderI, encoderD, leftEncoder,
+	private final PIDController	leftEncoderPID			= new PIDController(encoderP, encoderI, encoderD, leftEncoder,
 																			DriveTrain::voidMethod);
-	public final PIDController	rightEncoderPID			= new PIDController(encoderP, encoderI, encoderD, rightEncoder,
+	private final PIDController	rightEncoderPID			= new PIDController(encoderP, encoderI, encoderD, rightEncoder,
 																			DriveTrain::voidMethod);
 	public static final double	encoderP				= 0.03;
 	public static final double	encoderI				= 0;
@@ -105,9 +105,6 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 		rightEncoderPID.setContinuous(false);
 		leftEncoderPID.setOutputRange(ENCODER_MIN_OUTPUT, ENCODER_MAX_OUTPUT);
 		rightEncoderPID.setOutputRange(ENCODER_MIN_OUTPUT, ENCODER_MAX_OUTPUT);
-
-		leftEncoderPID.setSetpoint(100);
-		rightEncoderPID.setSetpoint(100);
 
 		// Gyro
 		gyro.initGyro();
@@ -195,7 +192,7 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 		SmartDashboard.putData("Gyro PID", gyroPID);
 	}
 
-	public void resetGyroPID() {
+	public void resetGyroPIDValues() {
 		gyroPID.setPID(gyroP, gyroI, gyroD);
 	}
 
@@ -203,11 +200,7 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 		return driveTrain.rightEncoderPID.getError() < 0 && driveTrain.leftEncoderPID.getError() < 0;
 	}
 
-	public boolean encodersOnTarget() {
-		return driveTrain.rightEncoderPID.onTarget() && driveTrain.leftEncoderPID.onTarget();
-	}
-
-	public void resetEncoderPID() {
+	public void resetEncoderPIDValues() {
 		leftEncoderPID.setPID(encoderP, encoderI, encoderD);
 		rightEncoderPID.setPID(encoderP, encoderI, encoderD);
 	}
@@ -231,6 +224,68 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 		leftEncoderPID.enable();
 		rightEncoderPID.reset();
 		rightEncoderPID.enable();
+	}
+
+	public void setLeftEncoderSetpoint(double setpoint) {
+		leftEncoderPID.setSetpoint(setpoint);
+	}
+
+	public void setRightEncoderSetpoint(double setpoint) {
+		rightEncoderPID.setSetpoint(setpoint);
+	}
+
+	public void setEncoderSetpoint(double setpoint) {
+		leftEncoderPID.setSetpoint(setpoint);
+		rightEncoderPID.setSetpoint(setpoint);
+	}
+
+	public void setGyroSetpoint(double angle) {
+		gyroPID.setSetpoint(angle);
+	}
+
+	public double getLeftPIDOutput() {
+		return leftEncoderPID.get();
+	}
+
+	public double getRightPIDOutput() {
+		return rightEncoderPID.get();
+	}
+
+	public double getGyroPIDOutput() {
+		return gyroPID.get();
+	}
+
+	public void resetGyro() {
+		gyro.reset();
+	}
+
+	public void resetEncoders() {
+		leftEncoder.reset();
+		rightEncoder.reset();
+	}
+
+	public double getLeftDistance() {
+		return leftEncoder.getDistance();
+	}
+
+	public double getRightDistance() {
+		return rightEncoder.getDistance();
+	}
+
+	public boolean leftEncoderOnTarget() {
+		return leftEncoderPID.onTarget();
+	}
+
+	public boolean rightEncoderOnTarget() {
+		return leftEncoderPID.onTarget();
+	}
+
+	public boolean encodersOnTarget() {
+		return leftEncoderOnTarget() && rightEncoderOnTarget();
+	}
+
+	public boolean gyroOnTarget() {
+		return gyroPID.onTarget();
 	}
 
 }

@@ -3,7 +3,6 @@ package org.usfirst.frc.team1732.robot.autocommands;
 import org.usfirst.frc.team1732.robot.commands.Wait;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveEncoders;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveGyro;
-import org.usfirst.frc.team1732.robot.commands.flywheel.DisableFlywheel;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 

@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class GearIntake extends Subsystem {
 
-	private final CANTalon		motor			= new CANTalon(RobotMap.GEAR_INTAKE_MOTER_DEVICE_NUMBER);
+	private final CANTalon		motor			= new CANTalon(RobotMap.GEAR_INTAKE_MOTOR_DEVICE_NUMBER);
 	public static final double	OUT_SPEED		= -.5;
 	public static final double	STOP_SPEED		= 0;
 	public static final double	IN_SPEED		= 0.6;
@@ -46,5 +46,9 @@ public class GearIntake extends Subsystem {
 
 	public boolean isDown() {
 		return gearManipulator.get() == DOWN;
+	}
+
+	public boolean isUp() {
+		return gearManipulator.get() == UP;
 	}
 }

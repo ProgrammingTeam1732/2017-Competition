@@ -19,8 +19,7 @@ public class BallIntakeSetIn extends InstantCommand {
 	// Called once when the command executes
 	@Override
 	protected void initialize() {
-		Robot.ballIntake.setIn();
-		Robot.feeder.setIn();
+		Robot.ballIntake.setSpeedIn();
 	}
 
 }

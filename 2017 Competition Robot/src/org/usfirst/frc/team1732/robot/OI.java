@@ -54,6 +54,11 @@ public class OI {
 	// private final Button otherShooter = button10;
 
 	public OI() {
+		gearIntakeJoystickOutDown.whenPressed(new GearIntakeSetDownOut());
+		gearIntakeJoystickOutDown.whenReleased(new GearIntakeSetUpStop());
+		gearIntakeJoystickInDown.whenPressed(new GearIntakeSetDownIn());
+		gearIntakeJoystickInDown.whenReleased(new GearIntakeSetUpTimedIn(1));
+
 		// ballIntakeForward.whenPressed(new BallIntakeSetForward());
 		// ballIntakeReverse.whenPressed(new BallIntakeSetReverse());
 		// ballIntakeStop.whenActive(new BallIntakeSetStop());
@@ -68,10 +73,7 @@ public class OI {
 		//
 		// gearIntakeReverse.whileHeld(new IntakeInDown());
 		// gearIntakeForward.whileHeld(new IntakeOutDown());
-		gearIntakeJoystickOutDown.whenPressed(new GearIntakeSetDownOut());
-		gearIntakeJoystickOutDown.whenReleased(new GearIntakeSetUpStop());
-		gearIntakeJoystickInDown.whenPressed(new GearIntakeSetDownIn());
-		gearIntakeJoystickInDown.whenReleased(new GearIntakeSetUpTimedIn(1));
+
 		// gearIntakeReverse.whenReleased(new IntakeInDownTimer());
 		// gearIntakeForward.whenReleased(new IntakeOutDownTimer());
 		// gearIntakeForward.whenReleased(new GearIntakeSetUp());

@@ -18,8 +18,6 @@ public class DisableFlywheel extends InstantCommand {
 	@Override
 	protected void initialize() {
 		Robot.flywheel.disableAutoControl();
-		Robot.ballIntake.setStop();
-		Robot.feeder.setStop();
 	}
 
 }

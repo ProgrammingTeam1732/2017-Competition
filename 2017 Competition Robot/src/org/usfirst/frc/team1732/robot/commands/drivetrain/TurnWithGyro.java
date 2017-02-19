@@ -22,24 +22,24 @@ public class TurnWithGyro extends Command {
 	@Override
 	protected void initialize() {
 		System.out.println("Running turn : " + Robot.isRedAlliance());
-		Robot.driveTrain.gyro.reset();
+		Robot.driveTrain.resetGyro();
 		// Robot.driveTrain.resetGyroPID();
 		Robot.driveTrain.clearGyroIntgral();
-		Robot.driveTrain.gyroPID.setSetpoint(setpoint);
+		Robot.driveTrain.setGyroSetpoint(setpoint);
 		System.out.println(setpoint);
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		double output = Robot.driveTrain.gyroPID.get();
+		double output = Robot.driveTrain.getGyroPIDOutput();
 		Robot.driveTrain.driveRaw(output, -output);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return Robot.driveTrain.gyroPID.onTarget();
+		return Robot.driveTrain.gyroOnTarget();
 	}
 
 	// Called once after isFinished returns true

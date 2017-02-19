@@ -20,13 +20,13 @@ public class VisionMain implements SmartDashboardGroup {
 
 	private Arduino arduino;
 
-	private GearTarget		gearTarget;
-	private BoilerTarget	boilerTarget;
-	private Rectangle[]		rectangles	= new Rectangle[0];
+	private GearTarget gearTarget;
+	// private BoilerTarget boilerTarget;
+	private Rectangle[] rectangles = new Rectangle[0];
 
 	// Vision Angle Stuff
-	public final PIDSource		visionAngleSource	= this.getVisionPIDSource();
-	public final PIDController	visionPID			= new PIDController(visionP, visionI, visionD, visionAngleSource,
+	private final PIDSource		visionAngleSource	= this.getVisionPIDSource();
+	private final PIDController	visionPID			= new PIDController(visionP, visionI, visionD, visionAngleSource,
 																		VisionMain::voidMethod);
 	public static final double	visionP				= 0.02;
 	public static final double	visionI				= 0;
@@ -188,7 +188,7 @@ public class VisionMain implements SmartDashboardGroup {
 		SmartDashboard.putData("Vision PID", visionPID);
 	}
 
-	public void resetPID() {
+	public void resetPIDValues() {
 		visionPID.setPID(visionP, visionI, visionD);
 	}
 
@@ -199,5 +199,21 @@ public class VisionMain implements SmartDashboardGroup {
 
 	public boolean isCameraEnabled() {
 		return !disableCamera;
+	}
+
+	public void setVisionSetpoint(double setpoint) {
+		visionPID.setSetpoint(setpoint);
+	}
+
+	public void setPIDValues(double p, double i, double d) {
+		visionPID.setPID(p, i, d);
+	}
+
+	public double getVisionPIDOutput() {
+		return visionPID.get();
+	}
+
+	public boolean isVisionPIDOnTarget() {
+		return visionPID.onTarget();
 	}
 }

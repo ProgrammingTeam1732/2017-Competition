@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class Flywheel extends Subsystem implements SmartDashboardGroup {
 
-	public final CANTalon motor = new CANTalon(RobotMap.FLYWHEEL_MOTER_DEVICE_NUMBER);
+	public final CANTalon motor = new CANTalon(RobotMap.FLYWHEEL_MOTOR_DEVICE_NUMBER);
 
 	public static final double STOP_SPEED = 0;
 	// public static final double FORWARD_SPEED = 1;
@@ -62,9 +62,15 @@ public class Flywheel extends Subsystem implements SmartDashboardGroup {
 		motor.changeControlMode(TalonControlMode.Speed);
 		motor.setSetpoint(setpoint);
 	}
-	public boolean atSetpoint(){
-		return Math.abs(motor.getSpeed() - motor.getSetpoint()) < .05 * motor.getSetpoint();
+
+	public static final double percentErrorAllowed = 0.05; // 5%
+
+	public boolean atSetpoint() {
+		// return Math.abs(motor.getSpeed() - motor.getSetpoint()) < .05 *
+		// motor.getSetpoint();
+		return Math.abs(motor.getError()) < Math.abs(percentErrorAllowed * motor.getSetpoint());
 	}
+
 	@Override
 	public void addToSmartDashboard(MySmartDashboard dashboard) {
 		// TODO Auto-generated method stub

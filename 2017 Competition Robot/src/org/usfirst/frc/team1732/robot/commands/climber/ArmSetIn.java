@@ -9,17 +9,17 @@ import edu.wpi.first.wpilibj.command.InstantCommand;
  */
 public class ArmSetIn extends InstantCommand {
 
-    public ArmSetIn() {
-        super();
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-        requires(Robot.arm);
-    }
+	public ArmSetIn() {
+		super();
+		// Use requires() here to declare subsystem dependencies
+		// eg. requires(chassis);
+		requires(Robot.arm);
+	}
 
-    // Called once when the command executes
-    protected void initialize() {
-    	Robot.arm.setIn();
-    	
-    }
+	// Called once when the command executes
+	@Override
+	protected void initialize() {
+		Robot.arm.setIn();
+	}
 
 }

@@ -26,10 +26,8 @@ public class DriveUntilEncoders extends Command {
 	@Override
 	protected void initialize() {
 		System.out.println("running forward");
-		Robot.driveTrain.leftEncoder.reset();
-		Robot.driveTrain.rightEncoder.reset();
-		Robot.driveTrain.leftEncoderPID.setSetpoint(setpointInches);
-		Robot.driveTrain.rightEncoderPID.setSetpoint(setpointInches);
+		Robot.driveTrain.resetEncoders();
+		Robot.driveTrain.setEncoderSetpoint(setpointInches);
 		Robot.driveTrain.driveRaw(left, right);
 	}
 
