@@ -15,6 +15,12 @@ public abstract class VisionTarget {
 	public final Rectangle	boundingBox;
 	public final boolean	singleRectangle;
 
+	/**
+	 * Creates a new VisionTarget from a single rectangle
+	 * 
+	 * @param rect
+	 *            bounding box of the blob
+	 */
 	public VisionTarget(Rectangle rect) {
 		singleRectangle = true;
 		boundingBox = rect;
@@ -24,6 +30,14 @@ public abstract class VisionTarget {
 		bottom = null;
 	}
 
+	/**
+	 * Creates a new vision target from two arbitrary rectangles
+	 * 
+	 * @param a
+	 *            first blob bounding box
+	 * @param b
+	 *            second blob bounding box
+	 */
 	public VisionTarget(Rectangle a, Rectangle b) {
 		singleRectangle = false;
 		if (a.x < b.x) {
@@ -47,7 +61,7 @@ public abstract class VisionTarget {
 
 	/**
 	 * @return a score of how likely this pair of Rectangles is the correct
-	 *         Vision target
+	 *         VisionTarget
 	 */
 	public abstract double getScore();
 
@@ -89,7 +103,7 @@ public abstract class VisionTarget {
 	 * @return the difference in pixels between the right edge of the right
 	 *         rectangle and the left edge of the left rectangle
 	 */
-	public static int getTotalWidth(Rectangle left, Rectangle right) {
+	private static int getTotalWidth(Rectangle left, Rectangle right) {
 		return right.getRightX() - left.x;
 	}
 
@@ -101,25 +115,69 @@ public abstract class VisionTarget {
 	 * @return the difference in pixels between the bototm edge of the bottom
 	 *         rectangle and the top edge of the top rectangle
 	 */
-	public static int getTotalHeight(Rectangle top, Rectangle bottom) {
+	private static int getTotalHeight(Rectangle top, Rectangle bottom) {
 		return bottom.getBottomY() - top.y;
 	}
 
+	/**
+	 * Calculates the distance to the camera based on the height of the vision
+	 * target in pixels
+	 * 
+	 * @param targetHeight
+	 *            height of the target in inches / other distance unit
+	 * @param verticalViewAngle
+	 *            vertical view angle of the camera in degrees
+	 * @param imageHeight
+	 *            height of the image in pixels
+	 * @return the distance to the vision target in input distance unit
+	 */
 	public double getVerticalDistance(double targetHeight, double verticalViewAngle, double imageHeight) {
 		double inchesFOV = targetHeight * imageHeight / boundingBox.height;
 		return inchesFOV / (2.0 * Math.tan(Math.toRadians(verticalViewAngle / 2.0)));
 	}
 
+	/**
+	 * Calculates the angle above or below the camera of the vision target
+	 * 
+	 * @param verticalViewAngle
+	 *            vertical view angle of the camera in preferred angle unit
+	 * @param imageHeight
+	 *            the height of the image in pixels
+	 * @return the vertical angle to the camera (< 0 if target is above of
+	 *         camera, > 0 if below of camera) in input angle unit
+	 */
 	public double getVerticalAngle(double verticalViewAngle, double imageHeight) {
 		double percentage = (boundingBox.getCenterY() - (imageHeight / 2.0)) / imageHeight;
 		return percentage * verticalViewAngle;
 	}
 
+	/**
+	 * Calculates the distance to the camera based on the width of the vision
+	 * target in pixels
+	 * 
+	 * @param targetWidth
+	 *            width of the target in inches / other distance unit
+	 * @param horizontalViewAngle
+	 *            horizontal view angle of the camera in degrees
+	 * @param imageWidth
+	 *            width of the image in pixels
+	 * @return the distance to the vision target in input distance unit
+	 */
 	public double getHorizontalDistance(double targetWidth, double horizontalViewAngle, double imageWidth) {
 		double inchesFOV = targetWidth * imageWidth / boundingBox.width;
 		return inchesFOV / (2.0 * Math.tan(Math.toRadians(horizontalViewAngle / 2.0)));
 	}
 
+	/**
+	 * Calculates the angle left or right the camera of the vision target
+	 * 
+	 * @param horizontalViewAngle
+	 *            horizontal view angle of the camera in preferred angle unit
+	 * @param imageWidth
+	 *            width of the image in pixels
+	 * @return the horizontal angle to the camera (< 0 if target left of camera,
+	 *         > 0 if target right of camera) in input angle unit
+	 */
 	public double getHorizontalAngle(double horizontalViewAngle, double imageWidth) {
 		double percentage = (boundingBox.getCenterX() - (imageWidth / 2.0)) / imageWidth;
 		return percentage * horizontalViewAngle;

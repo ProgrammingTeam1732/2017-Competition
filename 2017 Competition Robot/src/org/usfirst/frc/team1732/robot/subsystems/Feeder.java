@@ -7,7 +7,7 @@ import com.ctre.CANTalon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
- *
+ * The feeder inside the robot
  */
 public class Feeder extends Subsystem {
 

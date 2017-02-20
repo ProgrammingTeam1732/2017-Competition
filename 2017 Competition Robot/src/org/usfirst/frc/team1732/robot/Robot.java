@@ -50,9 +50,8 @@ public class Robot extends IterativeRobot {
 	public static GearIntake	gearIntake;
 	public static Arm			arm;
 
-	public static VisionMain		visionMain;
-	private static MySmartDashboard	dashboard;
-	// public static SmartDashboardItem<Double> distanceSetpointReciever;
+	public static VisionMain					visionMain;
+	private static MySmartDashboard				dashboard;
 	private static Command						autoCommand;
 	private static SendableChooser<Command>		autoChooser;
 	private static SmartDashboardItem<Boolean>	isRedAlliance;
@@ -122,6 +121,11 @@ public class Robot extends IterativeRobot {
 		dashboard.run();
 	}
 
+	/**
+	 * Gets if the alliance color is red
+	 * 
+	 * @return if the current alliance is red
+	 */
 	public static boolean isRedAlliance() {
 		return isRedAlliance.getValue();
 	}

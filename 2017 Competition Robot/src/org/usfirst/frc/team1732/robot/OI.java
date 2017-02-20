@@ -36,6 +36,11 @@ public class OI {
 	private final Button	ballIntakeIn	= new JoystickButton(buttons, 0);
 	private final Button	ballIntakeOut	= new JoystickButton(buttons, 0);
 
+	/**
+	 * This Trigger returns true only if both buttons aren't active This is so
+	 * that if both get pressed at the same time and one gets released it won't
+	 * stop the ball intake
+	 */
 	private final Trigger ballIntakeStop = new Trigger() {
 		@Override
 		public boolean get() {
@@ -49,6 +54,9 @@ public class OI {
 	private final Button	armPosistion	= new JoystickButton(buttons, 0);
 	private final Button	climber			= new JoystickButton(buttons, 0);
 
+	/**
+	 * Calling the OI constructor will bind the buttons to commands
+	 */
 	public OI() {
 		gearIntakeJoystickOutDown.whenPressed(new GearIntakeSetDownOut());
 		gearIntakeJoystickOutDown.whenReleased(new GearIntakeSetUpStop());

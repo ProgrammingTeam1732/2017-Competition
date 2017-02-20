@@ -18,14 +18,23 @@ import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+/**
+ * 
+ */
 public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 
 	// motors
 	// left motors
+	/**
+	 * The motor that the other left motors follow
+	 */
 	private final CANTalon	leftMaster	= new CANTalon(RobotMap.LEFT_MASTER_MOTOR_DEVICE_NUMBER);
 	private final CANTalon	left1		= new CANTalon(RobotMap.LEFT_1_MOTOR_DEVICE_NUMBER);
 	private final CANTalon	left2		= new CANTalon(RobotMap.LEFT_2_MOTOR_DEVICE_NUMBER);
 	// right motors
+	/**
+	 * The motor the other right motors follow
+	 */
 	private final CANTalon	rightMaster	= new CANTalon(RobotMap.RIGHT_MASTER_MOTOR_DEVICE_NUMBER);
 	private final CANTalon	right1		= new CANTalon(RobotMap.RIGHT_1_MOTOR_DEVICE_NUMBER);
 	private final CANTalon	right2		= new CANTalon(RobotMap.RIGHT_2_MOTOR_DEVICE_NUMBER);
@@ -74,49 +83,71 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 
 	public DriveTrain() {
 		super(NAME);
+		// sets the left motors to follow left master
 		left1.changeControlMode(TalonControlMode.Follower);
 		left1.set(leftMaster.getDeviceID());
 		left2.changeControlMode(TalonControlMode.Follower);
 		left2.set(leftMaster.getDeviceID());
+		// reverse the slave motors
 		left1.reverseOutput(true);
 		left2.reverseOutput(true);
 
+		// reverse the whole right side
 		rightMaster.setInverted(true);
+		// sets right motors to follow right master
 		right1.changeControlMode(TalonControlMode.Follower);
 		right1.set(rightMaster.getDeviceID());
 		right2.changeControlMode(TalonControlMode.Follower);
 		right2.set(rightMaster.getDeviceID());
+		// reverses the slave motors
 		right1.reverseOutput(true);
 		right2.reverseOutput(true);
+
+		// makes sure braking is enabled
 		setBrakeMode(true);
 
+		// configures the inches per count of the encoders
 		leftEncoder.setDistancePerPulse(INCHES_PER_ENCODER_COUNT);
 		rightEncoder.setDistancePerPulse(INCHES_PER_ENCODER_COUNT);
+		// configures the PID loops to use displacement (distance) rather than
+		// speed
 		leftEncoder.setPIDSourceType(PIDSourceType.kDisplacement);
 		rightEncoder.setPIDSourceType(PIDSourceType.kDisplacement);
 
+		// sets encoder samples to average
 		leftEncoder.setSamplesToAverage(3);
 		rightEncoder.setSamplesToAverage(3);
+		// reverses the right encoder
 		rightEncoder.setReverseDirection(true);
 
+		// sets the tolerance of the encoders
 		leftEncoderPID.setAbsoluteTolerance(ENCODER_DEADBAND_INCHES);
 		rightEncoderPID.setAbsoluteTolerance(ENCODER_DEADBAND_INCHES);
+		// sets the encoders to not be continious
 		leftEncoderPID.setContinuous(false);
 		rightEncoderPID.setContinuous(false);
+		// sets the minimum/maximum PID loop output
 		leftEncoderPID.setOutputRange(ENCODER_MIN_OUTPUT, ENCODER_MAX_OUTPUT);
 		rightEncoderPID.setOutputRange(ENCODER_MIN_OUTPUT, ENCODER_MAX_OUTPUT);
 
 		// Gyro
-		gyro.initGyro();
-		gyro.calibrate();
+		// not actually needed, this gets done in the gyro constructor
+		// gyro.initGyro();
+		// gyro.calibrate();
+		// sets the gyro to measure angle not rate of angle change
 		gyro.setPIDSourceType(PIDSourceType.kDisplacement);
+		// sets the sensitivity of the gyro
 		gyro.setSensitivity(GYRO_VOLTS_PER_DEGREE_PER_SECOND);
 
+		// sets the tolerance of the gyroPID
 		gyroPID.setAbsoluteTolerance(GYRO_DEADBAND_DEGREES);
+		// sets the gyroPID to not measure continiously
 		gyroPID.setContinuous(false);
+		// sets the minimum/maximum PID loop output
 		gyroPID.setOutputRange(GYRO_MIN_OUTPUT, GYRO_MAX_OUTPUT);
-		gyroPID.enable();
 
+		// turns on the gyro and encoders PID loops
+		gyroPID.enable();
 		leftEncoderPID.enable();
 		rightEncoderPID.enable();
 	}
@@ -126,23 +157,88 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 		setDefaultCommand(new DriveWithJoysticks());
 	}
 
-	public void tankDrive(double left, double right) {
+	/**
+	 * Runs the driveTrain at voltages left and right with no limit using tank
+	 * drive method<br>
+	 * Intended for use with the joystick input (allows for more flexibility
+	 * rather than just using driveRaw)
+	 * 
+	 * @param left
+	 *            left % voltage
+	 * @param right
+	 *            right % voltage
+	 */
+	public void driveWithJoysticks(double left, double right) {
+		tankDrive(left, right);
+		// we could change this to other things if we wanted, like
+		// "driveMechanum" or "driveArcade" without having to change code in
+		// other places
+	}
+
+	/**
+	 * Intermediate method in case we want to change the behavior of tank drive
+	 * 
+	 * @param left
+	 *            left % voltage
+	 * @param right
+	 *            right % voltage
+	 */
+	private void tankDrive(double left, double right) {
 		driveRaw(left, right);
 	}
 
+	/**
+	 * Runs the driveTrain at voltages left and right with no limit
+	 * 
+	 * @param left
+	 *            left % voltage
+	 * @param right
+	 *            right % voltage
+	 */
 	public void driveRaw(double left, double right) {
 		driveRawLimit(left, right, -1, 1);
 	}
 
+	/**
+	 * Runs the driveTrain at voltages left and right with specified limits <br>
+	 * lower <= left, right <= upper
+	 * 
+	 * @param left
+	 *            left % voltage
+	 * @param right
+	 *            right % voltage
+	 * @param lower
+	 *            maximum negative % voltage
+	 * @param upper
+	 *            maximum positive % voltage
+	 */
 	public void driveRawLimit(double left, double right, double lower, double upper) {
 		leftMaster.set(limit(-left, lower, upper));
 		rightMaster.set(limit(-right, lower, upper));
 	}
 
-	private double limit(double speed, double lower, double upper) {
-		return speed < lower ? lower : (speed > upper ? upper : speed);
+	/**
+	 * Limits the value so that lower <= speed <= upper
+	 * 
+	 * @param value
+	 *            input value to limit
+	 * @param lower
+	 *            the lower limit
+	 * @param upper
+	 *            the upper limit
+	 * @return the limited value
+	 */
+	private double limit(double value, double lower, double upper) {
+		return value < lower ? lower : (value > upper ? upper : value);
 	}
 
+	/**
+	 * Void method to supply PIDloops with a PIDOutput object easily
+	 * 
+	 * @param d
+	 *            input double to method to fulfill requirements of PIDOutput
+	 *            interface
+	 */
 	private static void voidMethod(double d) {}
 
 	@Override
@@ -192,19 +288,41 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 		SmartDashboard.putData("Gyro PID", gyroPID);
 	}
 
+	/**
+	 * Resets the gyro's PID values to the defaults saved in the code
+	 */
 	public void resetGyroPIDValues() {
 		gyroPID.setPID(gyroP, gyroI, gyroD);
 	}
 
+	/**
+	 * Checks if the encoder PID error is negative
+	 * 
+	 * @return if the right AND left encoder PID error is negative
+	 */
 	public boolean isErrorNegative() {
 		return driveTrain.rightEncoderPID.getError() < 0 && driveTrain.leftEncoderPID.getError() < 0;
 	}
 
+	/**
+	 * * Resets the left and right encoders' PID values to the defaults saved in
+	 * the code
+	 * 
+	 */
 	public void resetEncoderPIDValues() {
 		leftEncoderPID.setPID(encoderP, encoderI, encoderD);
 		rightEncoderPID.setPID(encoderP, encoderI, encoderD);
 	}
 
+	/**
+	 * Sets the brake mode of the drive train.<br>
+	 * The brake mode is what happens when the motor input voltage is 0 (either
+	 * coast or brake)
+	 * 
+	 * @param brake
+	 *            the brake mode of the drive train, false to coast, true to
+	 *            brake
+	 */
 	public void setBrakeMode(boolean brake) {
 		rightMaster.enableBrakeMode(brake);
 		right1.enableBrakeMode(brake);
@@ -214,11 +332,19 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 		left2.enableBrakeMode(brake);
 	}
 
+	/**
+	 * Clears the integral buildup of the gyro PID <br>
+	 * Happens automatically when within the deadband
+	 */
 	public void clearGyroIntgral() {
 		gyroPID.reset();
 		gyroPID.enable();
 	}
 
+	/**
+	 * Clears the integral buildup of the encoder PIDs <br>
+	 * Happens automatically when within the deadband
+	 */
 	public void clearEncoderIntgral() {
 		leftEncoderPID.reset();
 		leftEncoderPID.enable();
@@ -226,64 +352,143 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 		rightEncoderPID.enable();
 	}
 
+	/**
+	 * Sets the left encoder setpoint in inches
+	 * 
+	 * @param setpoint
+	 *            the setpoint in inches
+	 */
 	public void setLeftEncoderSetpoint(double setpoint) {
 		leftEncoderPID.setSetpoint(setpoint);
 	}
 
+	/**
+	 * Sets the right encoder setpoint in inches
+	 * 
+	 * @param setpoint
+	 *            the setpoint in inches
+	 */
 	public void setRightEncoderSetpoint(double setpoint) {
 		rightEncoderPID.setSetpoint(setpoint);
 	}
 
+	/**
+	 * Sets the both encoders' setpoint in inches
+	 * 
+	 * @param setpoint
+	 *            the setpoint in inches
+	 */
 	public void setEncoderSetpoint(double setpoint) {
 		leftEncoderPID.setSetpoint(setpoint);
 		rightEncoderPID.setSetpoint(setpoint);
 	}
 
+	/**
+	 * Sets the gyro setpoint in degrees
+	 * 
+	 * @param setpoint
+	 *            the setpoint in degrees
+	 */
 	public void setGyroSetpoint(double angle) {
 		gyroPID.setSetpoint(angle);
 	}
 
+	/**
+	 * Gets the left Encoder PID output
+	 * 
+	 * @return the left Encoder PID output (constrained by the min and max set
+	 *         in code)
+	 */
 	public double getLeftPIDOutput() {
 		return leftEncoderPID.get();
 	}
 
+	/**
+	 * Gets the right Encoder PID output
+	 * 
+	 * @return the right Encoder PID output (constrained by the min and max set
+	 *         in code)
+	 */
 	public double getRightPIDOutput() {
 		return rightEncoderPID.get();
 	}
 
+	/**
+	 * Gets the gyro PID output
+	 * 
+	 * @return the gyro PID output (constrained by the min and max set in code)
+	 */
 	public double getGyroPIDOutput() {
 		return gyroPID.get();
 	}
 
+	/**
+	 * Zeros the gyro so that the current angle is 0
+	 */
 	public void resetGyro() {
 		gyro.reset();
 	}
 
+	/**
+	 * Zeros the encoders so that the current distance is 0
+	 */
 	public void resetEncoders() {
 		leftEncoder.reset();
 		rightEncoder.reset();
 	}
 
+	/**
+	 * Gets the left encoder's distance
+	 * 
+	 * @return distance in inches measured by the left encoder
+	 */
 	public double getLeftDistance() {
 		return leftEncoder.getDistance();
 	}
 
+	/**
+	 * Gets the right encoder's distance
+	 * 
+	 * @return distance in inches measured by the right encoder
+	 */
 	public double getRightDistance() {
 		return rightEncoder.getDistance();
 	}
 
+	/**
+	 * Checks if the left encoder is within the deadband of the setpoint
+	 * 
+	 * @return if the left encoder is within the deadband of the setpoint
+	 */
 	public boolean leftEncoderOnTarget() {
 		return leftEncoderPID.onTarget();
 	}
 
+	/**
+	 * Checks if the right encoder is within the deadband of the setpoint
+	 * 
+	 * @return if the right encoder is within the deadband of the setpoint
+	 */
 	public boolean rightEncoderOnTarget() {
 		return leftEncoderPID.onTarget();
 	}
 
+	/**
+	 * Checks if the left AND right encoders are within the deadband of the
+	 * setpoint
+	 * 
+	 * @return if the left AND right encoders are within the deadband of the
+	 *         setpoint
+	 */
 	public boolean encodersOnTarget() {
 		return leftEncoderOnTarget() && rightEncoderOnTarget();
 	}
 
+	/**
+	 * Checks if the gyro is within the deadband of the setpoint
+	 * 
+	 * @return if the gyro is within the deadband of the setpoint
+	 */
 	public boolean gyroOnTarget() {
 		return gyroPID.onTarget();
 	}

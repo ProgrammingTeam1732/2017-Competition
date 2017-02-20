@@ -7,7 +7,7 @@ import com.ctre.CANTalon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
- *
+ * Class that runs the motor to climb the rope
  */
 public class Climber extends Subsystem {
 
@@ -18,10 +18,16 @@ public class Climber extends Subsystem {
 	@Override
 	public void initDefaultCommand() {}
 
+	/**
+	 * Runs the motor to climb up
+	 */
 	public void setUp() {
 		motor.set(UP_SPEED);
 	}
 
+	/**
+	 * Stops the motor
+	 */
 	public void setStop() {
 		motor.set(STOP_SPEED);
 	}
