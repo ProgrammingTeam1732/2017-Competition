@@ -52,8 +52,8 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 	// gyro controllers
 	private final PIDController	gyroPID					= new PIDController(gyroP, gyroI, gyroD, gyro,
 																			DriveTrain::voidMethod);
-	public static final double	GYRO_DEADBAND_DEGREES	= 6;
-	public static final double	gyroP					= 0.013;
+	public static final double	GYRO_DEADBAND_DEGREES	= 4;
+	public static final double	gyroP					= 0.008;
 	public static final double	gyroI					= 0.00001;
 	public static final double	gyroD					= 0;
 
@@ -63,15 +63,16 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 																			RobotMap.LEFT_ENCODER_CHANNEL_B);
 	private final Encoder		rightEncoder				= new Encoder(	RobotMap.RIGHT_ENCODER_CHANNEL_A,
 																			RobotMap.RIGHT_ENCODER_CHANNEL_B);
-	public static final double	INCHES_PER_ENCODER_COUNT	= 0.0134 * 4;
-	public static final double	LEFT_MOTOR_OFFSET			= 1.1;
+	public static final double	INCHES_PER_ENCODER_COUNT	= 44 / 5425.4;
+	// 0.0134 * 4;
+	// public static final double LEFT_MOTOR_OFFSET = 1.0;
 
 	// encoder controllers
 	private final PIDController	leftEncoderPID			= new PIDController(encoderP, encoderI, encoderD, leftEncoder,
 																			DriveTrain::voidMethod);
 	private final PIDController	rightEncoderPID			= new PIDController(encoderP, encoderI, encoderD, rightEncoder,
 																			DriveTrain::voidMethod);
-	public static final double	encoderP				= 0.03;
+	public static final double	encoderP				= 0.02;
 	public static final double	encoderI				= 0;
 	public static final double	encoderD				= 0;
 	public static final double	ENCODER_DEADBAND_INCHES	= 6;
@@ -114,12 +115,14 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 		// speed
 		leftEncoder.setPIDSourceType(PIDSourceType.kDisplacement);
 		rightEncoder.setPIDSourceType(PIDSourceType.kDisplacement);
+		leftEncoder.setReverseDirection(true);
+		// rightEncoder.setReverseDirection(true);
 
 		// sets encoder samples to average
 		leftEncoder.setSamplesToAverage(3);
 		rightEncoder.setSamplesToAverage(3);
 		// reverses the right encoder
-		rightEncoder.setReverseDirection(true);
+		// rightEncoder.setReverseDirection(true);
 
 		// sets the tolerance of the encoders
 		leftEncoderPID.setAbsoluteTolerance(ENCODER_DEADBAND_INCHES);

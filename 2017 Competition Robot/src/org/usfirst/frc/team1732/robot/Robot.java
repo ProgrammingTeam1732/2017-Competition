@@ -11,6 +11,7 @@ import org.usfirst.frc.team1732.robot.autocommands.ScoreGearAnd10BallsRed;
 import org.usfirst.frc.team1732.robot.autocommands.ScoreSideGearLeft;
 import org.usfirst.frc.team1732.robot.autocommands.ScoreSideGearRight;
 import org.usfirst.frc.team1732.robot.autocommands.VisionPlaceGear;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.TurnWithGyro;
 import org.usfirst.frc.team1732.robot.commands.individual.FlywheelForward;
 import org.usfirst.frc.team1732.robot.commands.individual.FlywheelReverse;
 import org.usfirst.frc.team1732.robot.commands.individual.FlywheelStop;
@@ -128,6 +129,7 @@ public class Robot extends IterativeRobot {
 		autoChooser.addObject("Score 10 Balls then Gear", new Score10BallsAndGearRed());
 		autoChooser.addObject("Grab Balls then Shoot", new GrabBallsAndShootRed());
 		autoChooser.addObject("Grab Balls Backward then Shoot", new GrabBallsBackwardAndShoot());
+		autoChooser.addObject("Turn 90 degres", new TurnWithGyro(90));
 		SmartDashboard.putData("AutonomousChooser", autoChooser);
 		// SmartDashboard.putBoolean("IsRedAlliance?", false);
 		autoCommand = new VisionPlaceGear(-40);
@@ -218,6 +220,9 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopInit() {
 		Scheduler.getInstance().removeAll(); // Cancels commands
+		Robot.driveTrain.clearEncoderIntgral();
+		Robot.driveTrain.clearGyroIntgral();
+
 	}
 
 	@Override

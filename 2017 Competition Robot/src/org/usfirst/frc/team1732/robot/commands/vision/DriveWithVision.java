@@ -10,13 +10,6 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class DriveWithVision extends Command {
 
-	public double targetDistanceInches;
-
-	public static final double	DEFAULT_TARGET_INCHES	= 10;
-	private static double		smartDashboardDistance	= DEFAULT_TARGET_INCHES;
-
-	private boolean foundOnce = false;
-
 	public DriveWithVision(double aTargetDistanceInches) {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
@@ -44,6 +37,14 @@ public class DriveWithVision extends Command {
 		visionMain.setVisionSetpoint(0);
 	}
 
+	public double targetDistanceInches;
+
+	public static final double	DEFAULT_TARGET_INCHES	= 10;
+	private static double		smartDashboardDistance	= DEFAULT_TARGET_INCHES;
+
+	private boolean	foundOnce	= false;
+	private boolean	lostOnce	= false;
+
 	private double previousAngleOutput = 0;
 
 	public static final double stopInputDistance = 20;
@@ -68,10 +69,7 @@ public class DriveWithVision extends Command {
 		// double angleSetpoint = angle + driveTrain.gyro.getAngle();
 		// if it still sees it calculate the new output, otherwise keep doing
 		// what it was doing
-		if (visionMain.canSeeGearPeg() /*
-										 * && !(distance < stopInputDistance &&
-										 * foundOnce)
-										 */) {
+		if (visionMain.canSeeGearPeg() && !(lostOnce && distance < stopInputDistance)) {
 			// double P = lower + slope * distance;
 			// double P = lower + (upper - lower) / (1 + Math.exp(-slope *
 			// (distance - middle)));
@@ -86,6 +84,8 @@ public class DriveWithVision extends Command {
 			// driveTrain.gyroPID.setSetpoint(angleSetpoint);
 			driveTrain.setLeftEncoderSetpoint(leftSetpoint);
 			driveTrain.setRightEncoderSetpoint(rightSetpoint);
+		} else if (foundOnce) {
+			lostOnce = true;
 		}
 		// double angleOutput = driveTrain.gyroPID.get();
 		double leftOutput = driveTrain.getLeftPIDOutput() - previousAngleOutput;
