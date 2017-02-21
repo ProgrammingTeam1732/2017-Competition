@@ -88,12 +88,23 @@ public class OI {
 	}
 
 	public double getLeftSpeed() {
-		return -left.getRawAxis(RobotMap.LEFT_JOYSTICK_Y_AXIS);
+		return -controller.getRawAxis(1);// for use with game controller
+		// return -left.getRawAxis(RobotMap.LEFT_JOYSTICK_Y_AXIS);
 	}
 
 	public double getRightSpeed() {
-		return -right.getRawAxis(RobotMap.RIGHT_JOYSTICK_Y_AXIS);
+		return -controller.getRawAxis(3);// for use with game controller
+		// return -right.getRawAxis(RobotMap.RIGHT_JOYSTICK_Y_AXIS);
 	}
+
+	// Buttons from controller
+	private final Joystick	controller	= new Joystick(0);
+	private final Button	a			= new JoystickButton(controller, 2);
+	private final Button	b			= new JoystickButton(controller, 3);
+	private final Button	x			= new JoystickButton(controller, 1);
+	private final Button	y			= new JoystickButton(controller, 4);
+	private final Button	lb			= new JoystickButton(controller, 5);
+	private final Button	rb			= new JoystickButton(controller, 6);
 
 	// Buttons from last year's driver station:
 	private final Button	fingerSwitch	= new JoystickButton(buttons, 12);
