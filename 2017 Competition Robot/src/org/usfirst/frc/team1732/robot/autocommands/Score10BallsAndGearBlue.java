@@ -6,9 +6,6 @@ import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveGyro;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-/**
- *
- */
 public class Score10BallsAndGearBlue extends CommandGroup {
 
 	public Score10BallsAndGearBlue() {

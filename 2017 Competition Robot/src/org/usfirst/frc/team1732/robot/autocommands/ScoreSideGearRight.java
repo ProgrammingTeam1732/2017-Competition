@@ -18,6 +18,6 @@ public class ScoreSideGearRight extends CommandGroup {
 		addSequential(new DriveEncoders(55, 55));
 		addSequential(new TurnWithGyro(-60));
 		addSequential(new Wait(0.2));
-		addSequential(new VisionPlaceGear(-25));
+		addSequential(new VisionPlaceGear(-18));
 	}
 }

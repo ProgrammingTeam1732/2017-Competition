@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class Score10BallsAndGearRed extends CommandGroup {
 	public Score10BallsAndGearRed() {
 		addSequential(new DriveEncoders(13, 13));
-		addSequential(new DriveGyro(85, .6, -.2));
+		addSequential(new DriveGyro(80, .7, -.3));
 		// shoot commands
 		// addSequential(new EnableFlywheel());
 		addSequential(new Wait(5));
