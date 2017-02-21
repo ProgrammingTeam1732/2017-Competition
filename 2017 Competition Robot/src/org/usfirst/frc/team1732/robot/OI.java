@@ -7,6 +7,8 @@ import org.usfirst.frc.team1732.robot.commands.climber.ArmSetIn;
 import org.usfirst.frc.team1732.robot.commands.climber.ArmSetOut;
 import org.usfirst.frc.team1732.robot.commands.climber.ClimberSetStop;
 import org.usfirst.frc.team1732.robot.commands.climber.ClimberSetUp;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.ShiftHigh;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.ShiftLow;
 import org.usfirst.frc.team1732.robot.commands.flywheel.DisableFlywheel;
 import org.usfirst.frc.team1732.robot.commands.flywheel.EnableFlywheel;
 import org.usfirst.frc.team1732.robot.commands.flywheel.Shoot;
@@ -54,6 +56,8 @@ public class OI {
 	private final Button	armPosistion	= new JoystickButton(buttons, 0);
 	private final Button	climber			= new JoystickButton(buttons, 0);
 
+	private final Button shifter = new JoystickButton(buttons, 0);
+
 	/**
 	 * Calling the OI constructor will bind the buttons to commands
 	 */
@@ -78,6 +82,9 @@ public class OI {
 		ballIntakeIn.whenPressed(new IntakeBalls());
 		ballIntakeOut.whenPressed(new OutputBalls());
 		ballIntakeStop.whenActive(new StopIntakeAndFeeder());
+
+		shifter.whenPressed(new ShiftLow());
+		shifter.whenReleased(new ShiftHigh());
 	}
 
 	public double getLeftSpeed() {

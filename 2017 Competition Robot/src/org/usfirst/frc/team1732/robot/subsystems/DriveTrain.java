@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDSourceType;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -38,6 +39,10 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 	private final CANTalon	rightMaster	= new CANTalon(RobotMap.RIGHT_MASTER_MOTOR_DEVICE_NUMBER);
 	private final CANTalon	right1		= new CANTalon(RobotMap.RIGHT_1_MOTOR_DEVICE_NUMBER);
 	private final CANTalon	right2		= new CANTalon(RobotMap.RIGHT_2_MOTOR_DEVICE_NUMBER);
+
+	private final Solenoid		shifter		= new Solenoid(RobotMap.DRIVE_TRAIN_SHIFTER_SOLENOID_DEVICE_NUMBER);
+	public static final boolean	HIGH_GEAR	= true;
+	public static final boolean	LOW_GEAR	= !HIGH_GEAR;
 
 	// gyro
 	// gyro sensors
@@ -145,6 +150,8 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 		gyroPID.setContinuous(false);
 		// sets the minimum/maximum PID loop output
 		gyroPID.setOutputRange(GYRO_MIN_OUTPUT, GYRO_MAX_OUTPUT);
+
+		shiftHighGear();
 
 		// turns on the gyro and encoders PID loops
 		gyroPID.enable();
@@ -491,6 +498,22 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 	 */
 	public boolean gyroOnTarget() {
 		return gyroPID.onTarget();
+	}
+
+	public void shiftHighGear() {
+		shifter.set(HIGH_GEAR);
+	}
+
+	public void shiftLowGear() {
+		shifter.set(LOW_GEAR);
+	}
+
+	public boolean isHighGear() {
+		return shifter.get() == HIGH_GEAR;
+	}
+
+	public boolean isLowGear() {
+		return shifter.get() == LOW_GEAR;
 	}
 
 }

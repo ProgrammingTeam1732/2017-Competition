@@ -110,7 +110,6 @@ public class Robot extends IterativeRobot {
 		// SmartDashboard.putBoolean("IsRedAlliance?", false);
 		autoCommand = new VisionPlaceGear(-40);
 		SmartDashboard.putString("Current Command", autoCommand.getName());
-
 		// Initialize smartdashboard
 		dashboard.init();
 	}
