@@ -94,4 +94,18 @@ public class OI {
 	public double getRightSpeed() {
 		return -right.getRawAxis(RobotMap.RIGHT_JOYSTICK_Y_AXIS);
 	}
+
+	// Buttons from last year's driver station:
+	private final Button	fingerSwitch	= new JoystickButton(buttons, 12);
+	private final Button	intakeIn		= new JoystickButton(buttons, 10);
+	private final Button	intakeOut		= new JoystickButton(buttons, 11);
+	private final Button	intakeSwitch	= new JoystickButton(buttons, 9);
+	private final Button	armHigh			= new JoystickButton(buttons, 4);
+	private final Button	armMedium		= new JoystickButton(buttons, 5);
+	private final Button	armLow			= new JoystickButton(buttons, 6);
+	private final Button	shootFar		= new JoystickButton(buttons, 2);
+	private final Button	shootClose		= new JoystickButton(buttons, 3);
+	private final Button	shoot			= new JoystickButton(buttons, 1);
+	private final Button	manipUp			= new JoystickButton(buttons, 8);
+	private final Button	manipDown		= new JoystickButton(buttons, 7);
 }
