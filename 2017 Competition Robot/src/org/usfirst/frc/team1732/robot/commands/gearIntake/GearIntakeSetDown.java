@@ -12,7 +12,7 @@ public class GearIntakeSetDown extends CommandGroup {
 
 	public GearIntakeSetDown() {
 		addSequential(new BallIntakeSetDown());
-		addSequential(new Wait(0.1));
+		addSequential(new Wait(0));
 		addSequential(new GearIntakeSetDownNoCheck());
 	}
 }
