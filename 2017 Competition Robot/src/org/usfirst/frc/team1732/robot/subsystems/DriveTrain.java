@@ -515,5 +515,33 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 	public boolean isLowGear() {
 		return shifter.get() == LOW_GEAR;
 	}
-
+	
+	/**
+	 * Runs individual motors for testing
+	 */
+	
+	public void runMotorLtBottom(int speed){
+		leftMaster.set(speed);
+	}
+	
+	public void runMotorLtBack(int speed){
+		left1.set(speed);
+	}
+	
+	public void runMotorLtFront(int speed){
+		left2.set(speed);
+	}
+	
+	public void runMotorRtBottom(int speed){
+		rightMaster.set(speed);
+	}
+	
+	public void runMotorRtBack(int speed){
+		right1.set(speed);
+	}
+	
+	public void runMotorRtFront(int speed){
+		right2.set(speed);
+	}	
+	
 }

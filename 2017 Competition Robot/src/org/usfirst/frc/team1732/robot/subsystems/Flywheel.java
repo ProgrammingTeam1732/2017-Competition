@@ -71,6 +71,10 @@ public class Flywheel extends Subsystem implements SmartDashboardGroup {
 		return Math.abs(motor.getError()) < Math.abs(percentErrorAllowed * motor.getSetpoint());
 	}
 
+	public void setSpeed(double e){
+		motor.set(e);
+	}
+	
 	@Override
 	public void addToSmartDashboard(MySmartDashboard dashboard) {
 		// TODO Auto-generated method stub
