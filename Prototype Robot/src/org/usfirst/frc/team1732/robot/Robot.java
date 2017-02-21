@@ -11,6 +11,7 @@ import org.usfirst.frc.team1732.robot.autocommands.ScoreGearAnd10BallsRed;
 import org.usfirst.frc.team1732.robot.autocommands.ScoreSideGearLeft;
 import org.usfirst.frc.team1732.robot.autocommands.ScoreSideGearRight;
 import org.usfirst.frc.team1732.robot.autocommands.VisionPlaceGear;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveEncoders;
 import org.usfirst.frc.team1732.robot.commands.vision.DriveWithVision;
 import org.usfirst.frc.team1732.robot.smartdashboard.MySmartDashboard;
 import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardItem;
@@ -63,6 +64,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
+		SmartDashboard.putData(new DriveEncoders(20));
 		driveTrain = new DriveTrain();
 		flywheel = new Flywheel();
 		ballIntake = new BallIntake();
