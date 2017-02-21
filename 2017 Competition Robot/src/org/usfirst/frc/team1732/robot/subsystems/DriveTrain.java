@@ -89,24 +89,20 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 	public DriveTrain() {
 		super(NAME);
 		// sets the left motors to follow left master
+		leftMaster.setInverted(true);
 		left1.changeControlMode(TalonControlMode.Follower);
 		left1.set(leftMaster.getDeviceID());
 		left2.changeControlMode(TalonControlMode.Follower);
 		left2.set(leftMaster.getDeviceID());
 		// reverse the slave motors
-		left1.reverseOutput(true);
-		left2.reverseOutput(true);
 
 		// reverse the whole right side
-		rightMaster.setInverted(true);
 		// sets right motors to follow right master
 		right1.changeControlMode(TalonControlMode.Follower);
 		right1.set(rightMaster.getDeviceID());
 		right2.changeControlMode(TalonControlMode.Follower);
 		right2.set(rightMaster.getDeviceID());
 		// reverses the slave motors
-		right1.reverseOutput(true);
-		right2.reverseOutput(true);
 
 		// makes sure braking is enabled
 		setBrakeMode(true);
@@ -515,33 +511,33 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 	public boolean isLowGear() {
 		return shifter.get() == LOW_GEAR;
 	}
-	
+
 	/**
 	 * Runs individual motors for testing
 	 */
-	
-	public void runMotorLtBottom(int speed){
+
+	public void runMotorLtBottom(int speed) {
 		leftMaster.set(speed);
 	}
-	
-	public void runMotorLtBack(int speed){
+
+	public void runMotorLtBack(int speed) {
 		left1.set(speed);
 	}
-	
-	public void runMotorLtFront(int speed){
+
+	public void runMotorLtFront(int speed) {
 		left2.set(speed);
 	}
-	
-	public void runMotorRtBottom(int speed){
+
+	public void runMotorRtBottom(int speed) {
 		rightMaster.set(speed);
 	}
-	
-	public void runMotorRtBack(int speed){
+
+	public void runMotorRtBack(int speed) {
 		right1.set(speed);
 	}
-	
-	public void runMotorRtFront(int speed){
+
+	public void runMotorRtFront(int speed) {
 		right2.set(speed);
-	}	
-	
+	}
+
 }

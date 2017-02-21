@@ -88,8 +88,9 @@ public class Robot extends IterativeRobot {
 		ballIntake = new BallIntake();
 		climber = new Climber();
 		feeder = new Feeder();
-
+		arm = new Arm();
 		gearIntake = new GearIntake();
+
 		oi = new OI();
 		visionMain = new VisionMain();
 

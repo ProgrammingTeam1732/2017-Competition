@@ -28,15 +28,34 @@ import edu.wpi.first.wpilibj.buttons.Trigger;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
+
 	private Joystick	buttons	= new Joystick(RobotMap.BUTTONS_USB);
 	private Joystick	left	= new Joystick(RobotMap.LEFT_JOYSTICK_USB);
 	private Joystick	right	= new Joystick(RobotMap.RIGHT_JOYSTICK_USB);
 
+	// Buttons from last year's driver station:
+	private final Button	fingerSwitch	= new JoystickButton(buttons, 12);
+	private final Button	intakeIn		= new JoystickButton(buttons, 10);
+	private final Button	intakeOut		= new JoystickButton(buttons, 11);
+	private final Button	intakeSwitch	= new JoystickButton(buttons, 9);
+	private final Button	armHigh			= new JoystickButton(buttons, 4);
+	private final Button	armMedium		= new JoystickButton(buttons, 5);
+	private final Button	armLow			= new JoystickButton(buttons, 6);
+	private final Button	shootFar		= new JoystickButton(buttons, 2);
+	private final Button	shootClose		= new JoystickButton(buttons, 3);
+	private final Button	shoot			= new JoystickButton(buttons, 1);
+	private final Button	manipUp			= new JoystickButton(buttons, 8);
+	private final Button	manipDown		= new JoystickButton(buttons, 7);
+
 	private final Button	gearIntakeJoystickInDown	= new JoystickButton(left, 1);
 	private final Button	gearIntakeJoystickOutDown	= new JoystickButton(right, 1);
 
-	private final Button	ballIntakeIn	= new JoystickButton(buttons, 0);
-	private final Button	ballIntakeOut	= new JoystickButton(buttons, 0);
+	private final Button	ballIntakeIn	= intakeIn;		// new
+															// JoystickButton(buttons,
+															// 0);
+	private final Button	ballIntakeOut	= intakeOut;	// new
+															// JoystickButton(buttons,
+															// 0);
 
 	/**
 	 * This Trigger returns true only if both buttons aren't active This is so
@@ -53,8 +72,12 @@ public class OI {
 	private final Button	flywheelSwitch	= new JoystickButton(buttons, 0);
 	private final Button	shootButton		= new JoystickButton(buttons, 0);
 
-	private final Button	armPosistion	= new JoystickButton(buttons, 0);
-	private final Button	climber			= new JoystickButton(buttons, 0);
+	private final Button armPosistion = fingerSwitch; // new
+	// JoystickButton(buttons,
+	// 0);
+	private final Button climber = shootFar; // new
+												// JoystickButton(buttons,
+												// 1);
 
 	private final Button shifter = new JoystickButton(buttons, 0);
 
@@ -106,17 +129,4 @@ public class OI {
 	private final Button	lb			= new JoystickButton(controller, 5);
 	private final Button	rb			= new JoystickButton(controller, 6);
 
-	// Buttons from last year's driver station:
-	private final Button	fingerSwitch	= new JoystickButton(buttons, 12);
-	private final Button	intakeIn		= new JoystickButton(buttons, 10);
-	private final Button	intakeOut		= new JoystickButton(buttons, 11);
-	private final Button	intakeSwitch	= new JoystickButton(buttons, 9);
-	private final Button	armHigh			= new JoystickButton(buttons, 4);
-	private final Button	armMedium		= new JoystickButton(buttons, 5);
-	private final Button	armLow			= new JoystickButton(buttons, 6);
-	private final Button	shootFar		= new JoystickButton(buttons, 2);
-	private final Button	shootClose		= new JoystickButton(buttons, 3);
-	private final Button	shoot			= new JoystickButton(buttons, 1);
-	private final Button	manipUp			= new JoystickButton(buttons, 8);
-	private final Button	manipDown		= new JoystickButton(buttons, 7);
 }

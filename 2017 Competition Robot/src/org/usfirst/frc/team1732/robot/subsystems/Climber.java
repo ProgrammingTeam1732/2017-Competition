@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class Climber extends Subsystem {
 
 	private final CANTalon		motor		= new CANTalon(RobotMap.CLIMBER_MOTOR_DEVICE_NUMBER);
-	public static final double	UP_SPEED	= 0.5;
+	public static final double	UP_SPEED	= 1;
 	public static final double	STOP_SPEED	= 0;
 
 	@Override

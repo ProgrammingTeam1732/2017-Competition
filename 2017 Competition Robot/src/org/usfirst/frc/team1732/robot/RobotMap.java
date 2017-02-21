@@ -11,18 +11,19 @@ public class RobotMap {
 	// Controller
 	public static final int	LEFT_JOYSTICK_Y_AXIS	= 1;
 	public static final int	RIGHT_JOYSTICK_Y_AXIS	= 1;
-	public static final int	LEFT_JOYSTICK_USB		= 2;
-	public static final int	RIGHT_JOYSTICK_USB		= 1;
-	public static final int	BUTTONS_USB				= 0;
+
+	public static final int	LEFT_JOYSTICK_USB	= 2;
+	public static final int	RIGHT_JOYSTICK_USB	= 1;
+	public static final int	BUTTONS_USB			= 0;
 
 	// Drive Train
-	public static final int	LEFT_MASTER_MOTOR_DEVICE_NUMBER	= 0;
-	public static final int	LEFT_1_MOTOR_DEVICE_NUMBER		= 1;
-	public static final int	LEFT_2_MOTOR_DEVICE_NUMBER		= 2;
+	public static final int	LEFT_MASTER_MOTOR_DEVICE_NUMBER	= 5;
+	public static final int	LEFT_1_MOTOR_DEVICE_NUMBER		= 6;
+	public static final int	LEFT_2_MOTOR_DEVICE_NUMBER		= 7;
 
-	public static final int	RIGHT_MASTER_MOTOR_DEVICE_NUMBER	= 5;
-	public static final int	RIGHT_1_MOTOR_DEVICE_NUMBER			= 6;
-	public static final int	RIGHT_2_MOTOR_DEVICE_NUMBER			= 7;
+	public static final int	RIGHT_MASTER_MOTOR_DEVICE_NUMBER	= 0;
+	public static final int	RIGHT_1_MOTOR_DEVICE_NUMBER			= 1;
+	public static final int	RIGHT_2_MOTOR_DEVICE_NUMBER			= 2;
 
 	public static final int	LEFT_ENCODER_CHANNEL_A	= 2;
 	public static final int	LEFT_ENCODER_CHANNEL_B	= 3;
@@ -42,13 +43,13 @@ public class RobotMap {
 
 	// Ball Intake (Floor/Chute/Hopper)
 	public static final int	BALL_INTAKE_MOTOR_DEVICE_NUMBER		= 11;
-	public static final int	BALL_INTAKE_SOLENOID_DEVICE_NUMBER	= 0;
+	public static final int	BALL_INTAKE_SOLENOID_DEVICE_NUMBER	= 4;	// FIXME
 
 	// Gear Intake (Floor/Chute)
 	public static final int	GEAR_INTAKE_MOTOR_DEVICE_NUMBER		= 10;
 	public static final int	GEAR_MANIPULATOR_SOLENOID_NUMBER	= 6;
 
-	public static final int GEAR_MANIPULATOR_STORAGE_NUMBER = 0; // ?
+	public static final int GEAR_MANIPULATOR_STORAGE_NUMBER = 3; // FIXME
 
 	// Hopper/Feeder/Index
 	public static final int FEEDER_MOTOR_DEVICE_NUMBER = 9;
