@@ -108,6 +108,8 @@ public class OI {
 
 		shifter.whenPressed(new ShiftLow());
 		shifter.whenReleased(new ShiftHigh());
+		
+		
 	}
 
 	public double getLeftSpeed() {

@@ -11,7 +11,21 @@ import org.usfirst.frc.team1732.robot.autocommands.ScoreGearAnd10BallsRed;
 import org.usfirst.frc.team1732.robot.autocommands.ScoreSideGearLeft;
 import org.usfirst.frc.team1732.robot.autocommands.ScoreSideGearRight;
 import org.usfirst.frc.team1732.robot.autocommands.VisionPlaceGear;
+import org.usfirst.frc.team1732.robot.commands.BallIntake.BallIntakeSetDown;
+import org.usfirst.frc.team1732.robot.commands.BallIntake.BallIntakeSetIn;
+import org.usfirst.frc.team1732.robot.commands.BallIntake.BallIntakeSetOut;
+import org.usfirst.frc.team1732.robot.commands.BallIntake.BallIntakeSetUp;
+import org.usfirst.frc.team1732.robot.commands.climber.ArmSetIn;
+import org.usfirst.frc.team1732.robot.commands.climber.ArmSetOut;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.ShiftHigh;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.ShiftLow;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.TurnWithGyro;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetDown;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetIn;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetOut;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetStorageIn;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetStorageOut;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetUp;
 import org.usfirst.frc.team1732.robot.commands.individual.FlywheelForward;
 import org.usfirst.frc.team1732.robot.commands.individual.FlywheelReverse;
 import org.usfirst.frc.team1732.robot.commands.individual.FlywheelStop;
@@ -129,7 +143,6 @@ public class Robot extends IterativeRobot {
 		autoChooser.addObject("Score 10 Balls then Gear", new Score10BallsAndGearRed());
 		autoChooser.addObject("Grab Balls then Shoot", new GrabBallsAndShootRed());
 		autoChooser.addObject("Grab Balls Backward then Shoot", new GrabBallsBackwardAndShoot());
-		autoChooser.addObject("Turn 90 degres", new TurnWithGyro(90));
 		SmartDashboard.putData("AutonomousChooser", autoChooser);
 		// SmartDashboard.putBoolean("IsRedAlliance?", false);
 		autoCommand = new VisionPlaceGear(-40);
@@ -163,6 +176,22 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putData(new MotorRTFrontForward());
 		SmartDashboard.putData(new MotorRTFrontReverse());
 		SmartDashboard.putData(new MotorRTFrontStop());
+		
+		SmartDashboard.putData(new ArmSetOut());
+		SmartDashboard.putData(new ArmSetIn());
+		
+		SmartDashboard.putData(new BallIntakeSetDown());
+		SmartDashboard.putData(new BallIntakeSetUp());
+		
+		SmartDashboard.putData(new ShiftHigh());
+		SmartDashboard.putData(new ShiftLow());
+		
+		SmartDashboard.putData(new GearIntakeSetUp());
+		SmartDashboard.putData(new GearIntakeSetDown());
+		
+		SmartDashboard.putData(new GearIntakeSetStorageOut());
+		SmartDashboard.putData(new GearIntakeSetStorageIn());
+		
 	}
 
 	@Override
