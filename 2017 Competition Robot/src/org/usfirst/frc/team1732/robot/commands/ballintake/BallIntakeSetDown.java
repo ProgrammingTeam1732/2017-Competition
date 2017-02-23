@@ -15,7 +15,7 @@ public class BallIntakeSetDown extends InstantCommand {
 
 	@Override
 	protected void initialize() {
-		Robot.ballIntake.setPosistionDown();
+		Robot.ballIntake.setPositionDown();
 	}
 
 }

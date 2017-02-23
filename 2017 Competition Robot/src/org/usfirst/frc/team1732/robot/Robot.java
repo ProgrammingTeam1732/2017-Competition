@@ -104,6 +104,7 @@ public class Robot extends IterativeRobot {
 		// Add items to smartdashboard
 		driveTrain.addToSmartDashboard(dashboard);
 		visionMain.addToSmartDashboard(dashboard);
+		arm.addToSmartDashboard(dashboard);
 		addTestingToSmartDashbaord();
 		addAutonomousToSmartDashboard();
 
