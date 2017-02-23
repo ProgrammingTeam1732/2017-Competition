@@ -171,6 +171,7 @@ public class VisionMain implements SmartDashboardGroup {
 		String directory = NAME + "/";
 		String visionDirectory = directory + "vision/";
 
+		dashboard.addItem(SmartDashboardItem.newNumberSender(visionDirectory + "Gear Peg Score", this::getGearScore));
 		dashboard.addItem(SmartDashboardItem.newNumberSender(	visionDirectory + "Vision inches",
 																this::getInchesToGearPeg));
 		dashboard.addItem(SmartDashboardItem.newNumberSender(	visionDirectory + "Vision degrees",
@@ -225,5 +226,13 @@ public class VisionMain implements SmartDashboardGroup {
 
 	public boolean isVisionPIDOnTarget() {
 		return visionPID.onTarget();
+	}
+
+	public double getGearScore() {
+		if (gearTarget == null) {
+			return -1;
+		} else {
+			return gearTarget.getScore();
+		}
 	}
 }
