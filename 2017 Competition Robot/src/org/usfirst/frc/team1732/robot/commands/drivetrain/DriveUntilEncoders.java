@@ -9,17 +9,24 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class DriveUntilEncoders extends Command {
 
-	private final double	setpointInches;
+	private final double	leftSetpoint;
+	private final double	rightSetpoint;
 	private final double	left;
 	private final double	right;
 	private boolean			stop;
 
-	public DriveUntilEncoders(double distanceInches, double leftSpeed, double rightSpeed, boolean stop) {
+	public DriveUntilEncoders(double leftSetpoint, double rightSetpoint, double leftSpeed, double rightSpeed,
+			boolean stop) {
 		requires(Robot.driveTrain);
-		setpointInches = distanceInches;
+		this.leftSetpoint = leftSetpoint;
+		this.rightSetpoint = rightSetpoint;
 		left = leftSpeed;
 		right = rightSpeed;
 		this.stop = stop;
+	}
+
+	public DriveUntilEncoders(double distanceInches, double leftSpeed, double rightSpeed, boolean stop) {
+		this(distanceInches, distanceInches, leftSpeed, rightSpeed, stop);
 	}
 
 	// Called just before this Command runs the first time
@@ -27,7 +34,8 @@ public class DriveUntilEncoders extends Command {
 	protected void initialize() {
 		System.out.println("running forward");
 		Robot.driveTrain.resetEncoders();
-		Robot.driveTrain.setEncoderSetpoint(setpointInches);
+		Robot.driveTrain.setLeftEncoderSetpoint(leftSetpoint);
+		Robot.driveTrain.setRightEncoderSetpoint(rightSetpoint);
 		Robot.driveTrain.driveRaw(left, right);
 	}
 
@@ -38,7 +46,9 @@ public class DriveUntilEncoders extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return Robot.driveTrain.encodersOnTarget();
+		boolean leftOvershoot = Math.abs(Robot.driveTrain.getLeftDistance()) > Math.abs(leftSetpoint);
+		boolean rightOvershoot = Math.abs(Robot.driveTrain.getRightDistance()) > Math.abs(rightSetpoint);
+		return Robot.driveTrain.encodersOnTarget() || (leftOvershoot && rightOvershoot);
 	}
 
 	// Called once after isFinished returns true

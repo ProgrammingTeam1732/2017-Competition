@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1732.robot.commands.BallIntake;
+package org.usfirst.frc.team1732.robot.commands.ballintake;
 
 import org.usfirst.frc.team1732.robot.Robot;
 

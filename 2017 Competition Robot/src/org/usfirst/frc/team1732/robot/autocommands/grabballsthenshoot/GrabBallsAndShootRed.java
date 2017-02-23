@@ -1,25 +1,22 @@
-package org.usfirst.frc.team1732.robot.autocommands;
+package org.usfirst.frc.team1732.robot.autocommands.grabballsthenshoot;
 
-import org.usfirst.frc.team1732.robot.commands.Wait;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveEncoders;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.TurnWithGyro;
+import org.usfirst.frc.team1732.robot.commands.helpercommands.Wait;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-/**
- *
- */
-public class GrabBallsAndShootBlue extends CommandGroup {
+class GrabBallsAndShootRed extends CommandGroup {
 
-	public GrabBallsAndShootBlue() {
+	public GrabBallsAndShootRed() {
 		// drive to hopper
 		addSequential(new DriveEncoders(100));
 		// turn to hopper trigger
-		addSequential(new TurnWithGyro(-90));
+		addSequential(new TurnWithGyro(90));
 		// drive into hopper trigger
 		addSequential(new DriveEncoders(50));
 		// turn to be parallel with wall
-		addSequential(new TurnWithGyro(-90));
+		addSequential(new TurnWithGyro(90));
 		// drive forward below hopper
 		addSequential(new DriveEncoders(20));
 		// wait for balls to fall in

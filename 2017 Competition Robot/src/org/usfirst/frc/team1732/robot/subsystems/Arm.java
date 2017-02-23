@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  * Arm used to grab the rope
  */
 public class Arm extends Subsystem {
-	private final Solenoid		solenoid	= new Solenoid(RobotMap.ARM_SOLENOID_DEVICE_NUMBER);
+	private final Solenoid		solenoid	= new Solenoid(RobotMap.PCM_CAN_ID, RobotMap.ARM_SOLENOID_DEVICE_NUMBER);
 	public static final boolean	OUT			= true;
 	public static final boolean	IN			= !OUT;
 

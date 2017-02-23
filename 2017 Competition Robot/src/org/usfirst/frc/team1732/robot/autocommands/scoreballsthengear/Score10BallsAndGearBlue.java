@@ -1,12 +1,13 @@
-package org.usfirst.frc.team1732.robot.autocommands;
+package org.usfirst.frc.team1732.robot.autocommands.scoreballsthengear;
 
-import org.usfirst.frc.team1732.robot.commands.Wait;
+import org.usfirst.frc.team1732.robot.autocommands.visionplacegear.VisionPlaceGear;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveEncoders;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveGyro;
+import org.usfirst.frc.team1732.robot.commands.helpercommands.Wait;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class Score10BallsAndGearBlue extends CommandGroup {
+class Score10BallsAndGearBlue extends CommandGroup {
 
 	public Score10BallsAndGearBlue() {
 		addSequential(new DriveEncoders(15, 15));

@@ -40,7 +40,8 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 	private final CANTalon	right1		= new CANTalon(RobotMap.RIGHT_1_MOTOR_DEVICE_NUMBER);
 	private final CANTalon	right2		= new CANTalon(RobotMap.RIGHT_2_MOTOR_DEVICE_NUMBER);
 
-	private final Solenoid		shifter		= new Solenoid(RobotMap.DRIVE_TRAIN_SHIFTER_SOLENOID_DEVICE_NUMBER);
+	private final Solenoid		shifter		= new Solenoid(	RobotMap.PCM_CAN_ID,
+															RobotMap.DRIVE_TRAIN_SHIFTER_SOLENOID_DEVICE_NUMBER);
 	public static final boolean	HIGH_GEAR	= true;
 	public static final boolean	LOW_GEAR	= !HIGH_GEAR;
 
@@ -459,6 +460,15 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 	 */
 	public double getRightDistance() {
 		return rightEncoder.getDistance();
+	}
+
+	/**
+	 * Gets the gyro's angle
+	 * 
+	 * @return the gyro angle in degreees
+	 */
+	public double getAngle() {
+		return gyro.getAngle();
 	}
 
 	/**

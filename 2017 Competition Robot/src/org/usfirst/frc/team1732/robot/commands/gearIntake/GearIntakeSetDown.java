@@ -1,7 +1,7 @@
 package org.usfirst.frc.team1732.robot.commands.gearIntake;
 
-import org.usfirst.frc.team1732.robot.commands.Wait;
-import org.usfirst.frc.team1732.robot.commands.BallIntake.BallIntakeSetDown;
+import org.usfirst.frc.team1732.robot.commands.ballintake.BallIntakeSetDown;
+import org.usfirst.frc.team1732.robot.commands.helpercommands.Wait;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 

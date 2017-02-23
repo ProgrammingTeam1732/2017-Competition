@@ -1,17 +1,22 @@
 
 package org.usfirst.frc.team1732.robot;
 
-import org.usfirst.frc.team1732.robot.autocommands.GrabBallsAndShootBlue;
-import org.usfirst.frc.team1732.robot.autocommands.GrabBallsAndShootRed;
-import org.usfirst.frc.team1732.robot.autocommands.GrabBallsBackwardAndShoot;
-import org.usfirst.frc.team1732.robot.autocommands.Score10BallsAndGearBlue;
-import org.usfirst.frc.team1732.robot.autocommands.Score10BallsAndGearRed;
-import org.usfirst.frc.team1732.robot.autocommands.ScoreGearAnd10BallsBlue;
-import org.usfirst.frc.team1732.robot.autocommands.ScoreGearAnd10BallsRed;
-import org.usfirst.frc.team1732.robot.autocommands.ScoreSideGearLeft;
-import org.usfirst.frc.team1732.robot.autocommands.ScoreSideGearRight;
-import org.usfirst.frc.team1732.robot.autocommands.VisionPlaceGear;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.TurnWithGyro;
+import org.usfirst.frc.team1732.robot.autocommands.grabballsthenshoot.GrabBallsBackwardAndShoot;
+import org.usfirst.frc.team1732.robot.autocommands.scoreballsthengear.ScoreBallsThenGear;
+import org.usfirst.frc.team1732.robot.autocommands.scoregearthenballs.ScoreGearThenBalls;
+import org.usfirst.frc.team1732.robot.autocommands.scoresidegear.ScoreSideGearLeft;
+import org.usfirst.frc.team1732.robot.autocommands.scoresidegear.ScoreSideGearRight;
+import org.usfirst.frc.team1732.robot.autocommands.visionplacegear.VisionPlaceGear;
+import org.usfirst.frc.team1732.robot.commands.ballintake.BallIntakeSetDown;
+import org.usfirst.frc.team1732.robot.commands.ballintake.BallIntakeSetUp;
+import org.usfirst.frc.team1732.robot.commands.climber.ArmSetIn;
+import org.usfirst.frc.team1732.robot.commands.climber.ArmSetOut;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.ShiftHigh;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.ShiftLow;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetDown;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetStorageIn;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetStorageOut;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetUp;
 import org.usfirst.frc.team1732.robot.commands.individual.FlywheelForward;
 import org.usfirst.frc.team1732.robot.commands.individual.FlywheelReverse;
 import org.usfirst.frc.team1732.robot.commands.individual.FlywheelStop;
@@ -33,7 +38,6 @@ import org.usfirst.frc.team1732.robot.commands.individual.MotorRTBottomStop;
 import org.usfirst.frc.team1732.robot.commands.individual.MotorRTFrontForward;
 import org.usfirst.frc.team1732.robot.commands.individual.MotorRTFrontReverse;
 import org.usfirst.frc.team1732.robot.commands.individual.MotorRTFrontStop;
-import org.usfirst.frc.team1732.robot.commands.vision.DriveWithVision;
 import org.usfirst.frc.team1732.robot.smartdashboard.MySmartDashboard;
 import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardItem;
 import org.usfirst.frc.team1732.robot.subsystems.Arm;
@@ -59,7 +63,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * functions corresponding to each mode, as described in the IterativeRobot
  * documentation. If you change the name of this class or the package after
  * creating this project, you must also update the manifest file in the resource
- * directory.
+ * directory. - written by WPIlib people
  */
 public class Robot extends IterativeRobot {
 
@@ -72,15 +76,15 @@ public class Robot extends IterativeRobot {
 	public static GearIntake	gearIntake;
 	public static Arm			arm;
 
-	public static VisionMain					visionMain;
-	private static MySmartDashboard				dashboard;
-	private static Command						autoCommand;
+	public static VisionMain		visionMain;
+	private static MySmartDashboard	dashboard;
+
 	private static SendableChooser<Command>		autoChooser;
 	private static SmartDashboardItem<Boolean>	isRedAlliance;
 
 	/**
 	 * This function is run when the robot is first started up and should be
-	 * used for any initialization code.
+	 * used for any initialization code. - written by WPIlib people
 	 */
 	@Override
 	public void robotInit() {
@@ -100,14 +104,72 @@ public class Robot extends IterativeRobot {
 		// Add items to smartdashboard
 		driveTrain.addToSmartDashboard(dashboard);
 		visionMain.addToSmartDashboard(dashboard);
-		dashboard.addItem(SmartDashboardItem.newDoubleReciever(	"Turning P Slope", DriveWithVision.slope,
-																DriveWithVision::setSlope));
-		dashboard.addItem(SmartDashboardItem.newDoubleReciever(	"Turning P Lower", DriveWithVision.lower,
-																DriveWithVision::setLower));
-		dashboard.addItem(SmartDashboardItem.newDoubleReciever(	"Turning P Upper", DriveWithVision.upper,
-																DriveWithVision::setUpper));
-		dashboard.addItem(SmartDashboardItem.newDoubleReciever(	"Turning P Middle", DriveWithVision.middle,
-																DriveWithVision::setMiddle));
+		addTestingToSmartDashbaord();
+		addAutonomousToSmartDashboard();
+
+		// Initialize smartdashboard
+		dashboard.init();
+	}
+
+	@Override
+	public void robotPeriodic() {
+		visionMain.run(); // FIXME eventually just move this into the vision
+							// commands maybe so that if the camera breaks it
+							// doesn't interfere with non-camera auto modes and
+							// teleop mode
+		dashboard.run();
+	}
+
+	@Override
+	public void disabledInit() {}
+
+	@Override
+	public void disabledPeriodic() {
+		Scheduler.getInstance().run();
+	}
+
+	@Override
+	public void autonomousInit() {
+		Scheduler.getInstance().removeAll();
+		Scheduler.getInstance().add(autoChooser.getSelected());
+	}
+
+	@Override
+	public void autonomousPeriodic() {
+		Scheduler.getInstance().run();
+	}
+
+	@Override
+	public void teleopInit() {
+		Scheduler.getInstance().removeAll(); // Cancels commands
+		Robot.driveTrain.clearEncoderIntgral();
+		Robot.driveTrain.clearGyroIntgral();
+
+	}
+
+	@Override
+	public void teleopPeriodic() {
+		Scheduler.getInstance().run();
+	}
+
+	@Override
+	public void testInit() {}
+
+	@Override
+	public void testPeriodic() {
+		LiveWindow.run();
+	}
+
+	/**
+	 * Gets if the alliance color is red
+	 * 
+	 * @return if the current alliance is red
+	 */
+	public static boolean isRedAlliance() {
+		return isRedAlliance.getValue();
+	}
+
+	private void addAutonomousToSmartDashboard() {
 		// Command related SmartDashboardItems
 		isRedAlliance = dashboard.addItem(SmartDashboardItem
 				.newBooleanSender(	"Is Red Alliance?",
@@ -122,20 +184,18 @@ public class Robot extends IterativeRobot {
 
 		// Add auto chooser
 		autoChooser = new SendableChooser<Command>();
-		autoChooser.addDefault("Vision Place Gear", new VisionPlaceGear(-40));
-		autoChooser.addObject("Score Side Gear Right", new ScoreSideGearRight());
-		autoChooser.addObject("Score Side Gear Left", new ScoreSideGearLeft());
-		autoChooser.addObject("Score Gear then 10 Balls", new ScoreGearAnd10BallsRed());
-		autoChooser.addObject("Score 10 Balls then Gear", new Score10BallsAndGearRed());
-		autoChooser.addObject("Grab Balls then Shoot", new GrabBallsAndShootRed());
+		autoChooser.addDefault("Score Middle Gear", new VisionPlaceGear(-40));
+		autoChooser.addObject("Score Right Side Gear", new ScoreSideGearRight());
+		autoChooser.addObject("Score Left Side Gear", new ScoreSideGearLeft());
+		autoChooser.addObject("Score Gear then Balls", new ScoreGearThenBalls());
+		autoChooser.addObject("Score Balls then Gear", new ScoreBallsThenGear());
+		autoChooser.addObject("Grab Balls then Shoot", new GrabBallsBackwardAndShoot());
 		autoChooser.addObject("Grab Balls Backward then Shoot", new GrabBallsBackwardAndShoot());
-		autoChooser.addObject("Turn 90 degres", new TurnWithGyro(90));
+		// autoChooser.addObject("Turn 90 degres", new TurnWithGyro(90));
 		SmartDashboard.putData("AutonomousChooser", autoChooser);
-		// SmartDashboard.putBoolean("IsRedAlliance?", false);
-		autoCommand = new VisionPlaceGear(-40);
-		SmartDashboard.putString("Current Command", autoCommand.getName());
-		// Initialize smartdashboard
-		dashboard.init();
+	}
+
+	private void addTestingToSmartDashbaord() {
 		SmartDashboard.putData(new FlywheelForward());
 		SmartDashboard.putData(new FlywheelReverse());
 		SmartDashboard.putData(new FlywheelStop());
@@ -163,78 +223,20 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putData(new MotorRTFrontForward());
 		SmartDashboard.putData(new MotorRTFrontReverse());
 		SmartDashboard.putData(new MotorRTFrontStop());
-	}
 
-	@Override
-	public void robotPeriodic() {
-		visionMain.run();
-		dashboard.run();
-	}
+		SmartDashboard.putData(new ArmSetOut());
+		SmartDashboard.putData(new ArmSetIn());
 
-	/**
-	 * Gets if the alliance color is red
-	 * 
-	 * @return if the current alliance is red
-	 */
-	public static boolean isRedAlliance() {
-		return isRedAlliance.getValue();
-	}
+		SmartDashboard.putData(new BallIntakeSetDown());
+		SmartDashboard.putData(new BallIntakeSetUp());
 
-	@Override
-	public void disabledInit() {}
+		SmartDashboard.putData(new ShiftHigh());
+		SmartDashboard.putData(new ShiftLow());
 
-	@Override
-	public void disabledPeriodic() {
-		Scheduler.getInstance().run();
-	}
+		SmartDashboard.putData(new GearIntakeSetUp());
+		SmartDashboard.putData(new GearIntakeSetDown());
 
-	@Override
-	public void autonomousInit() {
-		Scheduler.getInstance().removeAll(); // Cancels commands
-
-		// Can use a SmartDashboard chooser to select auto command
-		// SmartDashboard.getBoolean("IsRedAlliance?", false);
-
-		autoCommand = autoChooser.getSelected();
-
-		if (autoCommand.getName().equals(new ScoreGearAnd10BallsRed().getName()))
-			if (!isRedAlliance.getValue())
-				autoCommand = new ScoreGearAnd10BallsBlue();
-
-		if (autoCommand.getName().equals(new Score10BallsAndGearRed().getName()))
-			if (!isRedAlliance.getValue())
-				autoCommand = new Score10BallsAndGearBlue();
-
-		if (autoCommand.getName().equals(new GrabBallsAndShootRed().getName()))
-			if (!isRedAlliance.getValue())
-				autoCommand = new GrabBallsAndShootBlue();
-
-		Scheduler.getInstance().add(autoCommand);
-	}
-
-	@Override
-	public void autonomousPeriodic() {
-		Scheduler.getInstance().run();
-	}
-
-	@Override
-	public void teleopInit() {
-		Scheduler.getInstance().removeAll(); // Cancels commands
-		Robot.driveTrain.clearEncoderIntgral();
-		Robot.driveTrain.clearGyroIntgral();
-
-	}
-
-	@Override
-	public void teleopPeriodic() {
-		Scheduler.getInstance().run();
-	}
-
-	@Override
-	public void testInit() {}
-
-	@Override
-	public void testPeriodic() {
-		LiveWindow.run();
+		SmartDashboard.putData(new GearIntakeSetStorageOut());
+		SmartDashboard.putData(new GearIntakeSetStorageIn());
 	}
 }

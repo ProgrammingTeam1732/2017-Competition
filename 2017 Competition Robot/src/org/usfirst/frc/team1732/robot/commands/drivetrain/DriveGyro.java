@@ -37,9 +37,9 @@ public class DriveGyro extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return driveTrain.gyroOnTarget();// || driveTrain.currentAngle /
-											// Math.abs(driveTrain.currentAngle)
-											// ? * setpoint;
+		return driveTrain.gyroOnTarget() || Math.abs(driveTrain.getAngle()) > Math.abs(setpoint);
+		// the second condition is so that if this overshoots the setpoint it
+		// will stop
 	}
 
 	// Called once after isFinished returns true

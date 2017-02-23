@@ -21,8 +21,9 @@ public class ArmSetOut extends InstantCommand {
 	// Called once when the command executes
 	@Override
 	protected void initialize() {
-		Robot.gearIntake.setIn();
-		Robot.ballIntake.setPosistionDown();
+		// FIXME: this needs to happen to not break bounding box?
+		// Robot.gearIntake.setIn();
+		// Robot.ballIntake.setPosistionDown();
 		Robot.arm.setOut();
 	}
 

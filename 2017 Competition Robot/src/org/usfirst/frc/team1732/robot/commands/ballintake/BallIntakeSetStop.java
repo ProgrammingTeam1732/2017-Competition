@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1732.robot.commands.BallIntake;
+package org.usfirst.frc.team1732.robot.commands.ballintake;
 
 import org.usfirst.frc.team1732.robot.Robot;
 
@@ -7,9 +7,9 @@ import edu.wpi.first.wpilibj.command.InstantCommand;
 /**
  *
  */
-public class BallIntakeSetIn extends InstantCommand {
+public class BallIntakeSetStop extends InstantCommand {
 
-	public BallIntakeSetIn() {
+	public BallIntakeSetStop() {
 		super();
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
@@ -19,7 +19,7 @@ public class BallIntakeSetIn extends InstantCommand {
 	// Called once when the command executes
 	@Override
 	protected void initialize() {
-		Robot.ballIntake.setSpeedIn();
+		Robot.ballIntake.setSpeedStop();
 	}
 
 }

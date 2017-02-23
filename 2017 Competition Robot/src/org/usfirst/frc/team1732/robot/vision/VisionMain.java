@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1732.robot.vision;
 
+import org.usfirst.frc.team1732.robot.commands.vision.DriveWithVision;
 import org.usfirst.frc.team1732.robot.smartdashboard.MySmartDashboard;
 import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardGroup;
 import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardItem;
@@ -185,6 +186,15 @@ public class VisionMain implements SmartDashboardGroup {
 		dashboard.addItem(SmartDashboardItem.newNumberSender(visionDirectory + "Vision PID Output", visionPID::get));
 		dashboard.addItem(SmartDashboardItem.newBooleanSender(	visionDirectory + "Camera Enabled",
 																this::isCameraEnabled));
+
+		dashboard.addItem(SmartDashboardItem.newDoubleReciever(	visionDirectory + "Turning P Slope",
+																DriveWithVision.slope, DriveWithVision::setSlope));
+		dashboard.addItem(SmartDashboardItem.newDoubleReciever(	visionDirectory + "Turning P Lower",
+																DriveWithVision.lower, DriveWithVision::setLower));
+		dashboard.addItem(SmartDashboardItem.newDoubleReciever(	visionDirectory + "Turning P Upper",
+																DriveWithVision.upper, DriveWithVision::setUpper));
+		dashboard.addItem(SmartDashboardItem.newDoubleReciever(	visionDirectory + "Turning P Middle",
+																DriveWithVision.middle, DriveWithVision::setMiddle));
 		SmartDashboard.putData("Vision PID", visionPID);
 	}
 
