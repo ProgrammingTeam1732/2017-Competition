@@ -112,6 +112,8 @@ public class Robot extends IterativeRobot {
 		gearIntake.addToSmartDashboard(dashboard);
 		visionMain.addToSmartDashboard(dashboard);
 
+		dashboard.addItem(SmartDashboardItem.newNumberSender("robotPeriodic() frequency ms", this::getFrequency));
+
 		addTestingToSmartDashbaord();
 		addAutonomousToSmartDashboard();
 
@@ -254,5 +256,13 @@ public class Robot extends IterativeRobot {
 
 		SmartDashboard.putData(new GearIntakeSetStorageOut());
 		SmartDashboard.putData(new GearIntakeSetStorageIn());
+	}
+
+	private long startTime = System.currentTimeMillis();
+
+	private long getFrequency() {
+		long start = startTime;
+		startTime = System.currentTimeMillis();
+		return startTime - start;
 	}
 }
