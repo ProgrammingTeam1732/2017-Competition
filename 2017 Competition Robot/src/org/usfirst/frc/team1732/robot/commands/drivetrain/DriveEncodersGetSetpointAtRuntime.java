@@ -29,9 +29,9 @@ public class DriveEncodersGetSetpointAtRuntime extends Command {
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
+		driveTrain.resetEncoders();
 		driveTrain.setLeftEncoderSetpoint(leftDistance.getAsDouble());
 		driveTrain.setRightEncoderSetpoint(rightDistance.getAsDouble());
-		driveTrain.resetEncoders();
 	}
 
 	// Called repeatedly when this Command is scheduled to run

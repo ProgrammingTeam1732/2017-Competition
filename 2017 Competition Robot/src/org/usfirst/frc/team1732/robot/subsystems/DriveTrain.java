@@ -437,9 +437,41 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 	}
 
 	/**
-	 * Zeros the encoders so that the current distance is 0
+	 * Total distance the robot has traveled (only incremented on reset of
+	 * encoders)
+	 */
+	private double	leftDistanceTraveled	= 0;
+	private double	rightDistanceTraveled	= 0;
+
+	/**
+	 * @return the total distance the left encoder has traveled
+	 */
+	public double getTotalLeftDistance() {
+		return leftDistanceTraveled + leftEncoder.getDistance();
+	}
+
+	/**
+	 * @return the total distance the right encoder has traveled
+	 */
+	public double getTotalRightDistance() {
+		return rightDistanceTraveled + rightEncoder.getDistance();
+	}
+
+	/**
+	 * Clears the distance traveled
+	 */
+	public void clearTotalDistance() {
+		leftDistanceTraveled = 0;
+		rightDistanceTraveled = 0;
+	}
+
+	/**
+	 * Zeros the encoders so that the current distance is 0 Also adds to the
+	 * distance travled variables
 	 */
 	public void resetEncoders() {
+		leftDistanceTraveled += leftEncoder.getDistance();
+		rightDistanceTraveled += rightEncoder.getDistance();
 		leftEncoder.reset();
 		rightEncoder.reset();
 	}

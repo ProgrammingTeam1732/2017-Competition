@@ -81,6 +81,7 @@ public class Robot extends IterativeRobot {
 
 	private static SendableChooser<Command>		autoChooser;
 	private static SmartDashboardItem<Boolean>	isRedAlliance;
+	private static SmartDashboardItem<Double>	distanceToDriveBackForTwoGear;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -176,11 +177,19 @@ public class Robot extends IterativeRobot {
 		return isRedAlliance.getValue();
 	}
 
+	public static double getDistanceToDriveBackForTwoGear() {
+		return distanceToDriveBackForTwoGear.getValue();
+	}
+
 	private void addAutonomousToSmartDashboard() {
 		// Command related SmartDashboardItems
 		isRedAlliance = dashboard.addItem(SmartDashboardItem
 				.newBooleanSender(	"Is Red Alliance?",
 									() -> DriverStation.getInstance().getAlliance().equals(Alliance.Red)));
+
+		distanceToDriveBackForTwoGear = dashboard
+				.addItem(SmartDashboardItem.newDoubleReciever("Two Gear Auto: inches from wall to go to", 24.0));
+
 		dashboard.addItem(SmartDashboardItem.newStringSender("Selected Auto Command", () -> {
 			try {
 				return autoChooser.getSelected().getName();

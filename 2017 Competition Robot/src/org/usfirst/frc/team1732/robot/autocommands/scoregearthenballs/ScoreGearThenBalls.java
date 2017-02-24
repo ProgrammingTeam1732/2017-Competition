@@ -5,6 +5,7 @@ import java.util.function.BooleanSupplier;
 import org.usfirst.frc.team1732.robot.Robot;
 import org.usfirst.frc.team1732.robot.autocommands.scoresidegear.ScoreSideGearPart1;
 import org.usfirst.frc.team1732.robot.autocommands.visionplacegear.VisionPlaceGear;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.ClearTotalDistance;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveEncoders;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveUntilEncoders;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.TurnWithGyro;
@@ -26,10 +27,13 @@ public class ScoreGearThenBalls extends CommandGroup {
 		// only using Part1 of ScoreSideGear because we want to drive back a
 		// custom distance
 
+		// clears total distance
+		addSequential(new ClearTotalDistance());
+
 		// places the gear, drives back
 		double distanceStop = 100; // determine this with tape measure
-		addSequential(new VisionPlaceGear(	() -> distanceStop - Robot.driveTrain.getLeftDistance(),
-											() -> distanceStop - Robot.driveTrain.getRightDistance()));
+		addSequential(new VisionPlaceGear(	() -> distanceStop - Robot.driveTrain.getTotalLeftDistance(),
+											() -> distanceStop - Robot.driveTrain.getTotalRightDistance()));
 
 		// BALL SCORING
 
