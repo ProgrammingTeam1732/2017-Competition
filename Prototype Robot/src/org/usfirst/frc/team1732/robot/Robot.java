@@ -96,10 +96,10 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void robotPeriodic() {
-		visionMain.run(); // FIXME eventually just move this into the vision
-							// commands maybe so that if the camera breaks it
-							// doesn't interfere with non-camera auto modes and
-							// teleop mode
+		// visionMain.run(); // FIXME eventually just move this into the vision
+		// commands maybe so that if the camera breaks it
+		// doesn't interfere with non-camera auto modes and
+		// teleop mode
 		dashboard.run();
 	}
 

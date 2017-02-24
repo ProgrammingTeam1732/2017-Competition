@@ -35,7 +35,12 @@ public class CommandSwitcher extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return !chosen.isRunning();
+		if (!chosen.isRunning()) {
+			System.out.println("finsihed");
+			return true;
+		}
+		return false;
+		// return !chosen.isRunning();
 	}
 
 }

@@ -16,12 +16,14 @@ public class ScoreBallsThenGear extends CommandGroup {
 		addSequential(new DriveEncoders(15, 15));
 
 		// turn into boiler
-		double angleTurn1 = 80;
+		double angleTurn1 = 75;
 		double leftSpeedTurn1 = 0.7;
 		double rightSpeedTurn1 = -0.3;
 		DriveGyro ifRedTurn1 = new DriveGyro(angleTurn1, leftSpeedTurn1, rightSpeedTurn1);
 		DriveGyro ifBlueTurn1 = new DriveGyro(-angleTurn1, rightSpeedTurn1, leftSpeedTurn1);
-		addSequential(new CommandSwitcher(Robot::isRedAlliance, ifRedTurn1, ifBlueTurn1));
+		// addSequential(new CommandSwitcher(Robot::isRedAlliance, ifRedTurn1,
+		// ifBlueTurn1));
+		addSequential(ifBlueTurn1);
 
 		// insert shooting commands
 		addSequential(new Wait(5));

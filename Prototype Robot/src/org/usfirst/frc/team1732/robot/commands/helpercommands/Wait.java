@@ -13,4 +13,14 @@ public class Wait extends TimedCommand {
 	public Wait(double timeout) {
 		super(timeout);
 	}
+
+	@Override
+	public void initialize() {
+		System.out.println("Start wait");
+	}
+
+	@Override
+	public void end() {
+		System.out.println("End wait");
+	}
 }
