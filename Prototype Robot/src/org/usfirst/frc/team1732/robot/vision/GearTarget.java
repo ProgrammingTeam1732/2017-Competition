@@ -4,6 +4,10 @@ public class GearTarget extends VisionTarget {
 
 	public static final double	GEAR_TARGET_WIDTH_INCHES	= 10.25;
 	public static final double	GEAR_TARGET_HEIGHT_INCHES	= 5;
+	/**
+	 * The minimum score (max of 5) a gearTarget needs in order to be considered
+	 * a valid gear target
+	 */
 	public static final double	MIN_TOTAL_SCORE				= 2;
 
 	public GearTarget(Rectangle a) {
@@ -20,10 +24,8 @@ public class GearTarget extends VisionTarget {
 		if (singleRectangle) {
 			double ratioScore = scaleScore(((double) boundingBox.width / boundingBox.height)
 					* (GEAR_TARGET_HEIGHT_INCHES / GEAR_TARGET_WIDTH_INCHES));
-			totalScore = (Math.pow(ratioScore, 4)) * 5; // because
-														// there
-														// are
-			// five below
+			totalScore = (Math.pow(ratioScore, 4)) * 5;
+			// because there are five below, need to multiply by 5
 			// if squaring scores below, remember that some can be negative so
 			// do Math.abs()
 		} else {
@@ -50,6 +52,12 @@ public class GearTarget extends VisionTarget {
 		return totalScore;
 	}
 
+	/**
+	 * @param rectangles
+	 *            input array of rectangles from camera
+	 * @return which pair of rectangles is most likely to be the gear target, or
+	 *         null if none are good enough
+	 */
 	public static GearTarget getBestVisionTarget(Rectangle[] rectangles) {
 		if (rectangles == null || rectangles.length < 2) {
 			return null;

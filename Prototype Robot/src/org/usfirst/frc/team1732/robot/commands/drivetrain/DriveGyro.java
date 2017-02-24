@@ -25,8 +25,8 @@ public class DriveGyro extends Command {
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-		driveTrain.gyro.reset();
-		driveTrain.gyroPID.setSetpoint(setpoint);
+		driveTrain.resetGyro();
+		driveTrain.setGyroSetpoint(setpoint);
 		driveTrain.driveRaw(left, right);
 	}
 
@@ -37,7 +37,9 @@ public class DriveGyro extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return driveTrain.gyroPID.onTarget();
+		return driveTrain.gyroOnTarget() || Math.abs(driveTrain.getAngle()) > Math.abs(setpoint);
+		// the second condition is so that if this overshoots the setpoint it
+		// will stop
 	}
 
 	// Called once after isFinished returns true

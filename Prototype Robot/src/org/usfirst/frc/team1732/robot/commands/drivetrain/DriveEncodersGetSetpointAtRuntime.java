@@ -2,21 +2,23 @@ package org.usfirst.frc.team1732.robot.commands.drivetrain;
 
 import static org.usfirst.frc.team1732.robot.Robot.driveTrain;
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class DriveEncoders extends Command {
+public class DriveEncodersGetSetpointAtRuntime extends Command {
 
-	private final double	leftDistance;
-	private final double	rightDistance;
+	private final DoubleSupplier	leftDistance;
+	private final DoubleSupplier	rightDistance;
 
-	public DriveEncoders(double distanceInches) {
+	public DriveEncodersGetSetpointAtRuntime(DoubleSupplier distanceInches) {
 		this(distanceInches, distanceInches);
 	}
 
-	public DriveEncoders(double leftInches, double rightInches) {
+	public DriveEncodersGetSetpointAtRuntime(DoubleSupplier leftInches, DoubleSupplier rightInches) {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
 		requires(driveTrain);
@@ -28,8 +30,8 @@ public class DriveEncoders extends Command {
 	@Override
 	protected void initialize() {
 		driveTrain.resetEncoders();
-		driveTrain.setLeftEncoderSetpoint(leftDistance);
-		driveTrain.setRightEncoderSetpoint(rightDistance);
+		driveTrain.setLeftEncoderSetpoint(leftDistance.getAsDouble());
+		driveTrain.setRightEncoderSetpoint(rightDistance.getAsDouble());
 	}
 
 	// Called repeatedly when this Command is scheduled to run
@@ -51,5 +53,4 @@ public class DriveEncoders extends Command {
 	protected void end() {
 		driveTrain.driveRaw(0, 0);
 	}
-
 }

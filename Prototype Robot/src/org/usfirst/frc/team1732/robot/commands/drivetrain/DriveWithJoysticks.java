@@ -18,7 +18,7 @@ public class DriveWithJoysticks extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		driveTrain.tankDrive(oi.getLeftSpeed(), oi.getRightSpeed());
+		driveTrain.driveWithJoysticks(oi.getLeftSpeed(), oi.getRightSpeed());
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
