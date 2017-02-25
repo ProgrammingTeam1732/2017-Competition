@@ -115,8 +115,9 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopInit() {
 		Scheduler.getInstance().removeAll(); // Cancels commands
-		Robot.driveTrain.clearEncoderIntgral();
-		Robot.driveTrain.clearGyroIntgral();
+		driveTrain.resetEncoders();
+		driveTrain.clearEncoderIntgral();
+		driveTrain.clearGyroIntgral();
 
 	}
 

@@ -8,7 +8,7 @@ public class GearTarget extends VisionTarget {
 	 * The minimum score (max of 5) a gearTarget needs in order to be considered
 	 * a valid gear target
 	 */
-	public static final double	MIN_TOTAL_SCORE				= 2;
+	public static final double	MIN_TOTAL_SCORE				= 3.4;
 
 	public GearTarget(Rectangle a) {
 		super(a);

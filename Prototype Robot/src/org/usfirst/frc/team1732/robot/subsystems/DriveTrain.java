@@ -47,10 +47,10 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 	// gyro controllers
 	private final PIDController	gyroPID					= new PIDController(gyroP, gyroI, gyroD, gyro,
 																			DriveTrain::voidMethod);
-	public static final double	GYRO_DEADBAND_DEGREES	= 6;
-	public static final double	gyroP					= 0.013;
+	public static final double	GYRO_DEADBAND_DEGREES	= 4;
+	public static final double	gyroP					= 0.02;
 	public static final double	gyroI					= 0.00001;
-	public static final double	gyroD					= 0;
+	public static final double	gyroD					= 0.025;
 
 	// encoders
 	// encoder sensors
@@ -241,6 +241,9 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 		dashboard.addItem(SmartDashboardItem.newBooleanSender(	leftDirectory + "At left setpoint?",
 																leftEncoderPID::onTarget));
 		dashboard.addItem(SmartDashboardItem.newNumberSender(leftDirectory + "Left PID Output", leftEncoderPID::get));
+		dashboard.addItem(SmartDashboardItem.newNumberSender(	leftDirectory + "Left Total Distance",
+																this::getTotalLeftDistance));
+
 		SmartDashboard.putData("Left PID", leftEncoderPID);
 
 		// Right
@@ -259,6 +262,8 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 																rightEncoderPID::onTarget));
 		dashboard
 				.addItem(SmartDashboardItem.newNumberSender(rightDirectory + "Right PID Output", rightEncoderPID::get));
+		dashboard.addItem(SmartDashboardItem.newNumberSender(	rightDirectory + "Right Total Distance",
+																this::getTotalRightDistance));
 		SmartDashboard.putData("Right PID", rightEncoderPID);
 
 		// Gyro
@@ -439,6 +444,9 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 	public void clearTotalDistance() {
 		leftDistanceTraveled = 0;
 		rightDistanceTraveled = 0;
+		// System.out.println("Total Distance Cleared");
+		// System.out.println("left total: " + getTotalLeftDistance());
+		// System.out.println("right total: " + getTotalRightDistance());
 	}
 
 	/**
@@ -450,6 +458,9 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 		rightDistanceTraveled += rightEncoder.getDistance();
 		leftEncoder.reset();
 		rightEncoder.reset();
+		// System.out.println("Encoders Cleared");
+		// System.out.println("left total: " + getTotalLeftDistance());
+		// System.out.println("right total: " + getTotalRightDistance());
 	}
 
 	/**

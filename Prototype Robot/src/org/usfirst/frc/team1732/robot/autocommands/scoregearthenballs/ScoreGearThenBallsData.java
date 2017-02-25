@@ -1,15 +1,21 @@
 package org.usfirst.frc.team1732.robot.autocommands.scoregearthenballs;
 
+import java.util.function.DoubleSupplier;
+
+import org.usfirst.frc.team1732.robot.Robot;
+
 public class ScoreGearThenBallsData {
 
 	// determine distanceStop with tape measure
-	private static final double	distanceStop			= 100;
-	static final double			DRIVE_1_LEFT_SETPOINT	= -25;
-	static final double			DRIVE_1_RIGHT_SETPOINT	= -25;
+	private static final double		distanceStop			= 70;
+	private static DoubleSupplier	driveBackSupplier		= () -> distanceStop
+			- ((Robot.driveTrain.getTotalLeftDistance() + Robot.driveTrain.getTotalRightDistance()) / 2.0);
+	static final DoubleSupplier		DRIVE_1_LEFT_SETPOINT	= driveBackSupplier;
+	static final DoubleSupplier		DRIVE_1_RIGHT_SETPOINT	= driveBackSupplier;
 
-	static final double DRIVE_BACK_CAMERA_DISTANCE = -30;
+	static final double DRIVE_BACK_CAMERA_DISTANCE = 25;
 
-	static final double	TURN_1_ANGLE_RED	= -146;
+	static final double	TURN_1_ANGLE_RED	= -151;
 	static final double	TURN_1_ANGLE_BLUE	= -TURN_1_ANGLE_RED;
 
 	static final double		DRIVE_2_SETPOINT	= 65;

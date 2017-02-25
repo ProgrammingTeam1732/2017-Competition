@@ -6,7 +6,6 @@ import org.usfirst.frc.team1732.robot.commands.drivetrain.ClearTotalDistance;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveEncoders;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveUntilEncoders;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.TurnWithGyro;
-import org.usfirst.frc.team1732.robot.commands.vision.DriveWithVision;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -28,7 +27,8 @@ public class ScoreGearThenBallsRed extends CommandGroup {
 											ScoreGearThenBallsData.DRIVE_1_RIGHT_SETPOINT));
 
 		// drive back to 30 inches
-		addSequential(new DriveWithVision(-30));
+		// addSequential(new
+		// DriveWithVision(ScoreGearThenBallsData.DRIVE_BACK_CAMERA_DISTANCE));
 
 		// BALL SCORING
 
