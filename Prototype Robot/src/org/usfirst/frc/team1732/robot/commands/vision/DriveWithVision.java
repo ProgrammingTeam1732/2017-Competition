@@ -43,7 +43,7 @@ public class DriveWithVision extends Command {
 	private static double		smartDashboardDistance	= DEFAULT_TARGET_INCHES;
 
 	private boolean	foundOnce	= false;
-	private boolean	lostOnce	= false;
+//	private boolean	lostOnce	= false;
 
 	private double previousAngleOutput = 0;
 
@@ -69,7 +69,7 @@ public class DriveWithVision extends Command {
 		// double angleSetpoint = angle + driveTrain.gyro.getAngle();
 		// if it still sees it calculate the new output, otherwise keep doing
 		// what it was doing
-		if (visionMain.canSeeGearPeg() && !(lostOnce && distance < stopInputDistance)) {
+		if (visionMain.canSeeGearPeg()) {
 			// double P = lower + slope * distance;
 			// double P = lower + (upper - lower) / (1 + Math.exp(-slope *
 			// (distance - middle)));
@@ -84,9 +84,10 @@ public class DriveWithVision extends Command {
 			// driveTrain.gyroPID.setSetpoint(angleSetpoint);
 			driveTrain.setLeftEncoderSetpoint(leftSetpoint);
 			driveTrain.setRightEncoderSetpoint(rightSetpoint);
-		} else if (foundOnce) {
-			lostOnce = true;
 		}
+//		else if (foundOnce) {
+//			lostOnce = true;
+//		}
 		// double angleOutput = driveTrain.gyroPID.get();
 		double leftOutput = driveTrain.getLeftPIDOutput() - previousAngleOutput;
 		double rightOutput = driveTrain.getRightPIDOutput() + previousAngleOutput;
