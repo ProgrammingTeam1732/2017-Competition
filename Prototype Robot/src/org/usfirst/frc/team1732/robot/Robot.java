@@ -2,8 +2,6 @@
 package org.usfirst.frc.team1732.robot;
 
 import org.usfirst.frc.team1732.robot.autocommands.AutoChooser;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.ShiftHigh;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.ShiftLow;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetDown;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetStorageIn;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetStorageOut;
@@ -194,9 +192,6 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putData(new MotorRTFrontForward());
 		SmartDashboard.putData(new MotorRTFrontReverse());
 		SmartDashboard.putData(new MotorRTFrontStop());
-
-		SmartDashboard.putData(new ShiftHigh());
-		SmartDashboard.putData(new ShiftLow());
 
 		SmartDashboard.putData(new GearIntakeSetUp());
 		SmartDashboard.putData(new GearIntakeSetDown());

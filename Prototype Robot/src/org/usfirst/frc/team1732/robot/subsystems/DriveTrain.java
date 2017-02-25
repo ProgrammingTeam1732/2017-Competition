@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDSourceType;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -40,11 +39,6 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 	private final CANTalon	right1		= new CANTalon(RobotMap.RIGHT_1_MOTOR_DEVICE_NUMBER);
 	private final CANTalon	right2		= new CANTalon(RobotMap.RIGHT_2_MOTOR_DEVICE_NUMBER);
 
-	private final Solenoid		shifter		= new Solenoid(	RobotMap.PCM_CAN_ID,
-															RobotMap.DRIVE_TRAIN_SHIFTER_SOLENOID_DEVICE_NUMBER);
-	public static final boolean	HIGH_GEAR	= true;
-	public static final boolean	LOW_GEAR	= !HIGH_GEAR;
-
 	// gyro
 	// gyro sensors
 	private final AnalogGyro	gyro								= new AnalogGyro(RobotMap.GYRO_CHANNEL_NUMBER);
@@ -53,8 +47,8 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 	// gyro controllers
 	private final PIDController	gyroPID					= new PIDController(gyroP, gyroI, gyroD, gyro,
 																			DriveTrain::voidMethod);
-	public static final double	GYRO_DEADBAND_DEGREES	= 4;
-	public static final double	gyroP					= 0.008;
+	public static final double	GYRO_DEADBAND_DEGREES	= 6;
+	public static final double	gyroP					= 0.013;
 	public static final double	gyroI					= 0.00001;
 	public static final double	gyroD					= 0;
 
@@ -64,7 +58,7 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 																			RobotMap.LEFT_ENCODER_CHANNEL_B);
 	private final Encoder		rightEncoder				= new Encoder(	RobotMap.RIGHT_ENCODER_CHANNEL_A,
 																			RobotMap.RIGHT_ENCODER_CHANNEL_B);
-	public static final double	INCHES_PER_ENCODER_COUNT	= 44 / 5425.4;
+	public static final double	INCHES_PER_ENCODER_COUNT	= 0.0134 * 4;
 	// 0.0134 * 4;
 	// public static final double LEFT_MOTOR_OFFSET = 1.0;
 
@@ -73,7 +67,7 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 																			DriveTrain::voidMethod);
 	private final PIDController	rightEncoderPID			= new PIDController(encoderP, encoderI, encoderD, rightEncoder,
 																			DriveTrain::voidMethod);
-	public static final double	encoderP				= 0.02;
+	public static final double	encoderP				= 0.03;
 	public static final double	encoderI				= 0;
 	public static final double	encoderD				= 0;
 	public static final double	ENCODER_DEADBAND_INCHES	= 6;
@@ -90,71 +84,53 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 
 	public DriveTrain() {
 		super(NAME);
-		// sets the left motors to follow left master
-		leftMaster.setInverted(true);
 		left1.changeControlMode(TalonControlMode.Follower);
 		left1.set(leftMaster.getDeviceID());
 		left2.changeControlMode(TalonControlMode.Follower);
 		left2.set(leftMaster.getDeviceID());
-		// reverse the slave motors
+		left1.reverseOutput(true);
+		left2.reverseOutput(true);
 
-		// reverse the whole right side
-		// sets right motors to follow right master
+		rightMaster.setInverted(true);
 		right1.changeControlMode(TalonControlMode.Follower);
 		right1.set(rightMaster.getDeviceID());
 		right2.changeControlMode(TalonControlMode.Follower);
 		right2.set(rightMaster.getDeviceID());
-		// reverses the slave motors
+		right1.reverseOutput(true);
+		right2.reverseOutput(true);
 
-		// makes sure braking is enabled
 		setBrakeMode(true);
 
-		// configures the inches per count of the encoders
 		leftEncoder.setDistancePerPulse(INCHES_PER_ENCODER_COUNT);
 		rightEncoder.setDistancePerPulse(INCHES_PER_ENCODER_COUNT);
-		// configures the PID loops to use displacement (distance) rather than
-		// speed
 		leftEncoder.setPIDSourceType(PIDSourceType.kDisplacement);
 		rightEncoder.setPIDSourceType(PIDSourceType.kDisplacement);
-		leftEncoder.setReverseDirection(true);
-		// rightEncoder.setReverseDirection(true);
 
-		// sets encoder samples to average
 		leftEncoder.setSamplesToAverage(3);
 		rightEncoder.setSamplesToAverage(3);
-		// reverses the right encoder
-		// rightEncoder.setReverseDirection(true);
+		rightEncoder.setReverseDirection(true);
 
-		// sets the tolerance of the encoders
 		leftEncoderPID.setAbsoluteTolerance(ENCODER_DEADBAND_INCHES);
 		rightEncoderPID.setAbsoluteTolerance(ENCODER_DEADBAND_INCHES);
-		// sets the encoders to not be continious
 		leftEncoderPID.setContinuous(false);
 		rightEncoderPID.setContinuous(false);
-		// sets the minimum/maximum PID loop output
 		leftEncoderPID.setOutputRange(ENCODER_MIN_OUTPUT, ENCODER_MAX_OUTPUT);
 		rightEncoderPID.setOutputRange(ENCODER_MIN_OUTPUT, ENCODER_MAX_OUTPUT);
 
+		leftEncoderPID.setSetpoint(100);
+		rightEncoderPID.setSetpoint(100);
+
 		// Gyro
-		// not actually needed, this gets done in the gyro constructor
-		// gyro.initGyro();
-		// gyro.calibrate();
-		// sets the gyro to measure angle not rate of angle change
+		gyro.initGyro();
+		gyro.calibrate();
 		gyro.setPIDSourceType(PIDSourceType.kDisplacement);
-		// sets the sensitivity of the gyro
 		gyro.setSensitivity(GYRO_VOLTS_PER_DEGREE_PER_SECOND);
 
-		// sets the tolerance of the gyroPID
 		gyroPID.setAbsoluteTolerance(GYRO_DEADBAND_DEGREES);
-		// sets the gyroPID to not measure continiously
 		gyroPID.setContinuous(false);
-		// sets the minimum/maximum PID loop output
 		gyroPID.setOutputRange(GYRO_MIN_OUTPUT, GYRO_MAX_OUTPUT);
-
-		shiftHighGear();
-
-		// turns on the gyro and encoders PID loops
 		gyroPID.enable();
+
 		leftEncoderPID.enable();
 		rightEncoderPID.enable();
 	}
@@ -539,22 +515,6 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 	 */
 	public boolean gyroOnTarget() {
 		return gyroPID.onTarget();
-	}
-
-	public void shiftHighGear() {
-		shifter.set(HIGH_GEAR);
-	}
-
-	public void shiftLowGear() {
-		shifter.set(LOW_GEAR);
-	}
-
-	public boolean isHighGear() {
-		return shifter.get() == HIGH_GEAR;
-	}
-
-	public boolean isLowGear() {
-		return shifter.get() == LOW_GEAR;
 	}
 
 	/**

@@ -67,7 +67,7 @@ public class AutoChooser {
 		for (int i = 1; i < autoModes.length; i++) {
 			autoChooser.addObject(autoModes[i].name(), autoModes[i]);
 		}
-		SmartDashboard.putData("Autonomous Chooser", autoChooser);
+		SmartDashboard.putData("AutonomousChooser", autoChooser);
 	}
 
 	public Command getSelected() {
