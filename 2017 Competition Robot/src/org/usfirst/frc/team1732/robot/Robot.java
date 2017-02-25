@@ -1,12 +1,7 @@
 
 package org.usfirst.frc.team1732.robot;
 
-import org.usfirst.frc.team1732.robot.autocommands.grabballsthenshoot.GrabBallsBackwardAndShoot;
-import org.usfirst.frc.team1732.robot.autocommands.scoreballsthengear.ScoreBallsThenGear;
-import org.usfirst.frc.team1732.robot.autocommands.scoregearthenballs.ScoreGearThenBalls;
-import org.usfirst.frc.team1732.robot.autocommands.scoresidegear.ScoreSideGearLeft;
-import org.usfirst.frc.team1732.robot.autocommands.scoresidegear.ScoreSideGearRight;
-import org.usfirst.frc.team1732.robot.autocommands.visionplacegear.VisionPlaceGear;
+import org.usfirst.frc.team1732.robot.autocommands.AutoChooser;
 import org.usfirst.frc.team1732.robot.commands.ballintake.BallIntakeSetDown;
 import org.usfirst.frc.team1732.robot.commands.ballintake.BallIntakeSetUp;
 import org.usfirst.frc.team1732.robot.commands.climber.ArmSetIn;
@@ -52,10 +47,8 @@ import org.usfirst.frc.team1732.robot.vision.VisionMain;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -79,7 +72,7 @@ public class Robot extends IterativeRobot {
 	public static VisionMain		visionMain;
 	private static MySmartDashboard	dashboard;
 
-	private static SendableChooser<Command>		autoChooser;
+	private static AutoChooser					autoChooser;
 	private static SmartDashboardItem<Boolean>	isRedAlliance;
 	private static SmartDashboardItem<Double>	distanceToDriveBackForTwoGear;
 
@@ -89,6 +82,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
+		// initialize subsystems - always do this first
 		driveTrain = new DriveTrain();
 		flywheel = new Flywheel();
 		ballIntake = new BallIntake();
@@ -103,19 +97,9 @@ public class Robot extends IterativeRobot {
 		// Smartdashboard code
 		dashboard = new MySmartDashboard();
 		// Add items to smartdashboard
-		driveTrain.addToSmartDashboard(dashboard);
-		flywheel.addToSmartDashboard(dashboard);
-		ballIntake.addToSmartDashboard(dashboard);
-		climber.addToSmartDashboard(dashboard);
-		feeder.addToSmartDashboard(dashboard);
-		arm.addToSmartDashboard(dashboard);
-		gearIntake.addToSmartDashboard(dashboard);
-		visionMain.addToSmartDashboard(dashboard);
-
-		dashboard.addItem(SmartDashboardItem.newNumberSender("robotPeriodic() frequency ms", this::getFrequency));
-
-		addTestingToSmartDashbaord();
+		addSubsystemsToSmartDashboard();
 		addAutonomousToSmartDashboard();
+		addTestingToSmartDashbaord();
 
 		// Initialize smartdashboard
 		dashboard.init();
@@ -141,7 +125,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousInit() {
 		Scheduler.getInstance().removeAll();
-		Scheduler.getInstance().add(autoChooser.getSelected());
+		autoChooser.getSelected().start();
 	}
 
 	@Override
@@ -170,11 +154,17 @@ public class Robot extends IterativeRobot {
 		LiveWindow.run();
 	}
 
-	/**
-	 * Gets if the alliance color is red
-	 * 
-	 * @return if the current alliance is red
-	 */
+	private void addSubsystemsToSmartDashboard() {
+		driveTrain.addToSmartDashboard(dashboard);
+		flywheel.addToSmartDashboard(dashboard);
+		ballIntake.addToSmartDashboard(dashboard);
+		climber.addToSmartDashboard(dashboard);
+		feeder.addToSmartDashboard(dashboard);
+		arm.addToSmartDashboard(dashboard);
+		gearIntake.addToSmartDashboard(dashboard);
+		visionMain.addToSmartDashboard(dashboard);
+	}
+
 	public static boolean isRedAlliance() {
 		return isRedAlliance.getValue();
 	}
@@ -184,7 +174,8 @@ public class Robot extends IterativeRobot {
 	}
 
 	private void addAutonomousToSmartDashboard() {
-		// Command related SmartDashboardItems
+		autoChooser = new AutoChooser();
+
 		isRedAlliance = dashboard.addItem(SmartDashboardItem
 				.newBooleanSender(	"Is Red Alliance?",
 									() -> DriverStation.getInstance().getAlliance().equals(Alliance.Red)));
@@ -199,21 +190,11 @@ public class Robot extends IterativeRobot {
 				return "null";
 			}
 		}));
-
-		// Add auto chooser
-		autoChooser = new SendableChooser<Command>();
-		autoChooser.addDefault("Score Middle Gear", new VisionPlaceGear(-40));
-		autoChooser.addObject("Score Right Side Gear", new ScoreSideGearRight());
-		autoChooser.addObject("Score Left Side Gear", new ScoreSideGearLeft());
-		autoChooser.addObject("Score Gear then Balls", new ScoreGearThenBalls());
-		autoChooser.addObject("Score Balls then Gear", new ScoreBallsThenGear());
-		autoChooser.addObject("Grab Balls then Shoot", new GrabBallsBackwardAndShoot());
-		autoChooser.addObject("Grab Balls Backward then Shoot", new GrabBallsBackwardAndShoot());
-		// autoChooser.addObject("Turn 90 degres", new TurnWithGyro(90));
-		SmartDashboard.putData("AutonomousChooser", autoChooser);
 	}
 
 	private void addTestingToSmartDashbaord() {
+		dashboard.addItem(SmartDashboardItem.newNumberSender("robotPeriodic() frequency ms", this::getFrequency));
+
 		SmartDashboard.putData(new FlywheelForward());
 		SmartDashboard.putData(new FlywheelReverse());
 		SmartDashboard.putData(new FlywheelStop());
