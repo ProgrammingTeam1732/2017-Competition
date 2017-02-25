@@ -4,9 +4,6 @@ import org.usfirst.frc.team1732.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-/**
- *
- */
 public class MotorRTBottomForward extends Command {
 
 	public MotorRTBottomForward() {

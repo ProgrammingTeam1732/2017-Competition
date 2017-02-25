@@ -4,9 +4,6 @@ import org.usfirst.frc.team1732.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-/**
- *
- */
 public class MotorRTFrontReverse extends Command {
 
 	public MotorRTFrontReverse() {
