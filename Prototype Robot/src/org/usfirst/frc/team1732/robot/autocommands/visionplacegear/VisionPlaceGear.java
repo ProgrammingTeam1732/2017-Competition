@@ -6,8 +6,6 @@ import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveEncodersGetSetpoi
 import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeOutTime;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetDown;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetUp;
-import org.usfirst.frc.team1732.robot.commands.helpercommands.Wait;
-import org.usfirst.frc.team1732.robot.commands.vision.DriveWithVision;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -27,8 +25,7 @@ public class VisionPlaceGear extends CommandGroup {
 
 	public VisionPlaceGear(DoubleSupplier leftDriveBackDistance, DoubleSupplier rightDriveBackDistance) {
 		// drive into gear peg
-		addSequential(new DriveWithVision(10));
-		addSequential(new Wait(0.1));
+		addSequential(new VisionPlaceGearPart1());
 
 		// place gear, drive back at same time
 

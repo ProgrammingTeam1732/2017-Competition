@@ -6,6 +6,7 @@ import org.usfirst.frc.team1732.robot.commands.drivetrain.ClearTotalDistance;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveEncoders;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveUntilEncoders;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.TurnWithGyro;
+import org.usfirst.frc.team1732.robot.commands.vision.DriveWithVision;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -22,9 +23,12 @@ public class ScoreGearThenBallsBlue extends CommandGroup {
 		// clears total distance
 		addSequential(new ClearTotalDistance());
 
-		// places the gear, drives back
+		// places the gear, drive back to 25
 		addSequential(new VisionPlaceGear(	ScoreGearThenBallsData.DRIVE_1_LEFT_SETPOINT,
 											ScoreGearThenBallsData.DRIVE_1_RIGHT_SETPOINT));
+
+		// drive back to 30 inches
+		addSequential(new DriveWithVision(-30));
 
 		// BALL SCORING
 
