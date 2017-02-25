@@ -16,7 +16,7 @@ public class ScoreBallsThenGearData {
 
 	static final double DRIVE_2_SETPOINT = -15;
 
-	static final double	TURN_2_ANGLE_RED		= 140;
+	static final double	TURN_2_ANGLE_RED		= 135;
 	static final double	TURN_2_LEFT_SPEED_RED	= 0;
 	static final double	TURN_2_RIGHT_SPEED_RED	= -1;
 
