@@ -30,9 +30,8 @@ public class ScoreBallsThenGearBlue extends CommandGroup {
 									ScoreBallsThenGearData.TURN_2_LEFT_SPEED_BLUE,
 									ScoreBallsThenGearData.TURN_2_RIGHT_SPEED_BLUE));
 
-		// addSequential(new
-		// DriveEncoders(ScoreBallsThenGearData.DRIVE_3_SETPOINT));
-		// not sure what above line was supposed to do so I commented it out
+		// drive forward a little bit
+		addSequential(new DriveEncoders(ScoreBallsThenGearData.DRIVE_3_SETPOINT));
 
 		// drive back forward 40 inches after placing gear
 		addSequential(new VisionPlaceGear(ScoreBallsThenGearData.DRIVE_4_DRIVE_BACK_SETPOINT));

@@ -24,7 +24,7 @@ public class ScoreBallsThenGearData {
 	static final double	TURN_2_LEFT_SPEED_BLUE	= TURN_2_RIGHT_SPEED_RED;
 	static final double	TURN_2_RIGHT_SPEED_BLUE	= TURN_2_LEFT_SPEED_RED;
 
-	static final double DRIVE_3_SETPOINT = -15;
+	static final double DRIVE_3_SETPOINT = 15;
 
 	static final double DRIVE_4_DRIVE_BACK_SETPOINT = -40;
 
