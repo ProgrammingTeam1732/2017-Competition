@@ -67,7 +67,7 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 																			DriveTrain::voidMethod);
 	private final PIDController	rightEncoderPID			= new PIDController(encoderP, encoderI, encoderD, rightEncoder,
 																			DriveTrain::voidMethod);
-	public static final double	encoderP				= 0.03;
+	public static final double	encoderP				= 0.02;
 	public static final double	encoderI				= 0;
 	public static final double	encoderD				= 0;
 	public static final double	ENCODER_DEADBAND_INCHES	= 6;
@@ -109,7 +109,7 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 		leftEncoder.setSamplesToAverage(3);
 		rightEncoder.setSamplesToAverage(3);
 		rightEncoder.setReverseDirection(true);
-
+		
 		leftEncoderPID.setAbsoluteTolerance(ENCODER_DEADBAND_INCHES);
 		rightEncoderPID.setAbsoluteTolerance(ENCODER_DEADBAND_INCHES);
 		leftEncoderPID.setContinuous(false);
@@ -169,7 +169,10 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 	private void tankDrive(double left, double right) {
 		driveRaw(left, right);
 	}
-
+	
+	public void printInfo(){
+		System.out.println(leftEncoder.getRaw());
+	}
 	/**
 	 * Runs the driveTrain at voltages left and right with no limit
 	 * 

@@ -91,6 +91,7 @@ public class Robot extends IterativeRobot {
 		// doesn't interfere with non-camera auto modes and
 		// teleop mode
 		dashboard.run();
+		driveTrain.printInfo();
 	}
 
 	@Override
