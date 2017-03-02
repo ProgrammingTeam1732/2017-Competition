@@ -21,12 +21,12 @@ public class TurnWithGyro extends Command {
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-		System.out.println("Running turn : " + Robot.isRedAlliance());
+		// System.out.println("Running turn : " + Robot.isRedAlliance());
 		Robot.driveTrain.resetGyro();
 		// Robot.driveTrain.resetGyroPID();
 		Robot.driveTrain.clearGyroIntgral();
 		Robot.driveTrain.setGyroSetpoint(setpoint);
-		System.out.println(setpoint);
+		// System.out.println(setpoint);
 	}
 
 	// Called repeatedly when this Command is scheduled to run

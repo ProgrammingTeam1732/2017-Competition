@@ -44,10 +44,11 @@ public class OI {
 	// return !(flywheelForward.get() || flywheelReverse.get());
 	// }
 	// };
-	private final Button	gearIntakePosistionSwitch	= new JoystickButton(buttons, 9);
+	private final Button	gearIntakePositionIn	= new JoystickButton(buttons, 10);
+	private final Button 	gearIntakePositionOut   = new JoystickButton(buttons, 11);
 	private final Button	gearIntakeJoystickInDown	= new JoystickButton(left, 1);
 	private final Button	gearIntakeJoystickOutDown	= new JoystickButton(right, 1);
-	private final Button	autoPlace					= new JoystickButton(buttons, 10);
+	//private final Button	autoPlace					= new JoystickButton(buttons, 10);
 	//
 	// private final Button climber = button9;
 	//
@@ -72,6 +73,10 @@ public class OI {
 		gearIntakeJoystickOutDown.whenReleased(new GearIntakeSetUpStop());
 		gearIntakeJoystickInDown.whenPressed(new GearIntakeSetDownIn());
 		gearIntakeJoystickInDown.whenReleased(new GearIntakeSetUpTimedIn(1));
+		gearIntakePositionOut.whenPressed(new GearIntakeSetDownOut());
+		gearIntakePositionOut.whenReleased(new GearIntakeSetUpStop());
+		gearIntakePositionIn.whenPressed(new GearIntakeSetDownIn());
+		gearIntakePositionIn.whenReleased(new GearIntakeSetUpTimedIn(1));
 		// gearIntakeReverse.whenReleased(new IntakeInDownTimer());
 		// gearIntakeForward.whenReleased(new IntakeOutDownTimer());
 		// gearIntakeForward.whenReleased(new GearIntakeSetUp());

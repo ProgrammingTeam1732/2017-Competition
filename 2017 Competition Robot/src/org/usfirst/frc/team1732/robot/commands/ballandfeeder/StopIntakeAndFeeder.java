@@ -1,7 +1,7 @@
 package org.usfirst.frc.team1732.robot.commands.ballandfeeder;
 
-import org.usfirst.frc.team1732.robot.commands.BallIntake.BallIntakeSetDown;
-import org.usfirst.frc.team1732.robot.commands.BallIntake.BallIntakeSetStop;
+import org.usfirst.frc.team1732.robot.commands.ballintake.BallIntakeSetDown;
+import org.usfirst.frc.team1732.robot.commands.ballintake.BallIntakeSetStop;
 import org.usfirst.frc.team1732.robot.commands.feeder.FeederSetStop;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;

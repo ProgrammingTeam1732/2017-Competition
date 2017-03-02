@@ -42,16 +42,19 @@ public class RobotMap {
 	public static final int	ARM_SOLENOID_DEVICE_NUMBER	= 7;
 
 	// Ball Intake (Floor/Chute/Hopper)
-	public static final int	BALL_INTAKE_MOTOR_DEVICE_NUMBER		= 11;
-	public static final int	BALL_INTAKE_SOLENOID_DEVICE_NUMBER	= 6;	// FIXME
+	public static final int BALL_INTAKE_MOTOR_DEVICE_NUMBER = 11;
+
+	public static final int BALL_INTAKE_SOLENOID_DEVICE_NUMBER = 6;
 
 	// Gear Intake (Floor/Chute)
 	public static final int	GEAR_INTAKE_MOTOR_DEVICE_NUMBER		= 10;
 	public static final int	GEAR_MANIPULATOR_SOLENOID_NUMBER	= 5;
 
-	public static final int GEAR_MANIPULATOR_STORAGE_NUMBER = 4; // FIXME
+	public static final int GEAR_MANIPULATOR_STORAGE_NUMBER = 4;
 
 	// Hopper/Feeder/Index
 	public static final int FEEDER_MOTOR_DEVICE_NUMBER = 9;
+
+	public static final int PCM_CAN_ID = 0;
 
 }
