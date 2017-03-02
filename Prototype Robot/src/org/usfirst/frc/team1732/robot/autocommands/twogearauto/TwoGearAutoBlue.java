@@ -4,6 +4,12 @@ import org.usfirst.frc.team1732.robot.autocommands.visionplacegear.VisionPlaceGe
 import org.usfirst.frc.team1732.robot.commands.drivetrain.ClearTotalDistance;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveEncoders;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.TurnWithGyro;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeInTime;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetDown;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetIn;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetStop;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetUp;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetUpTimedIn;
 import org.usfirst.frc.team1732.robot.commands.helpercommands.Wait;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -24,8 +30,8 @@ public class TwoGearAutoBlue extends CommandGroup {
 		addSequential(new TurnWithGyro(TwoGearAutoData.TURN_1_ANGLE_BLUE));
 
 		// drops gear intake
-		// addSequential(new GearIntakeSetDown());
-		// addSequenital(new GearIntakeSetIn());
+		 addSequential(new GearIntakeSetDown());
+		 addSequential(new GearIntakeSetIn());
 
 		// drives forward to pickup gear
 		addSequential(new DriveEncoders(TwoGearAutoData.DRIVE_2_SETPOINT));
@@ -33,8 +39,8 @@ public class TwoGearAutoBlue extends CommandGroup {
 		addSequential(new Wait(TwoGearAutoData.WAIT_1_TIME));
 
 		// raises gear intake
-		// addSequential(new GearIntakeSetUp());
-		// addSequenital(new GearIntakeSetStop());
+		 addSequential(new GearIntakeSetUpTimedIn(1));
+		 addSequential(new GearIntakeSetStop());
 
 		// drives back
 		addSequential(new DriveEncoders(TwoGearAutoData.DRIVE_3_SETPOINT));
