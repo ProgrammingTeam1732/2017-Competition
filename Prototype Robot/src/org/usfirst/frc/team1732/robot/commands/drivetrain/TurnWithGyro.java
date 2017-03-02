@@ -24,7 +24,7 @@ public class TurnWithGyro extends Command {
 		// System.out.println("Running turn : " + Robot.isRedAlliance());
 		Robot.driveTrain.resetGyro();
 		// Robot.driveTrain.resetGyroPID();
-		Robot.driveTrain.clearGyroIntgral();
+		// Robot.driveTrain.clearGyroIntgral();
 		Robot.driveTrain.setGyroSetpoint(setpoint);
 		// System.out.println(setpoint);
 	}

@@ -14,7 +14,7 @@ import org.usfirst.frc.team1732.robot.autocommands.scoresidegear.ScoreSideGearRi
 import org.usfirst.frc.team1732.robot.autocommands.twogearauto.TwoGearAutoBlue;
 import org.usfirst.frc.team1732.robot.autocommands.twogearauto.TwoGearAutoRed;
 import org.usfirst.frc.team1732.robot.autocommands.visionplacegear.VisionPlaceGear;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.TurnWithGyro;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.TurnWithEncoders;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -34,7 +34,8 @@ public class AutoChooser {
 		ScoreBallsThenGear(new ScoreBallsThenGearRed(), new ScoreBallsThenGearBlue()),
 		GrabBallsBackwardThenShoot(new GrabBallsBackwardAndShootRed(), new GrabBallsBackwardAndShootBlue()),
 		TwoGearAuto(new TwoGearAutoRed(), new TwoGearAutoBlue()),
-		Turn180Degrees(new TurnWithGyro(180));
+		// Turn180Degrees(new TurnWithGyro(180));
+		TurnWithEncoders(new TurnWithEncoders(180));
 
 		private final BooleanSupplier	isRedAlliance;
 		private final Command			ifRed;

@@ -2,21 +2,15 @@ package org.usfirst.frc.team1732.robot.autocommands.twogearauto;
 
 import org.usfirst.frc.team1732.robot.autocommands.visionplacegear.VisionPlaceGear;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.ClearTotalDistance;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveEncoders;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveEncodersGetSetpointAtRuntime;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.SetMotorSpeed;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.TurnWithGyro;
-import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeInTime;
-import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetDown;
-import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetIn;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetStop;
-import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetUp;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetUpTimedIn;
-import org.usfirst.frc.team1732.robot.commands.helpercommands.Wait;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.GrabGear;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-/**
- *
- */
 public class TwoGearAutoBlue extends CommandGroup {
 
 	public TwoGearAutoBlue() {
@@ -29,21 +23,26 @@ public class TwoGearAutoBlue extends CommandGroup {
 		// turns to face the gear on ground
 		addSequential(new TurnWithGyro(TwoGearAutoData.TURN_1_ANGLE_BLUE));
 
+		addSequential(new ClearTotalDistance());
+
+		addSequential(new SetMotorSpeed(TwoGearAutoData.DRIVE_2_SPEED, TwoGearAutoData.DRIVE_2_SPEED));
+
 		// drops gear intake
-		 addSequential(new GearIntakeSetDown());
-		 addSequential(new GearIntakeSetIn());
+		addSequential(new GrabGear(TwoGearAutoData.GRAB_GEAR_TIMEOUT, TwoGearAutoData.GRAB_GEAR_USE_TIMEOUT));
 
-		// drives forward to pickup gear
-		addSequential(new DriveEncoders(TwoGearAutoData.DRIVE_2_SETPOINT));
-
-		addSequential(new Wait(TwoGearAutoData.WAIT_1_TIME));
+		addSequential(new SetMotorSpeed(TwoGearAutoData.DRIVE_2_STOP, TwoGearAutoData.DRIVE_2_STOP));
 
 		// raises gear intake
-		 addSequential(new GearIntakeSetUpTimedIn(1));
-		 addSequential(new GearIntakeSetStop());
+		addParallel(new CommandGroup() {
+			{
+				addSequential(new GearIntakeSetUpTimedIn(1));
+				addSequential(new GearIntakeSetStop());
+			}
+		});
 
 		// drives back
-		addSequential(new DriveEncoders(TwoGearAutoData.DRIVE_3_SETPOINT));
+		addSequential(new DriveEncodersGetSetpointAtRuntime(TwoGearAutoData.DRIVE_3_LEFT_SETPOINT,
+															TwoGearAutoData.DRIVE_3_RIGHT_SETPOINT));
 
 		// turns to face gear peg
 		addSequential(new TurnWithGyro(TwoGearAutoData.TURN_2_ANGLE_BLUE));

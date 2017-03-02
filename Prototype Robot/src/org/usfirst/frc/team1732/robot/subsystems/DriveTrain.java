@@ -80,6 +80,9 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 	// public static final double MAX_OUTPUT = 0.5;
 	// public static final double MIN_OUTPUT = -ENCODER_MAX_OUTPUT;
 
+	public static final double	ROBOT_WIDTH_INCHES		= 25;
+	public static final double	TURNING_CIRCUMFERENCE	= Math.PI * ROBOT_WIDTH_INCHES;
+
 	public static final String NAME = "Drive Train";
 
 	public DriveTrain() {
@@ -109,7 +112,7 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 		leftEncoder.setSamplesToAverage(3);
 		rightEncoder.setSamplesToAverage(3);
 		rightEncoder.setReverseDirection(true);
-		
+
 		leftEncoderPID.setAbsoluteTolerance(ENCODER_DEADBAND_INCHES);
 		rightEncoderPID.setAbsoluteTolerance(ENCODER_DEADBAND_INCHES);
 		leftEncoderPID.setContinuous(false);
@@ -169,10 +172,11 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 	private void tankDrive(double left, double right) {
 		driveRaw(left, right);
 	}
-	
-	public void printInfo(){
+
+	public void printInfo() {
 		System.out.println(leftEncoder.getRaw());
 	}
+
 	/**
 	 * Runs the driveTrain at voltages left and right with no limit
 	 * 
@@ -557,6 +561,21 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 
 	public void runMotorRtFront(int speed) {
 		right2.set(speed);
+	}
+
+	public void setEncoderPIDS(double p, double i, double d) {
+		leftEncoderPID.setPID(p, i, d);
+		rightEncoderPID.setPID(p, i, d);
+	}
+
+	public void setEncoderDeadband(double d) {
+		leftEncoderPID.setAbsoluteTolerance(d);
+		rightEncoderPID.setAbsoluteTolerance(d);
+	}
+
+	public void resetEncoderDeadband() {
+		leftEncoderPID.setAbsoluteTolerance(ENCODER_DEADBAND_INCHES);
+		rightEncoderPID.setAbsoluteTolerance(ENCODER_DEADBAND_INCHES);
 	}
 
 }

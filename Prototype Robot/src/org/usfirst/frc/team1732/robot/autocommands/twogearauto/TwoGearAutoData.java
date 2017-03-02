@@ -14,9 +14,15 @@ public class TwoGearAutoData {
 	static final double	TURN_1_ANGLE_RED	= -90;
 	static final double	TURN_1_ANGLE_BLUE	= -TURN_1_ANGLE_RED;
 
-	static final double DRIVE_2_SETPOINT = 30;
+	static final double DRIVE_2_SPEED = 0.5;
 
-	static final double DRIVE_3_SETPOINT = -DRIVE_2_SETPOINT;
+	static final boolean	GRAB_GEAR_USE_TIMEOUT	= true;
+	static final double		GRAB_GEAR_TIMEOUT		= 2.5;
+
+	static final double DRIVE_2_STOP = 0;
+
+	static final DoubleSupplier	DRIVE_3_LEFT_SETPOINT	= () -> -Robot.driveTrain.getTotalLeftDistance();
+	static final DoubleSupplier	DRIVE_3_RIGHT_SETPOINT	= () -> -Robot.driveTrain.getTotalRightDistance();
 
 	static final double WAIT_1_TIME = 0;
 

@@ -85,4 +85,10 @@ public class GearIntake extends Subsystem implements SmartDashboardGroup {
 	public double getMotorCurrent() {
 		return motor.getOutputCurrent();
 	}
+
+	public static final double GEAR_IN_CURRENT_CUTOFF = 12;
+
+	public boolean gearIsIn() {
+		return getMotorCurrent() > GEAR_IN_CURRENT_CUTOFF;
+	}
 }
