@@ -79,5 +79,10 @@ public class GearIntake extends Subsystem implements SmartDashboardGroup {
 		dashboard.addItem(SmartDashboardItem.newBooleanSender(directory + "Gear manipulator is up?", this::isUp));
 		dashboard.addItem(SmartDashboardItem.newBooleanSender(directory + "Gear storage is in?", this::isStorageIn));
 		dashboard.addItem(SmartDashboardItem.newNumberSender(directory + "Gear rollers output", motor::get));
+		dashboard.addItem(SmartDashboardItem.newNumberSender(directory + "Gear motor current", this::getMotorCurrent));
+	}
+
+	public double getMotorCurrent() {
+		return motor.getOutputCurrent();
 	}
 }
