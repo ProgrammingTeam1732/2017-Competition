@@ -22,8 +22,8 @@ public class BallIntake extends Subsystem implements SmartDashboardGroup {
 	public static final double	STOP_SPEED	= 0;
 	public static final double	OUT_SPEED	= -1;
 
-	public static final boolean	UP		= false;
-	public static final boolean	DOWN	= true;
+	public static final boolean	UP		= true;
+	public static final boolean	DOWN	= !UP;
 
 	public static final String NAME = "Ball Intake";
 

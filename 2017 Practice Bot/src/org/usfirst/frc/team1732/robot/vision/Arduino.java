@@ -50,9 +50,9 @@ public class Arduino {
 			} // disables the camera if the while loop gets stuck
 			return s;
 		} catch (Exception e) {
-			System.out.println("something went wrong, " + e.getMessage());
+			// System.out.println("something went wrong, " + e.getMessage());
 			// e.printStackTrace();
-			return s;
+			return null;
 		}
 	}
 }

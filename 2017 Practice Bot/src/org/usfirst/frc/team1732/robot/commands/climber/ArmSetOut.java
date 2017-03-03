@@ -15,7 +15,6 @@ public class ArmSetOut extends InstantCommand {
 		// eg. requires(chassis);
 		requires(Robot.arm);
 		requires(Robot.gearIntake);
-		requires(Robot.ballIntake);
 	}
 
 	// Called once when the command executes
@@ -24,7 +23,10 @@ public class ArmSetOut extends InstantCommand {
 		// FIXME: this needs to happen to not break bounding box?
 		// Robot.gearIntake.setIn();
 		// Robot.ballIntake.setPosistionDown();
-		Robot.arm.setOut();
+		if (Robot.gearIntake.isUp() && Robot.ballIntake.isPositionDown()) {
+			Robot.gearIntake.setStopperIn();
+			Robot.arm.setOut();
+		}
 	}
 
 }

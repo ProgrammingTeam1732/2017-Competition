@@ -28,7 +28,7 @@ public class Flywheel extends Subsystem {
 	private double				I					= 0;
 	private double				D					= 0;
 	private double				setpoint			= COUNTS_PER_SECOND_TARGET;
-	public static final double	MAX_OUTPUT_VOLTAGE	= -12;
+	public static final double	MAX_OUTPUT_VOLTAGE	= -8;
 
 	public boolean isAutoControl = false;
 
@@ -151,20 +151,6 @@ public class Flywheel extends Subsystem {
 		motor.setSetpoint(setpoint);
 		isAutoControl = true;
 	}
-
-	// semi old methods
-
-	// public void setForward() {
-	// motor.set(FORWARD_SPEED);
-	// }
-	//
-	// public void setStop() {
-	// motor.set(STOP_SPEED);
-	// }
-	//
-	// public void setReverse() {
-	// motor.set(REVERSE_SPEED);
-	// }
 
 	public int getCounts() {
 		return motor.getEncPosition();

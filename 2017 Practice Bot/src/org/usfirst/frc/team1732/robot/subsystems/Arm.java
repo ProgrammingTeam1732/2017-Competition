@@ -35,8 +35,12 @@ public class Arm extends Subsystem implements SmartDashboardGroup {
 		solenoid.set(IN);
 	}
 
-	private boolean isOut() {
+	public boolean isOut() {
 		return solenoid.get() == OUT;
+	}
+
+	public boolean isIn() {
+		return solenoid.get() == IN;
 	}
 
 	@Override

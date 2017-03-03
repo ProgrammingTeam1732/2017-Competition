@@ -1,23 +1,5 @@
 package org.usfirst.frc.team1732.robot;
 
-import org.usfirst.frc.team1732.robot.commands.ballandfeeder.IntakeBalls;
-import org.usfirst.frc.team1732.robot.commands.ballandfeeder.OutputBalls;
-import org.usfirst.frc.team1732.robot.commands.ballandfeeder.StopIntakeAndFeeder;
-import org.usfirst.frc.team1732.robot.commands.climber.ArmSetIn;
-import org.usfirst.frc.team1732.robot.commands.climber.ArmSetOut;
-import org.usfirst.frc.team1732.robot.commands.climber.ClimberSetStop;
-import org.usfirst.frc.team1732.robot.commands.climber.ClimberSetUp;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.ShiftHigh;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.ShiftLow;
-import org.usfirst.frc.team1732.robot.commands.flywheel.DisableFlywheel;
-import org.usfirst.frc.team1732.robot.commands.flywheel.EnableFlywheel;
-import org.usfirst.frc.team1732.robot.commands.flywheel.Shoot;
-import org.usfirst.frc.team1732.robot.commands.flywheel.StopShoot;
-import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetDownIn;
-import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetDownOut;
-import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetUpStop;
-import org.usfirst.frc.team1732.robot.commands.gearIntake.GearIntakeSetUpTimedIn;
-
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -50,12 +32,8 @@ public class OI {
 	private final Button	gearIntakeJoystickInDown	= new JoystickButton(left, 1);
 	private final Button	gearIntakeJoystickOutDown	= new JoystickButton(right, 1);
 
-	private final Button	ballIntakeIn	= intakeIn;		// new
-															// JoystickButton(buttons,
-															// 0);
-	private final Button	ballIntakeOut	= intakeOut;	// new
-															// JoystickButton(buttons,
-															// 0);
+	private final Button	ballIntakeIn	= intakeIn;
+	private final Button	ballIntakeOut	= intakeOut;
 
 	/**
 	 * This Trigger returns true only if both buttons aren't active This is so
@@ -69,45 +47,45 @@ public class OI {
 		}
 	};
 
-	private final Button	flywheelSwitch	= new JoystickButton(buttons, 0);
-	private final Button	shootButton		= new JoystickButton(buttons, 0);
-
-	private final Button armPosistion = fingerSwitch; // new
-	// JoystickButton(buttons,
-	// 0);
-	private final Button climber = shootFar; // new
-												// JoystickButton(buttons,
-												// 1);
-
-	private final Button shifter = new JoystickButton(buttons, 0);
+	// private final Button flywheelSwitch = new JoystickButton(buttons, 0);
+	// private final Button shootButton = shoot;
+	//
+	// private final Button armPosistion = fingerSwitch; // new
+	// // JoystickButton(buttons,
+	// // 0);
+	// private final Button climber = shootFar; // new
+	// // JoystickButton(buttons,
+	// // 1);
+	//
+	// private final Button shifter = new JoystickButton(buttons, 0);
 
 	/**
 	 * Calling the OI constructor will bind the buttons to commands
 	 */
 	public OI() {
-		gearIntakeJoystickOutDown.whenPressed(new GearIntakeSetDownOut());
-		gearIntakeJoystickOutDown.whenReleased(new GearIntakeSetUpStop());
-		gearIntakeJoystickInDown.whenPressed(new GearIntakeSetDownIn());
-		gearIntakeJoystickInDown.whenReleased(new GearIntakeSetUpTimedIn(1));
-
-		flywheelSwitch.whenPressed(new EnableFlywheel());
-		flywheelSwitch.whenReleased(new DisableFlywheel());
-
-		shootButton.whenPressed(new Shoot());
-		shootButton.whenReleased(new StopShoot());
-
-		armPosistion.whenPressed(new ArmSetOut());
-		armPosistion.whenReleased(new ArmSetIn());
-
-		climber.whenPressed(new ClimberSetUp());
-		climber.whenReleased(new ClimberSetStop());
-
-		ballIntakeIn.whenPressed(new IntakeBalls());
-		ballIntakeOut.whenPressed(new OutputBalls());
-		ballIntakeStop.whenActive(new StopIntakeAndFeeder());
-
-		shifter.whenPressed(new ShiftLow());
-		shifter.whenReleased(new ShiftHigh());
+		// gearIntakeJoystickOutDown.whenPressed(new GearIntakeSetDownOut());
+		// gearIntakeJoystickOutDown.whenReleased(new GearIntakeSetUpStop());
+		// gearIntakeJoystickInDown.whenPressed(new GearIntakeSetDownIn());
+		// gearIntakeJoystickInDown.whenReleased(new GearIntakeSetUpTimedIn(1));
+		//
+		// flywheelSwitch.whenPressed(new EnableFlywheel());
+		// flywheelSwitch.whenReleased(new DisableFlywheel());
+		//
+		// shootButton.whenPressed(new Shoot());
+		// shootButton.whenReleased(new StopShoot());
+		//
+		// armPosistion.whenPressed(new ArmSetOut());
+		// armPosistion.whenReleased(new ArmSetIn());
+		//
+		// climber.whenPressed(new ClimberSetUp());
+		// climber.whenReleased(new ClimberSetStop());
+		//
+		// ballIntakeIn.whenPressed(new IntakeBalls());
+		// ballIntakeOut.whenPressed(new OutputBalls());
+		// ballIntakeStop.whenActive(new StopIntakeAndFeeder());
+		//
+		// shifter.whenPressed(new ShiftLow());
+		// shifter.whenReleased(new ShiftHigh());
 	}
 
 	public double getLeftSpeed() {

@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1732.robot.vision;
 
+import org.usfirst.frc.team1732.robot.RobotMap;
 import org.usfirst.frc.team1732.robot.commands.vision.DriveWithVision;
 import org.usfirst.frc.team1732.robot.smartdashboard.MySmartDashboard;
 import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardGroup;
@@ -8,6 +9,9 @@ import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardItem;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
+import edu.wpi.first.wpilibj.Relay;
+import edu.wpi.first.wpilibj.Relay.Direction;
+import edu.wpi.first.wpilibj.Relay.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class VisionMain implements SmartDashboardGroup {
@@ -41,6 +45,8 @@ public class VisionMain implements SmartDashboardGroup {
 
 	private boolean disableCamera = false;
 
+	private final Relay lightRelay = new Relay(RobotMap.RELAY_CHANNEL);
+
 	public VisionMain() {
 		arduino = new Arduino();
 
@@ -49,6 +55,7 @@ public class VisionMain implements SmartDashboardGroup {
 		visionPID.setContinuous(false);
 		visionPID.setOutputRange(MIN_OUTPUT, MAX_OUTPUT);
 		visionPID.enable();
+		lightRelay.setDirection(Direction.kBoth);
 	}
 
 	/**
@@ -234,5 +241,13 @@ public class VisionMain implements SmartDashboardGroup {
 		} else {
 			return gearTarget.getScore();
 		}
+	}
+
+	public void turnOnLights() {
+		lightRelay.set(Value.kForward);
+	}
+
+	public void turnOffLights() {
+		lightRelay.set(Value.kOff);
 	}
 }
