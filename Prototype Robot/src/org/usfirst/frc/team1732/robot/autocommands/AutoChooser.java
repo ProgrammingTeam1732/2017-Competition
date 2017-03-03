@@ -11,6 +11,8 @@ import org.usfirst.frc.team1732.robot.autocommands.scoregearthenballs.ScoreGearT
 import org.usfirst.frc.team1732.robot.autocommands.scoregearthenballs.ScoreGearThenBallsRed;
 import org.usfirst.frc.team1732.robot.autocommands.scoresidegear.ScoreSideGearLeft;
 import org.usfirst.frc.team1732.robot.autocommands.scoresidegear.ScoreSideGearRight;
+import org.usfirst.frc.team1732.robot.autocommands.threegearauto.ThreeGearAutoBlue;
+import org.usfirst.frc.team1732.robot.autocommands.threegearauto.ThreeGearAutoRed;
 import org.usfirst.frc.team1732.robot.autocommands.twogearauto.TwoGearAutoBlue;
 import org.usfirst.frc.team1732.robot.autocommands.twogearauto.TwoGearAutoRed;
 import org.usfirst.frc.team1732.robot.autocommands.visionplacegear.VisionPlaceGear;
@@ -35,7 +37,8 @@ public class AutoChooser {
 		GrabBallsBackwardThenShoot(new GrabBallsBackwardAndShootRed(), new GrabBallsBackwardAndShootBlue()),
 		TwoGearAuto(new TwoGearAutoRed(), new TwoGearAutoBlue()),
 		// Turn180Degrees(new TurnWithGyro(180));
-		TurnWithEncoders(new TurnWithEncoders(180));
+		TurnWithEncoders(new TurnWithEncoders(180)),
+		ThreeGearAuto(new ThreeGearAutoRed(), new ThreeGearAutoBlue());
 
 		private final BooleanSupplier	isRedAlliance;
 		private final Command			ifRed;

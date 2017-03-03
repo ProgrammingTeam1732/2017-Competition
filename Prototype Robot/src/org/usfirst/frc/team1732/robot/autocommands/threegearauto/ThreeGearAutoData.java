@@ -1,10 +1,10 @@
-package org.usfirst.frc.team1732.robot.autocommands.twogearauto;
+package org.usfirst.frc.team1732.robot.autocommands.threegearauto;
 
 import java.util.function.DoubleSupplier;
 
 import org.usfirst.frc.team1732.robot.Robot;
 
-public class TwoGearAutoData {
+public class ThreeGearAutoData {
 
 	static final DoubleSupplier	DRIVE_1_LEFT_SETPOINT	= () -> Robot.getDistanceToDriveBackForTwoGear()
 			- Robot.driveTrain.getTotalLeftDistance();
