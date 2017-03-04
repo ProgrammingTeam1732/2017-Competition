@@ -37,6 +37,7 @@ import org.usfirst.frc.team1732.robot.subsystems.Flywheel;
 import org.usfirst.frc.team1732.robot.subsystems.GearIntake;
 import org.usfirst.frc.team1732.robot.vision.VisionMain;
 
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -94,6 +95,8 @@ public class Robot extends IterativeRobot {
 		addAutonomousToSmartDashboard();
 		addTestingToSmartDashbaord();
 		dashboard.addItem(SmartDashboardItem.newNumberSender("robotPeriodic() frequency ms", this::getFrequency));
+
+		addCamera();
 
 		// Initialize smartdashboard
 		dashboard.init();
@@ -252,5 +255,46 @@ public class Robot extends IterativeRobot {
 		long start = startTime;
 		startTime = System.currentTimeMillis();
 		return startTime - start;
+	}
+
+	private void addCamera() {
+		CameraServer.getInstance().startAutomaticCapture();
+		// Thread visionThread = new Thread(() -> {
+		// // Get the UsbCamera from CameraServer
+		// UsbCamera camera =
+		// CameraServer.getInstance().startAutomaticCapture();
+		// // Set the resolution
+		// camera.setResolution(320, 240);
+		//
+		// // Get a CvSink. This will capture Mats from the camera
+		// CvSink cvSink = CameraServer.getInstance().getVideo();
+		// // Setup a CvSource. This will send images back to the Dashboard
+		// CvSource outputStream = CameraServer.getInstance().putVideo("Video",
+		// 320, 240);
+		//
+		// // Mats are very memory expensive. Lets reuse this Mat.
+		// Mat mat = new Mat();
+		//
+		// // This cannot be 'true'. The program will never exit if it is. This
+		// // lets the robot stop this thread when restarting robot code or
+		// // deploying.
+		// while (!Thread.interrupted()) {
+		// // Tell the CvSink to grab a frame from the camera and put it
+		// // in the source mat. If there is an error notify the output.
+		// if (cvSink.grabFrame(mat) == 0) {
+		// // Send the output the error.
+		// outputStream.notifyError(cvSink.getError());
+		// // skip the rest of the current iteration
+		// continue;
+		// }
+		// // Put a cirlce on the image
+		//// Imgproc.circle(mat, new Point(160, 180), 40, new Scalar(new
+		// double[] { 255, 0, 0 }), 10);
+		// // Give the output stream a new image to display
+		// outputStream.putFrame(mat);
+		// }
+		// });
+		// visionThread.setDaemon(true);
+		// visionThread.start();
 	}
 }
