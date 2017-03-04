@@ -17,7 +17,7 @@ public class GearIntakeSetUp extends InstantCommand {
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-		if (Robot.gearIntake.isDown()) {
+		if (Robot.gearIntake.isStopperIn()) {
 			Robot.gearIntake.setStopperOut();
 		}
 		Robot.gearIntake.setUp();

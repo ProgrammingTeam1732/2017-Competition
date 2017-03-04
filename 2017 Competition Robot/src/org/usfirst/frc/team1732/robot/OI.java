@@ -29,31 +29,43 @@ import edu.wpi.first.wpilibj.buttons.Trigger;
  */
 public class OI {
 
-	private Joystick	buttons	= new Joystick(RobotMap.BUTTONS_USB);
-	private Joystick	left	= new Joystick(RobotMap.LEFT_JOYSTICK_USB);
-	private Joystick	right	= new Joystick(RobotMap.RIGHT_JOYSTICK_USB);
+	//private Joystick	buttons	= new Joystick(RobotMap.BUTTONS_USB);
+	//private Joystick	left	= new Joystick(RobotMap.LEFT_JOYSTICK_USB);
+	//private Joystick	right	= new Joystick(RobotMap.RIGHT_JOYSTICK_USB);
 
 	// Buttons from last year's driver station:
-	private final Button	fingerSwitch	= new JoystickButton(buttons, 12);
-	private final Button	intakeIn		= new JoystickButton(buttons, 10);
-	private final Button	intakeOut		= new JoystickButton(buttons, 11);
-	private final Button	intakeSwitch	= new JoystickButton(buttons, 9);
-	private final Button	armHigh			= new JoystickButton(buttons, 4);
-	private final Button	armMedium		= new JoystickButton(buttons, 5);
-	private final Button	armLow			= new JoystickButton(buttons, 6);
-	private final Button	shootFar		= new JoystickButton(buttons, 2);
-	private final Button	shootClose		= new JoystickButton(buttons, 3);
-	private final Button	shoot			= new JoystickButton(buttons, 1);
-	private final Button	manipUp			= new JoystickButton(buttons, 8);
-	private final Button	manipDown		= new JoystickButton(buttons, 7);
+//	private final Button	fingerSwitch	= new JoystickButton(buttons, 12);
+//	private final Button	intakeIn		= new JoystickButton(buttons, 10);
+//	private final Button	intakeOut		= new JoystickButton(buttons, 11);
+//	private final Button	intakeSwitch	= new JoystickButton(buttons, 9);
+//	private final Button	armHigh			= new JoystickButton(buttons, 4);
+//	private final Button	armMedium		= new JoystickButton(buttons, 5);
+//	private final Button	armLow			= new JoystickButton(buttons, 6);
+//	private final Button	shootFar		= new JoystickButton(buttons, 2);
+//	private final Button	shootClose		= new JoystickButton(buttons, 3);
+//	private final Button	shoot			= new JoystickButton(buttons, 1);
+//	private final Button	manipUp			= new JoystickButton(buttons, 8);
+//	private final Button	manipDown		= new JoystickButton(buttons, 7);
+	
+	//Buttons for logitech controller
+	private final Joystick buttons	= new Joystick(RobotMap.BUTTONS_USB);
+	private final Button	Y			= new JoystickButton(buttons, 4);
+	private final Button	LB			= new JoystickButton(buttons, 5);
+	private final Button	RB			= new JoystickButton(buttons, 6);
+	private final Button	A			= new JoystickButton(buttons, 2);
+	private final Button	B			= new JoystickButton(buttons, 3);
+	private final Button	X			= new JoystickButton(buttons, 1);
+	private final Button	RT			= new JoystickButton(buttons, 8);
+	private final Button	LT			= new JoystickButton(buttons, 7);
+	private final Button 	Start   	= new JoystickButton(buttons, 10);
 
-	private final Button	gearIntakeJoystickInDown	= new JoystickButton(left, 1);
-	private final Button	gearIntakeJoystickOutDown	= new JoystickButton(right, 1);
+	//private final Button	gearIntakeJoystickInDown	= new JoystickButton(left, 1);
+	//private final Button	gearIntakeJoystickOutDown	= new JoystickButton(right, 1);
 
-	private final Button	ballIntakeIn	= intakeIn;		// new
+	private final Button	ballIntakeIn	= LB;		// new
 															// JoystickButton(buttons,
 															// 0);
-	private final Button	ballIntakeOut	= intakeOut;	// new
+	private final Button	ballIntakeOut	= RB;	// new
 															// JoystickButton(buttons,
 															// 0);
 
@@ -72,23 +84,23 @@ public class OI {
 	private final Button	flywheelSwitch	= new JoystickButton(buttons, 0);
 	private final Button	shootButton		= new JoystickButton(buttons, 0);
 
-	private final Button armPosistion = fingerSwitch; // new
+	private final Button armPosistion = LT; // new
 	// JoystickButton(buttons,
 	// 0);
-	private final Button climber = shootFar; // new
+	private final Button climber = Start; // new
 												// JoystickButton(buttons,
 												// 1);
 
-	private final Button shifter = new JoystickButton(buttons, 0);
+	private final Button shifter = RT;//new JoystickButton(buttons, 0);
 
 	/**
 	 * Calling the OI constructor will bind the buttons to commands
 	 */
 	public OI() {
-		gearIntakeJoystickOutDown.whenPressed(new GearIntakeSetDownOut());
-		gearIntakeJoystickOutDown.whenReleased(new GearIntakeSetUpStop());
-		gearIntakeJoystickInDown.whenPressed(new GearIntakeSetDownIn());
-		gearIntakeJoystickInDown.whenReleased(new GearIntakeSetUpTimedIn(1));
+//		gearIntakeJoystickOutDown.whenPressed(new GearIntakeSetDownOut());
+//		gearIntakeJoystickOutDown.whenReleased(new GearIntakeSetUpStop());
+//		gearIntakeJoystickInDown.whenPressed(new GearIntakeSetDownIn());
+//		gearIntakeJoystickInDown.whenReleased(new GearIntakeSetUpTimedIn(1));
 
 		flywheelSwitch.whenPressed(new EnableFlywheel());
 		flywheelSwitch.whenReleased(new DisableFlywheel());
@@ -114,21 +126,23 @@ public class OI {
 
 	public double getLeftSpeed() {
 		// return -controller.getRawAxis(1);// for use with game controller
-		return -left.getRawAxis(RobotMap.LEFT_JOYSTICK_Y_AXIS);
+		//return -left.getRawAxis(RobotMap.LEFT_JOYSTICK_Y_AXIS);
+		return buttons.getRawAxis(1);
 	}
 
 	public double getRightSpeed() {
 		// return -controller.getRawAxis(3);// for use with game controller
-		return -right.getRawAxis(RobotMap.RIGHT_JOYSTICK_Y_AXIS);
+		//return -right.getRawAxis(RobotMap.RIGHT_JOYSTICK_Y_AXIS);
+		return buttons.getRawAxis(3);
 	}
 
 	// Buttons from controller
-	private final Joystick	controller	= new Joystick(0);
-	private final Button	a			= new JoystickButton(controller, 2);
-	private final Button	b			= new JoystickButton(controller, 3);
-	private final Button	x			= new JoystickButton(controller, 1);
-	private final Button	y			= new JoystickButton(controller, 4);
-	private final Button	lb			= new JoystickButton(controller, 5);
-	private final Button	rb			= new JoystickButton(controller, 6);
+//	private final Joystick	controller	= new Joystick(0);
+//	private final Button	A			= new JoystickButton(controller, 2);
+//	private final Button	B			= new JoystickButton(controller, 3);
+//	private final Button	X			= new JoystickButton(controller, 1);
+//	private final Button	Y			= new JoystickButton(controller, 4);
+//	private final Button	LB			= new JoystickButton(controller, 5);
+//	private final Button	RB			= new JoystickButton(controller, 6);
 
 }

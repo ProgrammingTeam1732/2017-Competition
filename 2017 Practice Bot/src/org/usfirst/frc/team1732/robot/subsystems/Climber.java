@@ -17,6 +17,7 @@ public class Climber extends Subsystem implements SmartDashboardGroup {
 	private final CANTalon		motor		= new CANTalon(RobotMap.CLIMBER_MOTOR_DEVICE_NUMBER);
 	public static final double	UP_SPEED	= -1;
 	public static final double	STOP_SPEED	= 0;
+	public static final double 	DOWN_SPEED  = .5;
 
 	public static final String NAME = "Climber";
 
@@ -30,6 +31,9 @@ public class Climber extends Subsystem implements SmartDashboardGroup {
 		motor.set(UP_SPEED);
 	}
 
+	public void setDown(){
+		motor.set(DOWN_SPEED);
+	}
 	/**
 	 * Stops the motor
 	 */
