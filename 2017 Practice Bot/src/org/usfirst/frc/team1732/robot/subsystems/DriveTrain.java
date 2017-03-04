@@ -86,6 +86,8 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 	// public static final double MAX_OUTPUT = 0.5;
 	// public static final double MIN_OUTPUT = -ENCODER_MAX_OUTPUT;
 
+	public static final double VOLTAGE_RAMP_RATE = 6;
+
 	public static final String NAME = "Drive Train";
 
 	public DriveTrain() {
@@ -97,6 +99,13 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 		left2.changeControlMode(TalonControlMode.Follower);
 		left2.set(leftMaster.getDeviceID());
 		// reverse the slave motors
+
+		// leftMaster.setVoltageRampRate(VOLTAGE_RAMP_RATE);
+		// left1.setVoltageRampRate(VOLTAGE_RAMP_RATE);
+		// left2.setVoltageRampRate(VOLTAGE_RAMP_RATE);
+		// right1.setVoltageRampRate(VOLTAGE_RAMP_RATE);
+		// right2.setVoltageRampRate(VOLTAGE_RAMP_RATE);
+		// rightMaster.setVoltageRampRate(VOLTAGE_RAMP_RATE);
 
 		// reverse the whole right side
 		// sets right motors to follow right master
@@ -220,8 +229,38 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 	 *            maximum positive % voltage
 	 */
 	public void driveRawLimit(double left, double right, double lower, double upper) {
-		leftMaster.set(limit(-left, lower, upper));
-		rightMaster.set(limit(-right, lower, upper));
+		left = rampVoltage(prevLeft, limit(-left, lower, upper));
+		right = rampVoltage(prevRight, limit(-right, lower, upper));
+		leftMaster.set(left);
+		rightMaster.set(right);
+		prevLeft = left;
+		prevRight = right;
+	}
+
+	private double	prevLeft	= 0;
+	private double	prevRight	= 0;
+
+	public static final double	RAMP_RATE		= 0.2;
+	public static final double	MIN_RAMP_LEVEL	= 0.5;
+
+	public double rampVoltage(double prev, double requested) {
+		if (isHighGear() && Math.abs(requested) > MIN_RAMP_LEVEL && Math.abs(prev - requested) > RAMP_RATE) {
+			return RAMP_RATE * Math.signum(prev) + prev;
+		} else {
+			return requested;
+		}
+	}
+
+	public static final double	ENCODER_RAMP_RATE		= 0;
+	public static final double	MAX_INCHES_PER_SECOND	= 40;
+
+	public double rampWithEncoders(double prev, double requested, Encoder encoder) {
+		if (isHighGear() && Math.abs(requested) > MIN_RAMP_LEVEL
+				&& Math.abs(encoder.getRate()) < MAX_INCHES_PER_SECOND) {
+			return prev + RAMP_RATE * Math.signum(prev);
+		} else {
+			return requested;
+		}
 	}
 
 	/**
