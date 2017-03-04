@@ -155,8 +155,8 @@ public class OI {
 		climb.whenPressed(new ClimberSetUp());
 		climb.whenReleased(new ClimberSetStop());
 		
-		intakeIn.whenPressed(new OutputBalls()); //FIXME: These are reversed just to save time
-		intakeOut.whenPressed(new IntakeBalls());
+		intakeIn.whenPressed(new IntakeBalls()); //FIXME: These are reversed just to save time
+		intakeOut.whenPressed(new OutputBalls());
 		ballIntakeStop.whenActive(new StopIntakeAndFeeder());
 
 		shifter.whenPressed(new ShiftLow());

@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class Shoot extends CommandGroup {
 
 	public Shoot() {
-		addSequential(new EnableFlywheel());
+		//addSequential(new EnableFlywheel());
 		addSequential(new BallIntakeSetDown()); // sets ball intake down
 		addSequential(new FeederSetOut());
 		addSequential(new BallIntakeSetIn());
