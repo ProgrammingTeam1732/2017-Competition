@@ -182,7 +182,7 @@ public class Robot extends IterativeRobot {
 									() -> DriverStation.getInstance().getAlliance().equals(Alliance.Red)));
 
 		distanceToDriveBackForTwoGear = dashboard
-				.addItem(SmartDashboardItem.newDoubleReciever("Two Gear Auto: inches from wall to go to", 24.0));
+				.addItem(SmartDashboardItem.newDoubleReciever("Two Gear Auto: inches from wall to go to", 50.0));
 
 		dashboard.addItem(SmartDashboardItem.newStringSender("Selected Auto Command", () -> {
 			try {

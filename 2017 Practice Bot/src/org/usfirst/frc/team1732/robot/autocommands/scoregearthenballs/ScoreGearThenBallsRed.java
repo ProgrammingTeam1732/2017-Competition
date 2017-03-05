@@ -6,12 +6,15 @@ import org.usfirst.frc.team1732.robot.commands.drivetrain.ClearTotalDistance;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveEncoders;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveUntilEncoders;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.TurnWithGyro;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.InitGearIntake;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class ScoreGearThenBallsRed extends CommandGroup {
 
 	public ScoreGearThenBallsRed() {
+		addSequential(new InitGearIntake());
+
 		// GEAR SCORING
 
 		// Positions robot in front of gear peg

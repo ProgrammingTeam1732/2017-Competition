@@ -58,6 +58,7 @@ public class Arduino {
 				// System.err.println("something went wrong, " +
 				// e.getMessage());
 				// e.printStackTrace();
+				Robot.visionMain.disableCamera();
 				return null;
 			}
 		} else {

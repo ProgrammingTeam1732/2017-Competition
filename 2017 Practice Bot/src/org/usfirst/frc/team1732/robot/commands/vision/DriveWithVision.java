@@ -13,7 +13,7 @@ public class DriveWithVision extends Command {
 		requires(driveTrain);
 		targetDistanceInches = aTargetDistanceInches;
 		// visionMain.visionPID.setPID(0.01, 0, 0);
-		// setTimeout(5);
+		setTimeout(5);
 	}
 
 	public static void setSmartDashboardDistance(double distance) {
@@ -99,8 +99,7 @@ public class DriveWithVision extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return (foundOnce && (driveTrain.isErrorNegative() || driveTrain.encodersOnTarget()));
-		// || isTimedOut();
+		return (foundOnce && (driveTrain.isErrorNegative() || driveTrain.encodersOnTarget())) || isTimedOut();
 	}
 
 	public static void setSlope(double slope) {
@@ -122,8 +121,8 @@ public class DriveWithVision extends Command {
 	@Override
 	protected void end() {
 		driveTrain.driveRaw(0, 0);
-		driveTrain.resetEncoderPIDValues();
-		driveTrain.resetGyroPIDValues();
+		// driveTrain.resetEncoderPIDValues();
+		// driveTrain.resetGyroPIDValues();
 		visionMain.resetPIDValues();
 	}
 

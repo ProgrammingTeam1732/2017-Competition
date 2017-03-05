@@ -42,7 +42,7 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 
 	private final Solenoid		shifter		= new Solenoid(	RobotMap.PCM_CAN_ID,
 															RobotMap.DRIVE_TRAIN_SHIFTER_SOLENOID_DEVICE_NUMBER);
-	public static final boolean	HIGH_GEAR	= true;
+	public static final boolean	HIGH_GEAR	= false;
 	public static final boolean	LOW_GEAR	= !HIGH_GEAR;
 
 	// gyro
@@ -54,8 +54,8 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 	private final PIDController	gyroPID					= new PIDController(gyroP, gyroI, gyroD, gyro,
 																			DriveTrain::voidMethod);
 	public static final double	GYRO_DEADBAND_DEGREES	= 4;
-	public static final double	gyroP					= 0.006;
-	public static final double	gyroI					= 0.00002;
+	public static final double	gyroP					= 0.008;
+	public static final double	gyroI					= 0.00005;
 	public static final double	gyroD					= 0;
 
 	// encoders
@@ -73,7 +73,7 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 																			DriveTrain::voidMethod);
 	private final PIDController	rightEncoderPID			= new PIDController(encoderP, encoderI, encoderD, rightEncoder,
 																			DriveTrain::voidMethod);
-	public static final double	encoderP				= 0.02;
+	public static final double	encoderP				= 0.03;
 	public static final double	encoderI				= 0;
 	public static final double	encoderD				= 0;
 	public static final double	ENCODER_DEADBAND_INCHES	= 6;
@@ -126,7 +126,7 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 		// speed
 		leftEncoder.setPIDSourceType(PIDSourceType.kDisplacement);
 		rightEncoder.setPIDSourceType(PIDSourceType.kDisplacement);
-		leftEncoder.setReverseDirection(true);
+		rightEncoder.setReverseDirection(true);
 		// rightEncoder.setReverseDirection(true);
 
 		// sets encoder samples to average

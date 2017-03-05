@@ -8,12 +8,15 @@ import org.usfirst.frc.team1732.robot.commands.drivetrain.TurnWithGyro;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.base.GearIntakeSetStop;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.GearIntakeSetUpTimedIn;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.GrabGear;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.InitGearIntake;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class ThreeGearAutoRed extends CommandGroup {
 
 	public ThreeGearAutoRed() {
+		addSequential(new InitGearIntake());
+
 		addSequential(new ClearTotalDistance());
 
 		// places the gear, drives back
@@ -29,7 +32,7 @@ public class ThreeGearAutoRed extends CommandGroup {
 		addSequential(new SetMotorSpeed(ThreeGearAutoData.DRIVE_2_SPEED, ThreeGearAutoData.DRIVE_2_SPEED));
 
 		// drops gear intake
-		addSequential(new GrabGear(ThreeGearAutoData.GRAB_GEAR_TIMEOUT, ThreeGearAutoData.GRAB_GEAR_USE_TIMEOUT));
+		addSequential(new GrabGear(ThreeGearAutoData.GRAB_GEAR_USE_TIMEOUT, ThreeGearAutoData.GRAB_GEAR_TIMEOUT));
 
 		addSequential(new SetMotorSpeed(ThreeGearAutoData.DRIVE_2_STOP, ThreeGearAutoData.DRIVE_2_STOP));
 
@@ -64,7 +67,7 @@ public class ThreeGearAutoRed extends CommandGroup {
 		addSequential(new SetMotorSpeed(ThreeGearAutoData.DRIVE_2_SPEED, ThreeGearAutoData.DRIVE_2_SPEED));
 
 		// drops gear intake
-		addSequential(new GrabGear(ThreeGearAutoData.GRAB_GEAR_TIMEOUT, ThreeGearAutoData.GRAB_GEAR_USE_TIMEOUT));
+		addSequential(new GrabGear(ThreeGearAutoData.GRAB_GEAR_USE_TIMEOUT, ThreeGearAutoData.GRAB_GEAR_TIMEOUT));
 
 		addSequential(new SetMotorSpeed(ThreeGearAutoData.DRIVE_2_STOP, ThreeGearAutoData.DRIVE_2_STOP));
 

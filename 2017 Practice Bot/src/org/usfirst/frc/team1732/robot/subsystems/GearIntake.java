@@ -25,7 +25,7 @@ public class GearIntake extends Subsystem implements SmartDashboardGroup {
 																RobotMap.GEAR_STOPPER_SOLENOID_NUMBER);
 	public static final boolean	UP				= false;
 	public static final boolean	DOWN			= !UP;
-	public static final boolean	IN				= true;
+	public static final boolean	IN				= false;
 	public static final boolean	OUT				= !IN;
 
 	public static final String NAME = "Gear Intake";
@@ -90,7 +90,7 @@ public class GearIntake extends Subsystem implements SmartDashboardGroup {
 		return motor.getOutputCurrent();
 	}
 
-	public static final double GEAR_IN_CURRENT_CUTOFF = 12;
+	public static final double GEAR_IN_CURRENT_CUTOFF = 14;
 
 	public boolean gearIsIn() {
 		return getMotorCurrent() > GEAR_IN_CURRENT_CUTOFF;

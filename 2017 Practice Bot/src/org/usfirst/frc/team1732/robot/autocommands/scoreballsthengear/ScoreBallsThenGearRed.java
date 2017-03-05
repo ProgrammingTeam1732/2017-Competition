@@ -3,6 +3,7 @@ package org.usfirst.frc.team1732.robot.autocommands.scoreballsthengear;
 import org.usfirst.frc.team1732.robot.autocommands.visionplacegear.VisionPlaceGear;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveEncoders;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveGyro;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.InitGearIntake;
 import org.usfirst.frc.team1732.robot.commands.helpercommands.Wait;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -10,6 +11,8 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class ScoreBallsThenGearRed extends CommandGroup {
 
 	public ScoreBallsThenGearRed() {
+		addSequential(new InitGearIntake());
+
 		// drive forward slightly
 		addSequential(new DriveEncoders(ScoreBallsThenGearData.DRIVE_1_SETPOINT));
 
