@@ -36,5 +36,8 @@ public class ScoreBallsThenGearBlue extends CommandGroup {
 
 		// drive back forward 40 inches after placing gear
 		addSequential(new VisionPlaceGear(ScoreBallsThenGearData.DRIVE_4_DRIVE_BACK_SETPOINT));
+
+		// drive to hoppers
+		// addSequential(new DriveToHopperFromLeftGearPeg());
 	}
 }

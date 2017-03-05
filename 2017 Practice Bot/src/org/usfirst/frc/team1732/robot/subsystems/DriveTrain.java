@@ -95,13 +95,13 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 
 	public DriveTrain() {
 		super(NAME);
-		// sets the left motors to follow left master
+		// reverses whole left side
 		leftMaster.setInverted(true);
+		// sets right motors to follow right master
 		left1.changeControlMode(TalonControlMode.Follower);
 		left1.set(leftMaster.getDeviceID());
 		left2.changeControlMode(TalonControlMode.Follower);
 		left2.set(leftMaster.getDeviceID());
-		// reverse the slave motors
 
 		// leftMaster.setVoltageRampRate(VOLTAGE_RAMP_RATE);
 		// left1.setVoltageRampRate(VOLTAGE_RAMP_RATE);
@@ -110,13 +110,11 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 		// right2.setVoltageRampRate(VOLTAGE_RAMP_RATE);
 		// rightMaster.setVoltageRampRate(VOLTAGE_RAMP_RATE);
 
-		// reverse the whole right side
 		// sets right motors to follow right master
 		right1.changeControlMode(TalonControlMode.Follower);
 		right1.set(rightMaster.getDeviceID());
 		right2.changeControlMode(TalonControlMode.Follower);
 		right2.set(rightMaster.getDeviceID());
-		// reverses the slave motors
 
 		// makes sure braking is enabled
 		setBrakeMode(true);
@@ -158,8 +156,8 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 
 		// sets the tolerance of the gyroPID
 		gyroPID.setAbsoluteTolerance(GYRO_DEADBAND_DEGREES);
-		// sets the gyroPID to not measure continiously
-		gyroPID.setContinuous(false);
+		// sets the gyroPID to measure continuously
+		gyroPID.setContinuous(true);
 		// sets the minimum/maximum PID loop output
 		gyroPID.setOutputRange(GYRO_MIN_OUTPUT, GYRO_MAX_OUTPUT);
 

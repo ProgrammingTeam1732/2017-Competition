@@ -4,11 +4,15 @@ public class GearTarget extends VisionTarget {
 
 	public static final double	GEAR_TARGET_WIDTH_INCHES	= 10.25;
 	public static final double	GEAR_TARGET_HEIGHT_INCHES	= 5;
+	public static final double	GEAR_TARGET_AREA			= GEAR_TARGET_WIDTH_INCHES * GEAR_TARGET_HEIGHT_INCHES;
+	public static final double	GEAR_TARGET_TAPE_WIDTH		= 2;
+	public static final double	GEAR_TARGET_TAPE_AREA		= GEAR_TARGET_HEIGHT_INCHES * GEAR_TARGET_TAPE_WIDTH;
+
 	/**
 	 * The minimum score (max of 5) a gearTarget needs in order to be considered
 	 * a valid gear target
 	 */
-	public static final double	MIN_TOTAL_SCORE				= 3.2;
+	public static final double MIN_TOTAL_SCORE = 3.2;
 
 	public GearTarget(Rectangle a) {
 		super(a);
@@ -22,16 +26,18 @@ public class GearTarget extends VisionTarget {
 	public double getScore() {
 		double totalScore = 0;
 
-		double leftWidthInches = 2;
-		double gearLeftWidth_WholeWidthRatio = leftWidthInches / GEAR_TARGET_WIDTH_INCHES;
+		double gearLeftWidth_WholeWidthRatio = GEAR_TARGET_TAPE_WIDTH / GEAR_TARGET_WIDTH_INCHES;
 		double imageLeftWidth_WholeWidthRatio = (double) left.width / boundingBox.width;
 		double leftWidthScore = getScore(imageLeftWidth_WholeWidthRatio / gearLeftWidth_WholeWidthRatio);
 
-		// Difference between the left edges of the contours should be
+		double imageRightWidth_WholeWidthRatio = (double) right.width / boundingBox.width;
+		double righWidthScore = getScore(imageRightWidth_WholeWidthRatio / gearLeftWidth_WholeWidthRatio);
+
+		// Difference between the left edges of the tapes should be
 		// 8.25/10.25 of total width
 		double dLeftPixels = right.x - left.x;
 		double imageDLeft_WidthRatio = dLeftPixels / boundingBox.width;
-		double dLeftInches = 8.25;
+		double dLeftInches = GEAR_TARGET_WIDTH_INCHES - GEAR_TARGET_TAPE_WIDTH;
 		double gearDLeftInches_WidthInchesRatio = dLeftInches / GEAR_TARGET_WIDTH_INCHES;
 		double dLeftScore = getScore(imageDLeft_WidthRatio / gearDLeftInches_WidthInchesRatio);
 
@@ -48,8 +54,13 @@ public class GearTarget extends VisionTarget {
 		double gearWidthHeightRatio = GEAR_TARGET_WIDTH_INCHES / GEAR_TARGET_HEIGHT_INCHES;
 		double widthHeightRatioScore = getScore(imageWidthHeightRatio / gearWidthHeightRatio);
 
+		double gearTargetTapeAreaTotalAreaRatio = GEAR_TARGET_TAPE_AREA * 2.0 / GEAR_TARGET_AREA;
+		double imageTapeAreaTotalAreaRatio = (left.getArea() + right.getArea()) / boundingBox.getArea();
+		double areaScore = getScore(imageTapeAreaTotalAreaRatio / gearTargetTapeAreaTotalAreaRatio);
+
 		totalScore = leftWidthScore + dLeftScore + dTopScore + widthRatioScore + heightRatioScore
-				+ widthHeightRatioScore;
+				+ widthHeightRatioScore + righWidthScore + (areaScore * 3.0);
+
 		return totalScore;
 	}
 

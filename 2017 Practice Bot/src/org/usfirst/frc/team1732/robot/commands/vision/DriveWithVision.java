@@ -5,9 +5,6 @@ import static org.usfirst.frc.team1732.robot.Robot.visionMain;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-/**
- *
- */
 public class DriveWithVision extends Command {
 
 	public DriveWithVision(double aTargetDistanceInches) {
@@ -16,6 +13,7 @@ public class DriveWithVision extends Command {
 		requires(driveTrain);
 		targetDistanceInches = aTargetDistanceInches;
 		// visionMain.visionPID.setPID(0.01, 0, 0);
+		// setTimeout(5);
 	}
 
 	public static void setSmartDashboardDistance(double distance) {
@@ -101,8 +99,8 @@ public class DriveWithVision extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return foundOnce && (driveTrain.isErrorNegative() || driveTrain.encodersOnTarget());
-		// && driveTrain.gyroPID.onTarget() &&
+		return (foundOnce && (driveTrain.isErrorNegative() || driveTrain.encodersOnTarget()));
+		// || isTimedOut();
 	}
 
 	public static void setSlope(double slope) {

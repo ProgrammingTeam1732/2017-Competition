@@ -5,7 +5,6 @@ import org.usfirst.frc.team1732.robot.commands.drivetrain.ClearTotalDistance;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveEncodersGetSetpointAtRuntime;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.SetMotorSpeed;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.TurnWithGyro;
-import org.usfirst.frc.team1732.robot.commands.gearIntake.base.GearIntakeSetStop;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.GearIntakeSetUpTimedIn;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.GrabGear;
 
@@ -34,12 +33,7 @@ public class TwoGearAutoRed extends CommandGroup {
 		addSequential(new SetMotorSpeed(TwoGearAutoData.DRIVE_2_STOP, TwoGearAutoData.DRIVE_2_STOP));
 
 		// raises gear intake
-		addParallel(new CommandGroup() {
-			{
-				addSequential(new GearIntakeSetUpTimedIn(1));
-				addSequential(new GearIntakeSetStop());
-			}
-		});
+		addParallel(new GearIntakeSetUpTimedIn(1));
 
 		// drives back
 		addSequential(new DriveEncodersGetSetpointAtRuntime(TwoGearAutoData.DRIVE_3_LEFT_SETPOINT,

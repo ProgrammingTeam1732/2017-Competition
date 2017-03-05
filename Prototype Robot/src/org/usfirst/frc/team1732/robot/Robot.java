@@ -76,9 +76,9 @@ public class Robot extends IterativeRobot {
 		// Smartdashboard code
 		dashboard = new MySmartDashboard();
 		// Add items to smartdashboard
-		driveTrain.addToSmartDashboard(dashboard);
-		gearIntake.addToSmartDashboard(dashboard);
-		visionMain.addToSmartDashboard(dashboard);
+		//driveTrain.addToSmartDashboard(dashboard);
+		//gearIntake.addToSmartDashboard(dashboard);
+		//visionMain.addToSmartDashboard(dashboard);
 		addSubsystemsToSmartDashboard();
 		addAutonomousToSmartDashboard();
 		addTestingToSmartDashbaord();

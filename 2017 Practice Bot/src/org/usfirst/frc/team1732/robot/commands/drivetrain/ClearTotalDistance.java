@@ -16,6 +16,7 @@ public class ClearTotalDistance extends InstantCommand {
 	// Called once when the command executes
 	@Override
 	protected void initialize() {
+		Robot.driveTrain.resetEncoders();
 		Robot.driveTrain.clearTotalDistance();
 	}
 

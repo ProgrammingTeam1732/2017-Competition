@@ -45,4 +45,12 @@ public class PixyCamera extends Subsystem {
 	public double limit(double d) {
 		return d > MAX_VOLTAGE ? MAX_VOLTAGE : d < MIN_VOLTAGE ? MIN_VOLTAGE : d;
 	}
+
+	public void setLightsOn(boolean on) {
+		if (on)
+			turnOnLights();
+		else
+			turnOffLights();
+	}
+
 }

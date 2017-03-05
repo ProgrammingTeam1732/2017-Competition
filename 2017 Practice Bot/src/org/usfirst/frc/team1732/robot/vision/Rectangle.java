@@ -27,7 +27,13 @@ public class Rectangle {
 	public int getCenterY() {
 		return y + width / 2;
 	}
-	public String toString(){
+
+	@Override
+	public String toString() {
 		return String.format("sig: %d x: %d y: %d width: %d height: %d", signature, x, y, width, height);
+	}
+
+	public int getArea() {
+		return width * height;
 	}
 }
