@@ -35,6 +35,7 @@ import org.usfirst.frc.team1732.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team1732.robot.subsystems.Feeder;
 import org.usfirst.frc.team1732.robot.subsystems.Flywheel;
 import org.usfirst.frc.team1732.robot.subsystems.GearIntake;
+import org.usfirst.frc.team1732.robot.subsystems.PixyCamera;
 import org.usfirst.frc.team1732.robot.vision.VisionMain;
 
 import edu.wpi.first.wpilibj.CameraServer;
@@ -62,6 +63,7 @@ public class Robot extends IterativeRobot {
 	public static Flywheel		flywheel;
 	public static GearIntake	gearIntake;
 	public static Arm			arm;
+	public static PixyCamera	pixyCamera;
 
 	public static VisionMain		visionMain;
 	private static MySmartDashboard	dashboard;
@@ -84,6 +86,7 @@ public class Robot extends IterativeRobot {
 		feeder = new Feeder();
 		arm = new Arm();
 		gearIntake = new GearIntake();
+		pixyCamera = new PixyCamera();
 
 		oi = new OI();
 		visionMain = new VisionMain();
@@ -94,9 +97,10 @@ public class Robot extends IterativeRobot {
 		addSubsystemsToSmartDashboard();
 		addAutonomousToSmartDashboard();
 		addTestingToSmartDashbaord();
+		dashboard.addItem(SmartDashboardItem.newDoubleReciever("Light Voltage", 0.0, pixyCamera::setLightVoltage));
 		dashboard.addItem(SmartDashboardItem.newNumberSender("robotPeriodic() frequency ms", this::getFrequency));
 
-		addCamera();
+		// addCamera();
 
 		// Initialize smartdashboard
 		dashboard.init();

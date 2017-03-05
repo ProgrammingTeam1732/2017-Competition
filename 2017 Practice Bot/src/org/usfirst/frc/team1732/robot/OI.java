@@ -5,6 +5,7 @@ import org.usfirst.frc.team1732.robot.commands.ballandfeeder.OutputBalls;
 import org.usfirst.frc.team1732.robot.commands.ballandfeeder.StopIntakeAndFeeder;
 import org.usfirst.frc.team1732.robot.commands.climber.ArmSetIn;
 import org.usfirst.frc.team1732.robot.commands.climber.ArmSetOutGroup;
+import org.usfirst.frc.team1732.robot.commands.climber.ClimberSetDown;
 import org.usfirst.frc.team1732.robot.commands.climber.ClimberSetStop;
 import org.usfirst.frc.team1732.robot.commands.climber.ClimberSetUp;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.ShiftHigh;
@@ -62,7 +63,10 @@ public class OI {
 	// private final Button Start = new JoystickButton(buttons, 10);
 
 	// Buttons For This Year's Driver Station
-	private final Button	climb			= new JoystickButton(buttons, 1);
+	private final Button	climbButton		= new JoystickButton(buttons, 1);
+	private final Trigger	climbNormal		= makeNormalButton(climbButton);
+	private final Trigger	climbOverride	= makeOverrideButton(climbButton);
+
 	private final Button	craaw			= new JoystickButton(buttons, 2);
 	private final Button	gearPickup		= new JoystickButton(buttons, 3);
 	private final Button	gearScore		= new JoystickButton(buttons, 4);
@@ -144,6 +148,8 @@ public class OI {
 		// GearManipulatorStopOut.whenPressed(new GearIntakeSetStopperOut());
 		// GearManipulatorStopIn.whenPressed(new GearIntakeSetStopperIn());
 
+		// override.whenPressed(new ClimberSetDown());
+		// override.whenReleased(new ClimberSetStop());
 		flywheelOn.whenPressed(new DisableFlywheel());
 		flywheelOn.whenReleased(new EnableFlywheel());
 
@@ -153,8 +159,11 @@ public class OI {
 		craaw.whenPressed(new ArmSetOutGroup());
 		craaw.whenReleased(new ArmSetIn());
 
-		climb.whenPressed(new ClimberSetUp());
-		climb.whenReleased(new ClimberSetStop());
+		climbNormal.whenActive(new ClimberSetUp());
+		climbNormal.whenInactive(new ClimberSetStop());
+
+		climbOverride.whenActive(new ClimberSetDown());
+		climbOverride.whenInactive(new ClimberSetStop());
 
 		intakeIn.whenPressed(new IntakeBalls()); // FIXME: These are reversed
 													// just to save time
@@ -187,4 +196,21 @@ public class OI {
 	// private final Button LB = new JoystickButton(controller, 5);
 	// private final Button RB = new JoystickButton(controller, 6);
 
+	private Trigger makeNormalButton(Button b) {
+		return new Trigger() {
+			@Override
+			public boolean get() {
+				return !override.get() && b.get();
+			}
+		};
+	}
+
+	private Trigger makeOverrideButton(Button b) {
+		return new Trigger() {
+			@Override
+			public boolean get() {
+				return override.get() && b.get();
+			}
+		};
+	}
 }

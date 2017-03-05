@@ -27,6 +27,7 @@ public class Arduino {
 			// }
 		} catch (Exception e) {
 			System.out.println("something went wrong, " + e.getMessage());
+			e.printStackTrace();
 		}
 	}
 

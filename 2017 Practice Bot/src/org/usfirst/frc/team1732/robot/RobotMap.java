@@ -25,10 +25,10 @@ public class RobotMap {
 	public static final int	RIGHT_1_MOTOR_DEVICE_NUMBER			= 1;
 	public static final int	RIGHT_2_MOTOR_DEVICE_NUMBER			= 2;
 
-	public static final int	LEFT_ENCODER_CHANNEL_A	= 2;
-	public static final int	LEFT_ENCODER_CHANNEL_B	= 3;
-	public static final int	RIGHT_ENCODER_CHANNEL_A	= 0;
-	public static final int	RIGHT_ENCODER_CHANNEL_B	= 1;
+	public static final int	LEFT_ENCODER_CHANNEL_A	= 0;
+	public static final int	LEFT_ENCODER_CHANNEL_B	= 1;
+	public static final int	RIGHT_ENCODER_CHANNEL_A	= 2;
+	public static final int	RIGHT_ENCODER_CHANNEL_B	= 3;
 
 	public static final int GYRO_CHANNEL_NUMBER = 0;
 
@@ -55,6 +55,6 @@ public class RobotMap {
 
 	public static final int PCM_CAN_ID = 0;
 
-	public static final int RELAY_CHANNEL = 0;
+	public static final int LIGHT_MOTOR_DEVICE_NUMBER = 3;
 
 }

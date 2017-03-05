@@ -54,8 +54,8 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 	private final PIDController	gyroPID					= new PIDController(gyroP, gyroI, gyroD, gyro,
 																			DriveTrain::voidMethod);
 	public static final double	GYRO_DEADBAND_DEGREES	= 4;
-	public static final double	gyroP					= 0.008;
-	public static final double	gyroI					= 0.00001;
+	public static final double	gyroP					= 0.006;
+	public static final double	gyroI					= 0.00002;
 	public static final double	gyroD					= 0;
 
 	// encoders
@@ -81,12 +81,15 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 	// Min and max output
 	public static final double	ENCODER_MAX_OUTPUT	= 0.5;
 	public static final double	ENCODER_MIN_OUTPUT	= -ENCODER_MAX_OUTPUT;
-	public static final double	GYRO_MAX_OUTPUT		= 1;
+	public static final double	GYRO_MAX_OUTPUT		= 0.5;
 	public static final double	GYRO_MIN_OUTPUT		= -GYRO_MAX_OUTPUT;
 	// public static final double MAX_OUTPUT = 0.5;
 	// public static final double MIN_OUTPUT = -ENCODER_MAX_OUTPUT;
 
-	public static final double VOLTAGE_RAMP_RATE = 6;
+	// public static final double VOLTAGE_RAMP_RATE = 6;
+
+	public static final double	ROBOT_WIDTH_INCHES		= 26;
+	public static final double	TURNING_CIRCUMFERENCE	= Math.PI * ROBOT_WIDTH_INCHES;
 
 	public static final String NAME = "Drive Train";
 
@@ -200,7 +203,7 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 	 *            right % voltage
 	 */
 	private void tankDrive(double left, double right) {
-		driveRaw(left, right);
+		driveRawWithRamp(left, right);
 	}
 
 	/**
@@ -213,6 +216,10 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 	 */
 	public void driveRaw(double left, double right) {
 		driveRawLimit(left, right, -1, 1);
+	}
+
+	public void driveRawWithRamp(double left, double right) {
+		driveRawLimitWithRamp(left, right, -1, 1);
 	}
 
 	/**
@@ -228,9 +235,18 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 	 * @param upper
 	 *            maximum positive % voltage
 	 */
-	public void driveRawLimit(double left, double right, double lower, double upper) {
+	public void driveRawLimitWithRamp(double left, double right, double lower, double upper) {
 		left = rampVoltage(prevLeft, limit(-left, lower, upper));
 		right = rampVoltage(prevRight, limit(-right, lower, upper));
+		leftMaster.set(left);
+		rightMaster.set(right);
+		prevLeft = left;
+		prevRight = right;
+	}
+
+	public void driveRawLimit(double left, double right, double lower, double upper) {
+		left = limit(-left, lower, upper);
+		right = limit(-right, lower, upper);
 		leftMaster.set(left);
 		rightMaster.set(right);
 		prevLeft = left;
@@ -622,6 +638,21 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 
 	public void runMotorRtFront(int speed) {
 		right2.set(speed);
+	}
+
+	public void setEncoderPIDS(double p, double i, double d) {
+		leftEncoderPID.setPID(p, i, d);
+		rightEncoderPID.setPID(p, i, d);
+	}
+
+	public void setEncoderDeadband(double d) {
+		leftEncoderPID.setAbsoluteTolerance(d);
+		rightEncoderPID.setAbsoluteTolerance(d);
+	}
+
+	public void resetEncoderDeadband() {
+		leftEncoderPID.setAbsoluteTolerance(ENCODER_DEADBAND_INCHES);
+		rightEncoderPID.setAbsoluteTolerance(ENCODER_DEADBAND_INCHES);
 	}
 
 }

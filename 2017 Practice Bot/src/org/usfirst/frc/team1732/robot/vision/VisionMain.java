@@ -1,6 +1,6 @@
 package org.usfirst.frc.team1732.robot.vision;
 
-import org.usfirst.frc.team1732.robot.RobotMap;
+import org.usfirst.frc.team1732.robot.Robot;
 import org.usfirst.frc.team1732.robot.commands.vision.DriveWithVision;
 import org.usfirst.frc.team1732.robot.smartdashboard.MySmartDashboard;
 import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardGroup;
@@ -9,19 +9,9 @@ import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardItem;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
-import edu.wpi.first.wpilibj.Relay;
-import edu.wpi.first.wpilibj.Relay.Direction;
-import edu.wpi.first.wpilibj.Relay.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class VisionMain implements SmartDashboardGroup {
-
-	public static final double	HORIZONTAL_FIELD_OF_VIEW	= 68;
-	public static final double	VERTICAL_FIELD_OF_VIEW		= 47;
-
-	// double check
-	public static final int	IMAGE_WIDTH		= 320;
-	public static final int	IMAGE_HEIGHT	= 200;
 
 	private Arduino arduino;
 
@@ -45,8 +35,6 @@ public class VisionMain implements SmartDashboardGroup {
 
 	private boolean disableCamera = false;
 
-	private final Relay lightRelay = new Relay(RobotMap.RELAY_CHANNEL);
-
 	public VisionMain() {
 		arduino = new Arduino();
 
@@ -55,7 +43,6 @@ public class VisionMain implements SmartDashboardGroup {
 		visionPID.setContinuous(false);
 		visionPID.setOutputRange(MIN_OUTPUT, MAX_OUTPUT);
 		visionPID.enable();
-		lightRelay.setDirection(Direction.kBoth);
 	}
 
 	/**
@@ -119,6 +106,10 @@ public class VisionMain implements SmartDashboardGroup {
 	private void updateGearTarget() {
 		try {
 			gearTarget = GearTarget.getBestVisionTarget(rectangles);
+			// if (gearTarget != null) {
+			// System.out.println(gearTarget.getScore());
+			// System.out.println(this.getInchesToGearPeg());
+			// }
 		} catch (NullPointerException e) {
 			e.getMessage();
 		}
@@ -134,8 +125,9 @@ public class VisionMain implements SmartDashboardGroup {
 		// GearTarget.GEAR_TARGET_HEIGHT_INCHES, VERTICAL_FIELD_OF_VIEW,
 		// IMAGE_HEIGHT);
 
-		return gearTarget.getVerticalDistance(	GearTarget.GEAR_TARGET_HEIGHT_INCHES, HORIZONTAL_FIELD_OF_VIEW,
-												IMAGE_WIDTH);
+		return gearTarget.getVerticalDistance(	GearTarget.GEAR_TARGET_HEIGHT_INCHES,
+												Robot.pixyCamera.HORIZONTAL_FIELD_OF_VIEW,
+												Robot.pixyCamera.IMAGE_WIDTH);
 	}
 
 	/**
@@ -147,7 +139,7 @@ public class VisionMain implements SmartDashboardGroup {
 		if (gearTarget == null) {
 			return 0;
 		}
-		return gearTarget.getHorizontalAngle(HORIZONTAL_FIELD_OF_VIEW, IMAGE_WIDTH);
+		return gearTarget.getHorizontalAngle(Robot.pixyCamera.HORIZONTAL_FIELD_OF_VIEW, Robot.pixyCamera.IMAGE_WIDTH);
 	}
 
 	public boolean canSeeGearPeg() {
@@ -243,11 +235,4 @@ public class VisionMain implements SmartDashboardGroup {
 		}
 	}
 
-	public void turnOnLights() {
-		lightRelay.set(Value.kForward);
-	}
-
-	public void turnOffLights() {
-		lightRelay.set(Value.kOff);
-	}
 }

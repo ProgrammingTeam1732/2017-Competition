@@ -28,6 +28,7 @@ import org.usfirst.frc.team1732.robot.smartdashboard.MySmartDashboard;
 import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardItem;
 import org.usfirst.frc.team1732.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team1732.robot.subsystems.GearIntake;
+import org.usfirst.frc.team1732.robot.subsystems.PixyCamera;
 import org.usfirst.frc.team1732.robot.vision.VisionMain;
 
 import edu.wpi.first.wpilibj.CameraServer;
@@ -50,6 +51,7 @@ public class Robot extends IterativeRobot {
 	public static OI			oi;
 	public static DriveTrain	driveTrain;
 	public static GearIntake	gearIntake;
+	public static PixyCamera	pixyCamera;
 
 	public static VisionMain		visionMain;
 	private static MySmartDashboard	dashboard;
@@ -66,6 +68,7 @@ public class Robot extends IterativeRobot {
 	public void robotInit() {
 		driveTrain = new DriveTrain();
 		gearIntake = new GearIntake();
+		pixyCamera = new PixyCamera();
 
 		oi = new OI();
 		visionMain = new VisionMain();
@@ -76,7 +79,6 @@ public class Robot extends IterativeRobot {
 		driveTrain.addToSmartDashboard(dashboard);
 		gearIntake.addToSmartDashboard(dashboard);
 		visionMain.addToSmartDashboard(dashboard);
-
 		addSubsystemsToSmartDashboard();
 		addAutonomousToSmartDashboard();
 		addTestingToSmartDashbaord();

@@ -34,6 +34,7 @@ public class TurnWithGyro extends Command {
 	protected void execute() {
 		double output = Robot.driveTrain.getGyroPIDOutput();
 		Robot.driveTrain.driveRaw(output, -output);
+		System.out.println(output);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

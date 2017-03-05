@@ -36,4 +36,7 @@ public class RobotMap {
 	public static final int	PCM_CAN_ID									= 0;
 	public static final int	DRIVE_TRAIN_SHIFTER_SOLENOID_DEVICE_NUMBER	= 2;
 
+	public static final int	LIGHT_PWM_CHANNEL	= 0;
+	public static final int	RELAY_CHANNEL		= 0;
+
 }
