@@ -26,7 +26,9 @@ public class Arduino {
 			// System.out.println("Arduino communications locked in");
 			// }
 		} catch (Exception e) {
-			System.out.println("something went wrong, " + e.getMessage());
+			Robot.visionMain.disableCamera();
+			System.err.println("Disabling Camera");
+			System.err.println("something went wrong, " + e.getMessage());
 			e.printStackTrace();
 		}
 	}
@@ -38,21 +40,27 @@ public class Arduino {
 	 * @return the String read from the arduino, could be an empty String
 	 */
 	public String getData() {
-		String s = "";
-		try {
-			s = this.serial.readString(); // reads string from arduino
-			startTime = System.currentTimeMillis(); // gets the start time
-			while (System.currentTimeMillis() - startTime < maxWait && !s.contains("\n")) {
-				s += this.serial.readString();
-			} // until a new line is found (or the loop runs for 5 seconds), add
-				// the read string to end of output
-			if (System.currentTimeMillis() - startTime > maxWait) {
-				Robot.visionMain.disableCamera();
-			} // disables the camera if the while loop gets stuck
-			return s;
-		} catch (Exception e) {
-			// System.out.println("something went wrong, " + e.getMessage());
-			// e.printStackTrace();
+		if (Robot.visionMain.isCameraEnabled()) {
+			String s = "";
+			try {
+				s = this.serial.readString(); // reads string from arduino
+				startTime = System.currentTimeMillis(); // gets the start time
+				while (System.currentTimeMillis() - startTime < maxWait && !s.contains("\n")) {
+					s += this.serial.readString();
+				} // until a new line is found (or the loop runs for 5 seconds),
+					// add
+					// the read string to end of output
+				if (System.currentTimeMillis() - startTime > maxWait) {
+					Robot.visionMain.disableCamera();
+				} // disables the camera if the while loop gets stuck
+				return s;
+			} catch (Exception e) {
+				// System.err.println("something went wrong, " +
+				// e.getMessage());
+				// e.printStackTrace();
+				return null;
+			}
+		} else {
 			return null;
 		}
 	}
