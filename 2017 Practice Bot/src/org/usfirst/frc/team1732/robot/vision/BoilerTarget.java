@@ -15,20 +15,20 @@ public class BoilerTarget extends VisionTarget {
 	public double getScore() {
 		// top height should be 2/10 of the total height
 		double topHeightInches = 4;
-		double topHeightScore = scaleScore(top.height
+		double topHeightScore = getScore(top.height
 				* (boundingBox.height * topHeightInches / BOILER_TARGET_HEIGHT_INCHES));
 		// Difference between the top edges of the contours should be
 		// 6/10 of total height
 		double dTopInches = 6;
 		double dTop = bottom.y - top.y;
-		double dTopScore = scaleScore(dTop / (boundingBox.width * dTopInches / BOILER_TARGET_HEIGHT_INCHES));
+		double dTopScore = getScore(dTop / (boundingBox.width * dTopInches / BOILER_TARGET_HEIGHT_INCHES));
 		// Difference between the left edges should be close to 0 relative to
 		// width
 		double dLeft = right.x - left.x;
-		double dLeftScore = scaleScore(dLeft / boundingBox.width + 1); // add 1
+		double dLeftScore = getScore(dLeft / boundingBox.width + 1); // add 1
 		// Widths and heights should be about the same
-		double widthRatioScore = scaleScore((double) left.width / right.width);
-		double heightRatioScore = scaleScore((double) left.height / right.height);
+		double widthRatioScore = getScore((double) left.width / right.width);
+		double heightRatioScore = getScore((double) left.height / right.height);
 		return topHeightScore + dLeftScore + dTopScore + widthRatioScore + heightRatioScore;
 	}
 

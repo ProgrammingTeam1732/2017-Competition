@@ -21,43 +21,36 @@ public class GearTarget extends VisionTarget {
 	@Override
 	public double getScore() {
 		double totalScore = 0;
-		// if (singleRectangle) {
-		// double ratioScore = scaleScore(((double) boundingBox.width /
-		// boundingBox.height)
-		// * (GEAR_TARGET_HEIGHT_INCHES / GEAR_TARGET_WIDTH_INCHES));
-		// totalScore = (Math.pow(ratioScore, 4)) * 5;
-		// // because there are five below, need to multiply by 5
-		// // if squaring scores below, remember that some can be negative so
-		// // do Math.abs()
-		// } else {
-		// left width should be 2/10.25 = 8/41 of total width
+
 		double leftWidthInches = 2;
-		double leftWidthScore = square(scaleScore((left.width / boundingBox.width)
-				* (GEAR_TARGET_WIDTH_INCHES / leftWidthInches)));
+		double gearLeftWidth_WholeWidthRatio = leftWidthInches / GEAR_TARGET_WIDTH_INCHES;
+		double imageLeftWidth_WholeWidthRatio = (double) left.width / boundingBox.width;
+		double leftWidthScore = getScore(imageLeftWidth_WholeWidthRatio / gearLeftWidth_WholeWidthRatio);
+
 		// Difference between the left edges of the contours should be
 		// 8.25/10.25 of total width
+		double dLeftPixels = right.x - left.x;
+		double imageDLeft_WidthRatio = dLeftPixels / boundingBox.width;
 		double dLeftInches = 8.25;
-		double dLeft = right.x - left.x;
-		double dLeftScore = square(scaleScore((dLeft / boundingBox.width) * (GEAR_TARGET_WIDTH_INCHES / dLeftInches)));
+		double gearDLeftInches_WidthInchesRatio = dLeftInches / GEAR_TARGET_WIDTH_INCHES;
+		double dLeftScore = getScore(imageDLeft_WidthRatio / gearDLeftInches_WidthInchesRatio);
+
 		// Difference between the tops should be close to 0 relative to
 		// height
 		double dTop = top.y - bottom.y;
-		double dTopScore = square(scaleScore((dTop / boundingBox.height) + 1)); // add
-		// 1
+		double dTopScore = getScore((dTop / boundingBox.height) + 1);
+
 		// Widths and heights should be about the same
-		double widthRatioScore = square(scaleScore(((double) left.width) / right.width));
-		double heightRatioScore = square(scaleScore(((double) left.height) / right.height));
-		double widthHeightRatioScore = square(scaleScore(((double) boundingBox.width) / boundingBox.height)
-				* (GEAR_TARGET_HEIGHT_INCHES / GEAR_TARGET_WIDTH_INCHES));
+		double widthRatioScore = getScore(((double) left.width) / right.width);
+		double heightRatioScore = getScore(((double) left.height) / right.height);
+
+		double imageWidthHeightRatio = boundingBox.width / boundingBox.height;
+		double gearWidthHeightRatio = GEAR_TARGET_WIDTH_INCHES / GEAR_TARGET_HEIGHT_INCHES;
+		double widthHeightRatioScore = getScore(imageWidthHeightRatio / gearWidthHeightRatio);
+
 		totalScore = leftWidthScore + dLeftScore + dTopScore + widthRatioScore + heightRatioScore
 				+ widthHeightRatioScore;
-		// System.out.println(totalScore);
-		// }
 		return totalScore;
-	}
-
-	private double square(double d) {
-		return d * Math.abs(d);
 	}
 
 	/**
@@ -84,23 +77,7 @@ public class GearTarget extends VisionTarget {
 			} else {
 				return null;
 			}
-		} // else {
-			// GearTarget bestTarget = new GearTarget(rectangles[0]);
-			// // determine which two of the countours actually are the correct
-			// two
-			// for (int i = 0; i < rectangles.length; i++) {
-			// GearTarget possible = new GearTarget(rectangles[i]);
-			// if (possible.getScore() > bestTarget.getScore()) {
-			// bestTarget = possible;
-			// }
-			// }
-			// System.out.println("Single score: " + bestTarget.getScore());
-			// if (bestTarget.getScore() > MIN_TOTAL_SCORE) {
-			// return bestTarget;
-			// } else {
-			// return null;
-			// }
-			// }
+		}
 	}
 
 	@Override
