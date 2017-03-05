@@ -156,8 +156,8 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 
 		// sets the tolerance of the gyroPID
 		gyroPID.setAbsoluteTolerance(GYRO_DEADBAND_DEGREES);
-		// sets the gyroPID to measure continuously
-		gyroPID.setContinuous(true);
+		// sets the gyroPID to not measure continuously
+		gyroPID.setContinuous(false);
 		// sets the minimum/maximum PID loop output
 		gyroPID.setOutputRange(GYRO_MIN_OUTPUT, GYRO_MAX_OUTPUT);
 
