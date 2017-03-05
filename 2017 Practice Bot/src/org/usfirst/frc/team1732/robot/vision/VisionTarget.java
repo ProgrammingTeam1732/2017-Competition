@@ -80,7 +80,7 @@ public abstract class VisionTarget {
 	public static final double defaultBase = 40;
 
 	public static double getScore(double score, double base) {
-		return Math.pow(base, scaleScore(score));
+		return Math.pow(base, scaleScore(score) - 1);
 	}
 
 	public static double getScore(double score) {
