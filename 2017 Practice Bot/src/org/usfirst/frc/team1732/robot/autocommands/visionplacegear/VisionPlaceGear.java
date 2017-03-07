@@ -13,21 +13,23 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class VisionPlaceGear extends CommandGroup {
 
-	public VisionPlaceGear(double driveBackDistance) {
-		this(driveBackDistance, driveBackDistance);
+	public VisionPlaceGear(double driveBackDistance, double fallbackDistance, boolean useFallbackDistance) {
+		this(driveBackDistance, driveBackDistance, fallbackDistance, useFallbackDistance);
 	}
 
-	public VisionPlaceGear(double leftDriveBackDistance, double rightDriveBackDistance) {
-		this(() -> leftDriveBackDistance, () -> rightDriveBackDistance);
+	public VisionPlaceGear(double leftDriveBackDistance, double rightDriveBackDistance, double fallbackDistance,
+			boolean useFallbackDistance) {
+		this(() -> leftDriveBackDistance, () -> rightDriveBackDistance, fallbackDistance, useFallbackDistance);
 	}
 
-	public VisionPlaceGear(DoubleSupplier driveBackDistance) {
-		this(driveBackDistance, driveBackDistance);
+	public VisionPlaceGear(DoubleSupplier driveBackDistance, double fallbackDistance, boolean useFallbackDistance) {
+		this(driveBackDistance, driveBackDistance, fallbackDistance, useFallbackDistance);
 	}
 
-	public VisionPlaceGear(DoubleSupplier leftDriveBackDistance, DoubleSupplier rightDriveBackDistance) {
+	public VisionPlaceGear(DoubleSupplier leftDriveBackDistance, DoubleSupplier rightDriveBackDistance,
+			double fallbackDistance, boolean useFallbackDistance) {
 		// drive into gear peg
-		addSequential(new DriveWithVision(17.5));
+		addSequential(new DriveWithVision(17.5, fallbackDistance, useFallbackDistance));
 		addSequential(new Wait(0.1));
 
 		// place gear, drive back at same time
@@ -42,4 +44,5 @@ public class VisionPlaceGear extends CommandGroup {
 
 		addSequential(new DriveEncodersGetSetpointAtRuntime(leftDriveBackDistance, rightDriveBackDistance));
 	}
+
 }

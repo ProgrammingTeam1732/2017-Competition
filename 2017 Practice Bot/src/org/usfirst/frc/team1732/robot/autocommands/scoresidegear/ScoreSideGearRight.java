@@ -17,7 +17,8 @@ public class ScoreSideGearRight extends CommandGroup {
 		addSequential(new ScoreSideGearPart1Right());
 
 		// score gear, drive back 25 inches
-		addSequential(new VisionPlaceGear(ScoreSideGearData.DRIVE_2_DRIVE_BACK_SETPOINT));
+		addSequential(new VisionPlaceGear(	ScoreSideGearData.DRIVE_2_DRIVE_BACK_SETPOINT,
+											ScoreSideGearData.FALL_BACK_DISTANCE, true));
 
 		// drive to hoppers
 		// addSequential(new DriveToHopperFromRightGearPeg());

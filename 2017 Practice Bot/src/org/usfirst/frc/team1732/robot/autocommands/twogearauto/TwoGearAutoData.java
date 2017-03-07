@@ -6,6 +6,8 @@ import org.usfirst.frc.team1732.robot.Robot;
 
 public class TwoGearAutoData {
 
+	static final double FALL_BACK_DISTANCE = 100;
+
 	static final DoubleSupplier	DRIVE_1_LEFT_SETPOINT	= () -> Robot.getDistanceToDriveBackForTwoGear()
 			- Robot.driveTrain.getTotalLeftDistance();
 	static final DoubleSupplier	DRIVE_1_RIGHT_SETPOINT	= () -> Robot.getDistanceToDriveBackForTwoGear()

@@ -38,7 +38,8 @@ public class ScoreBallsThenGearRed extends CommandGroup {
 		// not sure what above line was supposed to do so I commented it out
 
 		// drive back forward 40 inches after placing gear
-		addSequential(new VisionPlaceGear(ScoreBallsThenGearData.DRIVE_4_DRIVE_BACK_SETPOINT));
+		addSequential(new VisionPlaceGear(	ScoreBallsThenGearData.DRIVE_4_DRIVE_BACK_SETPOINT,
+											ScoreBallsThenGearData.FALL_BACK_DISTANCE, true));
 
 		// drive to hoppers
 		// addSequential(new DriveToHopperFromRightGearPeg());

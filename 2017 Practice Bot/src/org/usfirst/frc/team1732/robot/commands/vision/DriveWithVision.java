@@ -7,11 +7,26 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class DriveWithVision extends Command {
 
+	private final double	fallbackDistance;
+	private final boolean	useFallbackDistance;
+	private double			startime		= System.currentTimeMillis();
+	private final double	waitToStopTime	= 2;
+
 	public DriveWithVision(double aTargetDistanceInches) {
+		this(aTargetDistanceInches, 0, false);
+	}
+
+	public DriveWithVision(double aTargetDistanceInches, double fallbackDistance) {
+		this(aTargetDistanceInches, fallbackDistance, true);
+	}
+
+	public DriveWithVision(double aTargetDistanceInches, double fallbackDistance, boolean useFallbackDistance) {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
 		requires(driveTrain);
 		targetDistanceInches = aTargetDistanceInches;
+		this.fallbackDistance = fallbackDistance;
+		this.useFallbackDistance = useFallbackDistance;
 		// visionMain.visionPID.setPID(0.01, 0, 0);
 		setTimeout(5);
 	}
@@ -40,8 +55,7 @@ public class DriveWithVision extends Command {
 	public static final double	DEFAULT_TARGET_INCHES	= 10;
 	private static double		smartDashboardDistance	= DEFAULT_TARGET_INCHES;
 
-	private boolean	foundOnce	= false;
-	private boolean	lostOnce	= false;
+	private boolean foundOnce = false;
 
 	private double previousAngleOutput = 0;
 
@@ -65,9 +79,11 @@ public class DriveWithVision extends Command {
 		double rightSetpoint = dDistance + driveTrain.getRightDistance();
 
 		// double angleSetpoint = angle + driveTrain.gyro.getAngle();
-		// if it still sees it calculate the new output, otherwise keep doing
+		// if it still sees it calculate the new output, otherwise keep
+		// doing
 		// what it was doing
-		if (visionMain.canSeeGearPeg() && !(lostOnce && distance < stopInputDistance)) {
+		if (visionMain.canSeeGearPeg()) {
+			resetStartTime();
 			// double P = lower + slope * distance;
 			// double P = lower + (upper - lower) / (1 + Math.exp(-slope *
 			// (distance - middle)));
@@ -82,9 +98,8 @@ public class DriveWithVision extends Command {
 			// driveTrain.gyroPID.setSetpoint(angleSetpoint);
 			driveTrain.setLeftEncoderSetpoint(leftSetpoint);
 			driveTrain.setRightEncoderSetpoint(rightSetpoint);
-		} else if (foundOnce) {
-			lostOnce = true;
 		}
+
 		// double angleOutput = driveTrain.gyroPID.get();
 		double leftOutput = driveTrain.getLeftPIDOutput() - previousAngleOutput;
 		double rightOutput = driveTrain.getRightPIDOutput() + previousAngleOutput;
@@ -93,7 +108,13 @@ public class DriveWithVision extends Command {
 			leftOutput = leftOutput / max;
 			rightOutput = rightOutput / max;
 		}
-		driveTrain.driveRaw(leftOutput, rightOutput);
+		if ((!isTimeExpired() && useFallbackDistance) || !useFallbackDistance) {
+			driveTrain.driveRaw(leftOutput, rightOutput);
+		} else if (isTimeExpired() && useFallbackDistance) {
+			driveTrain.setEncoderSetpoint(fallbackDistance);
+			driveTrain.driveRaw(driveTrain.getLeftPIDOutput(), driveTrain.getRightPIDOutput());
+		}
+
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
@@ -124,6 +145,14 @@ public class DriveWithVision extends Command {
 		// driveTrain.resetEncoderPIDValues();
 		// driveTrain.resetGyroPIDValues();
 		visionMain.resetPIDValues();
+	}
+
+	private boolean isTimeExpired() {
+		return System.currentTimeMillis() - startime > waitToStopTime;
+	}
+
+	private void resetStartTime() {
+		startime = System.currentTimeMillis();
 	}
 
 }
