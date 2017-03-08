@@ -643,6 +643,10 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 		rightEncoderPID.setPID(p, i, d);
 	}
 
+	public void setGyroI(double i) {
+		gyroPID.setPID(gyroPID.getP(), i, gyroPID.getD());
+	}
+
 	public void setEncoderDeadband(double d) {
 		leftEncoderPID.setAbsoluteTolerance(d);
 		rightEncoderPID.setAbsoluteTolerance(d);
@@ -651,6 +655,10 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 	public void resetEncoderDeadband() {
 		leftEncoderPID.setAbsoluteTolerance(ENCODER_DEADBAND_INCHES);
 		rightEncoderPID.setAbsoluteTolerance(ENCODER_DEADBAND_INCHES);
+	}
+
+	public double getGyroError() {
+		return gyroPID.getError();
 	}
 
 }

@@ -11,6 +11,8 @@ public class TurnWithGyro extends Command {
 
 	private final double setpoint;
 
+	private final double IZONE = 10;
+
 	public TurnWithGyro(double degreesSetpoint) {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
@@ -29,9 +31,14 @@ public class TurnWithGyro extends Command {
 		// System.out.println(setpoint);
 	}
 
+	private double totalError;
+
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
+		if (Math.abs(Robot.driveTrain.getGyroError()) > IZONE) {
+			Robot.driveTrain.setGyroI(0);
+		}
 		double output = Robot.driveTrain.getGyroPIDOutput();
 		Robot.driveTrain.driveRaw(output, -output);
 		System.out.println(output);
