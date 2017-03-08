@@ -73,22 +73,31 @@ public abstract class VisionTarget {
 	 *            The score to be scaled, should have a target score of 1
 	 * @return 1 - Math.abs(1 - score);
 	 */
-	public static double scaleScore(double score) {
+	private static double scaleScore(double score) {
 		return 1 - Math.abs(1 - score);
-		// return scaleScore(score, 1, 1);
 	}
 
-	/**
-	 * 
-	 * @param score
-	 *            the input score
-	 * @param maxScore
-	 *            the maximum output score
-	 * @param targetScore
-	 *            what you want score to be
-	 * @return the score scaled so that a perfect score (score == targetScore)
-	 *         is scaled to a maxScore
-	 */
+	public static final double defaultBase = 40;
+
+	public static double getScore(double score, double base) {
+		return Math.pow(base, scaleScore(score) - 1);
+	}
+
+	public static double getScore(double score) {
+		return getScore(score, defaultBase);
+	}
+
+	// /**
+	// *
+	// * @param score
+	// * the input score
+	// * @param maxScore
+	// * the maximum output score
+	// * @param targetScore
+	// * what you want score to be
+	// * @return the score scaled so that a perfect score (score == targetScore)
+	// * is scaled to a maxScore
+	// */
 	// public static double scaleScore(double score, double maxScore, double
 	// targetScore) {
 	// return maxScore - (maxScore * Math.abs(targetScore - score) /

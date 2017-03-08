@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1732.robot.vision;
 
+import org.usfirst.frc.team1732.robot.Robot;
 import org.usfirst.frc.team1732.robot.commands.vision.DriveWithVision;
 import org.usfirst.frc.team1732.robot.smartdashboard.MySmartDashboard;
 import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardGroup;
@@ -11,13 +12,6 @@ import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class VisionMain implements SmartDashboardGroup {
-
-	public static final double	HORIZONTAL_FIELD_OF_VIEW	= 68;
-	public static final double	VERTICAL_FIELD_OF_VIEW		= 47;
-
-	// double check
-	public static final int	IMAGE_WIDTH		= 320;
-	public static final int	IMAGE_HEIGHT	= 200;
 
 	private Arduino arduino;
 
@@ -39,8 +33,6 @@ public class VisionMain implements SmartDashboardGroup {
 
 	public static final String NAME = "Vision Main";
 
-	private boolean disableCamera = false;
-
 	public VisionMain() {
 		arduino = new Arduino();
 
@@ -55,7 +47,7 @@ public class VisionMain implements SmartDashboardGroup {
 	 * Reads and parses Arduino rectangle data, updates the gear target variable
 	 */
 	public void run() {
-		if (!disableCamera) {
+		if (isCameraEnabled()) {
 			parseData(arduino.getData());
 			updateGearTarget();
 		}
@@ -112,6 +104,10 @@ public class VisionMain implements SmartDashboardGroup {
 	private void updateGearTarget() {
 		try {
 			gearTarget = GearTarget.getBestVisionTarget(rectangles);
+			// if (gearTarget != null) {
+			// System.out.println(gearTarget.getScore());
+			// System.out.println(this.getInchesToGearPeg());
+			// }
 		} catch (NullPointerException e) {
 			e.getMessage();
 		}
@@ -127,8 +123,9 @@ public class VisionMain implements SmartDashboardGroup {
 		// GearTarget.GEAR_TARGET_HEIGHT_INCHES, VERTICAL_FIELD_OF_VIEW,
 		// IMAGE_HEIGHT);
 
-		return gearTarget.getVerticalDistance(	GearTarget.GEAR_TARGET_HEIGHT_INCHES, HORIZONTAL_FIELD_OF_VIEW,
-												IMAGE_WIDTH);
+		return gearTarget.getVerticalDistance(	GearTarget.GEAR_TARGET_HEIGHT_INCHES,
+												Robot.pixyCamera.HORIZONTAL_FIELD_OF_VIEW,
+												Robot.pixyCamera.IMAGE_WIDTH);
 	}
 
 	/**
@@ -140,7 +137,7 @@ public class VisionMain implements SmartDashboardGroup {
 		if (gearTarget == null) {
 			return 0;
 		}
-		return gearTarget.getHorizontalAngle(HORIZONTAL_FIELD_OF_VIEW, IMAGE_WIDTH);
+		return gearTarget.getHorizontalAngle(Robot.pixyCamera.HORIZONTAL_FIELD_OF_VIEW, Robot.pixyCamera.IMAGE_WIDTH);
 	}
 
 	public boolean canSeeGearPeg() {
@@ -203,13 +200,8 @@ public class VisionMain implements SmartDashboardGroup {
 		visionPID.setPID(visionP, visionI, visionD);
 	}
 
-	public void disableCamera() {
-		disableCamera = true;
-		rectangles = null;
-	}
-
 	public boolean isCameraEnabled() {
-		return !disableCamera;
+		return !arduino.isDisabled();
 	}
 
 	public void setVisionSetpoint(double setpoint) {

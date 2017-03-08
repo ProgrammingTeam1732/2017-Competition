@@ -42,7 +42,7 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 
 	private final Solenoid		shifter		= new Solenoid(	RobotMap.PCM_CAN_ID,
 															RobotMap.DRIVE_TRAIN_SHIFTER_SOLENOID_DEVICE_NUMBER);
-	public static final boolean	HIGH_GEAR	= true;
+	public static final boolean	HIGH_GEAR	= true; // false
 	public static final boolean	LOW_GEAR	= !HIGH_GEAR;
 
 	// gyro
@@ -55,7 +55,7 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 																			DriveTrain::voidMethod);
 	public static final double	GYRO_DEADBAND_DEGREES	= 4;
 	public static final double	gyroP					= 0.008;
-	public static final double	gyroI					= 0.00001;
+	public static final double	gyroI					= 0.00001; // 0.00005
 	public static final double	gyroD					= 0;
 
 	// encoders
@@ -73,7 +73,7 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 																			DriveTrain::voidMethod);
 	private final PIDController	rightEncoderPID			= new PIDController(encoderP, encoderI, encoderD, rightEncoder,
 																			DriveTrain::voidMethod);
-	public static final double	encoderP				= 0.02;
+	public static final double	encoderP				= 0.02; //0.03
 	public static final double	encoderI				= 0;
 	public static final double	encoderD				= 0;
 	public static final double	ENCODER_DEADBAND_INCHES	= 6;
@@ -81,30 +81,39 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 	// Min and max output
 	public static final double	ENCODER_MAX_OUTPUT	= 0.5;
 	public static final double	ENCODER_MIN_OUTPUT	= -ENCODER_MAX_OUTPUT;
-	public static final double	GYRO_MAX_OUTPUT		= 1;
+	public static final double	GYRO_MAX_OUTPUT		= 0.5;
 	public static final double	GYRO_MIN_OUTPUT		= -GYRO_MAX_OUTPUT;
 	// public static final double MAX_OUTPUT = 0.5;
 	// public static final double MIN_OUTPUT = -ENCODER_MAX_OUTPUT;
+
+	// public static final double VOLTAGE_RAMP_RATE = 6;
+
+	public static final double	ROBOT_WIDTH_INCHES		= 26;
+	public static final double	TURNING_CIRCUMFERENCE	= Math.PI * ROBOT_WIDTH_INCHES;
 
 	public static final String NAME = "Drive Train";
 
 	public DriveTrain() {
 		super(NAME);
-		// sets the left motors to follow left master
+		// reverses whole left side
 		leftMaster.setInverted(true);
 		left1.changeControlMode(TalonControlMode.Follower);
 		left1.set(leftMaster.getDeviceID());
 		left2.changeControlMode(TalonControlMode.Follower);
 		left2.set(leftMaster.getDeviceID());
-		// reverse the slave motors
 
-		// reverse the whole right side
+		// leftMaster.setVoltageRampRate(VOLTAGE_RAMP_RATE);
+		// left1.setVoltageRampRate(VOLTAGE_RAMP_RATE);
+		// left2.setVoltageRampRate(VOLTAGE_RAMP_RATE);
+		// right1.setVoltageRampRate(VOLTAGE_RAMP_RATE);
+		// right2.setVoltageRampRate(VOLTAGE_RAMP_RATE);
+		// rightMaster.setVoltageRampRate(VOLTAGE_RAMP_RATE);
+
 		// sets right motors to follow right master
 		right1.changeControlMode(TalonControlMode.Follower);
 		right1.set(rightMaster.getDeviceID());
 		right2.changeControlMode(TalonControlMode.Follower);
 		right2.set(rightMaster.getDeviceID());
-		// reverses the slave motors
 
 		// makes sure braking is enabled
 		setBrakeMode(true);
@@ -116,7 +125,7 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 		// speed
 		leftEncoder.setPIDSourceType(PIDSourceType.kDisplacement);
 		rightEncoder.setPIDSourceType(PIDSourceType.kDisplacement);
-		leftEncoder.setReverseDirection(true);
+		leftEncoder.setReverseDirection(true); // right
 		// rightEncoder.setReverseDirection(true);
 
 		// sets encoder samples to average
@@ -146,7 +155,7 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 
 		// sets the tolerance of the gyroPID
 		gyroPID.setAbsoluteTolerance(GYRO_DEADBAND_DEGREES);
-		// sets the gyroPID to not measure continiously
+		// sets the gyroPID to not measure continuously
 		gyroPID.setContinuous(false);
 		// sets the minimum/maximum PID loop output
 		gyroPID.setOutputRange(GYRO_MIN_OUTPUT, GYRO_MAX_OUTPUT);
@@ -191,7 +200,7 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 	 *            right % voltage
 	 */
 	private void tankDrive(double left, double right) {
-		driveRaw(left, right);
+		driveRawWithRamp(left, right);
 	}
 
 	/**
@@ -204,6 +213,10 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 	 */
 	public void driveRaw(double left, double right) {
 		driveRawLimit(left, right, -1, 1);
+	}
+
+	public void driveRawWithRamp(double left, double right) {
+		driveRawLimitWithRamp(left, right, -1, 1);
 	}
 
 	/**
@@ -219,9 +232,48 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 	 * @param upper
 	 *            maximum positive % voltage
 	 */
+	public void driveRawLimitWithRamp(double left, double right, double lower, double upper) {
+		left = rampVoltage(prevLeft, limit(-left, lower, upper));
+		right = rampVoltage(prevRight, limit(-right, lower, upper));
+		leftMaster.set(left);
+		rightMaster.set(right);
+		prevLeft = left;
+		prevRight = right;
+	}
+
 	public void driveRawLimit(double left, double right, double lower, double upper) {
-		leftMaster.set(limit(-left, lower, upper));
-		rightMaster.set(limit(-right, lower, upper));
+		left = limit(-left, lower, upper);
+		right = limit(-right, lower, upper);
+		leftMaster.set(left);
+		rightMaster.set(right);
+		prevLeft = left;
+		prevRight = right;
+	}
+
+	private double	prevLeft	= 0;
+	private double	prevRight	= 0;
+
+	public static final double	RAMP_RATE		= 0.2;
+	public static final double	MIN_RAMP_LEVEL	= 0.5;
+
+	public double rampVoltage(double prev, double requested) {
+		if (isHighGear() && Math.abs(requested) > MIN_RAMP_LEVEL && Math.abs(prev - requested) > RAMP_RATE) {
+			return RAMP_RATE * Math.signum(prev) + prev;
+		} else {
+			return requested;
+		}
+	}
+
+	public static final double	ENCODER_RAMP_RATE		= 0;
+	public static final double	MAX_INCHES_PER_SECOND	= 40;
+
+	public double rampWithEncoders(double prev, double requested, Encoder encoder) {
+		if (isHighGear() && Math.abs(requested) > MIN_RAMP_LEVEL
+				&& Math.abs(encoder.getRate()) < MAX_INCHES_PER_SECOND) {
+			return prev + RAMP_RATE * Math.signum(prev);
+		} else {
+			return requested;
+		}
 	}
 
 	/**
@@ -583,6 +635,29 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 
 	public void runMotorRtFront(int speed) {
 		right2.set(speed);
+	}
+
+	public void setEncoderPIDS(double p, double i, double d) {
+		leftEncoderPID.setPID(p, i, d);
+		rightEncoderPID.setPID(p, i, d);
+	}
+
+	public void setGyroI(double i) {
+		gyroPID.setPID(gyroPID.getP(), i, gyroPID.getD());
+	}
+
+	public void setEncoderDeadband(double d) {
+		leftEncoderPID.setAbsoluteTolerance(d);
+		rightEncoderPID.setAbsoluteTolerance(d);
+	}
+
+	public void resetEncoderDeadband() {
+		leftEncoderPID.setAbsoluteTolerance(ENCODER_DEADBAND_INCHES);
+		rightEncoderPID.setAbsoluteTolerance(ENCODER_DEADBAND_INCHES);
+	}
+
+	public double getGyroError() {
+		return gyroPID.getError();
 	}
 
 }

@@ -31,8 +31,6 @@ public class TurnWithGyro extends Command {
 		// System.out.println(setpoint);
 	}
 
-	private double totalError;
-
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {

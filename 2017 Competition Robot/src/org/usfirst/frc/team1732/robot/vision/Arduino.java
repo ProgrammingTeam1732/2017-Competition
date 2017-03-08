@@ -1,7 +1,5 @@
 package org.usfirst.frc.team1732.robot.vision;
 
-import org.usfirst.frc.team1732.robot.Robot;
-
 import edu.wpi.first.wpilibj.SerialPort;
 
 /**
@@ -10,6 +8,8 @@ import edu.wpi.first.wpilibj.SerialPort;
  */
 public class Arduino {
 	private SerialPort serial;
+
+	private boolean disabled = false;
 
 	/**
 	 * Constructs a new arduino reader Sets the baudrate Connects to the arduino
@@ -26,7 +26,10 @@ public class Arduino {
 			// System.out.println("Arduino communications locked in");
 			// }
 		} catch (Exception e) {
-			System.out.println("something went wrong, " + e.getMessage());
+			disabled = true;
+			System.err.println("Disabling Camera");
+			System.err.println("something went wrong, " + e.getMessage());
+			e.printStackTrace();
 		}
 	}
 
@@ -37,22 +40,33 @@ public class Arduino {
 	 * @return the String read from the arduino, could be an empty String
 	 */
 	public String getData() {
-		String s = "";
-		try {
-			s = this.serial.readString(); // reads string from arduino
-			startTime = System.currentTimeMillis(); // gets the start time
-			while (System.currentTimeMillis() - startTime < maxWait && !s.contains("\n")) {
-				s += this.serial.readString();
-			} // until a new line is found (or the loop runs for 5 seconds), add
-				// the read string to end of output
-			if (System.currentTimeMillis() - startTime > maxWait) {
-				Robot.visionMain.disableCamera();
-			} // disables the camera if the while loop gets stuck
-			return s;
-		} catch (Exception e) {
-			System.out.println("something went wrong, " + e.getMessage());
-			// e.printStackTrace();
-			return s;
+		if (disabled) {
+			String s = "";
+			try {
+				s = this.serial.readString(); // reads string from arduino
+				startTime = System.currentTimeMillis(); // gets the start time
+				while (System.currentTimeMillis() - startTime < maxWait && !s.contains("\n")) {
+					s += this.serial.readString();
+				} // until a new line is found (or the loop runs for 5 seconds),
+					// add
+					// the read string to end of output
+				if (System.currentTimeMillis() - startTime > maxWait) {
+					disabled = true;
+				} // disables the camera if the while loop gets stuck
+				return s;
+			} catch (Exception e) {
+				// System.err.println("something went wrong, " +
+				// e.getMessage());
+				// e.printStackTrace();
+				disabled = true;
+				return null;
+			}
+		} else {
+			return null;
 		}
+	}
+
+	public boolean isDisabled() {
+		return disabled;
 	}
 }
