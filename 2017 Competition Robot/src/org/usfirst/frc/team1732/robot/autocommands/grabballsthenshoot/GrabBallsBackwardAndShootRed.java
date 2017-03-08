@@ -2,6 +2,7 @@ package org.usfirst.frc.team1732.robot.autocommands.grabballsthenshoot;
 
 import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveEncoders;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.TurnWithGyro;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.InitGearIntake;
 import org.usfirst.frc.team1732.robot.commands.helpercommands.Wait;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -9,6 +10,8 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class GrabBallsBackwardAndShootRed extends CommandGroup {
 
 	public GrabBallsBackwardAndShootRed() {
+		addSequential(new InitGearIntake());
+
 		// drive backwards
 		addSequential(new DriveEncoders(GrabBallsBackwardAndShootData.DRIVE_1_SETPOINT));
 

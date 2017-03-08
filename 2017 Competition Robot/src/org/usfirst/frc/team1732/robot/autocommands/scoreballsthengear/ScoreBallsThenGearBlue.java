@@ -3,6 +3,7 @@ package org.usfirst.frc.team1732.robot.autocommands.scoreballsthengear;
 import org.usfirst.frc.team1732.robot.autocommands.visionplacegear.VisionPlaceGear;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveEncoders;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveGyro;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.InitGearIntake;
 import org.usfirst.frc.team1732.robot.commands.helpercommands.Wait;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -10,6 +11,8 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class ScoreBallsThenGearBlue extends CommandGroup {
 
 	public ScoreBallsThenGearBlue() {
+		addSequential(new InitGearIntake());
+
 		// drive forward slightly
 		addSequential(new DriveEncoders(ScoreBallsThenGearData.DRIVE_1_SETPOINT));
 
@@ -35,6 +38,10 @@ public class ScoreBallsThenGearBlue extends CommandGroup {
 		// not sure what above line was supposed to do so I commented it out
 
 		// drive back forward 40 inches after placing gear
-		addSequential(new VisionPlaceGear(ScoreBallsThenGearData.DRIVE_4_DRIVE_BACK_SETPOINT));
+		addSequential(new VisionPlaceGear(	ScoreBallsThenGearData.DRIVE_4_DRIVE_BACK_SETPOINT,
+											ScoreBallsThenGearData.FALL_BACK_DISTANCE, true));
+
+		// drive to hoppers
+		// addSequential(new DriveToHopperFromLeftGearPeg());
 	}
 }

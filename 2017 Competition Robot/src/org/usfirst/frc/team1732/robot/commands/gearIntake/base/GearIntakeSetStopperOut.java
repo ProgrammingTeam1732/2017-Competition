@@ -1,11 +1,11 @@
-package org.usfirst.frc.team1732.robot.commands.gearIntake;
+package org.usfirst.frc.team1732.robot.commands.gearIntake.base;
 
 import org.usfirst.frc.team1732.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.InstantCommand;
 
-public class GearIntakeSetStorageOut extends InstantCommand {
-	public GearIntakeSetStorageOut() {
+public class GearIntakeSetStopperOut extends InstantCommand {
+	public GearIntakeSetStopperOut() {
 		super();
 		requires(Robot.gearIntake);
 	}
@@ -13,6 +13,6 @@ public class GearIntakeSetStorageOut extends InstantCommand {
 	// Called once when the command executes
 	@Override
 	protected void initialize() {
-		Robot.gearIntake.setStorageOut();
+		Robot.gearIntake.setStopperOut();
 	}
 }

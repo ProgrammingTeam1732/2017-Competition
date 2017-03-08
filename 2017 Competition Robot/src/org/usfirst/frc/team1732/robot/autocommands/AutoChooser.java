@@ -9,11 +9,13 @@ import org.usfirst.frc.team1732.robot.autocommands.scoreballsthengear.ScoreBalls
 import org.usfirst.frc.team1732.robot.autocommands.scoreballsthengear.ScoreBallsThenGearRed;
 import org.usfirst.frc.team1732.robot.autocommands.scoregearthenballs.ScoreGearThenBallsBlue;
 import org.usfirst.frc.team1732.robot.autocommands.scoregearthenballs.ScoreGearThenBallsRed;
+import org.usfirst.frc.team1732.robot.autocommands.scoremiddlegear.ScoreMiddleGear;
 import org.usfirst.frc.team1732.robot.autocommands.scoresidegear.ScoreSideGearLeft;
 import org.usfirst.frc.team1732.robot.autocommands.scoresidegear.ScoreSideGearRight;
-import org.usfirst.frc.team1732.robot.autocommands.twogearauto.TwoGearAutoBlue;
-import org.usfirst.frc.team1732.robot.autocommands.twogearauto.TwoGearAutoRed;
-import org.usfirst.frc.team1732.robot.autocommands.visionplacegear.VisionPlaceGear;
+import org.usfirst.frc.team1732.robot.autocommands.sidetwogearauto.SideTwoGearAutoLeft;
+import org.usfirst.frc.team1732.robot.autocommands.sidetwogearauto.SideTwoGearAutoRight;
+import org.usfirst.frc.team1732.robot.autocommands.twogearauto.TwoGearAutoLeft;
+import org.usfirst.frc.team1732.robot.autocommands.twogearauto.TwoGearAutoRight;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -26,13 +28,16 @@ public class AutoChooser {
 	 * separate red and blue add the red first then the blue
 	 */
 	private static enum AutoModes {
-		ScoreMiddleGear(new VisionPlaceGear(-40)),
+		ScoreMiddleGear(new ScoreMiddleGear()),
 		ScoreRightSideGear(new ScoreSideGearRight()),
 		ScoreLeftSideGear(new ScoreSideGearLeft()),
 		ScoreGearThenBalls(new ScoreGearThenBallsRed(), new ScoreGearThenBallsBlue()),
 		ScoreBallsThenGear(new ScoreBallsThenGearRed(), new ScoreBallsThenGearBlue()),
 		GrabBallsBackwardThenShoot(new GrabBallsBackwardAndShootRed(), new GrabBallsBackwardAndShootBlue()),
-		TwoGearAuto(new TwoGearAutoRed(), new TwoGearAutoBlue());
+		TwoGearAutoLeft(new TwoGearAutoLeft()),
+		TwoGearAutoRight(new TwoGearAutoRight()),
+		SideTwoGearAutoLeft(new SideTwoGearAutoLeft()),
+		SideTwoGearAutoRight(new SideTwoGearAutoRight());
 
 		private final BooleanSupplier	isRedAlliance;
 		private final Command			ifRed;

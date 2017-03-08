@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1732.robot.commands.gearIntake;
+package org.usfirst.frc.team1732.robot.commands.gearIntake.base;
 
 import static org.usfirst.frc.team1732.robot.Robot.gearIntake;
 

@@ -15,18 +15,18 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class GearIntake extends Subsystem implements SmartDashboardGroup {
 
-	private final CANTalon		motor				= new CANTalon(RobotMap.GEAR_INTAKE_MOTOR_DEVICE_NUMBER);
-	public static final double	OUT_SPEED			= -.5; //0.5
-	public static final double	STOP_SPEED			= 0;
-	public static final double	IN_SPEED			= 0.6; // -0.6
-	private final Solenoid		gearManipulator		= new Solenoid(	RobotMap.PCM_CAN_ID,
-																	RobotMap.GEAR_POSITION_SOLENOID_NUMBER);
-	private final Solenoid		gearManipStorage	= new Solenoid(	RobotMap.PCM_CAN_ID,
-																	RobotMap.GEAR_STOPPER_SOLENOID_NUMBER);
-	public static final boolean	UP					= false;
-	public static final boolean	DOWN				= !UP;
-	public static final boolean	IN					= true; // false
-	public static final boolean	OUT					= !IN;
+	private final CANTalon		motor			= new CANTalon(RobotMap.GEAR_INTAKE_MOTOR_DEVICE_NUMBER);
+	public static final double	OUT_SPEED		= -.5;														// 0.5
+	public static final double	STOP_SPEED		= 0;
+	public static final double	IN_SPEED		= 0.6;														// -0.6
+	private final Solenoid		gearPosition	= new Solenoid(	RobotMap.PCM_CAN_ID,
+																RobotMap.GEAR_POSITION_SOLENOID_NUMBER);
+	private final Solenoid		gearStopper		= new Solenoid(	RobotMap.PCM_CAN_ID,
+																RobotMap.GEAR_STOPPER_SOLENOID_NUMBER);
+	public static final boolean	UP				= false;
+	public static final boolean	DOWN			= !UP;
+	public static final boolean	IN				= true;														// false
+	public static final boolean	OUT				= !IN;
 
 	public static final String NAME = "Gear Intake";
 

@@ -6,10 +6,13 @@ import org.usfirst.frc.team1732.robot.Robot;
 
 public class ScoreGearThenBallsData {
 
+	static final double FALL_BACK_DISTANCE = 100;
+
 	// determine distanceStop with tape measure
 	private static final double	distanceStop			= 100;
 	static final DoubleSupplier	DRIVE_1_LEFT_SETPOINT	= () -> distanceStop - Robot.driveTrain.getTotalLeftDistance();
 	static final DoubleSupplier	DRIVE_1_RIGHT_SETPOINT	= () -> distanceStop - Robot.driveTrain.getTotalRightDistance();
+	// maybe average the left and right for DRIVE_1 setpoint
 
 	static final double	TURN_1_ANGLE_RED	= -146;
 	static final double	TURN_1_ANGLE_BLUE	= -TURN_1_ANGLE_RED;

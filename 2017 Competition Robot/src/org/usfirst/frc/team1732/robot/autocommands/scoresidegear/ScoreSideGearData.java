@@ -2,7 +2,9 @@ package org.usfirst.frc.team1732.robot.autocommands.scoresidegear;
 
 public class ScoreSideGearData {
 
-	static final double DRIVE_1_SETPOINT = 55;
+	static final double FALL_BACK_DISTANCE = 100;
+
+	static final double DRIVE_1_SETPOINT = 51.5;
 
 	static final double	TURN_1_LEFT_SIDE	= 60;
 	static final double	TURN_1_RIGHT_SIDE	= -TURN_1_LEFT_SIDE;

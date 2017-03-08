@@ -2,6 +2,8 @@ package org.usfirst.frc.team1732.robot.autocommands.scoreballsthengear;
 
 public class ScoreBallsThenGearData {
 
+	static final double FALL_BACK_DISTANCE = 100;
+
 	static final double DRIVE_1_SETPOINT = 15;
 
 	static final double	TURN_1_ANGLE_RED		= 80;
