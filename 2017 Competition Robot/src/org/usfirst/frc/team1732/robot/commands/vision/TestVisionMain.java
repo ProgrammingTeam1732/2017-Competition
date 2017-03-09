@@ -11,6 +11,11 @@ public class TestVisionMain extends Command {
 
 	public TestVisionMain() {
 		super("Test Vision");
+		requires(Robot.pixyCamera);
+	}
+
+	protected void initialize() {
+		Robot.pixyCamera.turnOnLights();
 	}
 
 	// Called repeatedly when this Command is scheduled to run
@@ -23,6 +28,16 @@ public class TestVisionMain extends Command {
 	@Override
 	protected boolean isFinished() {
 		return false;
+	}
+	
+	@Override
+	protected void end() {
+		Robot.pixyCamera.turnOffLights();
+	}
+	
+	@Override
+	protected void interrupted() {
+		end();
 	}
 
 }

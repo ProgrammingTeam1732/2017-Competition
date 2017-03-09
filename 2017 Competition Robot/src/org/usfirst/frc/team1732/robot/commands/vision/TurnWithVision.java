@@ -3,6 +3,8 @@ package org.usfirst.frc.team1732.robot.commands.vision;
 import static org.usfirst.frc.team1732.robot.Robot.driveTrain;
 import static org.usfirst.frc.team1732.robot.Robot.visionMain;
 
+import org.usfirst.frc.team1732.robot.Robot;
+
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -14,12 +16,14 @@ public class TurnWithVision extends Command {
 
 	public TurnWithVision(double angle) {
 		requires(driveTrain);
+		requires(Robot.pixyCamera);
 		angleSetpoint = angle;
 	}
 
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
+		Robot.pixyCamera.turnOnLights();
 		visionMain.setVisionSetpoint(angleSetpoint);
 	}
 
@@ -48,5 +52,6 @@ public class TurnWithVision extends Command {
 	@Override
 	protected void end() {
 		driveTrain.driveRaw(0, 0);
+		Robot.pixyCamera.turnOffLights();
 	}
 }
