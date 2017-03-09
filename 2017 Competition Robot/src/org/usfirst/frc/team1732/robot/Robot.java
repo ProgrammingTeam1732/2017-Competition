@@ -26,6 +26,24 @@ import org.usfirst.frc.team1732.robot.commands.gearIntake.base.GearIntakeSetUp;
 import org.usfirst.frc.team1732.robot.commands.individual.FlywheelForward;
 import org.usfirst.frc.team1732.robot.commands.individual.FlywheelReverse;
 import org.usfirst.frc.team1732.robot.commands.individual.FlywheelStop;
+import org.usfirst.frc.team1732.robot.commands.individual.MotorLTBackForward;
+import org.usfirst.frc.team1732.robot.commands.individual.MotorLTBackReverse;
+import org.usfirst.frc.team1732.robot.commands.individual.MotorLTBackStop;
+import org.usfirst.frc.team1732.robot.commands.individual.MotorLTBottomForward;
+import org.usfirst.frc.team1732.robot.commands.individual.MotorLTBottomReverse;
+import org.usfirst.frc.team1732.robot.commands.individual.MotorLTBottomStop;
+import org.usfirst.frc.team1732.robot.commands.individual.MotorLTFrontForward;
+import org.usfirst.frc.team1732.robot.commands.individual.MotorLTFrontReverse;
+import org.usfirst.frc.team1732.robot.commands.individual.MotorLTFrontStop;
+import org.usfirst.frc.team1732.robot.commands.individual.MotorRTBackForward;
+import org.usfirst.frc.team1732.robot.commands.individual.MotorRTBackReverse;
+import org.usfirst.frc.team1732.robot.commands.individual.MotorRTBackStop;
+import org.usfirst.frc.team1732.robot.commands.individual.MotorRTBottomForward;
+import org.usfirst.frc.team1732.robot.commands.individual.MotorRTBottomReverse;
+import org.usfirst.frc.team1732.robot.commands.individual.MotorRTBottomStop;
+import org.usfirst.frc.team1732.robot.commands.individual.MotorRTFrontForward;
+import org.usfirst.frc.team1732.robot.commands.individual.MotorRTFrontReverse;
+import org.usfirst.frc.team1732.robot.commands.individual.MotorRTFrontStop;
 import org.usfirst.frc.team1732.robot.commands.vision.TestVisionMain;
 import org.usfirst.frc.team1732.robot.smartdashboard.MySmartDashboard;
 import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardItem;
@@ -195,29 +213,29 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putData(new FlywheelReverse());
 		SmartDashboard.putData(new FlywheelStop());
 
-		// SmartDashboard.putData(new MotorLTBackForward());
-		// SmartDashboard.putData(new MotorLTBackReverse());
-		// SmartDashboard.putData(new MotorLTBackStop());
-		//
-		// SmartDashboard.putData(new MotorLTBottomForward());
-		// SmartDashboard.putData(new MotorLTBottomReverse());
-		// SmartDashboard.putData(new MotorLTBottomStop());
-		//
-		// SmartDashboard.putData(new MotorLTFrontForward());
-		// SmartDashboard.putData(new MotorLTFrontReverse());
-		// SmartDashboard.putData(new MotorLTFrontStop());
-		//
-		// SmartDashboard.putData(new MotorRTBackForward());
-		// SmartDashboard.putData(new MotorRTBackReverse());
-		// SmartDashboard.putData(new MotorRTBackStop());
-		//
-		// SmartDashboard.putData(new MotorRTBottomForward());
-		// SmartDashboard.putData(new MotorRTBottomReverse());
-		// SmartDashboard.putData(new MotorRTBottomStop());
-		//
-		// SmartDashboard.putData(new MotorRTFrontForward());
-		// SmartDashboard.putData(new MotorRTFrontReverse());
-		// SmartDashboard.putData(new MotorRTFrontStop());
+		SmartDashboard.putData(new MotorLTBackForward());
+		SmartDashboard.putData(new MotorLTBackReverse());
+		SmartDashboard.putData(new MotorLTBackStop());
+
+		SmartDashboard.putData(new MotorLTBottomForward());
+		SmartDashboard.putData(new MotorLTBottomReverse());
+		SmartDashboard.putData(new MotorLTBottomStop());
+
+		SmartDashboard.putData(new MotorLTFrontForward());
+		SmartDashboard.putData(new MotorLTFrontReverse());
+		SmartDashboard.putData(new MotorLTFrontStop());
+
+		SmartDashboard.putData(new MotorRTBackForward());
+		SmartDashboard.putData(new MotorRTBackReverse());
+		SmartDashboard.putData(new MotorRTBackStop());
+
+		SmartDashboard.putData(new MotorRTBottomForward());
+		SmartDashboard.putData(new MotorRTBottomReverse());
+		SmartDashboard.putData(new MotorRTBottomStop());
+
+		SmartDashboard.putData(new MotorRTFrontForward());
+		SmartDashboard.putData(new MotorRTFrontReverse());
+		SmartDashboard.putData(new MotorRTFrontStop());
 
 		SmartDashboard.putData(new ArmSetOut());
 		SmartDashboard.putData(new ArmSetIn());
