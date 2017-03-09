@@ -65,7 +65,6 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the IterativeRobot
@@ -117,7 +116,8 @@ public class Robot extends IterativeRobot {
 		addSubsystemsToSmartDashboard();
 		addAutonomousToSmartDashboard();
 		addTestingToSmartDashbaord();
-		dashboard.addItem(SmartDashboardItem.newDoubleReciever("Light Voltage", 0.0, pixyCamera::setLightVoltage));
+		// dashboard.addItem(SmartDashboardItem.newDoubleReciever("Light
+		// Voltage", 0.0, pixyCamera::setLightVoltage));
 		dashboard.addItem(SmartDashboardItem.newNumberSender("robotPeriodic() frequency ms", this::getFrequency));
 		SmartDashboard.putData(new TestVisionMain());
 		// addCamera();

@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class Arm extends Subsystem implements SmartDashboardGroup {
 	private final Solenoid		solenoid	= new Solenoid(RobotMap.PCM_CAN_ID, RobotMap.ARM_SOLENOID_DEVICE_NUMBER);
-	public static final boolean	OUT			= true;
+	public static final boolean	OUT			= false;
 	public static final boolean	IN			= !OUT;
 
 	public static final String NAME = "Climber Arm";

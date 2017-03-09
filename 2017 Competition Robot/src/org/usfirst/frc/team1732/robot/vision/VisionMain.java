@@ -49,6 +49,8 @@ public class VisionMain implements SmartDashboardGroup {
 	public void run() {
 		if (isCameraEnabled()) {
 			parseData(arduino.getData());
+			// if (rectangles != null)
+			// System.out.println(rectangles.length);
 			updateGearTarget();
 		}
 	}
@@ -65,6 +67,7 @@ public class VisionMain implements SmartDashboardGroup {
 	 */
 	private void parseData(String s) {
 		if (s == null) {
+			System.out.println("string is null");
 			return;
 		}
 		if (s.contains("Starting"))

@@ -32,14 +32,17 @@ public class PixyCamera extends Subsystem {
 
 	public void turnOnLights() {
 		lightController.set(limit(12));
+		System.out.println("Turning on lights");
 	}
 
 	public void turnOffLights() {
 		lightController.set(limit(0));
+		System.out.println("Turning off lights");
 	}
 
 	public void setLightVoltage(double d) {
 		lightController.set(limit(d));
+		System.out.println("Setting on lights " + d);
 	}
 
 	public double limit(double d) {

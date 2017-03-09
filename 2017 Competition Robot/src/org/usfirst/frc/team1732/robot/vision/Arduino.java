@@ -40,7 +40,7 @@ public class Arduino {
 	 * @return the String read from the arduino, could be an empty String
 	 */
 	public String getData() {
-		if (disabled) {
+		if (!disabled) {
 			String s = "";
 			try {
 				s = this.serial.readString(); // reads string from arduino
@@ -55,13 +55,13 @@ public class Arduino {
 				} // disables the camera if the while loop gets stuck
 				return s;
 			} catch (Exception e) {
-				// System.err.println("something went wrong, " +
-				// e.getMessage());
-				// e.printStackTrace();
+				System.err.println("something went wrong, " + e.getMessage());
+				e.printStackTrace();
 				disabled = true;
 				return null;
 			}
 		} else {
+			// System.out.println("Camera disabled 67");
 			return null;
 		}
 	}
