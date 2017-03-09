@@ -26,6 +26,7 @@ import org.usfirst.frc.team1732.robot.commands.gearIntake.base.GearIntakeSetUp;
 import org.usfirst.frc.team1732.robot.commands.individual.FlywheelForward;
 import org.usfirst.frc.team1732.robot.commands.individual.FlywheelReverse;
 import org.usfirst.frc.team1732.robot.commands.individual.FlywheelStop;
+import org.usfirst.frc.team1732.robot.commands.vision.TestVisionMain;
 import org.usfirst.frc.team1732.robot.smartdashboard.MySmartDashboard;
 import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardItem;
 import org.usfirst.frc.team1732.robot.subsystems.Arm;
@@ -99,7 +100,7 @@ public class Robot extends IterativeRobot {
 		addTestingToSmartDashbaord();
 		dashboard.addItem(SmartDashboardItem.newDoubleReciever("Light Voltage", 0.0, pixyCamera::setLightVoltage));
 		dashboard.addItem(SmartDashboardItem.newNumberSender("robotPeriodic() frequency ms", this::getFrequency));
-
+		SmartDashboard.putData(new TestVisionMain());
 		// addCamera();
 
 		// Initialize smartdashboard
@@ -108,10 +109,6 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void robotPeriodic() {
-		visionMain.run(); // FIXME eventually just move this into the vision
-							// commands maybe so that if the camera breaks it
-							// doesn't interfere with non-camera auto modes and
-							// teleop mode
 		dashboard.run();
 	}
 

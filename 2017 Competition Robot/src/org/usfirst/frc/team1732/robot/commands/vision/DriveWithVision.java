@@ -71,6 +71,7 @@ public class DriveWithVision extends Command {
 	// public static double slope = 0.03/75;
 	@Override
 	protected void execute() {
+		visionMain.run();
 		// double angle = visionMain.getAngleToGearPeg();
 		double distance = visionMain.getInchesToGearPeg();
 
