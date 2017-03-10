@@ -16,14 +16,16 @@ import org.usfirst.frc.team1732.robot.autocommands.sidetwogearauto.SideTwoGearAu
 import org.usfirst.frc.team1732.robot.autocommands.sidetwogearauto.SideTwoGearAutoRight;
 import org.usfirst.frc.team1732.robot.autocommands.twogearauto.TwoGearAutoLeft;
 import org.usfirst.frc.team1732.robot.autocommands.twogearauto.TwoGearAutoRight;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveEncoders;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.TurnWithGyro;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.ClearTotalDistance;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveTime;
+import org.usfirst.frc.team1732.robot.smartdashboard.MySmartDashboard;
+import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardGroup;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class AutoChooser {
+public class AutoChooser implements SmartDashboardGroup {
 
 	/**
 	 * Class to help with choosing autos Just add autos to here, if there are
@@ -40,8 +42,11 @@ public class AutoChooser {
 		TwoGearAutoRight(new TwoGearAutoRight()),
 		SideTwoGearAutoLeft(new SideTwoGearAutoLeft()),
 		SideTwoGearAutoRight(new SideTwoGearAutoRight()),
-		DriveStraight90Inches(new DriveEncoders(90)),
-		Turn180Degrees(new TurnWithGyro(180));
+		// DriveStraight90Inches(new DriveEncoders(90)),
+		// Turn180Degrees(new TurnWithGyro(180)),
+		DriveTime(new DriveTime(5, 0.3)),
+		DriveTimeBackwards(new DriveTime(5, -0.3)),
+		ResetEncoders(new ClearTotalDistance());
 
 		private final BooleanSupplier	isRedAlliance;
 		private final Command			ifRed;
@@ -74,13 +79,19 @@ public class AutoChooser {
 		autoChooser.addDefault(AutoModes.ScoreMiddleGear.name(), AutoModes.ScoreMiddleGear);
 		AutoModes[] autoModes = AutoModes.values();
 		for (int i = 1; i < autoModes.length; i++) {
-			autoChooser.addObject(autoModes[i].name(), autoModes[i]);
+			autoChooser.addObject(i + ": " + autoModes[i].name(), autoModes[i]);
 		}
 		SmartDashboard.putData("AutonomousChooser", autoChooser);
 	}
 
 	public Command getSelected() {
 		return autoChooser.getSelected().getSelected();
+	}
+
+	@Override
+	public void addToSmartDashboard(MySmartDashboard dashboard) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

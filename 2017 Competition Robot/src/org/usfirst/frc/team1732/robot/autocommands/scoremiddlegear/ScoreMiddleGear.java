@@ -11,4 +11,5 @@ public class ScoreMiddleGear extends CommandGroup {
 		addSequential(new InitGearIntake());
 		addSequential(new VisionPlaceGear(-40, 86));
 	}
+
 }

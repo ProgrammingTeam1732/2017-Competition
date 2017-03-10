@@ -14,10 +14,17 @@ public class DriveWithVision extends Command {
 	// also only update encoders when vision update is ready
 
 	public DriveWithVision(double aTargetDistanceInches, double maxSetpoint) {
+		this(aTargetDistanceInches, maxSetpoint, true);
+	}
+
+	public DriveWithVision(double aTargetDistanceInches, double maxSetpoint, boolean turn) {
 		requires(driveTrain);
 		requires(Robot.pixyCamera);
 		targetDistanceInches = aTargetDistanceInches;
 		MAX_SETPOINT = maxSetpoint;
+		leftMeasurements = MAX_SETPOINT;
+		rightMeasurements = MAX_SETPOINT;
+		this.turn = turn;
 		setTimeout(4);
 	}
 
@@ -41,6 +48,7 @@ public class DriveWithVision extends Command {
 		visionMain.setVisionSetpoint(0);
 	}
 
+	private final boolean		turn;
 	public static final double	DEFAULT_TARGET_INCHES	= 10;
 	private static double		smartDashboardDistance	= DEFAULT_TARGET_INCHES;
 
@@ -49,7 +57,7 @@ public class DriveWithVision extends Command {
 	private double			previousAngleOutput	= 0;
 	private double			leftMeasurements	= 0;
 	private double			rightMeasurements	= 0;
-	private int				measurements		= 0;
+	private int				measurements		= 1;
 
 	private static double	middle	= 70;
 	private static double	lower	= 0.001;	// 0.001
@@ -77,7 +85,7 @@ public class DriveWithVision extends Command {
 			rightMeasurements += rightSetpoint;
 			measurements++;
 
-			if (leftMeasurements != 0 && rightMeasurements != 0) {
+			if (leftMeasurements != 0 && rightMeasurements != 0 && measurements != 0) {
 				leftSetpoint = leftMeasurements / measurements;
 				rightSetpoint = rightMeasurements / measurements;
 			}
@@ -98,14 +106,18 @@ public class DriveWithVision extends Command {
 			driveTrain.setRightEncoderSetpoint(rightSetpoint);
 		}
 
-		double leftOutput = driveTrain.getLeftPIDOutput() - previousAngleOutput;
-		double rightOutput = driveTrain.getRightPIDOutput() + previousAngleOutput;
+		double leftOutput = driveTrain.getLeftPIDOutput();
+		double rightOutput = driveTrain.getRightPIDOutput();
+		if (turn) {
+			leftOutput = leftOutput - previousAngleOutput;
+			rightOutput = rightOutput + previousAngleOutput;
+		}
 		double max = Math.abs(Math.max(leftOutput, rightOutput));
 		if (max >= 1) {
 			leftOutput = leftOutput / max;
 			rightOutput = rightOutput / max;
 		}
-		driveTrain.driveRaw(leftOutput, rightOutput);
+		driveTrain.driveRaw(leftOutput, rightOutput * Robot.driveTrain.RIGHT_PERCENTAGE);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

@@ -29,7 +29,7 @@ public class VisionPlaceGear extends CommandGroup {
 			double maxSetpoint) {
 		// drive into gear peg
 		// addSequential(new TurnWithVision(0));
-		addSequential(new DriveWithVision(17.5, maxSetpoint));
+		addSequential(new DriveWithVision(8, maxSetpoint, true));
 		addSequential(new Wait(0.1));
 
 		// place gear, drive back at same time

@@ -97,33 +97,37 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
-		// initialize subsystems - always do this first
-		driveTrain = new DriveTrain();
-		flywheel = new Flywheel();
-		ballIntake = new BallIntake();
-		climber = new Climber();
-		feeder = new Feeder();
-		arm = new Arm();
-		gearIntake = new GearIntake();
-		pixyCamera = new PixyCamera();
+		try {
+			// initialize subsystems - always do this first
+			driveTrain = new DriveTrain();
+			flywheel = new Flywheel();
+			ballIntake = new BallIntake();
+			climber = new Climber();
+			feeder = new Feeder();
+			arm = new Arm();
+			gearIntake = new GearIntake();
+			pixyCamera = new PixyCamera();
 
-		oi = new OI();
-		visionMain = new VisionMain();
+			oi = new OI();
+			visionMain = new VisionMain();
 
-		// Smartdashboard code
-		dashboard = new MySmartDashboard();
-		// Add items to smartdashboard
-		addSubsystemsToSmartDashboard();
-		addAutonomousToSmartDashboard();
-		addTestingToSmartDashbaord();
-		// dashboard.addItem(SmartDashboardItem.newDoubleReciever("Light
-		// Voltage", 0.0, pixyCamera::setLightVoltage));
-		dashboard.addItem(SmartDashboardItem.newNumberSender("robotPeriodic() frequency ms", this::getFrequency));
-		SmartDashboard.putData(new TestVisionMain());
-		// addCamera();
+			// Smartdashboard code
+			dashboard = new MySmartDashboard();
+			// Add items to smartdashboard
+			addSubsystemsToSmartDashboard();
+			addAutonomousToSmartDashboard();
+			addTestingToSmartDashbaord();
+			// dashboard.addItem(SmartDashboardItem.newDoubleReciever("Light
+			// Voltage", 0.0, pixyCamera::setLightVoltage));
+			dashboard.addItem(SmartDashboardItem.newNumberSender("robotPeriodic() frequency ms", this::getFrequency));
+			SmartDashboard.putData(new TestVisionMain());
+			// addCamera();
 
-		// Initialize smartdashboard
-		dashboard.init();
+			// Initialize smartdashboard
+			dashboard.init();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override

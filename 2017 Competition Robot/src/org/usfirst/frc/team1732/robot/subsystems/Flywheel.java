@@ -11,9 +11,6 @@ import com.ctre.CANTalon.TalonControlMode;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-/**
- *
- */
 public class Flywheel extends Subsystem implements SmartDashboardGroup {
 
 	public final CANTalon motor = new CANTalon(RobotMap.FLYWHEEL_MOTOR_DEVICE_NUMBER);
@@ -26,11 +23,11 @@ public class Flywheel extends Subsystem implements SmartDashboardGroup {
 	public static final int	COUNTS_PER_SECOND_TARGET	= -18000;
 	public static final int	COUNTS_PER_SECOND_ERROR		= COUNTS_PER_SECOND_TARGET / 50;
 
-	private static final double	P					= Float.MAX_VALUE; // -Float.MAX_VALUE
+	private static final double	P					= Float.MAX_VALUE;			// -Float.MAX_VALUE
 	private static final double	I					= 0;
 	private static final double	D					= 0;
 	private double				setpoint			= COUNTS_PER_SECOND_TARGET;
-	public static final double	MAX_OUTPUT_VOLTAGE	= -8; // negate?
+	public static final double	MAX_OUTPUT_VOLTAGE	= -8;						// negate?
 
 	private boolean isAutoControlled = false;
 
@@ -125,7 +122,7 @@ public class Flywheel extends Subsystem implements SmartDashboardGroup {
 			motor.set(s);
 		}
 	}
-	
+
 	@Override
 	public void addToSmartDashboard(MySmartDashboard dashboard) {
 		// TODO Auto-generated method stub

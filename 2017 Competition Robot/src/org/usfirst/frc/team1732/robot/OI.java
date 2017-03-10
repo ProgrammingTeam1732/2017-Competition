@@ -1,5 +1,8 @@
 package org.usfirst.frc.team1732.robot;
 
+import org.usfirst.frc.team1732.robot.commands.ballandfeeder.IntakeBalls;
+import org.usfirst.frc.team1732.robot.commands.ballandfeeder.OutputBalls;
+import org.usfirst.frc.team1732.robot.commands.ballandfeeder.StopIntakeAndFeeder;
 import org.usfirst.frc.team1732.robot.commands.climber.ArmSetIn;
 import org.usfirst.frc.team1732.robot.commands.climber.ArmSetOutGroup;
 import org.usfirst.frc.team1732.robot.commands.climber.ClimberSetDown;
@@ -7,6 +10,12 @@ import org.usfirst.frc.team1732.robot.commands.climber.ClimberSetStop;
 import org.usfirst.frc.team1732.robot.commands.climber.ClimberSetUp;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.ShiftHigh;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.ShiftLow;
+import org.usfirst.frc.team1732.robot.commands.feeder.FeederSetIn;
+import org.usfirst.frc.team1732.robot.commands.feeder.FeederSetStop;
+import org.usfirst.frc.team1732.robot.commands.flywheel.DisableFlywheel;
+import org.usfirst.frc.team1732.robot.commands.flywheel.EnableFlywheel;
+import org.usfirst.frc.team1732.robot.commands.flywheel.Shoot;
+import org.usfirst.frc.team1732.robot.commands.flywheel.StopShoot;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.base.GearIntakeSetStopperIn;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.base.GearIntakeSetStopperOut;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.GearIntakeSetDownIn;
@@ -113,11 +122,11 @@ public class OI {
 		gearScore.whenActive(new GearIntakeSetDownOut());
 		gearScore.whenInactive(new GearIntakeSetUpStop());
 
-		// flywheelOn.whenActive(new EnableFlywheel());
-		// flywheelOn.whenInactive(new DisableFlywheel());
+		flywheelOn.whenActive(new EnableFlywheel());
+		flywheelOn.whenInactive(new DisableFlywheel());
 
-		// shoot.whenPressed(new Shoot());
-		// shoot.whenReleased(new StopShoot());
+		shoot.whenPressed(new Shoot());
+		shoot.whenReleased(new StopShoot());
 
 		craaw.whenPressed(new ArmSetOutGroup());
 		craaw.whenReleased(new ArmSetIn());
@@ -128,9 +137,9 @@ public class OI {
 		climbOverride.whenActive(new ClimberSetDown());
 		climbOverride.whenInactive(new ClimberSetStop());
 
-		// intakeIn.whenPressed(new IntakeBalls());
-		// intakeOut.whenPressed(new OutputBalls());
-		// intakeStop.whenActive(new StopIntakeAndFeeder());
+		intakeIn.whenPressed(new IntakeBalls());
+		intakeOut.whenPressed(new OutputBalls());
+		intakeStop.whenActive(new StopIntakeAndFeeder());
 
 		shifter.whenPressed(new ShiftLow());
 		shifter.whenReleased(new ShiftHigh());
@@ -138,11 +147,11 @@ public class OI {
 		gearStopperOverrideIn.whenPressed(new GearIntakeSetStopperIn());
 		gearStopperOverrideOut.whenPressed(new GearIntakeSetStopperOut());
 
-		// conveyorInOverride.whenActive(new FeederSetIn());
-		// conveyorInOverride.whenInactive(new FeederSetStop());
-		//
-		// conveyorOutOverride.whenActive(new FeederSetIn());
-		// conveyorOutOverride.whenInactive(new FeederSetStop());
+		conveyorInOverride.whenActive(new FeederSetIn());
+		conveyorInOverride.whenInactive(new FeederSetStop());
+
+		conveyorOutOverride.whenActive(new FeederSetIn());
+		conveyorOutOverride.whenInactive(new FeederSetStop());
 	}
 
 	public double getLeftSpeed() {
