@@ -1,7 +1,6 @@
 package org.usfirst.frc.team1732.robot.commands.climber;
 
 import org.usfirst.frc.team1732.robot.Robot;
-import org.usfirst.frc.team1732.robot.commands.helpercommands.Wait;
 
 import edu.wpi.first.wpilibj.command.InstantCommand;
 
@@ -12,8 +11,6 @@ public class ArmSetOut extends InstantCommand {
 
 	public ArmSetOut() {
 		super();
-		// Use requires() here to declare subsystem dependencies
-		// eg. requires(chassis);
 		requires(Robot.arm);
 		requires(Robot.gearIntake);
 	}
@@ -21,18 +18,10 @@ public class ArmSetOut extends InstantCommand {
 	// Called once when the command executes
 	@Override
 	protected void initialize() {
-		// FIXME: this needs to happen to not break bounding box?
-//		if(Robot.gearIntake.isStopperOut()){
-//			Robot.gearIntake.setDown();
-//			Robot.gearIntake.setStopperIn();
-//			Robot.gearIntake.setIn();
-//		}
-//		Robot.ballIntake.setPositionDown();
-//		new Wait(1);
-//		if (Robot.gearIntake.isUp() && Robot.ballIntake.isPositionDown()) {
-//			//Robot.gearIntake.setStopperIn();
+		if (Robot.gearIntake.isUp() && Robot.ballIntake.isPositionDown()) {
+			Robot.gearIntake.setStopperIn();
 			Robot.arm.setOut();
-		//}
+		}
 	}
 
 }
