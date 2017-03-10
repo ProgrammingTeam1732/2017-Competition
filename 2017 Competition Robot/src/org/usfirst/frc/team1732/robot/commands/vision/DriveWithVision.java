@@ -52,10 +52,14 @@ public class DriveWithVision extends Command {
 		driveTrain.setEncoderSetpoint(0);
 		driveTrain.setGyroSetpoint(0);
 		visionMain.setVisionSetpoint(0);
+		
+		visionMain.run();
+		distance = visionMain.getInchesToGearPeg();
 	}
 
 	public double targetDistanceInches;
-
+	public double distance; 
+			
 	public static final double	DEFAULT_TARGET_INCHES	= 10;
 	private static double		smartDashboardDistance	= DEFAULT_TARGET_INCHES;
 
@@ -75,9 +79,8 @@ public class DriveWithVision extends Command {
 	// public static double slope = 0.03/75;
 	@Override
 	protected void execute() {
-		visionMain.run();
+		//visionMain.run();
 		// double angle = visionMain.getAngleToGearPeg();
-		double distance = visionMain.getInchesToGearPeg();
 
 		double dDistance = distance - targetDistanceInches;
 		double leftSetpoint = dDistance + driveTrain.getLeftDistance();
