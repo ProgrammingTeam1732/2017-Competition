@@ -42,7 +42,7 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 
 	private final Solenoid		shifter		= new Solenoid(	RobotMap.PCM_CAN_ID,
 															RobotMap.DRIVE_TRAIN_SHIFTER_SOLENOID_DEVICE_NUMBER);
-	public static final boolean	HIGH_GEAR	= true; // false
+	public static final boolean	HIGH_GEAR	= true;																	// false
 	public static final boolean	LOW_GEAR	= !HIGH_GEAR;
 
 	// gyro
@@ -55,7 +55,7 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 																			DriveTrain::voidMethod);
 	public static final double	GYRO_DEADBAND_DEGREES	= 4;
 	public static final double	gyroP					= 0.008;
-	public static final double	gyroI					= 0.00001; // 0.00005
+	public static final double	gyroI					= 0.00001;										// 0.00005
 	public static final double	gyroD					= 0;
 
 	// encoders
@@ -73,7 +73,7 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 																			DriveTrain::voidMethod);
 	private final PIDController	rightEncoderPID			= new PIDController(encoderP, encoderI, encoderD, rightEncoder,
 																			DriveTrain::voidMethod);
-	public static final double	encoderP				= 0.02; //0.03
+	public static final double	encoderP				= 0.02;															// 0.03
 	public static final double	encoderI				= 0;
 	public static final double	encoderD				= 0;
 	public static final double	ENCODER_DEADBAND_INCHES	= 6;
@@ -300,6 +300,15 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 	 */
 	private static void voidMethod(double d) {}
 
+	private SmartDashboardItem<Double> gyroISmartDashboard;
+
+	public double getSmartDashboardGyroI() {
+		if (gyroISmartDashboard != null) {
+			return gyroISmartDashboard.getValue();
+		} else
+			return gyroI;
+	}
+
 	@Override
 	public void addToSmartDashboard(MySmartDashboard dashboard) {
 		String directory = NAME + "/";
@@ -337,14 +346,16 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 				.addItem(SmartDashboardItem.newNumberSender(rightDirectory + "Right PID Output", rightEncoderPID::get));
 		SmartDashboard.putData("Right PID", rightEncoderPID);
 
-		// Gyro
 		String gyroDirectory = directory + "Gyro/";
+		gyroISmartDashboard = dashboard
+				.addItem(SmartDashboardItem.newDoubleReciever(gyroDirectory + "Gyro I", gyroI, this::setGyroI));
+		// Gyro
 		dashboard.addItem(SmartDashboardItem.newNumberSender(gyroDirectory + "Gyro Degrees", gyro::getAngle));
 		dashboard.addItem(SmartDashboardItem.newNumberSender(gyroDirectory + "Gyro Setpoint", gyroPID::getSetpoint));
 		dashboard.addItem(SmartDashboardItem.newNumberSender(gyroDirectory + "Gyro Error", gyroPID::getError));
 		dashboard.addItem(SmartDashboardItem.newBooleanSender(gyroDirectory + "At gyro setpoint?", gyroPID::onTarget));
 		dashboard.addItem(SmartDashboardItem.newNumberSender(gyroDirectory + "Gyro PID Output", gyroPID::get));
-		SmartDashboard.putData("Gyro PID", gyroPID);
+		// SmartDashboard.putData("Gyro PID", gyroPID);
 	}
 
 	/**

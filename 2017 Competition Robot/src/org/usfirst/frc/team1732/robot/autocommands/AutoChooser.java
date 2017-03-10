@@ -16,6 +16,8 @@ import org.usfirst.frc.team1732.robot.autocommands.sidetwogearauto.SideTwoGearAu
 import org.usfirst.frc.team1732.robot.autocommands.sidetwogearauto.SideTwoGearAutoRight;
 import org.usfirst.frc.team1732.robot.autocommands.twogearauto.TwoGearAutoLeft;
 import org.usfirst.frc.team1732.robot.autocommands.twogearauto.TwoGearAutoRight;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveEncoders;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.TurnWithGyro;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -37,7 +39,9 @@ public class AutoChooser {
 		TwoGearAutoLeft(new TwoGearAutoLeft()),
 		TwoGearAutoRight(new TwoGearAutoRight()),
 		SideTwoGearAutoLeft(new SideTwoGearAutoLeft()),
-		SideTwoGearAutoRight(new SideTwoGearAutoRight());
+		SideTwoGearAutoRight(new SideTwoGearAutoRight()),
+		DriveStraight90Inches(new DriveEncoders(90)),
+		Turn180Degrees(new TurnWithGyro(180));
 
 		private final BooleanSupplier	isRedAlliance;
 		private final Command			ifRed;

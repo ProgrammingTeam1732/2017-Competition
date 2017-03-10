@@ -31,7 +31,7 @@ public class DriveWithVision extends Command {
 		this.fallbackDistance = fallbackDistance;
 		this.useFallbackDistance = useFallbackDistance;
 		// visionMain.visionPID.setPID(0.01, 0, 0);
-		setTimeout(5);
+		setTimeout(4);
 	}
 
 	public static void setSmartDashboardDistance(double distance) {
@@ -106,8 +106,12 @@ public class DriveWithVision extends Command {
 		}
 
 		// double angleOutput = driveTrain.gyroPID.get();
-		double leftOutput = driveTrain.getLeftPIDOutput() - previousAngleOutput;
-		double rightOutput = driveTrain.getRightPIDOutput() + previousAngleOutput;
+		// double leftOutput = driveTrain.getLeftPIDOutput() -
+		// previousAngleOutput;
+		// double rightOutput = driveTrain.getRightPIDOutput() +
+		// previousAngleOutput;
+		double leftOutput = 0.3 - previousAngleOutput;
+		double rightOutput = 0.3 + previousAngleOutput;
 		double max = Math.abs(Math.max(leftOutput, rightOutput));
 		if (max >= 1) {
 			leftOutput = leftOutput / max;
@@ -117,7 +121,7 @@ public class DriveWithVision extends Command {
 			driveTrain.driveRaw(leftOutput, rightOutput);
 		} else if (isTimeExpired() && useFallbackDistance) {
 			driveTrain.setEncoderSetpoint(fallbackDistance);
-			driveTrain.driveRaw(driveTrain.getLeftPIDOutput(), driveTrain.getRightPIDOutput());
+			driveTrain.driveRaw(0.3, 0.3);
 		}
 
 	}
