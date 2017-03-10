@@ -2,7 +2,7 @@ package org.usfirst.frc.team1732.robot.autocommands.scoreballsthengear;
 
 public class ScoreBallsThenGearData {
 
-	static final double FALL_BACK_DISTANCE = 100;
+	static final double MAX_SETPOINT = 80;
 
 	static final double DRIVE_1_SETPOINT = 15;
 

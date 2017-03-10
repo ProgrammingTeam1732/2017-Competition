@@ -1,7 +1,7 @@
 package org.usfirst.frc.team1732.robot;
 
 import org.usfirst.frc.team1732.robot.commands.climber.ArmSetIn;
-import org.usfirst.frc.team1732.robot.commands.climber.ArmSetOut;
+import org.usfirst.frc.team1732.robot.commands.climber.ArmSetOutGroup;
 import org.usfirst.frc.team1732.robot.commands.climber.ClimberSetDown;
 import org.usfirst.frc.team1732.robot.commands.climber.ClimberSetStop;
 import org.usfirst.frc.team1732.robot.commands.climber.ClimberSetUp;
@@ -119,7 +119,7 @@ public class OI {
 		// shoot.whenPressed(new Shoot());
 		// shoot.whenReleased(new StopShoot());
 
-		craaw.whenPressed(new ArmSetOut());
+		craaw.whenPressed(new ArmSetOutGroup());
 		craaw.whenReleased(new ArmSetIn());
 
 		climbNormal.whenActive(new ClimberSetUp());

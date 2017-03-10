@@ -6,7 +6,7 @@ import org.usfirst.frc.team1732.robot.Robot;
 
 public class ScoreGearThenBallsData {
 
-	static final double FALL_BACK_DISTANCE = 100;
+	static final double MAX_SETPOINT = 80;
 
 	// determine distanceStop with tape measure
 	private static final double	distanceStop			= 100;

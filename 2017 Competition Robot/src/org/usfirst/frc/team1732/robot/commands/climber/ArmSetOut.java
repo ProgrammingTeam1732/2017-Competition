@@ -12,16 +12,15 @@ public class ArmSetOut extends InstantCommand {
 	public ArmSetOut() {
 		super();
 		requires(Robot.arm);
-		requires(Robot.gearIntake);
 	}
 
 	// Called once when the command executes
 	@Override
 	protected void initialize() {
-		if (Robot.gearIntake.isUp() && Robot.ballIntake.isPositionDown()) {
-			Robot.gearIntake.setStopperIn();
-			Robot.arm.setOut();
-		}
+		// if (Robot.gearIntake.isUp() && Robot.ballIntake.isPositionDown()) {
+		// Robot.gearIntake.setStopperIn();
+		Robot.arm.setOut();
+		// }
 	}
 
 }

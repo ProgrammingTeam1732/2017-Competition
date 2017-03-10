@@ -55,7 +55,7 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 																			DriveTrain::voidMethod);
 	public static final double	GYRO_DEADBAND_DEGREES	= 4;
 	public static final double	gyroP					= 0.008;
-	public static final double	gyroI					= 0.00001;										// 0.00005
+	public static final double	gyroI					= 0.01;											// 0.00005
 	public static final double	gyroD					= 0;
 
 	// encoders

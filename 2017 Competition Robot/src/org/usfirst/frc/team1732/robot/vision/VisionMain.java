@@ -27,8 +27,8 @@ public class VisionMain implements SmartDashboardGroup {
 	public static final double	visionI				= 0;
 	public static final double	visionD				= 0;
 
-	public static final double	VISION_DEADBAND_DEGREES	= 3;
-	public static final double	MAX_OUTPUT				= 0.5;
+	public static final double	VISION_DEADBAND_DEGREES	= 5;
+	public static final double	MAX_OUTPUT				= 0.4;
 	public static final double	MIN_OUTPUT				= -MAX_OUTPUT;
 
 	public static final String NAME = "Vision Main";
@@ -189,13 +189,14 @@ public class VisionMain implements SmartDashboardGroup {
 																this::isCameraEnabled));
 
 		dashboard.addItem(SmartDashboardItem.newDoubleReciever(	visionDirectory + "Turning P Slope",
-																DriveWithVision.slope, DriveWithVision::setSlope));
+																DriveWithVision.getSlope(), DriveWithVision::setSlope));
 		dashboard.addItem(SmartDashboardItem.newDoubleReciever(	visionDirectory + "Turning P Lower",
-																DriveWithVision.lower, DriveWithVision::setLower));
+																DriveWithVision.getLower(), DriveWithVision::setLower));
 		dashboard.addItem(SmartDashboardItem.newDoubleReciever(	visionDirectory + "Turning P Upper",
-																DriveWithVision.upper, DriveWithVision::setUpper));
+																DriveWithVision.getUpper(), DriveWithVision::setUpper));
 		dashboard.addItem(SmartDashboardItem.newDoubleReciever(	visionDirectory + "Turning P Middle",
-																DriveWithVision.middle, DriveWithVision::setMiddle));
+																DriveWithVision.getMiddle(),
+																DriveWithVision::setMiddle));
 		SmartDashboard.putData("Vision PID", visionPID);
 	}
 

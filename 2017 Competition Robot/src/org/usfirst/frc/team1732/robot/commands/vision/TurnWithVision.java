@@ -18,6 +18,7 @@ public class TurnWithVision extends Command {
 		requires(driveTrain);
 		requires(Robot.pixyCamera);
 		angleSetpoint = angle;
+		setTimeout(5);
 	}
 
 	// Called just before this Command runs the first time
@@ -45,7 +46,7 @@ public class TurnWithVision extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return foundOnce && visionMain.isVisionPIDOnTarget();
+		return (foundOnce && visionMain.isVisionPIDOnTarget()) || isTimedOut();
 	}
 
 	// Called once after isFinished returns true
