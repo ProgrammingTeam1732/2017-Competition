@@ -81,9 +81,11 @@ public class DriveWithVision extends Command {
 			double dDistance = distance - targetDistanceInches;
 			double leftSetpoint = dDistance + driveTrain.getLeftDistance();
 			double rightSetpoint = dDistance + driveTrain.getRightDistance();
-			leftMeasurements += leftSetpoint;
-			rightMeasurements += rightSetpoint;
-			measurements++;
+			if (leftSetpoint < MAX_SETPOINT && rightSetpoint < MAX_SETPOINT) {
+				leftMeasurements += leftSetpoint;
+				rightMeasurements += rightSetpoint;
+				measurements++;
+			}
 
 			if (leftMeasurements != 0 && rightMeasurements != 0 && measurements != 0) {
 				leftSetpoint = leftMeasurements / measurements;
@@ -117,7 +119,7 @@ public class DriveWithVision extends Command {
 			leftOutput = leftOutput / max;
 			rightOutput = rightOutput / max;
 		}
-		driveTrain.driveRaw(leftOutput, rightOutput * Robot.driveTrain.RIGHT_PERCENTAGE);
+		driveTrain.driveRaw(leftOutput, rightOutput);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

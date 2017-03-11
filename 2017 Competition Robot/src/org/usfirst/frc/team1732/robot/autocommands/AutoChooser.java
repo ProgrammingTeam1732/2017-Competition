@@ -18,8 +18,10 @@ import org.usfirst.frc.team1732.robot.autocommands.twogearauto.TwoGearAutoLeft;
 import org.usfirst.frc.team1732.robot.autocommands.twogearauto.TwoGearAutoRight;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.ClearTotalDistance;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveTime;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.TurnWithGyro;
 import org.usfirst.frc.team1732.robot.smartdashboard.MySmartDashboard;
 import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardGroup;
+import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardItem;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -43,7 +45,7 @@ public class AutoChooser implements SmartDashboardGroup {
 		SideTwoGearAutoLeft(new SideTwoGearAutoLeft()),
 		SideTwoGearAutoRight(new SideTwoGearAutoRight()),
 		// DriveStraight90Inches(new DriveEncoders(90)),
-		// Turn180Degrees(new TurnWithGyro(180)),
+		Turn180Degrees(new TurnWithGyro(180)),
 		DriveTime(new DriveTime(5, 0.3)),
 		DriveTimeBackwards(new DriveTime(5, -0.3)),
 		ResetEncoders(new ClearTotalDistance());
@@ -85,13 +87,16 @@ public class AutoChooser implements SmartDashboardGroup {
 	}
 
 	public Command getSelected() {
+		// return
+		// AutoModes.values()[chosenauto.getValue().intValue()].getSelected();
 		return autoChooser.getSelected().getSelected();
 	}
 
+	private SmartDashboardItem<Double> chosenauto;
+
 	@Override
 	public void addToSmartDashboard(MySmartDashboard dashboard) {
-		// TODO Auto-generated method stub
-
+		chosenauto = dashboard.addItem(SmartDashboardItem.newDoubleReciever("Auto Number", 0.0));
 	}
 
 }
