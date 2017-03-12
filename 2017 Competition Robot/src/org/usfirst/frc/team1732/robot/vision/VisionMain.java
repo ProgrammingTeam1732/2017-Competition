@@ -107,13 +107,32 @@ public class VisionMain implements SmartDashboardGroup {
 	private void updateGearTarget() {
 		try {
 			gearTarget = GearTarget.getBestVisionTarget(rectangles);
-			// if (gearTarget != null) {
-			// System.out.println(gearTarget.getScore());
-			// System.out.println(this.getInchesToGearPeg());
-			// }
+			if (gearTarget == null)
+				isNewDataAvailable = false;
+			else {
+				double score = gearTarget.getScore();
+				if (roundToNDigits(previousScore, 5) == roundToNDigits(score, 5)) {
+					isNewDataAvailable = false;
+				} else {
+					isNewDataAvailable = true;
+				}
+			}
 		} catch (NullPointerException e) {
 			e.getMessage();
 		}
+	}
+
+	private double roundToNDigits(double d, int n) {
+		double scaler = Math.pow(10, n);
+		int expanded = (int) Math.round(scaler * d);
+		return expanded / scaler;
+	}
+
+	private double	previousScore		= 0;
+	private boolean	isNewDataAvailable	= false;
+
+	public boolean isNewDataAvailable() {
+		return isNewDataAvailable;
 	}
 
 	/**

@@ -14,16 +14,16 @@ public class GearTarget extends VisionTarget {
 	 */
 	public static final double MIN_TOTAL_SCORE = 4.1;
 
-	public GearTarget(Rectangle a) {
-		super(a);
-	}
+	// public GearTarget(Rectangle a) {
+	// super(a);
+	// }
 
 	public GearTarget(Rectangle a, Rectangle b) {
 		super(a, b);
 	}
 
 	@Override
-	public double getScore() {
+	protected double calculateScore() {
 		double totalScore = 0;
 
 		double gearLeftWidth_WholeWidthRatio = GEAR_TARGET_TAPE_WIDTH / GEAR_TARGET_WIDTH_INCHES;

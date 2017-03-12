@@ -78,18 +78,23 @@ public class AutoChooser implements SmartDashboardGroup {
 	private final SendableChooser<AutoModes> autoChooser = new SendableChooser<>();
 
 	public AutoChooser() {
-		autoChooser.addDefault(AutoModes.ScoreMiddleGear.name(), AutoModes.ScoreMiddleGear);
+		autoChooser.addDefault(	AutoModes.ScoreMiddleGear.ordinal() + ": " + AutoModes.ScoreMiddleGear.name(),
+								AutoModes.ScoreMiddleGear);
 		AutoModes[] autoModes = AutoModes.values();
 		for (int i = 1; i < autoModes.length; i++) {
-			autoChooser.addObject(i + ": " + autoModes[i].name(), autoModes[i]);
+			autoChooser.addObject(autoModes[i].ordinal() + ": " + autoModes[i].name(), autoModes[i]);
 		}
 		SmartDashboard.putData("AutonomousChooser", autoChooser);
 	}
 
 	public Command getSelected() {
-		// return
-		// AutoModes.values()[chosenauto.getValue().intValue()].getSelected();
-		return autoChooser.getSelected().getSelected();
+		int value = 0;
+		if (chosenauto != null)
+			value = chosenauto.getValue().intValue();
+		if (value < 0 || value >= AutoModes.values().length)
+			value = 0;
+		return AutoModes.values()[chosenauto.getValue().intValue()].getSelected();
+		// return autoChooser.getSelected().getSelected();
 	}
 
 	private SmartDashboardItem<Double> chosenauto;

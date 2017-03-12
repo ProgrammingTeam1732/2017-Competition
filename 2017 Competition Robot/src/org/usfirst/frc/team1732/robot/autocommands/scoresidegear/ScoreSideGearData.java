@@ -6,7 +6,7 @@ public class ScoreSideGearData {
 
 	static final double DRIVE_1_SETPOINT = 85;
 
-	static final double	TURN_1_LEFT_SIDE	= 45;
+	static final double	TURN_1_LEFT_SIDE	= 50;
 	static final double	TURN_1_RIGHT_SIDE	= -TURN_1_LEFT_SIDE;
 
 	static final double WAIT_1_TIME = 0.2;

@@ -75,7 +75,7 @@ public class DriveWithVision extends Command {
 		// if it still sees it calculate the new output, otherwise keep
 		// doing
 		// what it was doing
-		if (visionMain.canSeeGearPeg()) {
+		if (visionMain.canSeeGearPeg() && visionMain.isNewDataAvailable()) {
 			double distance = visionMain.getInchesToGearPeg();
 
 			double dDistance = distance - targetDistanceInches;

@@ -12,7 +12,7 @@ public class BoilerTarget extends VisionTarget {
 	}
 
 	@Override
-	public double getScore() {
+	protected double calculateScore() {
 		// top height should be 2/10 of the total height
 		double topHeightInches = 4;
 		double topHeightScore = getScore(top.height

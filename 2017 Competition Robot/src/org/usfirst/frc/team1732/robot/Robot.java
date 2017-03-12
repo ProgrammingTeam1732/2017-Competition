@@ -107,6 +107,7 @@ public class Robot extends IterativeRobot {
 			arm = new Arm();
 			gearIntake = new GearIntake();
 			pixyCamera = new PixyCamera();
+			autoChooser = new AutoChooser();
 
 			oi = new OI();
 			visionMain = new VisionMain();
@@ -184,6 +185,7 @@ public class Robot extends IterativeRobot {
 		arm.addToSmartDashboard(dashboard);
 		gearIntake.addToSmartDashboard(dashboard);
 		visionMain.addToSmartDashboard(dashboard);
+		autoChooser.addToSmartDashboard(dashboard);
 	}
 
 	public static boolean isRedAlliance() {
@@ -195,8 +197,6 @@ public class Robot extends IterativeRobot {
 	}
 
 	private void addAutonomousToSmartDashboard() {
-		autoChooser = new AutoChooser();
-
 		isRedAlliance = dashboard.addItem(SmartDashboardItem
 				.newBooleanSender(	"Is Red Alliance?",
 									() -> DriverStation.getInstance().getAlliance().equals(Alliance.Red)));
