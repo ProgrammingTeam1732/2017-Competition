@@ -21,8 +21,7 @@ public class ThreeGearAutoBlue extends CommandGroup {
 
 		// places the gear, drives back
 		addSequential(new VisionPlaceGear(	ThreeGearAutoData.DRIVE_1_LEFT_SETPOINT,
-											ThreeGearAutoData.DRIVE_1_RIGHT_SETPOINT,
-											ThreeGearAutoData.FALL_BACK_DISTANCE, true));
+											ThreeGearAutoData.DRIVE_1_RIGHT_SETPOINT, ThreeGearAutoData.MAX_SETPOINT));
 
 		// turns to face the gear on ground
 		// addSequential(new TurnWithGyro(ThreeGearAutoData.TURN_1_ANGLE_BLUE));
@@ -57,8 +56,7 @@ public class ThreeGearAutoBlue extends CommandGroup {
 
 		// scores second gear!!!
 		addSequential(new VisionPlaceGear(	ThreeGearAutoData.DRIVE_1_LEFT_SETPOINT,
-											ThreeGearAutoData.DRIVE_1_RIGHT_SETPOINT,
-											ThreeGearAutoData.FALL_BACK_DISTANCE, true));
+											ThreeGearAutoData.DRIVE_1_RIGHT_SETPOINT, ThreeGearAutoData.MAX_SETPOINT));
 
 		// turns to face the gear on ground
 		// addSequential(new TurnWithGyro(ThreeGearAutoData.TURN_1_ANGLE_BLUE));
@@ -91,6 +89,6 @@ public class ThreeGearAutoBlue extends CommandGroup {
 
 		// scores third gear!!!
 		addSequential(new VisionPlaceGear(	ThreeGearAutoData.DRIVE_4_DRIVE_BACK_SETPOINT,
-											ThreeGearAutoData.FALL_BACK_DISTANCE, true));
+											ThreeGearAutoData.MAX_SETPOINT));
 	}
 }

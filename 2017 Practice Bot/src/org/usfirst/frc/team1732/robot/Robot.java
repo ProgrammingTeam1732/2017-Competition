@@ -26,6 +26,25 @@ import org.usfirst.frc.team1732.robot.commands.gearIntake.base.GearIntakeSetUp;
 import org.usfirst.frc.team1732.robot.commands.individual.FlywheelForward;
 import org.usfirst.frc.team1732.robot.commands.individual.FlywheelReverse;
 import org.usfirst.frc.team1732.robot.commands.individual.FlywheelStop;
+import org.usfirst.frc.team1732.robot.commands.individual.MotorLTBackForward;
+import org.usfirst.frc.team1732.robot.commands.individual.MotorLTBackReverse;
+import org.usfirst.frc.team1732.robot.commands.individual.MotorLTBackStop;
+import org.usfirst.frc.team1732.robot.commands.individual.MotorLTBottomForward;
+import org.usfirst.frc.team1732.robot.commands.individual.MotorLTBottomReverse;
+import org.usfirst.frc.team1732.robot.commands.individual.MotorLTBottomStop;
+import org.usfirst.frc.team1732.robot.commands.individual.MotorLTFrontForward;
+import org.usfirst.frc.team1732.robot.commands.individual.MotorLTFrontReverse;
+import org.usfirst.frc.team1732.robot.commands.individual.MotorLTFrontStop;
+import org.usfirst.frc.team1732.robot.commands.individual.MotorRTBackForward;
+import org.usfirst.frc.team1732.robot.commands.individual.MotorRTBackReverse;
+import org.usfirst.frc.team1732.robot.commands.individual.MotorRTBackStop;
+import org.usfirst.frc.team1732.robot.commands.individual.MotorRTBottomForward;
+import org.usfirst.frc.team1732.robot.commands.individual.MotorRTBottomReverse;
+import org.usfirst.frc.team1732.robot.commands.individual.MotorRTBottomStop;
+import org.usfirst.frc.team1732.robot.commands.individual.MotorRTFrontForward;
+import org.usfirst.frc.team1732.robot.commands.individual.MotorRTFrontReverse;
+import org.usfirst.frc.team1732.robot.commands.individual.MotorRTFrontStop;
+import org.usfirst.frc.team1732.robot.commands.vision.TestVisionMain;
 import org.usfirst.frc.team1732.robot.smartdashboard.MySmartDashboard;
 import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardItem;
 import org.usfirst.frc.team1732.robot.subsystems.Arm;
@@ -78,40 +97,42 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
-		// initialize subsystems - always do this first
-		driveTrain = new DriveTrain();
-		flywheel = new Flywheel();
-		ballIntake = new BallIntake();
-		climber = new Climber();
-		feeder = new Feeder();
-		arm = new Arm();
-		gearIntake = new GearIntake();
-		pixyCamera = new PixyCamera();
+		try {
+			// initialize subsystems - always do this first
+			driveTrain = new DriveTrain();
+			flywheel = new Flywheel();
+			ballIntake = new BallIntake();
+			climber = new Climber();
+			feeder = new Feeder();
+			arm = new Arm();
+			gearIntake = new GearIntake();
+			pixyCamera = new PixyCamera();
+			autoChooser = new AutoChooser();
 
-		oi = new OI();
-		visionMain = new VisionMain();
+			oi = new OI();
+			visionMain = new VisionMain();
 
-		// Smartdashboard code
-		dashboard = new MySmartDashboard();
-		// Add items to smartdashboard
-		addSubsystemsToSmartDashboard();
-		addAutonomousToSmartDashboard();
-		addTestingToSmartDashbaord();
-		dashboard.addItem(SmartDashboardItem.newDoubleReciever("Light Voltage", 0.0, pixyCamera::setLightVoltage));
-		dashboard.addItem(SmartDashboardItem.newNumberSender("robotPeriodic() frequency ms", this::getFrequency));
+			// Smartdashboard code
+			dashboard = new MySmartDashboard();
+			// Add items to smartdashboard
+			addSubsystemsToSmartDashboard();
+			addAutonomousToSmartDashboard();
+			addTestingToSmartDashbaord();
+			// dashboard.addItem(SmartDashboardItem.newDoubleReciever("Light
+			// Voltage", 0.0, pixyCamera::setLightVoltage));
+			dashboard.addItem(SmartDashboardItem.newNumberSender("robotPeriodic() frequency ms", this::getFrequency));
+			SmartDashboard.putData(new TestVisionMain());
+			// addCamera();
 
-		// addCamera();
-
-		// Initialize smartdashboard
-		dashboard.init();
+			// Initialize smartdashboard
+			dashboard.init();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public void robotPeriodic() {
-		visionMain.run(); // FIXME eventually just move this into the vision
-							// commands maybe so that if the camera breaks it
-							// doesn't interfere with non-camera auto modes and
-							// teleop mode
 		dashboard.run();
 	}
 
@@ -164,6 +185,7 @@ public class Robot extends IterativeRobot {
 		arm.addToSmartDashboard(dashboard);
 		gearIntake.addToSmartDashboard(dashboard);
 		visionMain.addToSmartDashboard(dashboard);
+		autoChooser.addToSmartDashboard(dashboard);
 	}
 
 	public static boolean isRedAlliance() {
@@ -175,8 +197,6 @@ public class Robot extends IterativeRobot {
 	}
 
 	private void addAutonomousToSmartDashboard() {
-		autoChooser = new AutoChooser();
-
 		isRedAlliance = dashboard.addItem(SmartDashboardItem
 				.newBooleanSender(	"Is Red Alliance?",
 									() -> DriverStation.getInstance().getAlliance().equals(Alliance.Red)));
@@ -198,29 +218,29 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putData(new FlywheelReverse());
 		SmartDashboard.putData(new FlywheelStop());
 
-		// SmartDashboard.putData(new MotorLTBackForward());
-		// SmartDashboard.putData(new MotorLTBackReverse());
-		// SmartDashboard.putData(new MotorLTBackStop());
-		//
-		// SmartDashboard.putData(new MotorLTBottomForward());
-		// SmartDashboard.putData(new MotorLTBottomReverse());
-		// SmartDashboard.putData(new MotorLTBottomStop());
-		//
-		// SmartDashboard.putData(new MotorLTFrontForward());
-		// SmartDashboard.putData(new MotorLTFrontReverse());
-		// SmartDashboard.putData(new MotorLTFrontStop());
-		//
-		// SmartDashboard.putData(new MotorRTBackForward());
-		// SmartDashboard.putData(new MotorRTBackReverse());
-		// SmartDashboard.putData(new MotorRTBackStop());
-		//
-		// SmartDashboard.putData(new MotorRTBottomForward());
-		// SmartDashboard.putData(new MotorRTBottomReverse());
-		// SmartDashboard.putData(new MotorRTBottomStop());
-		//
-		// SmartDashboard.putData(new MotorRTFrontForward());
-		// SmartDashboard.putData(new MotorRTFrontReverse());
-		// SmartDashboard.putData(new MotorRTFrontStop());
+		SmartDashboard.putData(new MotorLTBackForward());
+		SmartDashboard.putData(new MotorLTBackReverse());
+		SmartDashboard.putData(new MotorLTBackStop());
+
+		SmartDashboard.putData(new MotorLTBottomForward());
+		SmartDashboard.putData(new MotorLTBottomReverse());
+		SmartDashboard.putData(new MotorLTBottomStop());
+
+		SmartDashboard.putData(new MotorLTFrontForward());
+		SmartDashboard.putData(new MotorLTFrontReverse());
+		SmartDashboard.putData(new MotorLTFrontStop());
+
+		SmartDashboard.putData(new MotorRTBackForward());
+		SmartDashboard.putData(new MotorRTBackReverse());
+		SmartDashboard.putData(new MotorRTBackStop());
+
+		SmartDashboard.putData(new MotorRTBottomForward());
+		SmartDashboard.putData(new MotorRTBottomReverse());
+		SmartDashboard.putData(new MotorRTBottomStop());
+
+		SmartDashboard.putData(new MotorRTFrontForward());
+		SmartDashboard.putData(new MotorRTFrontReverse());
+		SmartDashboard.putData(new MotorRTFrontStop());
 
 		SmartDashboard.putData(new ArmSetOut());
 		SmartDashboard.putData(new ArmSetIn());

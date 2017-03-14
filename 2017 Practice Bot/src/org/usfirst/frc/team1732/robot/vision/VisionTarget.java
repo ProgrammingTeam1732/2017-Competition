@@ -14,21 +14,22 @@ public abstract class VisionTarget {
 	public final Rectangle	bottom;
 	public final Rectangle	boundingBox;
 	public final boolean	singleRectangle;
+	private final double	score;
 
-	/**
-	 * Creates a new VisionTarget from a single rectangle
-	 * 
-	 * @param rect
-	 *            bounding box of the blob
-	 */
-	public VisionTarget(Rectangle rect) {
-		singleRectangle = true;
-		boundingBox = rect;
-		left = null;
-		right = null;
-		top = null;
-		bottom = null;
-	}
+	// /**
+	// * Creates a new VisionTarget from a single rectangle
+	// *
+	// * @param rect
+	// * bounding box of the blob
+	// */
+	// private VisionTarget(Rectangle rect) {
+	// singleRectangle = true;
+	// boundingBox = rect;
+	// left = null;
+	// right = null;
+	// top = null;
+	// bottom = null;
+	// }
 
 	/**
 	 * Creates a new vision target from two arbitrary rectangles
@@ -57,13 +58,21 @@ public abstract class VisionTarget {
 		}
 
 		boundingBox = new Rectangle(-1, left.x, top.y, getTotalWidth(left, right), getTotalHeight(top, bottom));
+		score = this.calculateScore();
 	}
 
 	/**
 	 * @return a score of how likely this pair of Rectangles is the correct
 	 *         VisionTarget
 	 */
-	public abstract double getScore();
+	public double getScore() {
+		return score;
+	}
+
+	/**
+	 * Calculate this target's score
+	 */
+	protected abstract double calculateScore();
 
 	/**
 	 * Scales a score so that it gets returned as 1 - the distance to 1. <br>

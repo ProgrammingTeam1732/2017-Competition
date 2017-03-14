@@ -26,7 +26,7 @@ public class TurnWithGyro extends Command {
 		// System.out.println("Running turn : " + Robot.isRedAlliance());
 		Robot.driveTrain.resetGyro();
 		// Robot.driveTrain.resetGyroPID();
-		Robot.driveTrain.clearGyroIntgral();
+		// Robot.driveTrain.clearGyroIntgral();
 		Robot.driveTrain.setGyroSetpoint(setpoint);
 		// System.out.println(setpoint);
 	}
@@ -36,6 +36,7 @@ public class TurnWithGyro extends Command {
 	protected void execute() {
 		if (Math.abs(Robot.driveTrain.getGyroError()) > IZONE) {
 			Robot.driveTrain.setGyroI(0);
+			System.out.println("Outisde gyro izone");
 		}
 		double output = Robot.driveTrain.getGyroPIDOutput();
 		Robot.driveTrain.driveRaw(output, -output);

@@ -27,8 +27,8 @@ public class VisionMain implements SmartDashboardGroup {
 	public static final double	visionI				= 0;
 	public static final double	visionD				= 0;
 
-	public static final double	VISION_DEADBAND_DEGREES	= 3;
-	public static final double	MAX_OUTPUT				= 0.5;
+	public static final double	VISION_DEADBAND_DEGREES	= 5;
+	public static final double	MAX_OUTPUT				= 0.4;
 	public static final double	MIN_OUTPUT				= -MAX_OUTPUT;
 
 	public static final String NAME = "Vision Main";
@@ -49,6 +49,8 @@ public class VisionMain implements SmartDashboardGroup {
 	public void run() {
 		if (isCameraEnabled()) {
 			parseData(arduino.getData());
+			// if (rectangles != null)
+			// System.out.println(rectangles.length);
 			updateGearTarget();
 		}
 	}
@@ -65,6 +67,7 @@ public class VisionMain implements SmartDashboardGroup {
 	 */
 	private void parseData(String s) {
 		if (s == null) {
+			System.out.println("string is null");
 			return;
 		}
 		if (s.contains("Starting"))
@@ -104,13 +107,30 @@ public class VisionMain implements SmartDashboardGroup {
 	private void updateGearTarget() {
 		try {
 			gearTarget = GearTarget.getBestVisionTarget(rectangles);
-			// if (gearTarget != null) {
-			// System.out.println(gearTarget.getScore());
-			// System.out.println(this.getInchesToGearPeg());
-			// }
+				double score = 0;
+				if(gearTarget != null) score = gearTarget.getScore();
+				if (roundToNDigits(previousScore, 5) == roundToNDigits(score, 5)) {
+					isNewDataAvailable = false;
+				} else {
+					isNewDataAvailable = true;
+				}
+				previousScore = score;
 		} catch (NullPointerException e) {
 			e.getMessage();
 		}
+	}
+
+	private double roundToNDigits(double d, int n) {
+		double scaler = Math.pow(10, n);
+		int expanded = (int) Math.round(scaler * d);
+		return expanded / scaler;
+	}
+
+	private double	previousScore		= 0;
+	private boolean	isNewDataAvailable	= false;
+
+	public boolean isNewDataAvailable() {
+		return isNewDataAvailable;
 	}
 
 	/**
@@ -186,13 +206,14 @@ public class VisionMain implements SmartDashboardGroup {
 																this::isCameraEnabled));
 
 		dashboard.addItem(SmartDashboardItem.newDoubleReciever(	visionDirectory + "Turning P Slope",
-																DriveWithVision.slope, DriveWithVision::setSlope));
+																DriveWithVision.getSlope(), DriveWithVision::setSlope));
 		dashboard.addItem(SmartDashboardItem.newDoubleReciever(	visionDirectory + "Turning P Lower",
-																DriveWithVision.lower, DriveWithVision::setLower));
+																DriveWithVision.getLower(), DriveWithVision::setLower));
 		dashboard.addItem(SmartDashboardItem.newDoubleReciever(	visionDirectory + "Turning P Upper",
-																DriveWithVision.upper, DriveWithVision::setUpper));
+																DriveWithVision.getUpper(), DriveWithVision::setUpper));
 		dashboard.addItem(SmartDashboardItem.newDoubleReciever(	visionDirectory + "Turning P Middle",
-																DriveWithVision.middle, DriveWithVision::setMiddle));
+																DriveWithVision.getMiddle(),
+																DriveWithVision::setMiddle));
 		SmartDashboard.putData("Vision PID", visionPID);
 	}
 
@@ -227,5 +248,4 @@ public class VisionMain implements SmartDashboardGroup {
 			return gearTarget.getScore();
 		}
 	}
-
 }

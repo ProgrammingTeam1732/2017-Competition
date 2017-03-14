@@ -107,16 +107,14 @@ public class VisionMain implements SmartDashboardGroup {
 	private void updateGearTarget() {
 		try {
 			gearTarget = GearTarget.getBestVisionTarget(rectangles);
-			if (gearTarget == null)
-				isNewDataAvailable = false;
-			else {
-				double score = gearTarget.getScore();
+				double score = 0;
+				if(gearTarget != null) score = gearTarget.getScore();
 				if (roundToNDigits(previousScore, 5) == roundToNDigits(score, 5)) {
 					isNewDataAvailable = false;
 				} else {
 					isNewDataAvailable = true;
 				}
-			}
+				previousScore = score;
 		} catch (NullPointerException e) {
 			e.getMessage();
 		}

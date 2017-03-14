@@ -36,6 +36,7 @@ public class Flywheel extends Subsystem implements SmartDashboardGroup {
 	public Flywheel() {
 		super(NAME);
 		motor.setFeedbackDevice(FeedbackDevice.QuadEncoder);
+		motor.setAllowableClosedLoopErr(0);
 		motor.configNominalOutputVoltage(0, 0);
 		motor.configPeakOutputVoltage(0, MAX_OUTPUT_VOLTAGE);
 		motor.setPID(P, I, D);

@@ -6,7 +6,7 @@ import org.usfirst.frc.team1732.robot.Robot;
 
 public class SideTwoGearAutoData {
 
-	static final double FALL_BACK_DISTANCE = 100;
+	static final double MAX_SETPOINT = 80;
 
 	static final double	DRIVE_1_SETPOINT	= 56;
 	static final double	TURN_1_LEFT			= 60;

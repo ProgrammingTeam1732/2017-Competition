@@ -118,11 +118,11 @@ public class OI {
 		gearScore.whenActive(new GearIntakeSetDownOut());
 		gearScore.whenInactive(new GearIntakeSetUpStop());
 
-		// flywheelOn.whenActive(new EnableFlywheel());
-		// flywheelOn.whenInactive(new DisableFlywheel());
+		flywheelOn.whenActive(new EnableFlywheel());
+		flywheelOn.whenInactive(new DisableFlywheel());
 
-		// shoot.whenPressed(new Shoot());
-		// shoot.whenReleased(new StopShoot());
+		shoot.whenPressed(new Shoot());
+		shoot.whenReleased(new StopShoot());
 
 		craaw.whenPressed(new ArmSetOutGroup());
 		craaw.whenReleased(new ArmSetIn());

@@ -11,9 +11,6 @@ import com.ctre.CANTalon.TalonControlMode;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-/**
- *
- */
 public class Flywheel extends Subsystem implements SmartDashboardGroup {
 
 	public final CANTalon motor = new CANTalon(RobotMap.FLYWHEEL_MOTOR_DEVICE_NUMBER);
@@ -40,6 +37,7 @@ public class Flywheel extends Subsystem implements SmartDashboardGroup {
 		super(NAME);
 		motor.setFeedbackDevice(FeedbackDevice.QuadEncoder);
 		motor.setAllowableClosedLoopErr(0);
+		motor.configNominalOutputVoltage(0, 0);
 		motor.configPeakOutputVoltage(0, MAX_OUTPUT_VOLTAGE);
 		motor.setPID(P, I, D);
 		motor.reverseSensor(false);

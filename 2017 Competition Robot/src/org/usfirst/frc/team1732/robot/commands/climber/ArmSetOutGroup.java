@@ -14,7 +14,6 @@ public class ArmSetOutGroup extends CommandGroup {
 		addSequential(new Wait(0.2));
 		addSequential(new GearIntakeSetUp());
 		addSequential(new GearIntakeSetStopperIn());
-		addSequential(new Wait(0.3));
 		addSequential(new ArmSetOut());
 	}
 

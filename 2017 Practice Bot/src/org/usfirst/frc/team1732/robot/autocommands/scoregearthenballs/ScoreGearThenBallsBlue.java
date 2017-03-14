@@ -28,7 +28,7 @@ public class ScoreGearThenBallsBlue extends CommandGroup {
 		// places the gear, drives back
 		addSequential(new VisionPlaceGear(	ScoreGearThenBallsData.DRIVE_1_LEFT_SETPOINT,
 											ScoreGearThenBallsData.DRIVE_1_RIGHT_SETPOINT,
-											ScoreGearThenBallsData.FALL_BACK_DISTANCE, true));
+											ScoreGearThenBallsData.MAX_SETPOINT));
 
 		// BALL SCORING
 
