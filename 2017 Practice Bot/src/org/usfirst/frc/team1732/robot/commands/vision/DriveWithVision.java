@@ -4,7 +4,6 @@ import static org.usfirst.frc.team1732.robot.Robot.driveTrain;
 import static org.usfirst.frc.team1732.robot.Robot.visionMain;
 
 import org.usfirst.frc.team1732.robot.Robot;
-import org.usfirst.frc.team1732.robot.commands.vision.old.DriveWithVisionOld;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -32,9 +31,9 @@ public class DriveWithVision extends Command {
 		smartDashboardDistance = distance;
 	}
 
-	public static DriveWithVisionOld newCommandUseSmartDashboardDistance() {
-		return new DriveWithVisionOld(smartDashboardDistance);
-	}
+	// public static DriveWithVisionOld newCommandUseSmartDashboardDistance() {
+	// return new DriveWithVisionOld(smartDashboardDistance);
+	// }
 
 	// Called just before this Command runs the first time
 	@Override

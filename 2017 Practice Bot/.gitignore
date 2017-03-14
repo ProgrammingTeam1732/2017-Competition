@@ -1,1 +1,8 @@
 /bin/
+/build/
+/dist/
+/.classpath
+/.gitignore
+/.project
+/build.properties
+/build.xml
