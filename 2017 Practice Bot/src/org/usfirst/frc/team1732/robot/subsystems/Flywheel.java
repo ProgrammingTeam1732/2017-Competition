@@ -20,14 +20,17 @@ public class Flywheel extends Subsystem implements SmartDashboardGroup {
 	// public static final double REVERSE_SPEED = 1;
 
 	// public static final int COUNTS_PER_REVOLUTION = 1;
-	public static final int	COUNTS_PER_SECOND_TARGET	= -18000;
+	public static final int	COUNTS_PER_SECOND_TARGET	= 18000;
 	public static final int	COUNTS_PER_SECOND_ERROR		= COUNTS_PER_SECOND_TARGET / 50;
+	private double			setpoint					= COUNTS_PER_SECOND_TARGET;
 
-	private static final double	P					= -Float.MAX_VALUE;
+	public static final double	MAX_OUTPUT_VOLTAGE	= 12;
+	private static final double	MAX_VELOCITY		= 32000;
+	private static final double	BASE_VOLTAGE		= 8;
+	private static final double	P					= 0;										// Float.MAX_VALUE;
 	private static final double	I					= 0;
 	private static final double	D					= 0;
-	private double				setpoint			= COUNTS_PER_SECOND_TARGET;
-	public static final double	MAX_OUTPUT_VOLTAGE	= -8;
+	private static final double	F					= 0.75 * 1023 / COUNTS_PER_SECOND_TARGET;
 
 	private boolean isAutoControlled = false;
 
@@ -36,11 +39,12 @@ public class Flywheel extends Subsystem implements SmartDashboardGroup {
 	public Flywheel() {
 		super(NAME);
 		motor.setFeedbackDevice(FeedbackDevice.QuadEncoder);
-		motor.setAllowableClosedLoopErr(0);
-		motor.configNominalOutputVoltage(0, 0);
-		motor.configPeakOutputVoltage(0, MAX_OUTPUT_VOLTAGE);
+		motor.setAllowableClosedLoopErr(COUNTS_PER_SECOND_ERROR);
+		// motor.configNominalOutputVoltage(0, 0);
+		// motor.configPeakOutputVoltage(MAX_OUTPUT_VOLTAGE, 0);
 		motor.setPID(P, I, D);
-		motor.reverseSensor(false);
+		motor.setF(F);
+		motor.reverseSensor(true);
 		motor.enableBrakeMode(false);
 		motor.SetVelocityMeasurementPeriod(CANTalon.VelocityMeasurementPeriod.Period_1Ms);
 		motor.SetVelocityMeasurementWindow(10);
@@ -131,6 +135,7 @@ public class Flywheel extends Subsystem implements SmartDashboardGroup {
 		dashboard.addItem(SmartDashboardItem.newDoubleReciever(directory + "D", P, motor::setD));
 		dashboard.addItem(SmartDashboardItem.newDoubleReciever(	directory + "Setpoint",
 																(double) COUNTS_PER_SECOND_TARGET, this::setSetpoint));
+		dashboard.addItem(SmartDashboardItem.newDoubleReciever(directory + "Set speed", (double) 0, this::setSpeed));
 
 		dashboard.addItem(SmartDashboardItem.newNumberSender(directory + "Error", motor::getClosedLoopError));
 		dashboard.addItem(SmartDashboardItem.newNumberSender(directory + "Output", this::getOutput));
