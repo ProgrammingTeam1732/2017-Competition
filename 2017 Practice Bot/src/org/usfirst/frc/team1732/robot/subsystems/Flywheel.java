@@ -20,14 +20,16 @@ public class Flywheel extends Subsystem implements SmartDashboardGroup {
 	// public static final double REVERSE_SPEED = 1;
 
 	// public static final int COUNTS_PER_REVOLUTION = 1;
-	public static final int	COUNTS_PER_SECOND_TARGET	= 18000;
-	public static final int	COUNTS_PER_SECOND_ERROR		= COUNTS_PER_SECOND_TARGET / 50;
+	public static final int	COUNTS_PER_SECOND_TARGET	= 19500;
+	public static final int	COUNTS_PER_SECOND_ERROR		= 300;						// COUNTS_PER_SECOND_TARGET
+																					// /
+																					// 50;
 	private double			setpoint					= COUNTS_PER_SECOND_TARGET;
 
 	public static final double	MAX_OUTPUT_VOLTAGE	= 12;
 	private static final double	MAX_VELOCITY		= 32000;
 	private static final double	BASE_VOLTAGE		= 8;
-	private static final double	P					= 0;										// Float.MAX_VALUE;
+	private static final double	P					= Double.MAX_VALUE;							// Float.MAX_VALUE;
 	private static final double	I					= 0;
 	private static final double	D					= 0;
 	private static final double	F					= 0.75 * 1023 / COUNTS_PER_SECOND_TARGET;
@@ -40,10 +42,10 @@ public class Flywheel extends Subsystem implements SmartDashboardGroup {
 		super(NAME);
 		motor.setFeedbackDevice(FeedbackDevice.QuadEncoder);
 		motor.setAllowableClosedLoopErr(COUNTS_PER_SECOND_ERROR);
-		// motor.configNominalOutputVoltage(0, 0);
-		// motor.configPeakOutputVoltage(MAX_OUTPUT_VOLTAGE, 0);
+		motor.configNominalOutputVoltage(0, 0);
+		motor.configPeakOutputVoltage(MAX_OUTPUT_VOLTAGE, 0);
 		motor.setPID(P, I, D);
-		motor.setF(F);
+		// motor.setF(F);
 		motor.reverseSensor(true);
 		motor.enableBrakeMode(false);
 		motor.SetVelocityMeasurementPeriod(CANTalon.VelocityMeasurementPeriod.Period_1Ms);
@@ -143,6 +145,8 @@ public class Flywheel extends Subsystem implements SmartDashboardGroup {
 		dashboard.addItem(SmartDashboardItem.newNumberSender(directory + "Voltage", motor::getOutputVoltage));
 		dashboard.addItem(SmartDashboardItem.newNumberSender(directory + "Encoder Velocity", motor::getEncVelocity));
 		dashboard.addItem(SmartDashboardItem.newNumberSender(directory + "Posistion", motor::getPosition));
+		dashboard.addItem(SmartDashboardItem.newNumberSender(directory + "Current", motor::getOutputCurrent));
+
 	}
 
 }
