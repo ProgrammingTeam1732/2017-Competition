@@ -39,7 +39,7 @@ public class DriveWithVisionStraight extends Command {
 
 		driveTrain.setEncoderSetpoint(MAX_SETPOINT);
 		driveTrain.setGyroSetpoint(0);
-		visionMain.setVisionSetpoint(0);
+		visionMain.setGearSetpoint(0);
 	}
 
 	public static final double	DEFAULT_TARGET_INCHES	= 10;
@@ -125,7 +125,7 @@ public class DriveWithVisionStraight extends Command {
 	protected void end() {
 		Robot.pixyCamera.turnOffLights();
 		driveTrain.driveRaw(0, 0);
-		visionMain.resetPIDValues();
+		visionMain.resetGearPIDValues();
 	}
 
 	public static double getMiddle() {

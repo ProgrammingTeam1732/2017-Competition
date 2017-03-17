@@ -5,7 +5,14 @@ package org.usfirst.frc.team1732.robot.vision;
  */
 public class BoilerTarget extends VisionTarget {
 
-	public static final double BOILER_TARGET_HEIGHT_INCHES = 10;
+	public static final double	BOILER_TARGET_HEIGHT_INCHES	= 10;
+	public static final double	BOILER_TARGET_WIDTH_INCHES	= 15;
+
+	public static final double	BOILER_TARGET_UPPER_TAPE_HEIGHT		= 4;
+	public static final double	BOILER_TARGET_EMPTY_SPACE_HEIGHT	= 4;
+	public static final double	BOILER_TARGET_LOWER_TAPE_HEIGHT		= 2;
+
+	public static final double MIN_TOTAL_SCORE = 0;
 
 	public BoilerTarget(Rectangle a, Rectangle b) {
 		super(a, b);
@@ -38,19 +45,28 @@ public class BoilerTarget extends VisionTarget {
 	 * @return the pair of rectangles most likely to represent a BoilerTarget
 	 */
 	public static BoilerTarget getBestVisionTarget(Rectangle[] rectangles) {
-		if (rectangles.length < 2)
+		if (rectangles == null || rectangles.length < 2) {
 			return null;
-		// determine which two of the counours actually are the correct two
-		BoilerTarget bestPair = new BoilerTarget(rectangles[0], rectangles[1]);
-		BoilerTarget pair;
-		for (int i = 0; i < rectangles.length - 1; i++) {
-			for (int j = i + 1; j < rectangles.length; j++) {
-				pair = new BoilerTarget(rectangles[i], rectangles[j]);
-				if (pair.getScore() > bestPair.getScore())
-					bestPair = pair;
+		} else {// else if (rectangles.length > 1) {
+			BoilerTarget bestTarget = new BoilerTarget(rectangles[0], rectangles[1]);
+			for (int i = 0; i < rectangles.length - 1; i++) {
+				for (int j = i + 1; j < rectangles.length; j++) {
+					BoilerTarget possiblePair = new BoilerTarget(rectangles[i], rectangles[j]);
+					if (possiblePair.getScore() > bestTarget.getScore())
+						bestTarget = possiblePair;
+				}
+			}
+			// System.out.println("Double score: " + bestTarget.getScore());
+			if (bestTarget.getScore() > MIN_TOTAL_SCORE) {
+				return bestTarget;
+			} else {
+				return null;
 			}
 		}
-		return bestPair;
 	}
 
+	@Override
+	public String toString() {
+		return String.valueOf(getScore());
+	}
 }

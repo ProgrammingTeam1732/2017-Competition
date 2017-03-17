@@ -1,10 +1,10 @@
 package org.usfirst.frc.team1732.robot.vision;
 
-import org.usfirst.frc.team1732.robot.Robot;
 import org.usfirst.frc.team1732.robot.commands.vision.DriveWithVision;
 import org.usfirst.frc.team1732.robot.smartdashboard.MySmartDashboard;
 import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardGroup;
 import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardItem;
+import org.usfirst.frc.team1732.robot.subsystems.PixyCamera;
 
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDSource;
@@ -28,12 +28,19 @@ public class VisionMain implements SmartDashboardGroup {
 	private boolean			isNewBoilerDataAvailable	= false;
 
 	// Vision Angle Stuff
-	private final PIDSource		visionAngleSource	= this.getVisionPIDSource();
-	private final PIDController	visionPID			= new PIDController(visionP, visionI, visionD, visionAngleSource,
+	private final PIDSource		gearAngleSource	= getGearPIDSource();
+	private final PIDController	gearPID			= new PIDController(gearP, gearI, gearD, gearAngleSource,
+																	VisionMain::voidMethod);
+	public static final double	gearP			= 0.02;
+	public static final double	gearI			= 0;
+	public static final double	gearD			= 0;
+
+	private final PIDSource		boilerAngleSource	= getBoilerPIDSource();
+	private final PIDController	boilerPID			= new PIDController(boilerP, boilerI, boilerD, boilerAngleSource,
 																		VisionMain::voidMethod);
-	public static final double	visionP				= 0.02;
-	public static final double	visionI				= 0;
-	public static final double	visionD				= 0;
+	public static final double	boilerP				= 0.02;
+	public static final double	boilerI				= 0;
+	public static final double	boilerD				= 0;
 
 	public static final double	VISION_DEADBAND_DEGREES	= 5;
 	public static final double	MAX_OUTPUT				= 0.4;
@@ -45,10 +52,10 @@ public class VisionMain implements SmartDashboardGroup {
 		gearArduino = new Arduino(SerialPort.Port.kUSB1);
 		boilerArduino = new Arduino(SerialPort.Port.kUSB2);
 		// Vision PID
-		visionPID.setAbsoluteTolerance(VISION_DEADBAND_DEGREES);
-		visionPID.setContinuous(false);
-		visionPID.setOutputRange(MIN_OUTPUT, MAX_OUTPUT);
-		visionPID.enable();
+		gearPID.setAbsoluteTolerance(VISION_DEADBAND_DEGREES);
+		gearPID.setContinuous(false);
+		gearPID.setOutputRange(MIN_OUTPUT, MAX_OUTPUT);
+		gearPID.enable();
 	}
 
 	/**
@@ -176,9 +183,19 @@ public class VisionMain implements SmartDashboardGroup {
 		// GearTarget.GEAR_TARGET_HEIGHT_INCHES, VERTICAL_FIELD_OF_VIEW,
 		// IMAGE_HEIGHT);
 
-		return gearTarget.getVerticalDistance(	GearTarget.GEAR_TARGET_HEIGHT_INCHES,
-												Robot.pixyCamera.HORIZONTAL_FIELD_OF_VIEW,
-												Robot.pixyCamera.IMAGE_WIDTH);
+		return gearTarget.getHorizontalDistance(GearTarget.GEAR_TARGET_HEIGHT_INCHES,
+												PixyCamera.HORIZONTAL_FIELD_OF_VIEW, PixyCamera.IMAGE_WIDTH);
+	}
+
+	public double getInchesToBoiler() {
+		if (boilerTarget == null)
+			return -1;
+		// return gearTarget.getVerticalDistance(
+		// GearTarget.GEAR_TARGET_HEIGHT_INCHES, VERTICAL_FIELD_OF_VIEW,
+		// IMAGE_HEIGHT);
+
+		return boilerTarget.getHorizontalDistance(	BoilerTarget.BOILER_TARGET_WIDTH_INCHES,
+													PixyCamera.HORIZONTAL_FIELD_OF_VIEW, PixyCamera.IMAGE_WIDTH);
 	}
 
 	/**
@@ -190,14 +207,25 @@ public class VisionMain implements SmartDashboardGroup {
 		if (gearTarget == null) {
 			return 0;
 		}
-		return gearTarget.getHorizontalAngle(Robot.pixyCamera.HORIZONTAL_FIELD_OF_VIEW, Robot.pixyCamera.IMAGE_WIDTH);
+		return gearTarget.getHorizontalAngle(PixyCamera.HORIZONTAL_FIELD_OF_VIEW, PixyCamera.IMAGE_WIDTH);
+	}
+
+	public double getAngleToBoiler() {
+		if (boilerTarget == null) {
+			return 0;
+		}
+		return boilerTarget.getHorizontalAngle(PixyCamera.HORIZONTAL_FIELD_OF_VIEW, PixyCamera.IMAGE_WIDTH);
 	}
 
 	public boolean canSeeGearPeg() {
 		return gearTarget != null;
 	}
 
-	private PIDSource getVisionPIDSource() {
+	public boolean canSeeBoiler() {
+		return boilerTarget != null;
+	}
+
+	private PIDSource getGearPIDSource() {
 		return new PIDSource() {
 			@Override
 			public void setPIDSourceType(PIDSourceType pidSource) {}
@@ -214,6 +242,23 @@ public class VisionMain implements SmartDashboardGroup {
 		};
 	}
 
+	private PIDSource getBoilerPIDSource() {
+		return new PIDSource() {
+			@Override
+			public void setPIDSourceType(PIDSourceType pidSource) {}
+
+			@Override
+			public PIDSourceType getPIDSourceType() {
+				return PIDSourceType.kDisplacement;
+			}
+
+			@Override
+			public double pidGet() {
+				return getAngleToBoiler();
+			}
+		};
+	}
+
 	private static void voidMethod(double d) {}
 
 	@Override
@@ -222,19 +267,18 @@ public class VisionMain implements SmartDashboardGroup {
 		String visionDirectory = directory + "vision/";
 
 		dashboard.addItem(SmartDashboardItem.newNumberSender(visionDirectory + "Gear Peg Score", this::getGearScore));
-		dashboard.addItem(SmartDashboardItem.newNumberSender(	visionDirectory + "Vision inches",
-																this::getInchesToGearPeg));
-		dashboard.addItem(SmartDashboardItem.newNumberSender(	visionDirectory + "Vision degrees",
-																this::getAngleToGearPeg));
 		dashboard
-				.addItem(SmartDashboardItem.newBooleanSender(visionDirectory + "Can see target?", this::canSeeGearPeg));
+				.addItem(SmartDashboardItem.newNumberSender(visionDirectory + "Gear inches", this::getInchesToGearPeg));
+		dashboard
+				.addItem(SmartDashboardItem.newNumberSender(visionDirectory + "Gear degrees", this::getAngleToGearPeg));
+		dashboard.addItem(SmartDashboardItem.newBooleanSender(	visionDirectory + "Can see gear peg?",
+																this::canSeeGearPeg));
 
-		dashboard.addItem(SmartDashboardItem.newNumberSender(	visionDirectory + "Vision Setpoint",
-																visionPID::getSetpoint));
-		dashboard.addItem(SmartDashboardItem.newNumberSender(visionDirectory + "Vision Error", visionPID::getError));
-		dashboard.addItem(SmartDashboardItem.newBooleanSender(	visionDirectory + "At vision setpoint?",
-																visionPID::onTarget));
-		dashboard.addItem(SmartDashboardItem.newNumberSender(visionDirectory + "Vision PID Output", visionPID::get));
+		dashboard.addItem(SmartDashboardItem.newNumberSender(visionDirectory + "Gear Setpoint", gearPID::getSetpoint));
+		dashboard.addItem(SmartDashboardItem.newNumberSender(visionDirectory + "Gear Error", gearPID::getError));
+		dashboard
+				.addItem(SmartDashboardItem.newBooleanSender(visionDirectory + "At gear setpoint?", gearPID::onTarget));
+		dashboard.addItem(SmartDashboardItem.newNumberSender(visionDirectory + "Gear PID Output", gearPID::get));
 		dashboard.addItem(SmartDashboardItem.newBooleanSender(	visionDirectory + "Gear Camera Enabled",
 																this::isGearCameraEnabled));
 		dashboard.addItem(SmartDashboardItem.newBooleanSender(	visionDirectory + "Boiler Camera Enabled",
@@ -248,11 +292,15 @@ public class VisionMain implements SmartDashboardGroup {
 		dashboard.addItem(SmartDashboardItem.newDoubleReciever(	visionDirectory + "Turning P Middle",
 																DriveWithVision.getMiddle(),
 																DriveWithVision::setMiddle));
-		SmartDashboard.putData("Vision PID", visionPID);
+		SmartDashboard.putData("Vision PID", gearPID);
 	}
 
-	public void resetPIDValues() {
-		visionPID.setPID(visionP, visionI, visionD);
+	public void resetGearPIDValues() {
+		gearPID.setPID(gearP, gearI, gearD);
+	}
+
+	public void resetBoilerPIDValues() {
+		gearPID.setPID(gearP, gearI, gearD);
 	}
 
 	public boolean isGearCameraEnabled() {
@@ -263,20 +311,36 @@ public class VisionMain implements SmartDashboardGroup {
 		return !boilerArduino.isDisabled();
 	}
 
-	public void setVisionSetpoint(double setpoint) {
-		visionPID.setSetpoint(setpoint);
+	public void setGearSetpoint(double setpoint) {
+		gearPID.setSetpoint(setpoint);
 	}
 
-	public void setPIDValues(double p, double i, double d) {
-		visionPID.setPID(p, i, d);
+	public void setBoilerSetpoint(double setpoint) {
+		boilerPID.setSetpoint(setpoint);
 	}
 
-	public double getVisionPIDOutput() {
-		return visionPID.get();
+	public void setGearPIDValues(double p, double i, double d) {
+		gearPID.setPID(p, i, d);
 	}
 
-	public boolean isVisionPIDOnTarget() {
-		return visionPID.onTarget();
+	public void setBoilerPIDValues(double p, double i, double d) {
+		boilerPID.setPID(p, i, d);
+	}
+
+	public double getGearPIDOutput() {
+		return gearPID.get();
+	}
+
+	public double getBoilerPIDOutput() {
+		return boilerPID.get();
+	}
+
+	public boolean isGearPIDOnTarget() {
+		return gearPID.onTarget();
+	}
+
+	public boolean isBoilerPIDOnTarget() {
+		return boilerPID.onTarget();
 	}
 
 	public double getGearScore() {
@@ -284,6 +348,14 @@ public class VisionMain implements SmartDashboardGroup {
 			return -1;
 		} else {
 			return gearTarget.getScore();
+		}
+	}
+
+	public double getBoilerScore() {
+		if (boilerTarget == null) {
+			return -1;
+		} else {
+			return boilerTarget.getScore();
 		}
 	}
 }

@@ -36,7 +36,7 @@ public class DriveWithVision extends Command {
 
 		driveTrain.setEncoderSetpoint(MAX_SETPOINT);
 		driveTrain.setGyroSetpoint(0);
-		visionMain.setVisionSetpoint(0);
+		visionMain.setGearSetpoint(0);
 	}
 
 	public static final double	DEFAULT_TARGET_INCHES	= 10;
@@ -88,8 +88,8 @@ public class DriveWithVision extends Command {
 			// double distance = visionMain.getInchesToGearPeg();
 
 			double P = lower + slope * distance;
-			visionMain.setPIDValues(P, 0, 0);
-			previousAngleOutput = visionMain.getVisionPIDOutput();
+			visionMain.setGearPIDValues(P, 0, 0);
+			previousAngleOutput = visionMain.getGearPIDOutput();
 			if (leftSetpoint > MAX_SETPOINT)
 				leftSetpoint = MAX_SETPOINT - driveTrain.getLeftDistance();
 			if (rightSetpoint > MAX_SETPOINT)
@@ -136,7 +136,7 @@ public class DriveWithVision extends Command {
 	protected void end() {
 		Robot.pixyCamera.turnOffLights();
 		driveTrain.driveRaw(0, 0);
-		visionMain.resetPIDValues();
+		visionMain.resetGearPIDValues();
 	}
 
 	public static double getMiddle() {
