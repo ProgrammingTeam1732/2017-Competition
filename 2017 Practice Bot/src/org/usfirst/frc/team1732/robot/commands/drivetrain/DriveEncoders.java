@@ -37,6 +37,11 @@ public class DriveEncoders extends Command {
 	protected void execute() {
 		double leftOutput = driveTrain.getLeftPIDOutput();
 		double rightOutput = driveTrain.getRightPIDOutput();
+
+		if (leftDistance == rightDistance) {
+			leftOutput = leftOutput - driveTrain.getLeftRightAdjustment();
+			rightOutput = rightOutput + driveTrain.getLeftRightAdjustment();
+		}
 		driveTrain.driveRaw(leftOutput, rightOutput);
 	}
 

@@ -9,7 +9,7 @@ public class ScoreMiddleGear extends CommandGroup {
 
 	public ScoreMiddleGear() {
 		addSequential(new InitGearIntake());
-		addSequential(new VisionPlaceGear(-40, 86));
+		addSequential(new VisionPlaceGear(-40, 86, false));
 	}
 
 }

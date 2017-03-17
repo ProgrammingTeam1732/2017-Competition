@@ -13,7 +13,7 @@ public class ScoreCenterGearThenBallsBlue extends CommandGroup {
 	public ScoreCenterGearThenBallsBlue() {
 		addSequential(new InitGearIntake());
 		addSequential(new VisionPlaceGear(	ScoreCenterGearThenBallsData.DRIVE_BACK_DISTANCE,
-											ScoreCenterGearThenBallsData.MAX_SETPOINT));
+											ScoreCenterGearThenBallsData.MAX_SETPOINT, true));
 
 		// turn to face boiler
 		addSequential(new TurnWithGyro(ScoreCenterGearThenBallsData.TURN_1_ANGLE_BLUE));

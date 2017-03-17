@@ -20,7 +20,7 @@ public class TwoGearAutoRight extends CommandGroup {
 
 		// places the gear, drives back
 		addSequential(new VisionPlaceGear(	TwoGearAutoData.DRIVE_1_LEFT_SETPOINT, TwoGearAutoData.DRIVE_1_RIGHT_SETPOINT,
-											TwoGearAutoData.MAX_SETPOINT));
+											TwoGearAutoData.MAX_SETPOINT, true));
 
 		// turns to face the gear on ground
 		addSequential(new TurnWithGyro(TwoGearAutoData.TURN_1_ANGLE_RIGHT));
@@ -45,6 +45,7 @@ public class TwoGearAutoRight extends CommandGroup {
 		addSequential(new TurnWithGyro(TwoGearAutoData.TURN_2_ANGLE_RIGHT));
 
 		// scores second gear!!!
-		addSequential(new VisionPlaceGear(TwoGearAutoData.DRIVE_4_DRIVE_BACK_SETPOINT, TwoGearAutoData.MAX_SETPOINT));
+		addSequential(new VisionPlaceGear(	TwoGearAutoData.DRIVE_4_DRIVE_BACK_SETPOINT, TwoGearAutoData.MAX_SETPOINT,
+											true));
 	}
 }

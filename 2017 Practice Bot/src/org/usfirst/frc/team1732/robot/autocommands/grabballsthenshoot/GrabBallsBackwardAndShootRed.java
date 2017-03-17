@@ -12,7 +12,7 @@ public class GrabBallsBackwardAndShootRed extends CommandGroup {
 	public GrabBallsBackwardAndShootRed() {
 		addSequential(new InitGearIntake());
 
-		// drive backwards
+		// drive forward
 		addSequential(new DriveEncoders(GrabBallsBackwardAndShootData.DRIVE_1_SETPOINT));
 
 		// turn into hopper
@@ -24,20 +24,26 @@ public class GrabBallsBackwardAndShootRed extends CommandGroup {
 		// wait for balls to fall in
 		addSequential(new Wait(GrabBallsBackwardAndShootData.WAIT_1_TIME));
 
-		// drive forward into boiler
+		// drive away from ball hopper
 		addSequential(new DriveEncoders(GrabBallsBackwardAndShootData.DRIVE_3_SETPOINT));
 
-		// turn into boiler
-		// addSequential(new
-		// TurnWithGyro(GrabBallsBackwardAndShootData.TURN_2_ANGLE_RED));
-		// addSequential(new
-		// DriveEncoders(GrabBallsBackwardAndShootData.DRIVE_4_SETPOINT));
+		// point at boiler
+		addSequential(new TurnWithGyro(GrabBallsBackwardAndShootData.TURN_2_ANGLE_RED));
+
+		// drive to boiler
+		addSequential(new DriveEncoders(GrabBallsBackwardAndShootData.DRIVE_4_SETPOINT));
+
+		// face boiler
+		addSequential(new TurnWithGyro(GrabBallsBackwardAndShootData.TURN_3_ANGLE_RED));
+
+		// drive into boiler
+		addSequential(new DriveEncoders(GrabBallsBackwardAndShootData.DRIVE_5_SETPOINT));
 
 		// shoot commands
 		// addSequential(new
 		// ShootTime(GrabBallsBackwardAndShootData.SHOOT_TIME));
 
 		// drive towards hoppers
-		// addSequential(new DriveToHopperFromBoilerRed());
+		// addSequential(new DriveToHopperFromBoilerRED());
 	}
 }

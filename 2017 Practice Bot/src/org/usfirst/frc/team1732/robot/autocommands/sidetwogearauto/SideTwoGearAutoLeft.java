@@ -26,7 +26,7 @@ public class SideTwoGearAutoLeft extends CommandGroup {
 		// places the gear, drives back
 		addSequential(new VisionPlaceGear(	SideTwoGearAutoData.DRIVE_2_LEFT_SETPOINT,
 											SideTwoGearAutoData.DRIVE_2_RIGHT_SETPOINT,
-											SideTwoGearAutoData.MAX_SETPOINT));
+											SideTwoGearAutoData.MAX_SETPOINT, true));
 
 		addSequential(new TurnWithGyro(SideTwoGearAutoData.TURN_2_LEFT));
 
@@ -52,6 +52,6 @@ public class SideTwoGearAutoLeft extends CommandGroup {
 
 		// scores second gear!!!
 		addSequential(new VisionPlaceGear(	SideTwoGearAutoData.DRIVE_4_DRIVE_BACK_SETPOINT,
-											SideTwoGearAutoData.MAX_SETPOINT));
+											SideTwoGearAutoData.MAX_SETPOINT, true));
 	}
 }

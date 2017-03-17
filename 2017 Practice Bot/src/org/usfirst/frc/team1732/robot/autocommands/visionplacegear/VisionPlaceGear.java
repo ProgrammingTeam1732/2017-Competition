@@ -8,28 +8,33 @@ import org.usfirst.frc.team1732.robot.commands.gearIntake.base.GearIntakeSetDown
 import org.usfirst.frc.team1732.robot.commands.gearIntake.base.GearIntakeSetUp;
 import org.usfirst.frc.team1732.robot.commands.helpercommands.Wait;
 import org.usfirst.frc.team1732.robot.commands.vision.DriveWithVision;
+import org.usfirst.frc.team1732.robot.commands.vision.DriveWithVisionStraight;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class VisionPlaceGear extends CommandGroup {
 
-	public VisionPlaceGear(double driveBackDistance, double maxSetpoint) {
-		this(driveBackDistance, driveBackDistance, maxSetpoint);
+	public VisionPlaceGear(double driveBackDistance, double maxSetpoint, boolean turn) {
+		this(driveBackDistance, driveBackDistance, maxSetpoint, turn);
 	}
 
-	public VisionPlaceGear(double leftDriveBackDistance, double rightDriveBackDistance, double maxSetpoint) {
-		this(() -> leftDriveBackDistance, () -> rightDriveBackDistance, maxSetpoint);
+	public VisionPlaceGear(double leftDriveBackDistance, double rightDriveBackDistance, double maxSetpoint,
+			boolean turn) {
+		this(() -> leftDriveBackDistance, () -> rightDriveBackDistance, maxSetpoint, turn);
 	}
 
-	public VisionPlaceGear(DoubleSupplier driveBackDistance, double maxSetpoint) {
-		this(driveBackDistance, driveBackDistance, maxSetpoint);
+	public VisionPlaceGear(DoubleSupplier driveBackDistance, double maxSetpoint, boolean turn) {
+		this(driveBackDistance, driveBackDistance, maxSetpoint, turn);
 	}
 
 	public VisionPlaceGear(DoubleSupplier leftDriveBackDistance, DoubleSupplier rightDriveBackDistance,
-			double maxSetpoint) {
+			double maxSetpoint, boolean turn) {
 		// drive into gear peg
 		// addSequential(new TurnWithVision(0));
-		addSequential(new DriveWithVision(8, maxSetpoint, true));
+		if (turn)
+			addSequential(new DriveWithVision(8, maxSetpoint));
+		else
+			addSequential(new DriveWithVisionStraight(8, maxSetpoint));
 		addSequential(new Wait(0.1));
 
 		// place gear, drive back at same time

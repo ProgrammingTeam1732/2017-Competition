@@ -24,7 +24,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 
-	public static final double RIGHT_PERCENTAGE = 1;//0.95648717383821848004664142981469;
+	public static final double RIGHT_PERCENTAGE = 1;// 0.95648717383821848004664142981469;
 	// motors
 	// left motors
 	/**
@@ -54,9 +54,9 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 	// gyro controllers
 	private final PIDController	gyroPID					= new PIDController(gyroP, gyroI, gyroD, gyro,
 																			DriveTrain::voidMethod);
-	public static final double	GYRO_DEADBAND_DEGREES	= 4; // 5
-	public static final double	gyroP					= 0.008; // 0.0085
-	public static final double	gyroI					= 0.00005; // 0.000005
+	public static final double	GYRO_DEADBAND_DEGREES	= 4;											// 5
+	public static final double	gyroP					= 0.008;										// 0.0085
+	public static final double	gyroI					= 0.00005;										// 0.000005
 	public static final double	gyroD					= 0;
 
 	// encoders
@@ -74,10 +74,11 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 																			DriveTrain::voidMethod);
 	private final PIDController	rightEncoderPID			= new PIDController(encoderP, encoderI, encoderD, rightEncoder,
 																			DriveTrain::voidMethod);
-	public static final double	encoderP				= 0.03; // 0.02
+	public static final double	encoderP				= 0.03;															// 0.02
 	public static final double	encoderI				= 0;
 	public static final double	encoderD				= 0;
 	public static final double	ENCODER_DEADBAND_INCHES	= 6;
+	public static final double	errorDifferenceScalar	= 0.03;
 
 	// Min and max output
 	public static final double	ENCODER_MAX_OUTPUT	= 0.5;
@@ -684,6 +685,18 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 
 	public double getGyroError() {
 		return gyroPID.getError();
+	}
+
+	public double getLeftPIDError() {
+		return leftEncoderPID.getError();
+	}
+
+	public double getRightPIDError() {
+		return rightEncoderPID.getError();
+	}
+
+	public double getLeftRightAdjustment() {
+		return (driveTrain.getLeftPIDError() - driveTrain.getRightPIDError()) * errorDifferenceScalar;
 	}
 
 }

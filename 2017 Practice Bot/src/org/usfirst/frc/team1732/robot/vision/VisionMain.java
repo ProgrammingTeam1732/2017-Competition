@@ -9,15 +9,23 @@ import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardItem;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
+import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class VisionMain implements SmartDashboardGroup {
 
-	private Arduino arduino;
+	private Arduino	gearArduino;
+	private Arduino	boilerArduino;
 
-	private GearTarget gearTarget;
-	// private BoilerTarget boilerTarget;
-	private Rectangle[] rectangles = new Rectangle[0];
+	private GearTarget	gearTarget;
+	private Rectangle[]	gearRectangles			= new Rectangle[0];
+	private double		previousGearScore		= 0;
+	private boolean		isNewGearDataAvailable	= false;
+
+	private BoilerTarget	boilerTarget;
+	private Rectangle[]		boilerRectangles			= new Rectangle[0];
+	private double			previousBoilerScore			= 0;
+	private boolean			isNewBoilerDataAvailable	= false;
 
 	// Vision Angle Stuff
 	private final PIDSource		visionAngleSource	= this.getVisionPIDSource();
@@ -34,8 +42,8 @@ public class VisionMain implements SmartDashboardGroup {
 	public static final String NAME = "Vision Main";
 
 	public VisionMain() {
-		arduino = new Arduino();
-
+		gearArduino = new Arduino(SerialPort.Port.kUSB1);
+		boilerArduino = new Arduino(SerialPort.Port.kUSB2);
 		// Vision PID
 		visionPID.setAbsoluteTolerance(VISION_DEADBAND_DEGREES);
 		visionPID.setContinuous(false);
@@ -47,11 +55,13 @@ public class VisionMain implements SmartDashboardGroup {
 	 * Reads and parses Arduino rectangle data, updates the gear target variable
 	 */
 	public void run() {
-		if (isCameraEnabled()) {
-			parseData(arduino.getData());
+		if (isGearCameraEnabled()) {
+			gearRectangles = parseData(gearArduino.getData(), gearRectangles);
+			boilerRectangles = parseData(boilerArduino.getData(), boilerRectangles);
 			// if (rectangles != null)
 			// System.out.println(rectangles.length);
 			updateGearTarget();
+			updateBoilerTarget();
 		}
 	}
 
@@ -65,11 +75,12 @@ public class VisionMain implements SmartDashboardGroup {
 	 * @param s
 	 *            Data from the Arduino
 	 */
-	private void parseData(String s) {
+	private Rectangle[] parseData(String s, Rectangle[] previous) {
 		if (s == null) {
 			System.out.println("string is null");
-			return;
+			return previous;
 		}
+		Rectangle[] output = previous;
 		if (s.contains("Starting"))
 			started = true;
 		for (int i = 0; i < s.length() && started; i++) {
@@ -82,13 +93,13 @@ public class VisionMain implements SmartDashboardGroup {
 				found = false;
 				if (total != "") {
 					String[] rects = total.split("\n");
-					rectangles = new Rectangle[rects.length];
+					output = new Rectangle[rects.length];
 					for (int j = 0; j < rects.length; j++) {
 						String[] data = rects[j].split(" ");
 						try {
-							rectangles[j] = new Rectangle(	Integer.parseInt(data[1]), Integer.parseInt(data[3]),
-															Integer.parseInt(data[5]), Integer.parseInt(data[7]),
-															Integer.parseInt(data[9]));
+							output[j] = new Rectangle(	Integer.parseInt(data[1]), Integer.parseInt(data[3]),
+														Integer.parseInt(data[5]), Integer.parseInt(data[7]),
+														Integer.parseInt(data[9]));
 							// System.out.println(j + ": " + rectangles[j]);
 						} catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {}
 					}
@@ -96,6 +107,7 @@ public class VisionMain implements SmartDashboardGroup {
 				total = "";
 			}
 		}
+		return output;
 	}
 
 	/**
@@ -106,17 +118,37 @@ public class VisionMain implements SmartDashboardGroup {
 	 */
 	private void updateGearTarget() {
 		try {
-			gearTarget = GearTarget.getBestVisionTarget(rectangles);
-				double score = 0;
-				if(gearTarget != null) score = gearTarget.getScore();
-				if (roundToNDigits(previousScore, 5) == roundToNDigits(score, 5)) {
-					isNewDataAvailable = false;
-				} else {
-					isNewDataAvailable = true;
-				}
-				previousScore = score;
+			gearTarget = GearTarget.getBestVisionTarget(gearRectangles);
+			double score = 0;
+			if (gearTarget != null)
+				score = gearTarget.getScore();
+			if (roundToNDigits(previousGearScore, 5) == roundToNDigits(score, 5)) {
+				isNewGearDataAvailable = false;
+			} else {
+				isNewGearDataAvailable = true;
+			}
+			previousGearScore = score;
 		} catch (NullPointerException e) {
-			e.getMessage();
+			e.printStackTrace();
+		}
+	}
+
+	private void updateBoilerTarget() {
+		try {
+			for (Rectangle r : boilerRectangles)
+				System.out.println(r);
+			boilerTarget = BoilerTarget.getBestVisionTarget(boilerRectangles);
+			double score = 0;
+			if (boilerTarget != null)
+				score = boilerTarget.getScore();
+			if (roundToNDigits(previousBoilerScore, 5) == roundToNDigits(score, 5)) {
+				isNewBoilerDataAvailable = false;
+			} else {
+				isNewBoilerDataAvailable = true;
+			}
+			previousBoilerScore = score;
+		} catch (NullPointerException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -126,11 +158,12 @@ public class VisionMain implements SmartDashboardGroup {
 		return expanded / scaler;
 	}
 
-	private double	previousScore		= 0;
-	private boolean	isNewDataAvailable	= false;
+	public boolean isNewGearDataAvailable() {
+		return isNewGearDataAvailable;
+	}
 
-	public boolean isNewDataAvailable() {
-		return isNewDataAvailable;
+	public boolean isNewBoilerDataAvailable() {
+		return isNewBoilerDataAvailable;
 	}
 
 	/**
@@ -202,9 +235,10 @@ public class VisionMain implements SmartDashboardGroup {
 		dashboard.addItem(SmartDashboardItem.newBooleanSender(	visionDirectory + "At vision setpoint?",
 																visionPID::onTarget));
 		dashboard.addItem(SmartDashboardItem.newNumberSender(visionDirectory + "Vision PID Output", visionPID::get));
-		dashboard.addItem(SmartDashboardItem.newBooleanSender(	visionDirectory + "Camera Enabled",
-																this::isCameraEnabled));
-
+		dashboard.addItem(SmartDashboardItem.newBooleanSender(	visionDirectory + "Gear Camera Enabled",
+																this::isGearCameraEnabled));
+		dashboard.addItem(SmartDashboardItem.newBooleanSender(	visionDirectory + "Boiler Camera Enabled",
+																this::isBoilerCameraEnabled));
 		dashboard.addItem(SmartDashboardItem.newDoubleReciever(	visionDirectory + "Turning P Slope",
 																DriveWithVision.getSlope(), DriveWithVision::setSlope));
 		dashboard.addItem(SmartDashboardItem.newDoubleReciever(	visionDirectory + "Turning P Lower",
@@ -221,8 +255,12 @@ public class VisionMain implements SmartDashboardGroup {
 		visionPID.setPID(visionP, visionI, visionD);
 	}
 
-	public boolean isCameraEnabled() {
-		return !arduino.isDisabled();
+	public boolean isGearCameraEnabled() {
+		return !gearArduino.isDisabled();
+	}
+
+	public boolean isBoilerCameraEnabled() {
+		return !boilerArduino.isDisabled();
 	}
 
 	public void setVisionSetpoint(double setpoint) {

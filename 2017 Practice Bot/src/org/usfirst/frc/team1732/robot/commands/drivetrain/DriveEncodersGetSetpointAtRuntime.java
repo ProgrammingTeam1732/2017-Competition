@@ -39,6 +39,11 @@ public class DriveEncodersGetSetpointAtRuntime extends Command {
 	protected void execute() {
 		double leftOutput = driveTrain.getLeftPIDOutput();
 		double rightOutput = driveTrain.getRightPIDOutput();
+
+		if (leftDistance.getAsDouble() == rightDistance.getAsDouble()) {
+			leftOutput = leftOutput - driveTrain.getLeftRightAdjustment();
+			rightOutput = rightOutput + driveTrain.getLeftRightAdjustment();
+		}
 		driveTrain.driveRaw(leftOutput, rightOutput);
 	}
 
