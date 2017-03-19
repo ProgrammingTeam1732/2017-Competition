@@ -37,15 +37,25 @@ public class TurnWithGyro extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		if (Math.abs(driveTrain.getGyroError()) > IZONE) {
-			driveTrain.setGyroI(0);
-			System.out.println("Outisde gyro izone");
+		if (Math.abs(driveTrain.getGyroError()) < driveTrain.GYRO_IZONE) {
+			driveTrain.setGyroPIDS(driveTrain.gyroP, driveTrain.GYRO_IZONE_I, driveTrain.gyroD);
+		} else {
+			driveTrain.resetGyroPIDValues();
 		}
+
 		double output = driveTrain.getGyroPIDOutput();
-		double leftError = driveTrain.getLeftPIDError();
-		double rightError = driveTrain.getRightPIDError();
-		double leftRightAdjustment = (leftError + rightError) * driveTrain.errorDifferenceScalar;
-		driveTrain.driveRaw(output - leftRightAdjustment, -(output + leftRightAdjustment));
+
+		double leftOutput = output;
+		double rightOutput = -output;
+
+		// double leftError = driveTrain.getLeftPIDError();
+		// double rightError = driveTrain.getRightPIDError();
+		// double leftRightAdjustment = (leftError + rightError) *
+		// driveTrain.errorDifferenceScalar;
+		// leftOutput = output - leftRightAdjustment;
+		// rightOutput = output + leftRightAdjustment;
+
+		driveTrain.driveRaw(leftOutput, rightOutput);
 		System.out.println(output);
 	}
 
@@ -59,5 +69,6 @@ public class TurnWithGyro extends Command {
 	@Override
 	protected void end() {
 		Robot.driveTrain.driveRaw(0, 0);
+		Robot.driveTrain.resetGyroPIDValues();
 	}
 }

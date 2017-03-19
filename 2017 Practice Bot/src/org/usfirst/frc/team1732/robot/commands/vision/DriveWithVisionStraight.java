@@ -89,8 +89,8 @@ public class DriveWithVisionStraight extends Command {
 
 		double leftOutput = driveTrain.getLeftPIDOutput();
 		double rightOutput = driveTrain.getRightPIDOutput();
-		leftOutput = leftOutput - driveTrain.getLeftRightAdjustment();
-		rightOutput = rightOutput + driveTrain.getLeftRightAdjustment();
+		leftOutput = leftOutput + driveTrain.getLeftRightAdjustment();
+		rightOutput = rightOutput - driveTrain.getLeftRightAdjustment();
 		double max = Math.abs(Math.max(leftOutput, rightOutput));
 		if (max >= 1) {
 			leftOutput = leftOutput / max;
