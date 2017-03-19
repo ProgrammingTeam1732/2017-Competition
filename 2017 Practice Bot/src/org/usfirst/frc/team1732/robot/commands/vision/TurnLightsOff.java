@@ -18,7 +18,7 @@ public class TurnLightsOff extends InstantCommand {
 
     // Called once when the command executes
     protected void initialize() {
-    	Robot.pixyCamera.turnOnLights();
+    	Robot.pixyCamera.turnOffLights();
     }
 
 }
