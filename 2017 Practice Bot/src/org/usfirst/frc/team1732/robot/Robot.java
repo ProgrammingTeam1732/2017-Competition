@@ -25,6 +25,7 @@ import org.usfirst.frc.team1732.robot.commands.gearIntake.base.GearIntakeSetStop
 import org.usfirst.frc.team1732.robot.commands.gearIntake.base.GearIntakeSetStopperIn;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.base.GearIntakeSetStopperOut;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.base.GearIntakeSetUp;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.InitGearIntake;
 import org.usfirst.frc.team1732.robot.commands.individual.FlywheelForward;
 import org.usfirst.frc.team1732.robot.commands.individual.FlywheelReverse;
 import org.usfirst.frc.team1732.robot.commands.individual.FlywheelStop;
