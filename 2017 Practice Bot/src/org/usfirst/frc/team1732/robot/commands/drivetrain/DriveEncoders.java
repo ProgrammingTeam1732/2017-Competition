@@ -35,12 +35,19 @@ public class DriveEncoders extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
+		if (Math.abs(driveTrain.getLeftPIDError()) < driveTrain.ENCODER_IZONE
+				|| Math.abs(driveTrain.getRightPIDError()) < driveTrain.ENCODER_IZONE) {
+			driveTrain.setEncoderPIDS(driveTrain.encoderP, driveTrain.ENCODER_IZONE_I, driveTrain.encoderD);
+		} else {
+			driveTrain.resetEncoderPIDValues();
+		}
+
 		double leftOutput = driveTrain.getLeftPIDOutput();
 		double rightOutput = driveTrain.getRightPIDOutput();
 
 		if (leftDistance == rightDistance) {
-			leftOutput = leftOutput - driveTrain.getLeftRightAdjustment();
-			rightOutput = rightOutput + driveTrain.getLeftRightAdjustment();
+			leftOutput = leftOutput + driveTrain.getLeftRightAdjustment();
+			rightOutput = rightOutput - driveTrain.getLeftRightAdjustment();
 		}
 		driveTrain.driveRaw(leftOutput, rightOutput);
 	}
@@ -55,6 +62,7 @@ public class DriveEncoders extends Command {
 	@Override
 	protected void end() {
 		driveTrain.driveRaw(0, 0);
+		driveTrain.resetEncoderPIDValues();
 	}
 
 }

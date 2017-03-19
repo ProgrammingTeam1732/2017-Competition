@@ -17,7 +17,6 @@ import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * 
@@ -43,7 +42,7 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 
 	private final Solenoid		shifter		= new Solenoid(	RobotMap.PCM_CAN_ID,
 															RobotMap.DRIVE_TRAIN_SHIFTER_SOLENOID_DEVICE_NUMBER);
-	public static final boolean	HIGH_GEAR	= false;
+	public static final boolean	HIGH_GEAR	= true;
 	public static final boolean	LOW_GEAR	= !HIGH_GEAR;
 
 	// gyro
@@ -55,10 +54,12 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 	private final PIDController	gyroPID					= new PIDController(gyroP, gyroI, gyroD, gyro,
 																			DriveTrain::voidMethod);
 	public static final double	GYRO_DEADBAND_DEGREES	= 4;											// 5
-	public static final double	gyroP					= 0.008;										// 0.0085
-	public static final double	gyroI					= 0.00005;										// 0.000005
-	public static final double	gyroD					= 0;
+	public static final double	gyroP					= 0.0192;										// 0.0085
+	public static final double	gyroI					= 0;											// 0.000005
+	public static final double	gyroD					= 0.1;
 
+	public static final double	GYRO_IZONE		= 25;
+	public static final double	GYRO_IZONE_I	= -0.00032;
 	// encoders
 	// encoder sensors
 	private final Encoder		leftEncoder					= new Encoder(	RobotMap.LEFT_ENCODER_CHANNEL_A,
@@ -74,17 +75,31 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 																			DriveTrain::voidMethod);
 	private final PIDController	rightEncoderPID			= new PIDController(encoderP, encoderI, encoderD, rightEncoder,
 																			DriveTrain::voidMethod);
-	public static final double	encoderP				= 0.03;															// 0.02
+	public static final double	encoderP				= 0.008;														// 0.02
 	public static final double	encoderI				= 0;
 	public static final double	encoderD				= 0;
-	public static final double	ENCODER_DEADBAND_INCHES	= 6;
-	public static final double	errorDifferenceScalar	= 0.03;
+	public static final double	ENCODER_DEADBAND_INCHES	= 2;
+	public static final double	errorDifferenceScalar	= 0.035;
+
+	public static final double	ENCODER_IZONE	= 20;
+	public static final double	ENCODER_IZONE_I	= 0.0004;
+
+	public static final double	encoderTurningP					= 0.04;
+	public static final double	encoderTurningI					= 0;
+	public static final double	encoderTurningD					= 0.04;
+	public static final double	ENCODER_TURNING_DEADBAND_INCHES	= 0.5;
+
+	public static final double	ENCODER_IZONE_TURNING	= 4;
+	public static final double	ENCODER_IZONE_TURNING_I	= 0.001;
 
 	// Min and max output
-	public static final double	ENCODER_MAX_OUTPUT	= 0.5;
+	public static final double	ENCODER_MAX_OUTPUT	= 1;
 	public static final double	ENCODER_MIN_OUTPUT	= -ENCODER_MAX_OUTPUT;
-	public static final double	GYRO_MAX_OUTPUT		= 0.5;
-	public static final double	GYRO_MIN_OUTPUT		= -GYRO_MAX_OUTPUT;
+	// public static final double ENCODER_NOMINAL_POSITIVE = 0.1;
+	// public static final double ENCODER_NOMINAL_NEGATIVE =
+	// -ENCODER_NOMINAL_POSITIVE;
+	public static final double	GYRO_MAX_OUTPUT	= 0.8;
+	public static final double	GYRO_MIN_OUTPUT	= -GYRO_MAX_OUTPUT;
 	// public static final double MAX_OUTPUT = 0.5;
 	// public static final double MIN_OUTPUT = -ENCODER_MAX_OUTPUT;
 
@@ -330,7 +345,7 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 		dashboard.addItem(SmartDashboardItem.newBooleanSender(	leftDirectory + "At left setpoint?",
 																leftEncoderPID::onTarget));
 		dashboard.addItem(SmartDashboardItem.newNumberSender(leftDirectory + "Left PID Output", leftEncoderPID::get));
-		SmartDashboard.putData("Left PID", leftEncoderPID);
+		// SmartDashboard.putData("Left PID", leftEncoderPID);
 
 		// Right
 		String rightDirectory = directory + "Right/";
@@ -348,7 +363,7 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 																rightEncoderPID::onTarget));
 		dashboard
 				.addItem(SmartDashboardItem.newNumberSender(rightDirectory + "Right PID Output", rightEncoderPID::get));
-		SmartDashboard.putData("Right PID", rightEncoderPID);
+		// SmartDashboard.putData("Right PID", rightEncoderPID);
 
 		String gyroDirectory = directory + "Gyro/";
 		gyroISmartDashboard = dashboard
@@ -661,6 +676,10 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 		rightEncoderPID.setPID(p, i, d);
 	}
 
+	public void setGyroPIDS(double p, double i, double d) {
+		gyroPID.setPID(p, i, d);
+	}
+
 	public void setGyroI(double i) {
 		gyroPID.setPID(gyroPID.getP(), i, gyroPID.getD());
 	}
@@ -696,7 +715,12 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 	}
 
 	public double getLeftRightAdjustment() {
-		return (driveTrain.getLeftPIDError() - driveTrain.getRightPIDError()) * errorDifferenceScalar;
+		return (leftEncoderPID.getError() - rightEncoderPID.getError()) * errorDifferenceScalar;
+	}
+
+	public void setEncoderToTurningPID() {
+		leftEncoderPID.setPID(encoderTurningP, encoderTurningI, encoderTurningD);
+		rightEncoderPID.setPID(encoderTurningP, encoderTurningI, encoderTurningD);
 	}
 
 }
