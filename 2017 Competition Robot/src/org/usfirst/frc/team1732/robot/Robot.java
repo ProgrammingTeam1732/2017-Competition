@@ -121,6 +121,8 @@ public class Robot extends IterativeRobot {
 			// dashboard.addItem(SmartDashboardItem.newDoubleReciever("Light
 			// Voltage", 0.0, pixyCamera::setLightVoltage));
 			dashboard.addItem(SmartDashboardItem.newNumberSender("robotPeriodic() frequency ms", this::getFrequency));
+			dashboard.addItem(SmartDashboardItem.newDoubleReciever("Feeder Speed", -.5, feeder::setSpeed));
+			dashboard.addItem(SmartDashboardItem.newDoubleReciever("Intake Speed", .8, ballIntake::setSpeed));
 			SmartDashboard.putData(new TestVisionMain());
 			// addCamera();
 
