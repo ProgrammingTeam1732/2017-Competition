@@ -5,6 +5,8 @@ import java.util.function.BooleanSupplier;
 import org.usfirst.frc.team1732.robot.Robot;
 import org.usfirst.frc.team1732.robot.autocommands.grabballsthenshoot.GrabBallsBackwardAndShootBlue;
 import org.usfirst.frc.team1732.robot.autocommands.grabballsthenshoot.GrabBallsBackwardAndShootRed;
+import org.usfirst.frc.team1732.robot.autocommands.grabballsthenshoot.GrabBallsForwardAndShootBlue;
+import org.usfirst.frc.team1732.robot.autocommands.grabballsthenshoot.GrabBallsForwardAndShootRed;
 import org.usfirst.frc.team1732.robot.autocommands.scoreballsthengear.ScoreBallsThenGearBlue;
 import org.usfirst.frc.team1732.robot.autocommands.scoreballsthengear.ScoreBallsThenGearRed;
 import org.usfirst.frc.team1732.robot.autocommands.scoregearthenballs.ScoreGearThenBallsBlue;
@@ -40,6 +42,7 @@ public class AutoChooser implements SmartDashboardGroup {
 		ScoreGearThenBalls(new ScoreGearThenBallsRed(), new ScoreGearThenBallsBlue()),
 		ScoreBallsThenGear(new ScoreBallsThenGearRed(), new ScoreBallsThenGearBlue()),
 		GrabBallsBackwardThenShoot(new GrabBallsBackwardAndShootRed(), new GrabBallsBackwardAndShootBlue()),
+		GrabBallsForwardThenShoot(new GrabBallsForwardAndShootRed(), new GrabBallsForwardAndShootBlue()),
 		TwoGearAutoLeft(new TwoGearAutoLeft()),
 		TwoGearAutoRight(new TwoGearAutoRight()),
 		SideTwoGearAutoLeft(new SideTwoGearAutoLeft()),

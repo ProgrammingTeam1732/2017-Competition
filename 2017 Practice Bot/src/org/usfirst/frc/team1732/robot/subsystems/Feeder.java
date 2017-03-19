@@ -14,15 +14,16 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class Feeder extends Subsystem implements SmartDashboardGroup {
 
-	private final CANTalon		motor		= new CANTalon(RobotMap.FEEDER_MOTOR_DEVICE_NUMBER);
-	public static final double	IN_SPEED	= -1;
-	public static final double	STOP_SPEED	= 0;
-	public static final double	OUT_SPEED	= 1; // 0.75, 0.5
+	private final CANTalon motor = new CANTalon(RobotMap.FEEDER_MOTOR_DEVICE_NUMBER);
+	public static final double IN_SPEED = -1;
+	public static final double STOP_SPEED = 0;
+	public static final double OUT_SPEED = 1; // 0.75, 0.5
 
 	public static final String NAME = "Feeder";
 
 	@Override
-	public void initDefaultCommand() {}
+	public void initDefaultCommand() {
+	}
 
 	public void setIn() {
 		motor.set(IN_SPEED);
@@ -35,6 +36,10 @@ public class Feeder extends Subsystem implements SmartDashboardGroup {
 	public void setOut() {
 		motor.set(OUT_SPEED);
 	}
+
+//	public void setSpeed(double b) {
+//		OUT_SPEED = b;
+//	}
 
 	@Override
 	public void addToSmartDashboard(MySmartDashboard dashboard) {
