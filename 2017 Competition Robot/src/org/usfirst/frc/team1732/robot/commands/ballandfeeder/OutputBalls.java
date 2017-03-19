@@ -14,6 +14,6 @@ public class OutputBalls extends CommandGroup {
 	public OutputBalls() {
 		addSequential(new BallIntakeSetUp());
 		addSequential(new BallIntakeSetOut());
-		//addSequential(new FeederSetOut());
+		addSequential(new FeederSetOut());
 	}
 }

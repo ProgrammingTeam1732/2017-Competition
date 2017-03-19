@@ -20,7 +20,7 @@ public class Flywheel extends Subsystem implements SmartDashboardGroup {
 	// public static final double REVERSE_SPEED = 1;
 
 	// public static final int COUNTS_PER_REVOLUTION = 1;
-	public static final int	COUNTS_PER_SECOND_TARGET	= -19000;
+	public static final int	COUNTS_PER_SECOND_TARGET	= -18000;
 	public static final int	COUNTS_PER_SECOND_ERROR		= COUNTS_PER_SECOND_TARGET / 50;
 
 	private static final double	P					= Float.MAX_VALUE;			// -Float.MAX_VALUE
@@ -129,8 +129,8 @@ public class Flywheel extends Subsystem implements SmartDashboardGroup {
 		// TODO Auto-generated method stub
 		String directory = NAME + "/";
 		dashboard.addItem(SmartDashboardItem.newDoubleReciever(directory + "P", P, motor::setP));
-		dashboard.addItem(SmartDashboardItem.newDoubleReciever(directory + "I", I, motor::setI));
-		dashboard.addItem(SmartDashboardItem.newDoubleReciever(directory + "D", D, motor::setD));
+		dashboard.addItem(SmartDashboardItem.newDoubleReciever(directory + "I", P, motor::setI));
+		dashboard.addItem(SmartDashboardItem.newDoubleReciever(directory + "D", P, motor::setD));
 		dashboard.addItem(SmartDashboardItem.newDoubleReciever(	directory + "Setpoint",
 																(double) COUNTS_PER_SECOND_TARGET, this::setSetpoint));
 

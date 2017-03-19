@@ -2,7 +2,6 @@ package org.usfirst.frc.team1732.robot.autocommands.grabballsthenshoot;
 
 import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveEncoders;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.TurnWithGyro;
-import org.usfirst.frc.team1732.robot.commands.flywheel.ShootTime;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.InitGearIntake;
 import org.usfirst.frc.team1732.robot.commands.helpercommands.Wait;
 
@@ -29,11 +28,14 @@ public class GrabBallsBackwardAndShootBlue extends CommandGroup {
 		addSequential(new DriveEncoders(GrabBallsBackwardAndShootData.DRIVE_3_SETPOINT));
 
 		// turn into boiler
-		addSequential(new TurnWithGyro(GrabBallsBackwardAndShootData.TURN_2_ANGLE_BLUE));
-		addSequential(new DriveEncoders(GrabBallsBackwardAndShootData.DRIVE_4_SETPOINT));
+		// addSequential(new
+		// TurnWithGyro(GrabBallsBackwardAndShootData.TURN_2_ANGLE_BLUE));
+		// addSequential(new
+		// DriveEncoders(GrabBallsBackwardAndShootData.DRIVE_4_SETPOINT));
 
 		// shoot commands
-		addSequential(new ShootTime(GrabBallsBackwardAndShootData.SHOOT_TIME));
+		// addSequential(new
+		// ShootTime(GrabBallsBackwardAndShootData.SHOOT_TIME));
 
 		// drive towards hoppers
 		// addSequential(new DriveToHopperFromBoilerBlue());
