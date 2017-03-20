@@ -7,13 +7,26 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  */
 public class GrabBallsKeylineAndShootData {
 	static final double DRIVE_1_SETPOINT = 90;
-
+	
+	static final double TURN_TO_HOPPER_TIME = 1;
+	static final double TURN_TO_HOPPER_LEFT_SPEED = .1;
+	static final double TURN_TO_HOPPER_RIGHT_SPEED = .4;
+	
+	static final double DRIVE_INTO_HOPPER_TIME = .5;
+	static final double DRIVE_INTO_HOPPER_LEFT_SPEED = .3;
+	static final double DRIVE_INTO_HOPPER_RIGHT_SPEED = .3;
+	
+	static final double DRIVE_BACK_TIME = .7;
+	static final double DRIVE_BACK_SPEED = -.6;
+	
+	static final double CREEP_TOWARD_BOILER_SPEED = .2;
+	
 	static final double TURN_1_ANGLE_RED = 30;
 	static final double TURN_1_ANGLE_BLUE = -TURN_1_ANGLE_RED;
 
 	static final double DRIVE_2_TIME = 1;
 
-	static final double WAIT_1_TIME = 2;
+	static final double WAIT_1_TIME = 1;
 
 	static final double DRIVE_3_SETPOINT = 1;
 
