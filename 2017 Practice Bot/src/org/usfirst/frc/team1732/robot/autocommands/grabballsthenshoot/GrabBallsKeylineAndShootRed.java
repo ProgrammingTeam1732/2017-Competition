@@ -23,7 +23,7 @@ public class GrabBallsKeylineAndShootRed extends CommandGroup {
 		addSequential(new TurnWithGyro(GrabBallsKeylineAndShootData.TURN_2_ANGLE_RED));
 		addSequential(new DriveEncoders(GrabBallsKeylineAndShootData.DRIVE_4_SETPOINT));
 		addParallel(new EnableFlywheel());
-		addSequential(new DriveGyro(GrabBallsKeylineAndShootData.TURN_3_ANGLE_RED,
+		addSequential(new DriveGyro(GrabBallsKeylineAndShootData.TURN_3_TIME_RED,
 				GrabBallsKeylineAndShootData.DRIVE_LEFT_SPEED_RED, GrabBallsKeylineAndShootData.DRIVE_RIGHT_SPEED_RED));
 		addSequential(new ShootTime(GrabBallsKeylineAndShootData.SHOOT_TIME));
 	}

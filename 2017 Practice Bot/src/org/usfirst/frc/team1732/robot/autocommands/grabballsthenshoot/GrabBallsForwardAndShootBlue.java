@@ -34,7 +34,7 @@ public class GrabBallsForwardAndShootBlue extends CommandGroup {
 
 		addSequential(new DriveEncoders(GrabBallsForwardAndShootData.DRIVE_4_SETPOINT));
 		addParallel(new EnableFlywheel());
-		addSequential(new DriveGyro(GrabBallsForwardAndShootData.TURN_3_ANGLE_BLUE,
+		addSequential(new DriveTime(GrabBallsForwardAndShootData.TURN_3_TIME_BLUE,
 									GrabBallsForwardAndShootData.DRIVE_LEFT_SPEED_BLUE,
 									GrabBallsForwardAndShootData.DRIVE_RIGHT_SPEED_BLUE));
 		addSequential(new ShootTime(GrabBallsForwardAndShootData.SHOOT_TIME));

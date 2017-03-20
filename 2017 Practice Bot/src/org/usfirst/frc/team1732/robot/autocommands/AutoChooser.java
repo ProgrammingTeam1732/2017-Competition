@@ -5,6 +5,8 @@ import java.util.function.BooleanSupplier;
 import org.usfirst.frc.team1732.robot.Robot;
 import org.usfirst.frc.team1732.robot.autocommands.grabballsthenshoot.GrabBallsForwardAndShootBlue;
 import org.usfirst.frc.team1732.robot.autocommands.grabballsthenshoot.GrabBallsForwardAndShootRed;
+import org.usfirst.frc.team1732.robot.autocommands.grabballsthenshoot.GrabBallsKeylineAndShootBlue;
+import org.usfirst.frc.team1732.robot.autocommands.grabballsthenshoot.GrabBallsKeylineAndShootRed;
 import org.usfirst.frc.team1732.robot.autocommands.scoreballsthengear.ScoreBallsThenGearBlue;
 import org.usfirst.frc.team1732.robot.autocommands.scoreballsthengear.ScoreBallsThenGearRed;
 import org.usfirst.frc.team1732.robot.autocommands.scoregearthenballs.ScoreGearThenBallsBlue;
@@ -43,7 +45,9 @@ public class AutoChooser implements SmartDashboardGroup {
 		TwoGearAutoRight(new TwoGearAutoRight()),
 		SideTwoGearAutoLeft(new SideTwoGearAutoLeft()),
 		SideTwoGearAutoRight(new SideTwoGearAutoRight()),
-		GrabBallsForwardAndShoot(new GrabBallsForwardAndShootRed(), new GrabBallsForwardAndShootBlue());
+		GrabBallsForwardAndShoot(new GrabBallsForwardAndShootRed(), new GrabBallsForwardAndShootBlue()),
+		GrabBallsKeylineAndShoot(new GrabBallsKeylineAndShootRed(), new GrabBallsKeylineAndShootBlue());
+		
 		// Turn180Degrees(new TurnWithGyro(180)),
 		// Turn90Degrees(new TurnWithGyro(90)),
 		// TurnWithEncoders180(new TurnWithEncoders(-180)),
