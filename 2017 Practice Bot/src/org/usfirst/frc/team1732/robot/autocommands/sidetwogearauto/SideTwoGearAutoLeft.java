@@ -1,11 +1,11 @@
 package org.usfirst.frc.team1732.robot.autocommands.sidetwogearauto;
 
 import org.usfirst.frc.team1732.robot.autocommands.visionplacegear.VisionPlaceGear;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.ClearTotalDistance;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveEncoders;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveEncodersGetSetpointAtRuntime;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.SetMotorSpeed;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.TurnWithGyro;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.ClearTotalDistance;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveEncoders;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveEncodersGetSetpointAtRuntime;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.gyro.TurnWithGyro;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.GearIntakeSetUpTimedIn;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.GrabGear;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.InitGearIntake;
@@ -17,16 +17,15 @@ public class SideTwoGearAutoLeft extends CommandGroup {
 	public SideTwoGearAutoLeft() {
 		addSequential(new InitGearIntake());
 
-		addSequential(new DriveEncoders(SideTwoGearAutoData.DRIVE_1_SETPOINT));
+		addSequential(new DriveEncoders(SideTwoGearAutoData.DRIVE_1_SETPOINT, 0));
 
 		addSequential(new TurnWithGyro(SideTwoGearAutoData.TURN_1_LEFT));
 
 		addSequential(new ClearTotalDistance());
 
 		// places the gear, drives back
-		addSequential(new VisionPlaceGear(	SideTwoGearAutoData.DRIVE_2_LEFT_SETPOINT,
-											SideTwoGearAutoData.DRIVE_2_RIGHT_SETPOINT,
-											SideTwoGearAutoData.MAX_SETPOINT, true));
+		addSequential(new VisionPlaceGear(SideTwoGearAutoData.DRIVE_2_LEFT_SETPOINT,
+				SideTwoGearAutoData.DRIVE_2_RIGHT_SETPOINT, SideTwoGearAutoData.MAX_SETPOINT, true));
 
 		addSequential(new TurnWithGyro(SideTwoGearAutoData.TURN_2_LEFT));
 
@@ -37,21 +36,21 @@ public class SideTwoGearAutoLeft extends CommandGroup {
 		// drops gear intake
 		addSequential(new GrabGear(SideTwoGearAutoData.GRAB_GEAR_USE_TIMEOUT, SideTwoGearAutoData.GRAB_GEAR_DISTANCE));
 
-		addSequential(new SetMotorSpeed(SideTwoGearAutoData.DRIVE_2_STOP_SPEED,
-										SideTwoGearAutoData.DRIVE_2_STOP_SPEED));
+		addSequential(
+				new SetMotorSpeed(SideTwoGearAutoData.DRIVE_2_STOP_SPEED, SideTwoGearAutoData.DRIVE_2_STOP_SPEED));
 
 		// raises gear intake
 		addParallel(new GearIntakeSetUpTimedIn(1));
 
 		// drives back
 		addSequential(new DriveEncodersGetSetpointAtRuntime(SideTwoGearAutoData.DRIVE_3_LEFT_SETPOINT,
-															SideTwoGearAutoData.DRIVE_3_RIGHT_SETPOINT));
+				SideTwoGearAutoData.DRIVE_3_RIGHT_SETPOINT, 0));
 
 		// turns to face gear peg
 		addSequential(new TurnWithGyro(SideTwoGearAutoData.TURN_3_ANGLE_LEFT));
 
 		// scores second gear!!!
-		addSequential(new VisionPlaceGear(	SideTwoGearAutoData.DRIVE_4_DRIVE_BACK_SETPOINT,
-											SideTwoGearAutoData.MAX_SETPOINT, true));
+		addSequential(new VisionPlaceGear(SideTwoGearAutoData.DRIVE_4_DRIVE_BACK_SETPOINT,
+				SideTwoGearAutoData.MAX_SETPOINT, true));
 	}
 }

@@ -4,11 +4,11 @@ import org.usfirst.frc.team1732.robot.autocommands.drivetohoppersatend.drivetoho
 import org.usfirst.frc.team1732.robot.autocommands.scoremiddlegear.ScoreMiddleGear;
 import org.usfirst.frc.team1732.robot.autocommands.scoresidegear.ScoreSideGearPart1Left;
 import org.usfirst.frc.team1732.robot.autocommands.visionplacegear.VisionPlaceGear;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.ClearTotalDistance;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveEncoders;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveGyro;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveUntilEncoders;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.TurnWithGyro;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.ClearTotalDistance;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveEncoders;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveUntilEncoders;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.gyro.DriveGyro;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.gyro.TurnWithGyro;
 import org.usfirst.frc.team1732.robot.commands.flywheel.ShootTime;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.InitGearIntake;
 

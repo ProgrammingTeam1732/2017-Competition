@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1732.robot.commands.drivetrain;
+package org.usfirst.frc.team1732.robot.commands.drivetrain.encoder;
 
 import static org.usfirst.frc.team1732.robot.Robot.driveTrain;
 
@@ -9,19 +9,22 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class DriveEncoders extends Command {
 
-	private final double	leftDistance;
-	private final double	rightDistance;
+	private final double leftDistance;
+	private final double rightDistance;
 
-	public DriveEncoders(double distanceInches) {
-		this(distanceInches, distanceInches);
+	private final double offset;
+
+	public DriveEncoders(double distanceInches, double offset) {
+		this(distanceInches, distanceInches, offset);
 	}
 
-	public DriveEncoders(double leftInches, double rightInches) {
+	public DriveEncoders(double leftInches, double rightInches, double offset) {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
 		requires(driveTrain);
 		leftDistance = leftInches;
 		rightDistance = rightInches;
+		this.offset = offset;
 	}
 
 	// Called just before this Command runs the first time
@@ -49,13 +52,21 @@ public class DriveEncoders extends Command {
 			leftOutput = leftOutput + driveTrain.getLeftRightAdjustment();
 			rightOutput = rightOutput - driveTrain.getLeftRightAdjustment();
 		}
+
+		double max = Math.max(Math.abs(leftOutput), Math.abs(rightOutput));
+
+		if (max > 1) {
+			leftOutput = leftOutput / max;
+			rightOutput = rightOutput / max;
+		}
+
 		driveTrain.driveRaw(leftOutput, rightOutput);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return driveTrain.encodersOnTarget();
+		return driveTrain.encodersOnTarget(offset);
 	}
 
 	// Called once after isFinished returns true

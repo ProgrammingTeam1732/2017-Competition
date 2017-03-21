@@ -18,6 +18,8 @@ import org.usfirst.frc.team1732.robot.autocommands.sidetwogearauto.SideTwoGearAu
 import org.usfirst.frc.team1732.robot.autocommands.sidetwogearauto.SideTwoGearAutoRight;
 import org.usfirst.frc.team1732.robot.autocommands.twogearauto.TwoGearAutoLeft;
 import org.usfirst.frc.team1732.robot.autocommands.twogearauto.TwoGearAutoRight;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveEncodersWithBraking;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.TurnWithEncodersWithBraking;
 import org.usfirst.frc.team1732.robot.smartdashboard.MySmartDashboard;
 import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardGroup;
 import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardItem;
@@ -46,8 +48,12 @@ public class AutoChooser implements SmartDashboardGroup {
 		SideTwoGearAutoLeft(new SideTwoGearAutoLeft()),
 		SideTwoGearAutoRight(new SideTwoGearAutoRight()),
 		GrabBallsForwardAndShoot(new GrabBallsForwardAndShootRed(), new GrabBallsForwardAndShootBlue()),
-		GrabBallsKeylineAndShoot(new GrabBallsKeylineAndShootRed(), new GrabBallsKeylineAndShootBlue());
-		
+		GrabBallsKeylineAndShoot(new GrabBallsKeylineAndShootRed(), new GrabBallsKeylineAndShootBlue()),
+		DriveEncodersBrake(new DriveEncodersWithBraking(110, 20)),
+		TurnWithEncodersWithBraking90(new TurnWithEncodersWithBraking(90)),
+		TurnWithEncodersWithBraking180(new TurnWithEncodersWithBraking(180)),
+		TurnWithEncodersWithBraking45(new TurnWithEncodersWithBraking(45));
+
 		// Turn180Degrees(new TurnWithGyro(180)),
 		// Turn90Degrees(new TurnWithGyro(90)),
 		// TurnWithEncoders180(new TurnWithEncoders(-180)),
@@ -59,9 +65,9 @@ public class AutoChooser implements SmartDashboardGroup {
 		// DriveEncodersFar(new DriveEncoders(97.5)),
 		// DriveEncodersShort(new DriveEncoders(40));
 
-		private final BooleanSupplier	isRedAlliance;
-		private final Command			ifRed;
-		private final Command			ifBlue;
+		private final BooleanSupplier isRedAlliance;
+		private final Command ifRed;
+		private final Command ifBlue;
 
 		AutoModes(Command ifRed, Command ifBlue) {
 			isRedAlliance = Robot::isRedAlliance;
@@ -87,8 +93,8 @@ public class AutoChooser implements SmartDashboardGroup {
 	private final SendableChooser<AutoModes> autoChooser = new SendableChooser<>();
 
 	public AutoChooser() {
-		autoChooser.addDefault(	AutoModes.ScoreMiddleGear.ordinal() + ": " + AutoModes.ScoreMiddleGear.name(),
-								AutoModes.ScoreMiddleGear);
+		autoChooser.addDefault(AutoModes.ScoreMiddleGear.ordinal() + ": " + AutoModes.ScoreMiddleGear.name(),
+				AutoModes.ScoreMiddleGear);
 		AutoModes[] autoModes = AutoModes.values();
 		for (int i = 1; i < autoModes.length; i++) {
 			autoChooser.addObject(autoModes[i].ordinal() + ": " + autoModes[i].name(), autoModes[i]);

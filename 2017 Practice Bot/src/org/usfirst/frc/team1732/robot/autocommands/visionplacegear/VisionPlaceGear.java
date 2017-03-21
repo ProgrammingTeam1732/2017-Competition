@@ -2,7 +2,8 @@ package org.usfirst.frc.team1732.robot.autocommands.visionplacegear;
 
 import java.util.function.DoubleSupplier;
 
-import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveEncodersGetSetpointAtRuntime;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.BrakeDrive;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveEncodersGetSetpointAtRuntime;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.base.GearIntakeOutTime;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.base.GearIntakeSetDown;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.base.GearIntakeSetUp;
@@ -32,9 +33,10 @@ public class VisionPlaceGear extends CommandGroup {
 		// drive into gear peg
 		// addSequential(new TurnWithVision(0));
 		if (turn)
-			addSequential(new DriveWithVision(8, maxSetpoint));
+			addSequential(new DriveWithVision(15, maxSetpoint));
 		else
-			addSequential(new DriveWithVisionStraight(8, maxSetpoint));
+			addSequential(new DriveWithVisionStraight(15, maxSetpoint));
+		addSequential(new BrakeDrive());
 		addSequential(new Wait(0.1));
 
 		// place gear, drive back at same time
@@ -47,7 +49,7 @@ public class VisionPlaceGear extends CommandGroup {
 			}
 		});
 
-		addSequential(new DriveEncodersGetSetpointAtRuntime(leftDriveBackDistance, rightDriveBackDistance));
+		addSequential(new DriveEncodersGetSetpointAtRuntime(leftDriveBackDistance, rightDriveBackDistance, 0));
 	}
 
 }

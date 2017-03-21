@@ -8,6 +8,7 @@ import org.usfirst.frc.team1732.robot.commands.climber.ArmSetOutGroup;
 import org.usfirst.frc.team1732.robot.commands.climber.ClimberSetDown;
 import org.usfirst.frc.team1732.robot.commands.climber.ClimberSetStop;
 import org.usfirst.frc.team1732.robot.commands.climber.ClimberSetUp;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.BrakeDrive;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.ShiftHigh;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.ShiftLow;
 import org.usfirst.frc.team1732.robot.commands.feeder.FeederSetIn;
@@ -49,11 +50,11 @@ public class OI {
 
 	private final Button override = new JoystickButton(buttons, 5);
 
-	private final Button	conveyorIn			= new JoystickButton(buttons, 6);
+	private final Button	conveyorIn			= new JoystickButton(buttons, 7);
 	private final Trigger	conveyorInNormal	= newNormalButton(conveyorIn);
 	private final Trigger	conveyorInOverride	= newOverrideButton(conveyorIn);
 
-	private final Button	conveyorOut			= new JoystickButton(buttons, 7);
+	private final Button	conveyorOut			= new JoystickButton(buttons, 6);
 	private final Trigger	conveyorOutNormal	= newNormalButton(conveyorOut);
 	private final Trigger	conveyorOutOverride	= newOverrideButton(conveyorOut);
 
@@ -158,8 +159,8 @@ public class OI {
 		conveyorInOverride.whenActive(new FeederSetIn());
 		conveyorInOverride.whenInactive(new FeederSetStop());
 
-		conveyorOutOverride.whenActive(new FeederSetIn());
-		conveyorOutOverride.whenInactive(new FeederSetStop());
+		conveyorOutOverride.whenActive(new BrakeDrive());
+		//conveyorOutOverride.whenInactive(new ());
 
 		flashLEDs.whenActive(new FlashLEDsCommand());
 		// flashLEDs.whenInactive(new TurnLightsOff());
