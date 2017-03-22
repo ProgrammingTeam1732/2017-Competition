@@ -22,10 +22,10 @@ public class OI {
 	}
 
 	public double getLeftSpeed() {
-		return left.getRawAxis(RobotMap.LEFT_JOYSTICK_Y_AXIS);
+		return buttons.getRawAxis(1);
 	}
 
 	public double getRightSpeed() {
-		return right.getRawAxis(RobotMap.RIGHT_JOYSTICK_Y_AXIS);
+		return buttons.getRawAxis(5);
 	}
 }

@@ -10,13 +10,6 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class DriveWithVision extends Command {
 
-	public double targetDistanceInches;
-
-	public static final double	DEFAULT_TARGET_INCHES	= 10;
-	private static double		smartDashboardDistance	= DEFAULT_TARGET_INCHES;
-
-	private boolean foundOnce = false;
-
 	public DriveWithVision(double aTargetDistanceInches) {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
@@ -36,24 +29,31 @@ public class DriveWithVision extends Command {
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-		driveTrain.gyro.reset();
-		driveTrain.leftEncoder.reset();
-		driveTrain.rightEncoder.reset();
+		driveTrain.resetGyro();
+		driveTrain.resetEncoders();
 
-		driveTrain.leftEncoderPID.setSetpoint(0);
-		driveTrain.rightEncoderPID.setSetpoint(0);
-		driveTrain.gyroPID.setSetpoint(0);
-		visionMain.visionPID.setSetpoint(0);
+		driveTrain.setEncoderSetpoint(0);
+		driveTrain.setGyroSetpoint(0);
+		visionMain.setVisionSetpoint(0);
 	}
 
+	public double targetDistanceInches;
+
+	public static final double	DEFAULT_TARGET_INCHES	= 10;
+	private static double		smartDashboardDistance	= DEFAULT_TARGET_INCHES;
+
+	private boolean	foundOnce	= false;
+//	private boolean	lostOnce	= false;
+
 	private double previousAngleOutput = 0;
-	
+
 	public static final double stopInputDistance = 20;
 
 	public static double	middle	= 70;
 	public static double	lower	= 0.001;	// 0.001
 	public static double	upper	= 0.025;
-	public static double	slope	= 1.2E-4;	//Wed. 2-15-17 changed to 1.2// 0.03 / 75;// 0.0001;
+	public static double	slope	= 1.2E-4;	// Wed. 2-15-17 changed to 1.2//
+												// 0.03 / 75;// 0.0001;
 
 	// Add a safeguard to make sure we don't get stuck
 	// public static double slope = 0.03/75;
@@ -63,13 +63,13 @@ public class DriveWithVision extends Command {
 		double distance = visionMain.getInchesToGearPeg();
 
 		double dDistance = distance - targetDistanceInches;
-		double leftSetpoint = dDistance + driveTrain.leftEncoder.getDistance();
-		double rightSetpoint = dDistance + driveTrain.rightEncoder.getDistance();
+		double leftSetpoint = dDistance + driveTrain.getLeftDistance();
+		double rightSetpoint = dDistance + driveTrain.getRightDistance();
 
 		// double angleSetpoint = angle + driveTrain.gyro.getAngle();
 		// if it still sees it calculate the new output, otherwise keep doing
 		// what it was doing
-		if (visionMain.canSeeGearPeg() /*&& !(distance < stopInputDistance && foundOnce)*/) {
+		if (visionMain.canSeeGearPeg()) {
 			// double P = lower + slope * distance;
 			// double P = lower + (upper - lower) / (1 + Math.exp(-slope *
 			// (distance - middle)));
@@ -78,16 +78,19 @@ public class DriveWithVision extends Command {
 			double P = lower + slope * distance;
 			// driveTrain.leftEncoderPID.setPID(P, 0, 0);
 			// driveTrain.rightEncoderPID.setPID(P, 0, 0);
-			visionMain.visionPID.setPID(P, 0, 0);
+			visionMain.setPIDValues(P, 0, 0);
 			foundOnce = true;
-			previousAngleOutput = visionMain.visionPID.get();
+			previousAngleOutput = visionMain.getVisionPIDOutput();
 			// driveTrain.gyroPID.setSetpoint(angleSetpoint);
-			driveTrain.leftEncoderPID.setSetpoint(leftSetpoint);
-			driveTrain.rightEncoderPID.setSetpoint(rightSetpoint);
+			driveTrain.setLeftEncoderSetpoint(leftSetpoint);
+			driveTrain.setRightEncoderSetpoint(rightSetpoint);
 		}
+//		else if (foundOnce) {
+//			lostOnce = true;
+//		}
 		// double angleOutput = driveTrain.gyroPID.get();
-		double leftOutput = driveTrain.leftEncoderPID.get() - previousAngleOutput;
-		double rightOutput = driveTrain.rightEncoderPID.get() + previousAngleOutput;
+		double leftOutput = driveTrain.getLeftPIDOutput() - previousAngleOutput;
+		double rightOutput = driveTrain.getRightPIDOutput() + previousAngleOutput;
 		double max = Math.abs(Math.max(leftOutput, rightOutput));
 		if (max >= 1) {
 			leftOutput = leftOutput / max;
@@ -122,9 +125,9 @@ public class DriveWithVision extends Command {
 	@Override
 	protected void end() {
 		driveTrain.driveRaw(0, 0);
-		driveTrain.resetEncoderPID();
-		driveTrain.resetGyroPID();
-		visionMain.resetPID();
+		driveTrain.resetEncoderPIDValues();
+		driveTrain.resetGyroPIDValues();
+		visionMain.resetPIDValues();
 	}
 
 }

@@ -1,0 +1,15 @@
+package org.usfirst.frc.team1732.robot.autocommands.drivetohoppersatend.drivetohopperfromboilersidegearpeg;
+
+import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveEncoders;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.gyro.TurnWithGyro;
+
+import edu.wpi.first.wpilibj.command.CommandGroup;
+
+public class DriveToHopperFromRightGearPeg extends CommandGroup {
+
+	public DriveToHopperFromRightGearPeg() {
+		addSequential(new DriveEncoders(DriveToHopperFromGearPegData.DRIVE_1_DISTANCE, 0));
+		addSequential(new TurnWithGyro(DriveToHopperFromGearPegData.TURN_1_ANGLE_RIGHT));
+		addSequential(new DriveEncoders(DriveToHopperFromGearPegData.DRIVE_2_DISTANCE, 0));
+	}
+}

@@ -28,33 +28,15 @@ public class RobotMap {
 	public static final int	RIGHT_ENCODER_CHANNEL_B				= 8;
 	public static final int	GYRO_CHANNEL_NUMBER					= 0;
 
-	// Flywheel
-	public static final int FLYWHEEL_MOTER_DEVICE_NUMBER = 0;
-
-	// Other shooter
-	public static final int OTHER_SHOOTER_MOTER_DEVICE_NUMBER = 0;
-
-	// Climber
-	public static final int CLIMBER_MOTER_DEVICE_NUMBER = 0;
-	public static final int ARM_SOLENOID_DEVICE_NUMBER = 0;
-
-	// Ball Intake (Floor/Chute/Hopper)
-	public static final int BALL_INTAKE_MOTER_DEVICE_NUMBER = 0;
-	public static final int BALL_INTAKE_SOLENOID_DEVICE_NUMBER = 0;
-
 	// Gear Intake (Floor/Chute)
-	public static final int	GEAR_INTAKE_MOTER_DEVICE_NUMBER		= 24;
+	public static final int	GEAR_INTAKE_MOTOR_DEVICE_NUMBER		= 24;
 	public static final int	GEAR_MANIPULATOR_SOLENOID_NUMBER	= 6;
+	public static final int	GEAR_MANIPULATOR_STORAGE_NUMBER		= 1;
 
-	// Hopper/Feeder/Index
-	public static final int FEEDER_MOTER_DEVICE_NUMBER = 0;
+	public static final int	PCM_CAN_ID									= 0;
+	public static final int	DRIVE_TRAIN_SHIFTER_SOLENOID_DEVICE_NUMBER	= 2;
 
-	// Available motors IDs:
-	public static final int	MOTOR_ONE_DEVICE_ID	= 12;
-	public static final int	MOTOR_TWO_DEVICE_ID	= 24;
-
-	// Light Ring IDs:
-
-	public static final int LIGHT_RING_MOTOR_NUMBER = 12;
+	public static final int	LIGHT_PWM_CHANNEL	= 0;
+	public static final int	RELAY_CHANNEL		= 0;
 
 }

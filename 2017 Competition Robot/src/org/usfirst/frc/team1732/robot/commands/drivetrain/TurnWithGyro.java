@@ -11,6 +11,8 @@ public class TurnWithGyro extends Command {
 
 	private final double setpoint;
 
+	private final double IZONE = 10;
+
 	public TurnWithGyro(double degreesSetpoint) {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
@@ -21,25 +23,30 @@ public class TurnWithGyro extends Command {
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-		System.out.println("Running turn : " + Robot.isRedAlliance());
-		Robot.driveTrain.gyro.reset();
+		// System.out.println("Running turn : " + Robot.isRedAlliance());
+		Robot.driveTrain.resetGyro();
 		// Robot.driveTrain.resetGyroPID();
-		Robot.driveTrain.clearGyroIntgral();
-		Robot.driveTrain.gyroPID.setSetpoint(setpoint);
-		System.out.println(setpoint);
+		// Robot.driveTrain.clearGyroIntgral();
+		Robot.driveTrain.setGyroSetpoint(setpoint);
+		// System.out.println(setpoint);
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		double output = Robot.driveTrain.gyroPID.get();
+		if (Math.abs(Robot.driveTrain.getGyroError()) > IZONE) {
+			Robot.driveTrain.setGyroI(0);
+			System.out.println("Outisde gyro izone");
+		}
+		double output = Robot.driveTrain.getGyroPIDOutput();
 		Robot.driveTrain.driveRaw(output, -output);
+		System.out.println(output);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return Robot.driveTrain.gyroPID.onTarget();
+		return Robot.driveTrain.gyroOnTarget();
 	}
 
 	// Called once after isFinished returns true

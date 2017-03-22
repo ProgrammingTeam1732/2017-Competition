@@ -11,12 +11,9 @@ import com.ctre.CANTalon.TalonControlMode;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-/**
- *
- */
 public class Flywheel extends Subsystem implements SmartDashboardGroup {
 
-	public final CANTalon motor = new CANTalon(RobotMap.FLYWHEEL_MOTER_DEVICE_NUMBER);
+	public final CANTalon motor = new CANTalon(RobotMap.FLYWHEEL_MOTOR_DEVICE_NUMBER);
 
 	public static final double STOP_SPEED = 0;
 	// public static final double FORWARD_SPEED = 1;
@@ -26,45 +23,107 @@ public class Flywheel extends Subsystem implements SmartDashboardGroup {
 	public static final int	COUNTS_PER_SECOND_TARGET	= -18000;
 	public static final int	COUNTS_PER_SECOND_ERROR		= COUNTS_PER_SECOND_TARGET / 50;
 
-	private static final double	P					= Float.MAX_VALUE;
+	private static final double	P					= Float.MAX_VALUE;			// -Float.MAX_VALUE
 	private static final double	I					= 0;
 	private static final double	D					= 0;
 	private double				setpoint			= COUNTS_PER_SECOND_TARGET;
-	public static final double	MAX_OUTPUT_VOLTAGE	= -8;
+	public static final double	MAX_OUTPUT_VOLTAGE	= -8;						// negate?
+
+	private boolean isAutoControlled = false;
 
 	public static final String NAME = "Flywheel";
 
 	public Flywheel() {
 		super(NAME);
 		motor.setFeedbackDevice(FeedbackDevice.QuadEncoder);
+		motor.setAllowableClosedLoopErr(0);
 		motor.configNominalOutputVoltage(0, 0);
 		motor.configPeakOutputVoltage(0, MAX_OUTPUT_VOLTAGE);
 		motor.setPID(P, I, D);
 		motor.reverseSensor(false);
 		motor.enableBrakeMode(false);
-		motor.changeControlMode(TalonControlMode.PercentVbus);
+		motor.SetVelocityMeasurementPeriod(CANTalon.VelocityMeasurementPeriod.Period_1Ms);
+		motor.SetVelocityMeasurementWindow(10);
+		this.disableAutoControl();
 	}
 
 	@Override
 	public void initDefaultCommand() {}
 
-	public double getOutput() {
+	public boolean isAutoControlled() {
+		return isAutoControlled;
+	}
+
+	public double getPosistion() {
+		return motor.getPosition();
+	}
+
+	public double getSetpoint() {
+		return motor.getSetpoint();
+	}
+
+	public void setSetpoint(double s) {
+		if (isAutoControlled && s != setpoint) {
+			setpoint = s;
+			motor.setSetpoint(s);
+		}
+	}
+
+	public double getEncVelocity() {
+		return motor.getEncVelocity();
+	}
+
+	public double getSpeed() {
+		return motor.getSpeed();
+	}
+
+	public double getOutputVoltage() {
+		return motor.getOutputVoltage();
+	}
+
+	public double getMotorOutput() {
 		return motor.getOutputVoltage() / motor.getBusVoltage();
+	}
+
+	public double getError() {
+		return motor.getClosedLoopError();
 	}
 
 	public void disableAutoControl() {
 		motor.changeControlMode(TalonControlMode.PercentVbus);
 		motor.set(STOP_SPEED);
+		isAutoControlled = false;
 	}
 
 	//
 	public void enableAutoControl() {
 		motor.changeControlMode(TalonControlMode.Speed);
 		motor.setSetpoint(setpoint);
+		isAutoControlled = true;
 	}
-	public boolean atSetpoint(){
-		return Math.abs(motor.getSpeed() - motor.getSetpoint()) < .05 * motor.getSetpoint();
+
+	public int getCounts() {
+		return motor.getEncPosition();
 	}
+
+	public double getOutput() {
+		return motor.getOutputVoltage() / motor.getBusVoltage();
+	}
+
+	public static final double percentErrorAllowed = 0.05; // 5%
+
+	public boolean atSetpoint() {
+		// return Math.abs(motor.getSpeed() - motor.getSetpoint()) < .05 *
+		// motor.getSetpoint();
+		return Math.abs(motor.getError()) < Math.abs(percentErrorAllowed * motor.getSetpoint());
+	}
+
+	public void setSpeed(double s) {
+		if (!isAutoControlled) {
+			motor.set(s);
+		}
+	}
+
 	@Override
 	public void addToSmartDashboard(MySmartDashboard dashboard) {
 		// TODO Auto-generated method stub
@@ -72,7 +131,8 @@ public class Flywheel extends Subsystem implements SmartDashboardGroup {
 		dashboard.addItem(SmartDashboardItem.newDoubleReciever(directory + "P", P, motor::setP));
 		dashboard.addItem(SmartDashboardItem.newDoubleReciever(directory + "I", P, motor::setI));
 		dashboard.addItem(SmartDashboardItem.newDoubleReciever(directory + "D", P, motor::setD));
-		dashboard.addItem(SmartDashboardItem.newDoubleReciever(directory + "Setpoint", P, motor::setSetpoint));
+		dashboard.addItem(SmartDashboardItem.newDoubleReciever(	directory + "Setpoint",
+																(double) COUNTS_PER_SECOND_TARGET, this::setSetpoint));
 
 		dashboard.addItem(SmartDashboardItem.newNumberSender(directory + "Error", motor::getClosedLoopError));
 		dashboard.addItem(SmartDashboardItem.newNumberSender(directory + "Output", this::getOutput));

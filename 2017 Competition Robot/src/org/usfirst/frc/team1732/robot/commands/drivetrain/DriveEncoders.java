@@ -27,24 +27,23 @@ public class DriveEncoders extends Command {
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-		driveTrain.leftEncoder.reset();
-		driveTrain.rightEncoder.reset();
-		driveTrain.leftEncoderPID.setSetpoint(leftDistance);
-		driveTrain.rightEncoderPID.setSetpoint(rightDistance);
+		driveTrain.resetEncoders();
+		driveTrain.setLeftEncoderSetpoint(leftDistance);
+		driveTrain.setRightEncoderSetpoint(rightDistance);
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		double leftOutput = driveTrain.leftEncoderPID.get();
-		double rightOutput = driveTrain.rightEncoderPID.get();
+		double leftOutput = driveTrain.getLeftPIDOutput();
+		double rightOutput = driveTrain.getRightPIDOutput();
 		driveTrain.driveRaw(leftOutput, rightOutput);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return driveTrain.leftEncoderPID.onTarget() && driveTrain.rightEncoderPID.onTarget();
+		return driveTrain.encodersOnTarget();
 	}
 
 	// Called once after isFinished returns true

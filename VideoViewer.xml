@@ -1,0 +1,74 @@
+<xml version="1.0">
+<dashboard>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.CameraServerViewer">
+		<location x="0" y="1"/>
+		<width>815</width>
+		<height>614</height>
+		<property name="Camera Choice" value=""/>
+	</static-widget>
+</dashboard>
+<live-window>
+</live-window>
+	<hidden field="MotorRTFrontReverse"/>
+	<hidden field="Flywheel"/>
+	<hidden field="MotorRTBackForward"/>
+	<hidden field="BallIntakeSetOut"/>
+	<hidden field="Climber Arm"/>
+	<hidden field="robotPeriodic() frequency ms"/>
+	<hidden field="Climber"/>
+	<hidden field="Vision PID"/>
+	<hidden field="GearIntakeSetStorageOut"/>
+	<hidden field="MotorLTFrontReverse"/>
+	<hidden field="BallIntakeSetStop"/>
+	<hidden field="Vision Main"/>
+	<hidden field="GearIntakeSetStopperIn"/>
+	<hidden field="ShiftHigh"/>
+	<hidden field="FeederSetOut"/>
+	<hidden field="Right PID"/>
+	<hidden field="GearIntakeSetStorageIn"/>
+	<hidden field="ShiftLow"/>
+	<hidden field="MotorRTBackStop"/>
+	<hidden field="Turning P Slope"/>
+	<hidden field="GearIntakeSetIn"/>
+	<hidden field="Drive Train"/>
+	<hidden field="Is Red Alliance?"/>
+	<hidden field="Ball Intake"/>
+	<hidden field="GearIntakeSetUp"/>
+	<hidden field="MotorLTBackStop"/>
+	<hidden field="MotorLTBottomReverse"/>
+	<hidden field="MotorLTBottomForward"/>
+	<hidden field="Two Gear Auto: inches from wall to go to"/>
+	<hidden field="BallIntakeSetDown"/>
+	<hidden field="ClimberSetUp"/>
+	<hidden field="FeederSetStop"/>
+	<hidden field="MotorRTBottomStop"/>
+	<hidden field="ArmSetIn"/>
+	<hidden field="GearIntakeSetDown"/>
+	<hidden field="MotorLTBackReverse"/>
+	<hidden field="GearIntakeSetOut"/>
+	<hidden field="Selected Auto Command"/>
+	<hidden field="MotorRTBackReverse"/>
+	<hidden field="MotorLTFrontForward"/>
+	<hidden field="MotorLTFrontStop"/>
+	<hidden field="MotorRTFrontForward"/>
+	<hidden field="ClimberSetStop"/>
+	<hidden field="Feeder"/>
+	<hidden field="MotorLTBottomStop"/>
+	<hidden field="FlywheelStop"/>
+	<hidden field="Left PID"/>
+	<hidden field="Gyro PID"/>
+	<hidden field="MotorRTFrontStop"/>
+	<hidden field="FlywheelReverse"/>
+	<hidden field="Gear Intake"/>
+	<hidden field="FeederSetIn"/>
+	<hidden field="AutonomousChooser"/>
+	<hidden field="BallIntakeSetUp"/>
+	<hidden field="FlywheelForward"/>
+	<hidden field="MotorRTBottomForward"/>
+	<hidden field="MotorLTBackForward"/>
+	<hidden field="GearIntakeSetStop"/>
+	<hidden field="MotorRTBottomReverse"/>
+	<hidden field="ArmSetOut"/>
+	<hidden field="GearIntakeSetStopperOut"/>
+	<hidden field="BallIntakeSetIn"/>
+</xml>

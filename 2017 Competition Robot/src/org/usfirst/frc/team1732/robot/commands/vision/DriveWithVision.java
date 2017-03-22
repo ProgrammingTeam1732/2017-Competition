@@ -3,91 +3,117 @@ package org.usfirst.frc.team1732.robot.commands.vision;
 import static org.usfirst.frc.team1732.robot.Robot.driveTrain;
 import static org.usfirst.frc.team1732.robot.Robot.visionMain;
 
+import org.usfirst.frc.team1732.robot.Robot;
+import org.usfirst.frc.team1732.robot.commands.vision.old.DriveWithVisionOld;
+
 import edu.wpi.first.wpilibj.command.Command;
 
-/**
- *
- */
 public class DriveWithVision extends Command {
 
-	public double targetDistanceInches;
+	// stuff to add
+	// also only update encoders when vision update is ready
 
-	public static final double	DEFAULT_TARGET_INCHES	= 10;
-	private static double		smartDashboardDistance	= DEFAULT_TARGET_INCHES;
+	public DriveWithVision(double aTargetDistanceInches, double maxSetpoint) {
+		this(aTargetDistanceInches, maxSetpoint, true);
+	}
 
-	private boolean foundOnce = false;
-
-	public DriveWithVision(double aTargetDistanceInches) {
-		// Use requires() here to declare subsystem dependencies
-		// eg. requires(chassis);
+	public DriveWithVision(double aTargetDistanceInches, double maxSetpoint, boolean turn) {
 		requires(driveTrain);
+		requires(Robot.pixyCamera);
 		targetDistanceInches = aTargetDistanceInches;
-		// visionMain.visionPID.setPID(0.01, 0, 0);
+		MAX_SETPOINT = maxSetpoint;
+		leftMeasurements = MAX_SETPOINT;
+		rightMeasurements = MAX_SETPOINT;
+		this.turn = turn;
+		setTimeout(4);
 	}
 
 	public static void setSmartDashboardDistance(double distance) {
 		smartDashboardDistance = distance;
 	}
 
-	public static DriveWithVision newCommandUseSmartDashboardDistance() {
-		return new DriveWithVision(smartDashboardDistance);
+	public static DriveWithVisionOld newCommandUseSmartDashboardDistance() {
+		return new DriveWithVisionOld(smartDashboardDistance);
 	}
 
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-		driveTrain.gyro.reset();
-		driveTrain.leftEncoder.reset();
-		driveTrain.rightEncoder.reset();
+		Robot.pixyCamera.turnOnLights();
+		driveTrain.resetGyro();
+		driveTrain.resetEncoders();
 
-		driveTrain.leftEncoderPID.setSetpoint(0);
-		driveTrain.rightEncoderPID.setSetpoint(0);
-		driveTrain.gyroPID.setSetpoint(0);
-		visionMain.visionPID.setSetpoint(0);
+		driveTrain.setEncoderSetpoint(MAX_SETPOINT);
+		driveTrain.setGyroSetpoint(0);
+		visionMain.setVisionSetpoint(0);
 	}
 
-	private double previousAngleOutput = 0;
-	
-	public static final double stopInputDistance = 20;
+	private final boolean		turn;
+	public static final double	DEFAULT_TARGET_INCHES	= 10;
+	private static double		smartDashboardDistance	= DEFAULT_TARGET_INCHES;
 
-	public static double	middle	= 70;
-	public static double	lower	= 0.001;	// 0.001
-	public static double	upper	= 0.025;
-	public static double	slope	= 1.2E-4;	//Wed. 2-15-17 changed to 1.2// 0.03 / 75;// 0.0001;
+	private final double	MAX_SETPOINT;
+	private double			targetDistanceInches;
+	private double			previousAngleOutput	= 0;
+	private double			leftMeasurements	= 0;
+	private double			rightMeasurements	= 0;
+	private int				measurements		= 1;
+
+	private static double	middle	= 70;
+	private static double	lower	= 0.001;	// 0.001
+	private static double	upper	= 0.025;
+	private static double	slope	= 1.2E-4;	// Wed. 2-15-17 changed to 1.2//
+												// 0.03 / 75;// 0.0001;
 
 	// Add a safeguard to make sure we don't get stuck
 	// public static double slope = 0.03/75;
 	@Override
 	protected void execute() {
+		visionMain.run();
 		// double angle = visionMain.getAngleToGearPeg();
-		double distance = visionMain.getInchesToGearPeg();
-
-		double dDistance = distance - targetDistanceInches;
-		double leftSetpoint = dDistance + driveTrain.leftEncoder.getDistance();
-		double rightSetpoint = dDistance + driveTrain.rightEncoder.getDistance();
-
 		// double angleSetpoint = angle + driveTrain.gyro.getAngle();
-		// if it still sees it calculate the new output, otherwise keep doing
+		// if it still sees it calculate the new output, otherwise keep
+		// doing
 		// what it was doing
-		if (visionMain.canSeeGearPeg() /*&& !(distance < stopInputDistance && foundOnce)*/) {
+		if (visionMain.canSeeGearPeg() && visionMain.isNewDataAvailable()) {
+			double distance = visionMain.getInchesToGearPeg();
+
+			double dDistance = distance - targetDistanceInches;
+			double leftSetpoint = dDistance + driveTrain.getLeftDistance();
+			double rightSetpoint = dDistance + driveTrain.getRightDistance();
+			if (leftSetpoint < MAX_SETPOINT && rightSetpoint < MAX_SETPOINT) {
+				leftMeasurements += leftSetpoint;
+				rightMeasurements += rightSetpoint;
+				measurements++;
+			}
+
+			if (leftMeasurements != 0 && rightMeasurements != 0 && measurements != 0) {
+				leftSetpoint = leftMeasurements / measurements;
+				rightSetpoint = rightMeasurements / measurements;
+			}
+
 			// double P = lower + slope * distance;
 			// double P = lower + (upper - lower) / (1 + Math.exp(-slope *
 			// (distance - middle)));
 			// double distance = visionMain.getInchesToGearPeg();
 
 			double P = lower + slope * distance;
-			// driveTrain.leftEncoderPID.setPID(P, 0, 0);
-			// driveTrain.rightEncoderPID.setPID(P, 0, 0);
-			visionMain.visionPID.setPID(P, 0, 0);
-			foundOnce = true;
-			previousAngleOutput = visionMain.visionPID.get();
-			// driveTrain.gyroPID.setSetpoint(angleSetpoint);
-			driveTrain.leftEncoderPID.setSetpoint(leftSetpoint);
-			driveTrain.rightEncoderPID.setSetpoint(rightSetpoint);
+			visionMain.setPIDValues(P, 0, 0);
+			previousAngleOutput = visionMain.getVisionPIDOutput();
+			if (leftSetpoint > MAX_SETPOINT)
+				leftSetpoint = MAX_SETPOINT - driveTrain.getLeftDistance();
+			if (rightSetpoint > MAX_SETPOINT)
+				rightSetpoint = MAX_SETPOINT - driveTrain.getRightDistance();
+			driveTrain.setLeftEncoderSetpoint(leftSetpoint);
+			driveTrain.setRightEncoderSetpoint(rightSetpoint);
 		}
-		// double angleOutput = driveTrain.gyroPID.get();
-		double leftOutput = driveTrain.leftEncoderPID.get() - previousAngleOutput;
-		double rightOutput = driveTrain.rightEncoderPID.get() + previousAngleOutput;
+
+		double leftOutput = driveTrain.getLeftPIDOutput();
+		double rightOutput = driveTrain.getRightPIDOutput();
+		if (turn) {
+			leftOutput = leftOutput - previousAngleOutput;
+			rightOutput = rightOutput + previousAngleOutput;
+		}
 		double max = Math.abs(Math.max(leftOutput, rightOutput));
 		if (max >= 1) {
 			leftOutput = leftOutput / max;
@@ -99,8 +125,7 @@ public class DriveWithVision extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return foundOnce && (driveTrain.isErrorNegative() || driveTrain.encodersOnTarget());
-		// && driveTrain.gyroPID.onTarget() &&
+		return (driveTrain.isErrorNegative() || driveTrain.encodersOnTarget()) || isTimedOut();
 	}
 
 	public static void setSlope(double slope) {
@@ -121,10 +146,25 @@ public class DriveWithVision extends Command {
 
 	@Override
 	protected void end() {
+		Robot.pixyCamera.turnOffLights();
 		driveTrain.driveRaw(0, 0);
-		driveTrain.resetEncoderPID();
-		driveTrain.resetGyroPID();
-		visionMain.resetPID();
+		visionMain.resetPIDValues();
+	}
+
+	public static double getMiddle() {
+		return middle;
+	}
+
+	public static double getLower() {
+		return lower;
+	}
+
+	public static double getUpper() {
+		return upper;
+	}
+
+	public static double getSlope() {
+		return slope;
 	}
 
 }

@@ -1,5 +1,7 @@
 package org.usfirst.frc.team1732.robot.vision;
 
+import org.usfirst.frc.team1732.robot.Robot;
+import org.usfirst.frc.team1732.robot.commands.vision.DriveWithVision;
 import org.usfirst.frc.team1732.robot.smartdashboard.MySmartDashboard;
 import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardGroup;
 import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardItem;
@@ -11,34 +13,25 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class VisionMain implements SmartDashboardGroup {
 
-	public static final double	HORIZONTAL_FIELD_OF_VIEW	= 68;
-	public static final double	VERTICAL_FIELD_OF_VIEW		= 47;
-
-	// double check
-	public static final int	IMAGE_WIDTH		= 320;
-	public static final int	IMAGE_HEIGHT	= 200;
-
 	private Arduino arduino;
 
-	private GearTarget		gearTarget;
-	private BoilerTarget	boilerTarget;
-	private Rectangle[]		rectangles	= new Rectangle[0];
+	private GearTarget gearTarget;
+	// private BoilerTarget boilerTarget;
+	private Rectangle[] rectangles = new Rectangle[0];
 
 	// Vision Angle Stuff
-	public final PIDSource		visionAngleSource	= this.getVisionPIDSource();
-	public final PIDController	visionPID			= new PIDController(visionP, visionI, visionD, visionAngleSource,
+	private final PIDSource		visionAngleSource	= this.getVisionPIDSource();
+	private final PIDController	visionPID			= new PIDController(visionP, visionI, visionD, visionAngleSource,
 																		VisionMain::voidMethod);
 	public static final double	visionP				= 0.02;
 	public static final double	visionI				= 0;
 	public static final double	visionD				= 0;
 
-	public static final double	VISION_DEADBAND_DEGREES	= 3;
-	public static final double	MAX_OUTPUT				= 0.5;
+	public static final double	VISION_DEADBAND_DEGREES	= 5;
+	public static final double	MAX_OUTPUT				= 0.4;
 	public static final double	MIN_OUTPUT				= -MAX_OUTPUT;
 
 	public static final String NAME = "Vision Main";
-
-	private boolean disableCamera = false;
 
 	public VisionMain() {
 		arduino = new Arduino();
@@ -54,8 +47,10 @@ public class VisionMain implements SmartDashboardGroup {
 	 * Reads and parses Arduino rectangle data, updates the gear target variable
 	 */
 	public void run() {
-		if (!disableCamera) {
+		if (isCameraEnabled()) {
 			parseData(arduino.getData());
+			// if (rectangles != null)
+			// System.out.println(rectangles.length);
 			updateGearTarget();
 		}
 	}
@@ -72,6 +67,7 @@ public class VisionMain implements SmartDashboardGroup {
 	 */
 	private void parseData(String s) {
 		if (s == null) {
+			System.out.println("string is null");
 			return;
 		}
 		if (s.contains("Starting"))
@@ -111,9 +107,30 @@ public class VisionMain implements SmartDashboardGroup {
 	private void updateGearTarget() {
 		try {
 			gearTarget = GearTarget.getBestVisionTarget(rectangles);
+				double score = 0;
+				if(gearTarget != null) score = gearTarget.getScore();
+				if (roundToNDigits(previousScore, 5) == roundToNDigits(score, 5)) {
+					isNewDataAvailable = false;
+				} else {
+					isNewDataAvailable = true;
+				}
+				previousScore = score;
 		} catch (NullPointerException e) {
 			e.getMessage();
 		}
+	}
+
+	private double roundToNDigits(double d, int n) {
+		double scaler = Math.pow(10, n);
+		int expanded = (int) Math.round(scaler * d);
+		return expanded / scaler;
+	}
+
+	private double	previousScore		= 0;
+	private boolean	isNewDataAvailable	= false;
+
+	public boolean isNewDataAvailable() {
+		return isNewDataAvailable;
 	}
 
 	/**
@@ -126,8 +143,9 @@ public class VisionMain implements SmartDashboardGroup {
 		// GearTarget.GEAR_TARGET_HEIGHT_INCHES, VERTICAL_FIELD_OF_VIEW,
 		// IMAGE_HEIGHT);
 
-		return gearTarget.getVerticalDistance(	GearTarget.GEAR_TARGET_HEIGHT_INCHES, HORIZONTAL_FIELD_OF_VIEW,
-												IMAGE_WIDTH);
+		return gearTarget.getVerticalDistance(	GearTarget.GEAR_TARGET_HEIGHT_INCHES,
+												Robot.pixyCamera.HORIZONTAL_FIELD_OF_VIEW,
+												Robot.pixyCamera.IMAGE_WIDTH);
 	}
 
 	/**
@@ -139,7 +157,7 @@ public class VisionMain implements SmartDashboardGroup {
 		if (gearTarget == null) {
 			return 0;
 		}
-		return gearTarget.getHorizontalAngle(HORIZONTAL_FIELD_OF_VIEW, IMAGE_WIDTH);
+		return gearTarget.getHorizontalAngle(Robot.pixyCamera.HORIZONTAL_FIELD_OF_VIEW, Robot.pixyCamera.IMAGE_WIDTH);
 	}
 
 	public boolean canSeeGearPeg() {
@@ -170,6 +188,7 @@ public class VisionMain implements SmartDashboardGroup {
 		String directory = NAME + "/";
 		String visionDirectory = directory + "vision/";
 
+		dashboard.addItem(SmartDashboardItem.newNumberSender(visionDirectory + "Gear Peg Score", this::getGearScore));
 		dashboard.addItem(SmartDashboardItem.newNumberSender(	visionDirectory + "Vision inches",
 																this::getInchesToGearPeg));
 		dashboard.addItem(SmartDashboardItem.newNumberSender(	visionDirectory + "Vision degrees",
@@ -185,19 +204,48 @@ public class VisionMain implements SmartDashboardGroup {
 		dashboard.addItem(SmartDashboardItem.newNumberSender(visionDirectory + "Vision PID Output", visionPID::get));
 		dashboard.addItem(SmartDashboardItem.newBooleanSender(	visionDirectory + "Camera Enabled",
 																this::isCameraEnabled));
+
+		dashboard.addItem(SmartDashboardItem.newDoubleReciever(	visionDirectory + "Turning P Slope",
+																DriveWithVision.getSlope(), DriveWithVision::setSlope));
+		dashboard.addItem(SmartDashboardItem.newDoubleReciever(	visionDirectory + "Turning P Lower",
+																DriveWithVision.getLower(), DriveWithVision::setLower));
+		dashboard.addItem(SmartDashboardItem.newDoubleReciever(	visionDirectory + "Turning P Upper",
+																DriveWithVision.getUpper(), DriveWithVision::setUpper));
+		dashboard.addItem(SmartDashboardItem.newDoubleReciever(	visionDirectory + "Turning P Middle",
+																DriveWithVision.getMiddle(),
+																DriveWithVision::setMiddle));
 		SmartDashboard.putData("Vision PID", visionPID);
 	}
 
-	public void resetPID() {
+	public void resetPIDValues() {
 		visionPID.setPID(visionP, visionI, visionD);
 	}
 
-	public void disableCamera() {
-		disableCamera = true;
-		rectangles = null;
+	public boolean isCameraEnabled() {
+		return !arduino.isDisabled();
 	}
 
-	public boolean isCameraEnabled() {
-		return !disableCamera;
+	public void setVisionSetpoint(double setpoint) {
+		visionPID.setSetpoint(setpoint);
+	}
+
+	public void setPIDValues(double p, double i, double d) {
+		visionPID.setPID(p, i, d);
+	}
+
+	public double getVisionPIDOutput() {
+		return visionPID.get();
+	}
+
+	public boolean isVisionPIDOnTarget() {
+		return visionPID.onTarget();
+	}
+
+	public double getGearScore() {
+		if (gearTarget == null) {
+			return -1;
+		} else {
+			return gearTarget.getScore();
+		}
 	}
 }
