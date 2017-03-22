@@ -1,6 +1,6 @@
 package org.usfirst.frc.team1732.robot.vision;
 
-public class Rectangle {
+public class Rectangle extends java.awt.Rectangle {
 
 	public final int x, y, width, height, signature;
 
@@ -20,11 +20,11 @@ public class Rectangle {
 		return y + height;
 	}
 
-	public int getCenterX() {
+	public double getCenterX() {
 		return x + width / 2;
 	}
 
-	public int getCenterY() {
+	public double getCenterY() {
 		return y + width / 2;
 	}
 
