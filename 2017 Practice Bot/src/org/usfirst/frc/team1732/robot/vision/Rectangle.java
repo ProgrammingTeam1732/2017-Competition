@@ -2,7 +2,8 @@ package org.usfirst.frc.team1732.robot.vision;
 
 public class Rectangle extends java.awt.Rectangle {
 
-	public final int x, y, width, height, signature;
+	// public final int x, y, width, height, signature;
+	public final int signature;
 
 	public Rectangle(int signature, int x, int y, int width, int height) {
 		this.signature = signature;
