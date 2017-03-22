@@ -6,11 +6,8 @@ public class Rectangle extends java.awt.Rectangle {
 	public final int signature;
 
 	public Rectangle(int signature, int x, int y, int width, int height) {
+		super(x, y, width, height);
 		this.signature = signature;
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
 	}
 
 	public int getRightX() {
@@ -19,14 +16,6 @@ public class Rectangle extends java.awt.Rectangle {
 
 	public int getBottomY() {
 		return y + height;
-	}
-
-	public double getCenterX() {
-		return x + width / 2;
-	}
-
-	public double getCenterY() {
-		return y + width / 2;
 	}
 
 	@Override
