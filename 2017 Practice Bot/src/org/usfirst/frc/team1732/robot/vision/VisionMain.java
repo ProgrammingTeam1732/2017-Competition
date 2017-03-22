@@ -183,7 +183,7 @@ public class VisionMain implements SmartDashboardGroup {
 		// GearTarget.GEAR_TARGET_HEIGHT_INCHES, VERTICAL_FIELD_OF_VIEW,
 		// IMAGE_HEIGHT);
 
-		return gearTarget.getHorizontalDistance(GearTarget.GEAR_TARGET_HEIGHT_INCHES,
+		return gearTarget.getHorizontalDistance(GearTarget.GEAR_TARGET_WIDTH_INCHES,
 												PixyCamera.HORIZONTAL_FIELD_OF_VIEW, PixyCamera.IMAGE_WIDTH);
 	}
 

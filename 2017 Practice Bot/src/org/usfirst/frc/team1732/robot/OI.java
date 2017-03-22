@@ -23,7 +23,7 @@ import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.GearInta
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.GearIntakeSetDownOut;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.GearIntakeSetUpStop;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.GearIntakeSetUpTimedIn;
-import org.usfirst.frc.team1732.robot.commands.vision.FlashLEDsCommand;
+import org.usfirst.frc.team1732.robot.commands.vision.TurnLightsOff;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -89,7 +89,15 @@ public class OI {
 	private final Trigger	shootNormal		= newNormalButton(shoot);
 	private final Trigger	shootOverride	= newOverrideButton(shoot);
 
-	private final Button	shifter					= new JoystickButton(left, 3);
+	private final Button	shifterLeft		= new JoystickButton(left, 3);
+	private final Button	shifterRight	= new JoystickButton(right, 3);
+	private final Trigger	shifter			= new Trigger() {
+												@Override
+												public boolean get() {
+													return shifterLeft.get() || shifterRight.get();
+												}
+											};
+
 	private final Button	gearStopperOverrideIn	= new JoystickButton(left, 10);
 	private final Button	gearStopperOverrideOut	= new JoystickButton(left, 11);
 
@@ -150,8 +158,8 @@ public class OI {
 		intakeOut.whenPressed(new OutputBalls());
 		intakeStop.whenActive(new StopIntakeAndFeeder());
 
-		shifter.whenPressed(new ShiftLow());
-		shifter.whenReleased(new ShiftHigh());
+		shifter.whenActive(new ShiftLow());
+		shifter.whenInactive(new ShiftHigh());
 
 		gearStopperOverrideIn.whenPressed(new GearIntakeSetStopperIn());
 		gearStopperOverrideOut.whenPressed(new GearIntakeSetStopperOut());
@@ -160,10 +168,9 @@ public class OI {
 		conveyorInOverride.whenInactive(new FeederSetStop());
 
 		conveyorOutOverride.whenActive(new BrakeDrive());
-		//conveyorOutOverride.whenInactive(new ());
+		conveyorOutOverride.whenInactive(new TurnLightsOff());
 
-		flashLEDs.whenActive(new FlashLEDsCommand());
-		// flashLEDs.whenInactive(new TurnLightsOff());
+		// flashLEDs.whenActive(new FlashLEDsCommand());
 	}
 
 	public double getLeftSpeed() {

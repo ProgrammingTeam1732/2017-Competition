@@ -3,8 +3,6 @@ package org.usfirst.frc.team1732.robot.commands.vision;
 import static org.usfirst.frc.team1732.robot.Robot.driveTrain;
 import static org.usfirst.frc.team1732.robot.Robot.visionMain;
 
-import org.usfirst.frc.team1732.robot.Robot;
-
 import edu.wpi.first.wpilibj.command.Command;
 
 public class DriveWithVisionStraight extends Command {
@@ -14,7 +12,6 @@ public class DriveWithVisionStraight extends Command {
 
 	public DriveWithVisionStraight(double aTargetDistanceInches, double maxSetpoint) {
 		requires(driveTrain);
-		requires(Robot.pixyCamera);
 		targetDistanceInches = aTargetDistanceInches;
 		MAX_SETPOINT = maxSetpoint;
 		leftMeasurements = MAX_SETPOINT;
@@ -33,7 +30,6 @@ public class DriveWithVisionStraight extends Command {
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-		Robot.pixyCamera.turnOnLights();
 		driveTrain.resetGyro();
 		driveTrain.resetEncoders();
 
@@ -123,7 +119,6 @@ public class DriveWithVisionStraight extends Command {
 
 	@Override
 	protected void end() {
-		Robot.pixyCamera.turnOffLights();
 		driveTrain.driveRaw(0, 0);
 		visionMain.resetGearPIDValues();
 	}

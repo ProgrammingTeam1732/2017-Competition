@@ -1,8 +1,8 @@
-package org.usfirst.frc.team1732.robot.autocommands.scoregearthenballs;
+package org.usfirst.frc.team1732.robot.autocommands.scoresidegearthenballs;
 
-import org.usfirst.frc.team1732.robot.autocommands.drivetohoppersatend.drivetohopperfromboiler.DriveToHopperFromBoilerRed;
-import org.usfirst.frc.team1732.robot.autocommands.scoreballsthengear.ScoreBallsThenGearData;
-import org.usfirst.frc.team1732.robot.autocommands.scoresidegear.ScoreSideGearPart1Right;
+import org.usfirst.frc.team1732.robot.autocommands.drivetohoppersatend.drivetohopperfromboiler.DriveToHopperFromBoilerBlue;
+import org.usfirst.frc.team1732.robot.autocommands.scoremiddlegear.ScoreMiddleGear;
+import org.usfirst.frc.team1732.robot.autocommands.scoresidegear.ScoreSideGearPart1Left;
 import org.usfirst.frc.team1732.robot.autocommands.visionplacegear.VisionPlaceGear;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.ClearTotalDistance;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveEncoders;
@@ -14,17 +14,12 @@ import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.InitGear
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class ScoreMiddleGearThenBallsRed extends CommandGroup {
+public class ScoreMiddleGearThenBallsBlue extends CommandGroup {
 
-	public ScoreMiddleGearThenBallsRed() {
+	public ScoreMiddleGearThenBallsBlue() {
 		addSequential(new InitGearIntake());
 
 		// GEAR SCORING
-
-		// Positions robot in front of gear peg
-		// addSequential(new ScoreSideGearPart1Right()); // right if red
-		// only using Part1 of ScoreSideGear because we want to drive back a
-		// custom distance
 
 		// clears total distance
 		addSequential(new ClearTotalDistance());
@@ -36,7 +31,7 @@ public class ScoreMiddleGearThenBallsRed extends CommandGroup {
 		// BALL SCORING
 
 		// turn to face boiler
-		addSequential(new TurnWithGyro(ScoreMiddleGearThenBallsData.TURN_1_ANGLE_RED));
+		addSequential(new TurnWithGyro(ScoreMiddleGearThenBallsData.TURN_1_ANGLE_BLUE));
 
 		// drive fast for part of distance
 		addSequential(new DriveUntilEncoders(ScoreMiddleGearThenBallsData.DRIVE_2_SETPOINT,
@@ -46,12 +41,14 @@ public class ScoreMiddleGearThenBallsRed extends CommandGroup {
 		// use PID for rest of distance
 		// addSequential(new
 		// DriveEncoders(ScoreMiddleGearThenBallsData.DRIVE_3_SETPOINT));
-		addSequential(new DriveGyro(ScoreMiddleGearThenBallsData.TURN_2_ANGLE_RED,
-				ScoreMiddleGearThenBallsData.TURN_2_LEFT_SPEED_RED, ScoreMiddleGearThenBallsData.TURN_2_RIGHT_SPEED_RED));
+		addSequential(new DriveGyro(ScoreMiddleGearThenBallsData.TURN_2_ANGLE_BLUE,
+				ScoreMiddleGearThenBallsData.TURN_2_LEFT_SPEED_BLUE,
+				ScoreMiddleGearThenBallsData.TURN_2_RIGHT_SPEED_BLUE));
+
 		// shooting commands
 		addSequential(new ShootTime(ScoreMiddleGearThenBallsData.SHOOT_TIME));
 
 		// drive towards hoppers
-		addSequential(new DriveToHopperFromBoilerRed());
+		addSequential(new DriveToHopperFromBoilerBlue());
 	}
 }

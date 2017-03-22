@@ -9,11 +9,13 @@ import org.usfirst.frc.team1732.robot.autocommands.grabballsthenshoot.GrabBallsK
 import org.usfirst.frc.team1732.robot.autocommands.grabballsthenshoot.GrabBallsKeylineAndShootRed;
 import org.usfirst.frc.team1732.robot.autocommands.scoreballsthengear.ScoreBallsThenGearBlue;
 import org.usfirst.frc.team1732.robot.autocommands.scoreballsthengear.ScoreBallsThenGearRed;
-import org.usfirst.frc.team1732.robot.autocommands.scoregearthenballs.ScoreGearThenBallsBlue;
-import org.usfirst.frc.team1732.robot.autocommands.scoregearthenballs.ScoreGearThenBallsRed;
+import org.usfirst.frc.team1732.robot.autocommands.scorecenterpegthenballs.ScoreCenterGearThenBallsBlue;
+import org.usfirst.frc.team1732.robot.autocommands.scorecenterpegthenballs.ScoreCenterGearThenBallsRed;
 import org.usfirst.frc.team1732.robot.autocommands.scoremiddlegear.ScoreMiddleGear;
 import org.usfirst.frc.team1732.robot.autocommands.scoresidegear.ScoreSideGearLeft;
 import org.usfirst.frc.team1732.robot.autocommands.scoresidegear.ScoreSideGearRight;
+import org.usfirst.frc.team1732.robot.autocommands.scoresidegearthenballs.ScoreGearThenBallsBlue;
+import org.usfirst.frc.team1732.robot.autocommands.scoresidegearthenballs.ScoreGearThenBallsRed;
 import org.usfirst.frc.team1732.robot.autocommands.sidetwogearauto.SideTwoGearAutoLeft;
 import org.usfirst.frc.team1732.robot.autocommands.sidetwogearauto.SideTwoGearAutoRight;
 import org.usfirst.frc.team1732.robot.autocommands.twogearauto.TwoGearAutoLeft;
@@ -52,7 +54,8 @@ public class AutoChooser implements SmartDashboardGroup {
 		DriveEncodersBrake(new DriveEncodersWithBraking(110, 20)),
 		TurnWithEncodersWithBraking90(new TurnWithEncodersWithBraking(90)),
 		TurnWithEncodersWithBraking180(new TurnWithEncodersWithBraking(180)),
-		TurnWithEncodersWithBraking45(new TurnWithEncodersWithBraking(45));
+		TurnWithEncodersWithBraking45(new TurnWithEncodersWithBraking(45)),
+		ScoreCenterGearAndBalls(new ScoreCenterGearThenBallsRed(), new ScoreCenterGearThenBallsBlue());
 
 		// Turn180Degrees(new TurnWithGyro(180)),
 		// Turn90Degrees(new TurnWithGyro(90)),
@@ -65,9 +68,9 @@ public class AutoChooser implements SmartDashboardGroup {
 		// DriveEncodersFar(new DriveEncoders(97.5)),
 		// DriveEncodersShort(new DriveEncoders(40));
 
-		private final BooleanSupplier isRedAlliance;
-		private final Command ifRed;
-		private final Command ifBlue;
+		private final BooleanSupplier	isRedAlliance;
+		private final Command			ifRed;
+		private final Command			ifBlue;
 
 		AutoModes(Command ifRed, Command ifBlue) {
 			isRedAlliance = Robot::isRedAlliance;
@@ -93,8 +96,8 @@ public class AutoChooser implements SmartDashboardGroup {
 	private final SendableChooser<AutoModes> autoChooser = new SendableChooser<>();
 
 	public AutoChooser() {
-		autoChooser.addDefault(AutoModes.ScoreMiddleGear.ordinal() + ": " + AutoModes.ScoreMiddleGear.name(),
-				AutoModes.ScoreMiddleGear);
+		autoChooser.addDefault(	AutoModes.ScoreMiddleGear.ordinal() + ": " + AutoModes.ScoreMiddleGear.name(),
+								AutoModes.ScoreMiddleGear);
 		AutoModes[] autoModes = AutoModes.values();
 		for (int i = 1; i < autoModes.length; i++) {
 			autoChooser.addObject(autoModes[i].ordinal() + ": " + autoModes[i].name(), autoModes[i]);

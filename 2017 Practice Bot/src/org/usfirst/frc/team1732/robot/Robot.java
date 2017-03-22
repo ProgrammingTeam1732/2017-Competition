@@ -25,7 +25,6 @@ import org.usfirst.frc.team1732.robot.commands.gearIntake.base.GearIntakeSetStop
 import org.usfirst.frc.team1732.robot.commands.gearIntake.base.GearIntakeSetStopperIn;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.base.GearIntakeSetStopperOut;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.base.GearIntakeSetUp;
-import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.InitGearIntake;
 import org.usfirst.frc.team1732.robot.commands.individual.FlywheelForward;
 import org.usfirst.frc.team1732.robot.commands.individual.FlywheelReverse;
 import org.usfirst.frc.team1732.robot.commands.individual.FlywheelStop;
@@ -123,8 +122,10 @@ public class Robot extends IterativeRobot {
 			// dashboard.addItem(SmartDashboardItem.newDoubleReciever("Light
 			// Voltage", 0.0, pixyCamera::setLightVoltage));
 			dashboard.addItem(SmartDashboardItem.newNumberSender("robotPeriodic() frequency ms", this::getFrequency));
-//			dashboard.addItem(SmartDashboardItem.newDoubleReciever("Feeder Speed", 1.0, feeder::setSpeed));
-//			dashboard.addItem(SmartDashboardItem.newDoubleReciever("Intake Speed", -1.0, ballIntake::setSpeed));
+			// dashboard.addItem(SmartDashboardItem.newDoubleReciever("Feeder
+			// Speed", 1.0, feeder::setSpeed));
+			// dashboard.addItem(SmartDashboardItem.newDoubleReciever("Intake
+			// Speed", -1.0, ballIntake::setSpeed));
 			SmartDashboard.putData(new TestVisionMain());
 			// addCamera();
 
@@ -151,6 +152,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousInit() {
 		Scheduler.getInstance().removeAll();
+		// new TurnLightsOn().start();
 		autoChooser.getSelected().start();
 	}
 

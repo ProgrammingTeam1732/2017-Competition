@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1732.robot.autocommands.scoregearthenballs;
+package org.usfirst.frc.team1732.robot.autocommands.scoresidegearthenballs;
 
 import org.usfirst.frc.team1732.robot.autocommands.scoresidegear.ScoreSideGearPart1Right;
 import org.usfirst.frc.team1732.robot.autocommands.visionplacegear.VisionPlaceGear;

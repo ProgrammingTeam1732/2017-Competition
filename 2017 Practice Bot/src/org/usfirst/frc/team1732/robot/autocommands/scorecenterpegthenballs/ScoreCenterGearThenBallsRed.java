@@ -12,16 +12,17 @@ public class ScoreCenterGearThenBallsRed extends CommandGroup {
 
 	public ScoreCenterGearThenBallsRed() {
 		addSequential(new InitGearIntake());
-		addSequential(new VisionPlaceGear(ScoreCenterGearThenBallsData.DRIVE_BACK_DISTANCE,
-				ScoreCenterGearThenBallsData.MAX_SETPOINT, true));
+		addSequential(new VisionPlaceGear(	ScoreCenterGearThenBallsData.DRIVE_BACK_DISTANCE,
+											ScoreCenterGearThenBallsData.MAX_SETPOINT, false));
 
 		// turn to face boiler
 		addSequential(new TurnWithGyro(ScoreCenterGearThenBallsData.TURN_1_ANGLE_RED));
 
 		// drive fast for part of distance
-		addSequential(new DriveUntilEncoders(ScoreCenterGearThenBallsData.DRIVE_1_SETPOINT,
-				ScoreCenterGearThenBallsData.DRIVE_1_LEFT_SPEED, ScoreCenterGearThenBallsData.DRIVE_1_RIGHT_SPEED,
-				ScoreCenterGearThenBallsData.DRIVE_1_STOP_AT_END));
+		addSequential(new DriveUntilEncoders(	ScoreCenterGearThenBallsData.DRIVE_1_SETPOINT,
+												ScoreCenterGearThenBallsData.DRIVE_1_LEFT_SPEED,
+												ScoreCenterGearThenBallsData.DRIVE_1_RIGHT_SPEED,
+												ScoreCenterGearThenBallsData.DRIVE_1_STOP_AT_END));
 
 		// use PID for rest of distance
 		addSequential(new DriveEncoders(ScoreCenterGearThenBallsData.DRIVE_2_SETPOINT, 0));
