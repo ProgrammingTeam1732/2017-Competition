@@ -33,8 +33,6 @@ public class VisionMain implements SmartDashboardGroup {
 	private double			previousBoilerScore			= 0;
 	private boolean			isNewBoilerDataAvailable	= false;
 
-	private Rectangle[] allRectangles = new Rectangle[0];
-
 	// Vision Angle Stuff
 	private final PIDSource		gearAngleSource	= getGearPIDSource();
 	private final PIDController	gearPID			= new PIDController(gearP, gearI, gearD, gearAngleSource,
@@ -75,12 +73,14 @@ public class VisionMain implements SmartDashboardGroup {
 	public void run() {
 		if (isGearCameraEnabled()) {
 			gearRectangles = parseData(gearArduino.getData(), gearRectangles);
+			updateGearTarget();
+			sendGearImage();
+		}
+		if (isBoilerCameraEnabled()) {
 			boilerRectangles = parseData(boilerArduino.getData(), boilerRectangles);
 			// if (rectangles != null)
 			// System.out.println(rectangles.length);
-			updateGearTarget();
 			updateBoilerTarget();
-			sendImage();
 		}
 	}
 
@@ -126,7 +126,6 @@ public class VisionMain implements SmartDashboardGroup {
 				total = "";
 			}
 		}
-		allRectangles = output;
 		return output;
 	}
 
@@ -155,8 +154,8 @@ public class VisionMain implements SmartDashboardGroup {
 
 	private void updateBoilerTarget() {
 		try {
-			for (Rectangle r : boilerRectangles)
-				System.out.println(r);
+			// for (Rectangle r : boilerRectangles)
+			// System.out.println(r);
 			boilerTarget = BoilerTarget.getBestVisionTarget(boilerRectangles);
 			double score = 0;
 			if (boilerTarget != null)
@@ -372,15 +371,10 @@ public class VisionMain implements SmartDashboardGroup {
 		}
 	}
 
-	public Rectangle[] getRectangles() {
-		return allRectangles;
-
-	}
-
 	private CvSource	outputStream;
 	private Mat			mat;
 
-	public void sendImage() {
+	public void sendGearImage() {
 		mat = new Mat(PixyCamera.IMAGE_WIDTH, PixyCamera.IMAGE_HEIGHT, org.opencv.core.CvType.CV_8UC3);
 		// Put a rectangle on the image
 		for (Rectangle r : gearRectangles) {

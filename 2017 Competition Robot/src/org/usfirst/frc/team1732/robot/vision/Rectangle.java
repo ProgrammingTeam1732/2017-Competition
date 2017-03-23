@@ -1,15 +1,13 @@
 package org.usfirst.frc.team1732.robot.vision;
 
-public class Rectangle {
+public class Rectangle extends java.awt.Rectangle {
 
-	public final int x, y, width, height, signature;
+	// public final int x, y, width, height, signature;
+	public final int signature;
 
 	public Rectangle(int signature, int x, int y, int width, int height) {
+		super(x, y, width, height);
 		this.signature = signature;
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
 	}
 
 	public int getRightX() {
@@ -18,14 +16,6 @@ public class Rectangle {
 
 	public int getBottomY() {
 		return y + height;
-	}
-
-	public int getCenterX() {
-		return x + width / 2;
-	}
-
-	public int getCenterY() {
-		return y + width / 2;
 	}
 
 	@Override

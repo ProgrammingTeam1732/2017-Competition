@@ -1,5 +1,7 @@
 package org.usfirst.frc.team1732.robot.vision;
 
+import edu.wpi.first.wpilibj.SerialPort;
+
 @Deprecated
 public class VisionThread implements Runnable {
 
@@ -12,7 +14,7 @@ public class VisionThread implements Runnable {
 
 	public GearTarget	gearTarget;
 	public BoilerTarget	boilerTarget;
-	public Arduino		arduino	= new Arduino();
+	public Arduino		arduino	= new Arduino(SerialPort.Port.kUSB1);
 	private String		total	= "";
 	private boolean		found	= false;
 	private boolean		started	= false;

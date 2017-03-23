@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1732.robot.vision;
 
 import edu.wpi.first.wpilibj.SerialPort;
+import edu.wpi.first.wpilibj.SerialPort.Port;
 
 /**
  * This class contains the code for interfacing with the arduino The USB should
@@ -14,9 +15,9 @@ public class Arduino {
 	/**
 	 * Constructs a new arduino reader Sets the baudrate Connects to the arduino
 	 */
-	public Arduino() {
+	public Arduino(Port serialPort) {
 		try {
-			serial = new SerialPort(19200, SerialPort.Port.kUSB1);
+			serial = new SerialPort(19200, serialPort);
 			this.serial.disableTermination();
 			System.out.println("Arduino Starting, waiting 0.5 seconds to get data");
 			// String e = this.getData();
@@ -55,8 +56,9 @@ public class Arduino {
 				} // disables the camera if the while loop gets stuck
 				return s;
 			} catch (Exception e) {
-				System.err.println("something went wrong, " + e.getMessage());
-				e.printStackTrace();
+				// System.err.println("something went wrong, " +
+				// e.getMessage());
+				// e.printStackTrace();
 				disabled = true;
 				return null;
 			}
