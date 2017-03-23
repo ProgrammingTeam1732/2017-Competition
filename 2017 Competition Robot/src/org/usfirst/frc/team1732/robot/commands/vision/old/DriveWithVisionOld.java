@@ -36,7 +36,7 @@ public class DriveWithVisionOld extends Command {
 
 		driveTrain.setEncoderSetpoint(0);
 		driveTrain.setGyroSetpoint(0);
-		visionMain.setVisionSetpoint(0);
+		visionMain.setGearSetpoint(0);
 
 		visionMain.run();
 		distance = visionMain.getInchesToGearPeg();
@@ -99,7 +99,7 @@ public class DriveWithVisionOld extends Command {
 		driveTrain.driveRaw(0, 0);
 		// driveTrain.resetEncoderPIDValues();
 		// driveTrain.resetGyroPIDValues();
-		visionMain.resetPIDValues();
+		visionMain.resetGearPIDValues();
 	}
 
 }

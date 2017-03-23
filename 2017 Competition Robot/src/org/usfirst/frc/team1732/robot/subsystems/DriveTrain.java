@@ -59,6 +59,8 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 	public static final double	gyroI					= 0.000005;	 // 0									// 0.00005
 	public static final double	gyroD					= 0; // 0.1
 
+	public static final double GYRO_IZONE = 25;
+	public static final double GYRO_IZONE_I = -0.00032;
 	// encoders
 	// encoder sensors
 	private final Encoder		leftEncoder					= new Encoder(	RobotMap.LEFT_ENCODER_CHANNEL_A,
