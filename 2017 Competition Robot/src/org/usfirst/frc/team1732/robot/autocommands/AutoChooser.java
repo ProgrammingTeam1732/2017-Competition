@@ -98,7 +98,10 @@ public class AutoChooser implements SmartDashboardGroup {
 	private final SendableChooser<AutoModes> autoChooser = new SendableChooser<>();
 
 	public AutoChooser() {
-		autoChooser.addDefault("0: " + AutoModes.ScoreMiddleGear.name(), AutoModes.ScoreMiddleGear);
+		autoChooser.addDefault(
+								AutoModes.GrabBallsKeylineAndShoot.ordinal() + ": "
+										+ AutoModes.GrabBallsKeylineAndShoot.name(),
+								AutoModes.GrabBallsKeylineAndShoot);
 		AutoModes[] autoModes = AutoModes.values();
 		for (int i = 0; i < autoModes.length; i++) {
 			autoChooser.addObject(autoModes[i].ordinal() + ": " + autoModes[i].name(), autoModes[i]);
@@ -120,7 +123,8 @@ public class AutoChooser implements SmartDashboardGroup {
 
 	@Override
 	public void addToSmartDashboard(MySmartDashboard dashboard) {
-		chosenauto = dashboard.addItem(SmartDashboardItem.newDoubleReciever("Auto Number", 0.0));
+		chosenauto = dashboard.addItem(SmartDashboardItem
+				.newDoubleReciever("Auto Number", (double) AutoModes.GrabBallsKeylineAndShoot.ordinal()));
 	}
 
 }
