@@ -57,6 +57,7 @@ import org.usfirst.frc.team1732.robot.subsystems.Feeder;
 import org.usfirst.frc.team1732.robot.subsystems.Flywheel;
 import org.usfirst.frc.team1732.robot.subsystems.GearIntake;
 import org.usfirst.frc.team1732.robot.subsystems.PixyCamera;
+import org.usfirst.frc.team1732.robot.triggers.Triggers;
 import org.usfirst.frc.team1732.robot.vision.VisionMain;
 
 import edu.wpi.first.wpilibj.DriverStation;
@@ -84,6 +85,7 @@ public class Robot extends IterativeRobot {
 	public static GearIntake	gearIntake;
 	public static Arm			arm;
 	public static PixyCamera	pixyCamera;
+	public static Triggers		triggers;
 
 	public static VisionMain		visionMain;
 	private static MySmartDashboard	dashboard;
@@ -108,6 +110,7 @@ public class Robot extends IterativeRobot {
 			arm = new Arm();
 			gearIntake = new GearIntake();
 			pixyCamera = new PixyCamera();
+			triggers = new Triggers();
 			autoChooser = new AutoChooser();
 
 			oi = new OI();
