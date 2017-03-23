@@ -293,6 +293,7 @@ public class Robot extends IterativeRobot {
 		return startTime - start;
 	}
 
+	@SuppressWarnings("unused")
 	private void addCamera() {
 		// Thread visionThread = new Thread(() -> {
 		//

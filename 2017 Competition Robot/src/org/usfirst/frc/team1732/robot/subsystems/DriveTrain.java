@@ -23,7 +23,10 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 
-	public static final double RIGHT_PERCENTAGE = 0.95648717383821848004664142981469;
+	public static final double RIGHT_PERCENTAGE = 0.94880776378458293024342626784969;
+	//0.94136026246386137267874459619899
+
+	//0.95648717383821848004664142981469 (old)
 	// motors
 	// left motors
 	/**

@@ -18,8 +18,8 @@ public class GrabBallsKeylineAndShootRed extends CommandGroup {
 		addSequential(new DriveEncoders(GrabBallsKeylineAndShootData.DRIVE_1_SETPOINT));
 		// Turn to Face Hopper
 		addSequential(new DriveTime(GrabBallsKeylineAndShootData.TURN_TO_HOPPER_TIME,
-									GrabBallsKeylineAndShootData.TURN_TO_HOPPER_LEFT_SPEED,
-									GrabBallsKeylineAndShootData.TURN_TO_HOPPER_RIGHT_SPEED));
+									GrabBallsKeylineAndShootData.TURN_TO_HOPPER_LEFT_SPEED_RED,
+									GrabBallsKeylineAndShootData.TURN_TO_HOPPER_RIGHT_SPEED_RED));
 		// addSequential(new DriveTime(1, .1, .4));
 		// addSequential(new DriveTime(.5, .3, .3));
 		// Drive Into Hopper

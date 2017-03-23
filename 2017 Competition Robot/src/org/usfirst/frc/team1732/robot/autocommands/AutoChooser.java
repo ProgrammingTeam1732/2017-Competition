@@ -20,6 +20,7 @@ import org.usfirst.frc.team1732.robot.autocommands.sidetwogearauto.SideTwoGearAu
 import org.usfirst.frc.team1732.robot.autocommands.sidetwogearauto.SideTwoGearAutoRight;
 import org.usfirst.frc.team1732.robot.autocommands.twogearauto.TwoGearAutoLeft;
 import org.usfirst.frc.team1732.robot.autocommands.twogearauto.TwoGearAutoRight;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveTime;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveEncodersWithBraking;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.TurnWithEncodersWithBraking;
 import org.usfirst.frc.team1732.robot.smartdashboard.MySmartDashboard;
@@ -57,15 +58,15 @@ public class AutoChooser implements SmartDashboardGroup {
 		DriveEncodersBrake(new DriveEncodersWithBraking(110, 20)),
 		TurnWithEncodersWithBraking90(new TurnWithEncodersWithBraking(90)),
 		TurnWithEncodersWithBraking180(new TurnWithEncodersWithBraking(180)),
-		TurnWithEncodersWithBraking45(new TurnWithEncodersWithBraking(45));
+		TurnWithEncodersWithBraking45(new TurnWithEncodersWithBraking(45)),
 
 		// Turn180Degrees(new TurnWithGyro(180)),
 		// Turn90Degrees(new TurnWithGyro(90)),
 		// TurnWithEncoders180(new TurnWithEncoders(-180)),
 		// TurnWithEncoders90(new TurnWithEncoders(-90)),
 		// TurnWithEncoders45(new TurnWithEncoders(-45)),
-		// DriveTime(new DriveTime(5, 0.3)),
-		// DriveTimeBackwards(new DriveTime(5, -0.3)),
+		DriveTime(new DriveTime(10, 0.3)),
+		DriveTimeBackwards(new DriveTime(10, -0.3));
 		// ResetEncoders(new ClearTotalDistance()),
 		// DriveEncodersFar(new DriveEncoders(97.5)),
 		// DriveEncodersShort(new DriveEncoders(40));

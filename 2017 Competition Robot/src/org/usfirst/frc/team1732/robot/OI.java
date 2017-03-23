@@ -156,11 +156,11 @@ public class OI {
 		gearStopperOverrideIn.whenPressed(new GearIntakeSetStopperIn());
 		gearStopperOverrideOut.whenPressed(new GearIntakeSetStopperOut());
 
-		conveyorInOverride.whenActive(new FeederSetIn());
-		conveyorInOverride.whenInactive(new FeederSetStop());
+		conveyorIn.whenActive(new FeederSetIn());
+		conveyorIn.whenInactive(new FeederSetStop());
 
-		conveyorOutOverride.whenActive(new FeederSetOut());
-		conveyorOutOverride.whenInactive(new FeederSetStop());
+		conveyorOut.whenActive(new FeederSetOut());
+		conveyorOut.whenInactive(new FeederSetStop());
 	}
 
 	public double getLeftSpeed() {
