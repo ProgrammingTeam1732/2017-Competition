@@ -3,22 +3,25 @@ package org.usfirst.frc.team1732.robot.autocommands;
 import java.util.function.BooleanSupplier;
 
 import org.usfirst.frc.team1732.robot.Robot;
-import org.usfirst.frc.team1732.robot.autocommands.grabballsthenshoot.GrabBallsBackwardAndShootBlue;
-import org.usfirst.frc.team1732.robot.autocommands.grabballsthenshoot.GrabBallsBackwardAndShootRed;
+import org.usfirst.frc.team1732.robot.autocommands.grabballsthenshoot.GrabBallsForwardAndShootBlue;
+import org.usfirst.frc.team1732.robot.autocommands.grabballsthenshoot.GrabBallsForwardAndShootRed;
+import org.usfirst.frc.team1732.robot.autocommands.grabballsthenshoot.GrabBallsKeylineAndShootBlue;
+import org.usfirst.frc.team1732.robot.autocommands.grabballsthenshoot.GrabBallsKeylineAndShootRed;
 import org.usfirst.frc.team1732.robot.autocommands.scoreballsthengear.ScoreBallsThenGearBlue;
 import org.usfirst.frc.team1732.robot.autocommands.scoreballsthengear.ScoreBallsThenGearRed;
-import org.usfirst.frc.team1732.robot.autocommands.scoregearthenballs.ScoreGearThenBallsBlue;
-import org.usfirst.frc.team1732.robot.autocommands.scoregearthenballs.ScoreGearThenBallsRed;
+import org.usfirst.frc.team1732.robot.autocommands.scorecenterpegthenballs.ScoreCenterGearThenBallsBlue;
+import org.usfirst.frc.team1732.robot.autocommands.scorecenterpegthenballs.ScoreCenterGearThenBallsRed;
 import org.usfirst.frc.team1732.robot.autocommands.scoremiddlegear.ScoreMiddleGear;
 import org.usfirst.frc.team1732.robot.autocommands.scoresidegear.ScoreSideGearLeft;
 import org.usfirst.frc.team1732.robot.autocommands.scoresidegear.ScoreSideGearRight;
+import org.usfirst.frc.team1732.robot.autocommands.scoresidegearthenballs.ScoreGearThenBallsBlue;
+import org.usfirst.frc.team1732.robot.autocommands.scoresidegearthenballs.ScoreGearThenBallsRed;
 import org.usfirst.frc.team1732.robot.autocommands.sidetwogearauto.SideTwoGearAutoLeft;
 import org.usfirst.frc.team1732.robot.autocommands.sidetwogearauto.SideTwoGearAutoRight;
 import org.usfirst.frc.team1732.robot.autocommands.twogearauto.TwoGearAutoLeft;
 import org.usfirst.frc.team1732.robot.autocommands.twogearauto.TwoGearAutoRight;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.ClearTotalDistance;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveTime;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.TurnWithGyro;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveEncodersWithBraking;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.TurnWithEncodersWithBraking;
 import org.usfirst.frc.team1732.robot.smartdashboard.MySmartDashboard;
 import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardGroup;
 import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardItem;
@@ -39,16 +42,31 @@ public class AutoChooser implements SmartDashboardGroup {
 		ScoreLeftSideGear(new ScoreSideGearLeft()),
 		ScoreGearThenBalls(new ScoreGearThenBallsRed(), new ScoreGearThenBallsBlue()),
 		ScoreBallsThenGear(new ScoreBallsThenGearRed(), new ScoreBallsThenGearBlue()),
-		GrabBallsBackwardThenShoot(new GrabBallsBackwardAndShootRed(), new GrabBallsBackwardAndShootBlue()),
+		// GrabBallsBackwardThenShoot(new GrabBallsBackwardAndShootRed(), new
+		// GrabBallsBackwardAndShootBlue()),
+		GrabBallsForwardThenShoot(new GrabBallsForwardAndShootRed(), new GrabBallsForwardAndShootBlue()),
 		TwoGearAutoLeft(new TwoGearAutoLeft()),
 		TwoGearAutoRight(new TwoGearAutoRight()),
 		SideTwoGearAutoLeft(new SideTwoGearAutoLeft()),
 		SideTwoGearAutoRight(new SideTwoGearAutoRight()),
-		// DriveStraight90Inches(new DriveEncoders(90)),
-		Turn180Degrees(new TurnWithGyro(180)),
-		DriveTime(new DriveTime(5, 0.3)),
-		DriveTimeBackwards(new DriveTime(5, -0.3)),
-		ResetEncoders(new ClearTotalDistance());
+		GrabBallsForwardAndShoot(new GrabBallsForwardAndShootRed(), new GrabBallsForwardAndShootBlue()),
+		GrabBallsKeylineAndShoot(new GrabBallsKeylineAndShootRed(), new GrabBallsKeylineAndShootBlue()),
+		DriveEncodersBrake(new DriveEncodersWithBraking(110, 20)),
+		TurnWithEncodersWithBraking90(new TurnWithEncodersWithBraking(90)),
+		TurnWithEncodersWithBraking180(new TurnWithEncodersWithBraking(180)),
+		TurnWithEncodersWithBraking45(new TurnWithEncodersWithBraking(45)),
+		ScoreCenterGearAndBalls(new ScoreCenterGearThenBallsRed(), new ScoreCenterGearThenBallsBlue());
+
+		// Turn180Degrees(new TurnWithGyro(180)),
+		// Turn90Degrees(new TurnWithGyro(90)),
+		// TurnWithEncoders180(new TurnWithEncoders(-180)),
+		// TurnWithEncoders90(new TurnWithEncoders(-90)),
+		// TurnWithEncoders45(new TurnWithEncoders(-45)),
+		// DriveTime(new DriveTime(5, 0.3)),
+		// DriveTimeBackwards(new DriveTime(5, -0.3)),
+		// ResetEncoders(new ClearTotalDistance()),
+		// DriveEncodersFar(new DriveEncoders(97.5)),
+		// DriveEncodersShort(new DriveEncoders(40));
 
 		private final BooleanSupplier	isRedAlliance;
 		private final Command			ifRed;
