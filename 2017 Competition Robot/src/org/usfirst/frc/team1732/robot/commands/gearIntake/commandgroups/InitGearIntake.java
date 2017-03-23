@@ -11,7 +11,7 @@ public class InitGearIntake extends CommandGroup {
 
 	public InitGearIntake() {
 		addSequential(new GearIntakeSetDown());
-		addSequential(new Wait(0.2));
+		addSequential(new Wait(0.25));
 		addSequential(new GearIntakeSetStopperOut());
 		addSequential(new Wait(0.1));
 		addSequential(new GearIntakeSetUp());

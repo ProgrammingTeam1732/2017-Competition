@@ -1,4 +1,6 @@
-package org.usfirst.frc.team1732.robot.commands.drivetrain;
+package org.usfirst.frc.team1732.robot.commands.drivetrain.gyro;
+
+import static org.usfirst.frc.team1732.robot.Robot.driveTrain;
 
 import org.usfirst.frc.team1732.robot.Robot;
 
@@ -24,22 +26,36 @@ public class TurnWithGyro extends Command {
 	@Override
 	protected void initialize() {
 		// System.out.println("Running turn : " + Robot.isRedAlliance());
-		Robot.driveTrain.resetGyro();
+		driveTrain.resetGyro();
 		// Robot.driveTrain.resetGyroPID();
 		// Robot.driveTrain.clearGyroIntgral();
-		Robot.driveTrain.setGyroSetpoint(setpoint);
+		driveTrain.setGyroSetpoint(setpoint);
 		// System.out.println(setpoint);
+		driveTrain.setEncoderSetpoint(0);
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		if (Math.abs(Robot.driveTrain.getGyroError()) > IZONE) {
-			Robot.driveTrain.setGyroI(0);
-			System.out.println("Outisde gyro izone");
+		if (Math.abs(driveTrain.getGyroError()) < driveTrain.GYRO_IZONE) {
+			driveTrain.setGyroPIDS(driveTrain.gyroP, driveTrain.GYRO_IZONE_I, driveTrain.gyroD);
+		} else {
+			driveTrain.resetGyroPIDValues();
 		}
-		double output = Robot.driveTrain.getGyroPIDOutput();
-		Robot.driveTrain.driveRaw(output, -output);
+
+		double output = driveTrain.getGyroPIDOutput();
+
+		double leftOutput = output;
+		double rightOutput = -output;
+
+		// double leftError = driveTrain.getLeftPIDError();
+		// double rightError = driveTrain.getRightPIDError();
+		// double leftRightAdjustment = (leftError + rightError) *
+		// driveTrain.errorDifferenceScalar;
+		// leftOutput = output - leftRightAdjustment;
+		// rightOutput = output + leftRightAdjustment;
+
+		driveTrain.driveRaw(leftOutput, rightOutput);
 		System.out.println(output);
 	}
 
@@ -53,5 +69,6 @@ public class TurnWithGyro extends Command {
 	@Override
 	protected void end() {
 		Robot.driveTrain.driveRaw(0, 0);
+		Robot.driveTrain.resetGyroPIDValues();
 	}
 }

@@ -25,7 +25,7 @@ public class TurnWithVision extends Command {
 	@Override
 	protected void initialize() {
 		Robot.pixyCamera.turnOnLights();
-		visionMain.setVisionSetpoint(angleSetpoint);
+		visionMain.setGearSetpoint(angleSetpoint);
 	}
 
 	private boolean foundOnce = false;
@@ -37,7 +37,7 @@ public class TurnWithVision extends Command {
 		// double angle = visionMain.getAngleToGearPeg();
 		if (visionMain.canSeeGearPeg()) {
 			foundOnce = true;
-			double output = visionMain.getVisionPIDOutput();
+			double output = visionMain.getGearPIDOutput();
 			// 1 - // Math.abs(angle/angleSetpoint);
 			driveTrain.driveRaw(-output / 2, output / 2);
 		}
@@ -46,7 +46,7 @@ public class TurnWithVision extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return (foundOnce && visionMain.isVisionPIDOnTarget()) || isTimedOut();
+		return (foundOnce && visionMain.isGearPIDOnTarget()) || isTimedOut();
 	}
 
 	// Called once after isFinished returns true

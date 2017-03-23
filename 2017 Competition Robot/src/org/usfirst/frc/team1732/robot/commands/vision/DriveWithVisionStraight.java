@@ -5,9 +5,12 @@ import static org.usfirst.frc.team1732.robot.Robot.visionMain;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class DriveWithVision extends Command {
+public class DriveWithVisionStraight extends Command {
 
-	public DriveWithVision(double aTargetDistanceInches, double maxSetpoint) {
+	// stuff to add
+	// also only update encoders when vision update is ready
+
+	public DriveWithVisionStraight(double aTargetDistanceInches, double maxSetpoint) {
 		requires(driveTrain);
 		targetDistanceInches = aTargetDistanceInches;
 		MAX_SETPOINT = maxSetpoint;
@@ -40,7 +43,6 @@ public class DriveWithVision extends Command {
 
 	private final double	MAX_SETPOINT;
 	private double			targetDistanceInches;
-	private double			previousAngleOutput	= 0;
 	private double			leftMeasurements	= 0;
 	private double			rightMeasurements	= 0;
 	private int				measurements		= 1;
@@ -56,11 +58,6 @@ public class DriveWithVision extends Command {
 	@Override
 	protected void execute() {
 		visionMain.run();
-		// double angle = visionMain.getAngleToGearPeg();
-		// double angleSetpoint = angle + driveTrain.gyro.getAngle();
-		// if it still sees it calculate the new output, otherwise keep
-		// doing
-		// what it was doing
 		if (visionMain.canSeeGearPeg() && visionMain.isNewGearDataAvailable()) {
 			double distance = visionMain.getInchesToGearPeg();
 
@@ -78,14 +75,6 @@ public class DriveWithVision extends Command {
 				rightSetpoint = rightMeasurements / measurements;
 			}
 
-			// double P = lower + slope * distance;
-			// double P = lower + (upper - lower) / (1 + Math.exp(-slope *
-			// (distance - middle)));
-			// double distance = visionMain.getInchesToGearPeg();
-
-			double P = lower + slope * distance;
-			visionMain.setGearPIDValues(P, 0, 0);
-			previousAngleOutput = visionMain.getGearPIDOutput();
 			if (leftSetpoint > MAX_SETPOINT)
 				leftSetpoint = MAX_SETPOINT - driveTrain.getLeftDistance();
 			if (rightSetpoint > MAX_SETPOINT)
@@ -96,8 +85,8 @@ public class DriveWithVision extends Command {
 
 		double leftOutput = driveTrain.getLeftPIDOutput();
 		double rightOutput = driveTrain.getRightPIDOutput();
-		leftOutput = leftOutput - previousAngleOutput;
-		rightOutput = rightOutput + previousAngleOutput;
+		leftOutput = leftOutput + driveTrain.getLeftRightAdjustment();
+		rightOutput = rightOutput - driveTrain.getLeftRightAdjustment();
 		double max = Math.abs(Math.max(leftOutput, rightOutput));
 		if (max >= 1) {
 			leftOutput = leftOutput / max;
@@ -113,19 +102,19 @@ public class DriveWithVision extends Command {
 	}
 
 	public static void setSlope(double slope) {
-		DriveWithVision.slope = slope;
+		DriveWithVisionStraight.slope = slope;
 	}
 
 	public static void setMiddle(double middle) {
-		DriveWithVision.middle = middle;
+		DriveWithVisionStraight.middle = middle;
 	}
 
 	public static void setLower(double lower) {
-		DriveWithVision.lower = lower;
+		DriveWithVisionStraight.lower = lower;
 	}
 
 	public static void setUpper(double upper) {
-		DriveWithVision.upper = upper;
+		DriveWithVisionStraight.upper = upper;
 	}
 
 	@Override
