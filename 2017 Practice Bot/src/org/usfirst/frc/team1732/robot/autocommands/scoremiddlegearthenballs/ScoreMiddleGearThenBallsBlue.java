@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1732.robot.autocommands.scoresidegearthenballs;
+package org.usfirst.frc.team1732.robot.autocommands.scoremiddlegearthenballs;
 
 import org.usfirst.frc.team1732.robot.autocommands.drivetohoppersatend.drivetohopperfromboiler.DriveToHopperFromBoilerBlue;
 import org.usfirst.frc.team1732.robot.autocommands.scoremiddlegear.ScoreMiddleGear;

@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1732.robot.autocommands.scoresidegearthenballs;
+package org.usfirst.frc.team1732.robot.autocommands.scoremiddlegearthenballs;
 
 import java.util.function.DoubleSupplier;
 
