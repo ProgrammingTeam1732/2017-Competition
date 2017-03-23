@@ -12,34 +12,35 @@ public class PixyCamera extends Subsystem {
 	// private final CANTalon lightRelay = new Relay(RobotMap.RELAY_CHANNEL);
 	private final CANTalon lightController = new CANTalon(RobotMap.LIGHT_MOTOR_DEVICE_NUMBER);
 
-	public static final double MAX_VOLTAGE = 12;
-	public static final double MIN_VOLTAGE = 0;
+	public static final double	MAX_VOLTAGE	= 12;
+	public static final double	MIN_VOLTAGE	= 0;
 
-	public static final double HORIZONTAL_FIELD_OF_VIEW = 68;
-	public static final double VERTICAL_FIELD_OF_VIEW = 47;
+	public static final double	HORIZONTAL_FIELD_OF_VIEW	= 68;
+	public static final double	VERTICAL_FIELD_OF_VIEW		= 47;
 
-	public static final int IMAGE_WIDTH = 320;
-	public static final int IMAGE_HEIGHT = 200;
+	public static final int	IMAGE_WIDTH		= 320;
+	public static final int	IMAGE_HEIGHT	= 200;
 
 	private boolean isLightOn = false;
 
 	public PixyCamera() {
 		// lightRelay.setDirection(Direction.kBoth);
+		lightController.configNominalOutputVoltage(MIN_VOLTAGE, MIN_VOLTAGE);
+		lightController.configPeakOutputVoltage(MAX_VOLTAGE, MIN_VOLTAGE);
 		lightController.changeControlMode(TalonControlMode.Voltage);
 		lightController.set(0);
 	}
 
 	@Override
-	public void initDefaultCommand() {
-	}
+	public void initDefaultCommand() {}
 
 	public void turnOnLights() {
-		lightController.set(limit(12));
+		lightController.set(12);
 		isLightOn = true;
 	}
 
 	public void turnOffLights() {
-		lightController.set(limit(0));
+		lightController.set(0);
 		isLightOn = false;
 	}
 
@@ -47,19 +48,19 @@ public class PixyCamera extends Subsystem {
 		return isLightOn;
 	}
 
-	public void setLightVoltage(double d) {
-		lightController.set(limit(d));
+	public boolean isLightOff() {
+		return !isLightOn;
 	}
 
-	public double limit(double d) {
-		return d > MAX_VOLTAGE ? MAX_VOLTAGE : d < MIN_VOLTAGE ? MIN_VOLTAGE : d;
-	}
+	// public void setLightVoltage(double d) {
+	// lightController.set(d);
+	// }
 
-	public void setLightsOn(boolean on) {
-		if (on)
-			turnOnLights();
-		else
-			turnOffLights();
-	}
+	// public void setLightsOn(boolean on) {
+	// if (on)
+	// turnOnLights();
+	// else
+	// turnOffLights();
+	// }
 
 }

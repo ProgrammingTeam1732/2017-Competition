@@ -8,10 +8,10 @@ import org.usfirst.frc.team1732.robot.commands.climber.ArmSetOutGroup;
 import org.usfirst.frc.team1732.robot.commands.climber.ClimberSetDown;
 import org.usfirst.frc.team1732.robot.commands.climber.ClimberSetStop;
 import org.usfirst.frc.team1732.robot.commands.climber.ClimberSetUp;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.BrakeDrive;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.ShiftHigh;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.ShiftLow;
 import org.usfirst.frc.team1732.robot.commands.feeder.FeederSetIn;
+import org.usfirst.frc.team1732.robot.commands.feeder.FeederSetOut;
 import org.usfirst.frc.team1732.robot.commands.feeder.FeederSetStop;
 import org.usfirst.frc.team1732.robot.commands.flywheel.DisableFlywheel;
 import org.usfirst.frc.team1732.robot.commands.flywheel.EnableFlywheel;
@@ -23,7 +23,6 @@ import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.GearInta
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.GearIntakeSetDownOut;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.GearIntakeSetUpStop;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.GearIntakeSetUpTimedIn;
-import org.usfirst.frc.team1732.robot.commands.vision.TurnLightsOff;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -112,13 +111,6 @@ public class OI {
 	private final Trigger	buttonGearScoreNormal	= newNormalButton(buttonGearScore);
 	private final Trigger	buttonGearScoreOverride	= newOverrideButton(buttonGearScore);
 
-	private final Trigger flashLEDs = new Trigger() {
-		@Override
-		public boolean get() {
-			return Robot.gearIntake.gearIsIn();
-		}
-	};
-
 	private final Trigger gearScore = new Trigger() {
 		@Override
 		public boolean get() {
@@ -167,10 +159,8 @@ public class OI {
 		conveyorInOverride.whenActive(new FeederSetIn());
 		conveyorInOverride.whenInactive(new FeederSetStop());
 
-		conveyorOutOverride.whenActive(new BrakeDrive());
-		conveyorOutOverride.whenInactive(new TurnLightsOff());
-
-		// flashLEDs.whenActive(new FlashLEDsCommand());
+		conveyorOutOverride.whenActive(new FeederSetOut());
+		conveyorOutOverride.whenInactive(new FeederSetStop());
 	}
 
 	public double getLeftSpeed() {
