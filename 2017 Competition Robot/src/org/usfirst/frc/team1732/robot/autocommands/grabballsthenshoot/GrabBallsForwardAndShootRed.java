@@ -17,7 +17,7 @@ public class GrabBallsForwardAndShootRed extends CommandGroup {
 
 	public GrabBallsForwardAndShootRed() {
 		addSequential(new InitGearIntake());
-		addSequential(new DriveEncoders(GrabBallsForwardAndShootData.DRIVE_1_SETPOINT, 0));
+		addSequential(new DriveEncoders(GrabBallsForwardAndShootData.DRIVE_1_SETPOINT));
 
 		addSequential(new TurnWithEncoders(GrabBallsForwardAndShootData.TURN_1_ANGLE_RED));
 
@@ -31,7 +31,7 @@ public class GrabBallsForwardAndShootRed extends CommandGroup {
 
 		addSequential(new TurnWithEncoders(GrabBallsForwardAndShootData.TURN_2_ANGLE_RED));
 
-		addSequential(new DriveEncoders(GrabBallsForwardAndShootData.DRIVE_4_SETPOINT, 0));
+		addSequential(new DriveEncoders(GrabBallsForwardAndShootData.DRIVE_4_SETPOINT));
 		addParallel(new EnableFlywheel());
 		addSequential(new DriveTime(GrabBallsForwardAndShootData.TURN_3_TIME_RED,
 									GrabBallsForwardAndShootData.DRIVE_LEFT_SPEED_RED,

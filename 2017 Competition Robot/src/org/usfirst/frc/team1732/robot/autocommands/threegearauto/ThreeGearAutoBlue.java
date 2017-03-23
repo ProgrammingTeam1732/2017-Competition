@@ -20,8 +20,9 @@ public class ThreeGearAutoBlue extends CommandGroup {
 		addSequential(new ClearTotalDistance());
 
 		// places the gear, drives back
-		addSequential(new VisionPlaceGear(ThreeGearAutoData.DRIVE_1_LEFT_SETPOINT,
-				ThreeGearAutoData.DRIVE_1_RIGHT_SETPOINT, ThreeGearAutoData.MAX_SETPOINT, true));
+		addSequential(new VisionPlaceGear(	ThreeGearAutoData.DRIVE_1_LEFT_SETPOINT,
+											ThreeGearAutoData.DRIVE_1_RIGHT_SETPOINT, ThreeGearAutoData.MAX_SETPOINT,
+											true));
 
 		// turns to face the gear on ground
 		// addSequential(new TurnWithGyro(ThreeGearAutoData.TURN_1_ANGLE_BLUE));
@@ -46,7 +47,7 @@ public class ThreeGearAutoBlue extends CommandGroup {
 
 		// drives back
 		addSequential(new DriveEncodersGetSetpointAtRuntime(ThreeGearAutoData.DRIVE_3_LEFT_SETPOINT,
-				ThreeGearAutoData.DRIVE_3_RIGHT_SETPOINT, 0));
+															ThreeGearAutoData.DRIVE_3_RIGHT_SETPOINT));
 
 		// turns to face gear peg
 		// addSequential(new TurnWithGyro(ThreeGearAutoData.TURN_2_ANGLE_BLUE));
@@ -55,8 +56,9 @@ public class ThreeGearAutoBlue extends CommandGroup {
 		addSequential(new ClearTotalDistance());
 
 		// scores second gear!!!
-		addSequential(new VisionPlaceGear(ThreeGearAutoData.DRIVE_1_LEFT_SETPOINT,
-				ThreeGearAutoData.DRIVE_1_RIGHT_SETPOINT, ThreeGearAutoData.MAX_SETPOINT, true));
+		addSequential(new VisionPlaceGear(	ThreeGearAutoData.DRIVE_1_LEFT_SETPOINT,
+											ThreeGearAutoData.DRIVE_1_RIGHT_SETPOINT, ThreeGearAutoData.MAX_SETPOINT,
+											true));
 
 		// turns to face the gear on ground
 		// addSequential(new TurnWithGyro(ThreeGearAutoData.TURN_1_ANGLE_BLUE));
@@ -81,14 +83,14 @@ public class ThreeGearAutoBlue extends CommandGroup {
 
 		// drives back
 		addSequential(new DriveEncodersGetSetpointAtRuntime(ThreeGearAutoData.DRIVE_3_LEFT_SETPOINT,
-				ThreeGearAutoData.DRIVE_3_RIGHT_SETPOINT, 0));
+															ThreeGearAutoData.DRIVE_3_RIGHT_SETPOINT));
 
 		// turns to face gear peg
 		// addSequential(new TurnWithGyro(ThreeGearAutoData.TURN_2_ANGLE_BLUE));
 		addSequential(new TurnWithGyro(ThreeGearAutoData.TURN_1_ANGLE_BLUE));
 
 		// scores third gear!!!
-		addSequential(new VisionPlaceGear(ThreeGearAutoData.DRIVE_4_DRIVE_BACK_SETPOINT, ThreeGearAutoData.MAX_SETPOINT,
-				true));
+		addSequential(new VisionPlaceGear(	ThreeGearAutoData.DRIVE_4_DRIVE_BACK_SETPOINT, ThreeGearAutoData.MAX_SETPOINT,
+											true));
 	}
 }

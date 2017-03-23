@@ -9,22 +9,19 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class DriveEncoders extends Command {
 
-	private final double leftDistance;
-	private final double rightDistance;
+	private final double	leftDistance;
+	private final double	rightDistance;
 
-	private final double offset;
-
-	public DriveEncoders(double distanceInches, double offset) {
-		this(distanceInches, distanceInches, offset);
+	public DriveEncoders(double distanceInches) {
+		this(distanceInches, distanceInches);
 	}
 
-	public DriveEncoders(double leftInches, double rightInches, double offset) {
+	public DriveEncoders(double leftInches, double rightInches) {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
 		requires(driveTrain);
 		leftDistance = leftInches;
 		rightDistance = rightInches;
-		this.offset = offset;
 	}
 
 	// Called just before this Command runs the first time
@@ -66,7 +63,7 @@ public class DriveEncoders extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return driveTrain.encodersOnTarget(offset);
+		return driveTrain.encodersOnTarget();
 	}
 
 	// Called once after isFinished returns true

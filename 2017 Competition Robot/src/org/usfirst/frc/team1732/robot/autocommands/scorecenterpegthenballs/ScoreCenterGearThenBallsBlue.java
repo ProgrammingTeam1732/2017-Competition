@@ -1,9 +1,10 @@
 package org.usfirst.frc.team1732.robot.autocommands.scorecenterpegthenballs;
 
-import org.usfirst.frc.team1732.robot.autocommands.scoremiddlegear.ScoreMiddleGear;
+import org.usfirst.frc.team1732.robot.autocommands.visionplacegear.VisionPlaceGear;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveEncoders;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveUntilEncoders;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.gyro.TurnWithGyro;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.InitGearIntake;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -18,8 +19,9 @@ public class ScoreCenterGearThenBallsBlue extends CommandGroup {
 		// ScoreCenterGearThenBallsData.MAX_SETPOINT, false));
 		// }
 		// });
-		addSequential(new ScoreMiddleGear());
-		addSequential(new DriveEncoders(-20.0, 0));
+		addSequential(new InitGearIntake());
+		addSequential(new VisionPlaceGear(	ScoreCenterGearThenBallsData.DRIVE_BACK_DISTANCE,
+											ScoreCenterGearThenBallsData.MAX_SETPOINT, false));
 
 		// turn to face boiler
 		addSequential(new TurnWithGyro(ScoreCenterGearThenBallsData.TURN_1_ANGLE_BLUE));
@@ -31,9 +33,9 @@ public class ScoreCenterGearThenBallsBlue extends CommandGroup {
 												ScoreCenterGearThenBallsData.DRIVE_1_STOP_AT_END));
 
 		// use PID for rest of distance
-		addSequential(new DriveEncoders(ScoreCenterGearThenBallsData.DRIVE_2_SETPOINT, 0));
+		addSequential(new DriveEncoders(ScoreCenterGearThenBallsData.DRIVE_2_SETPOINT));
 
-		addSequential(new DriveEncoders(ScoreCenterGearThenBallsData.DRIVE_3_SETPOINT, 0));
+		addSequential(new DriveEncoders(ScoreCenterGearThenBallsData.DRIVE_3_SETPOINT));
 
 		// shooting commands
 		// addSequential(new

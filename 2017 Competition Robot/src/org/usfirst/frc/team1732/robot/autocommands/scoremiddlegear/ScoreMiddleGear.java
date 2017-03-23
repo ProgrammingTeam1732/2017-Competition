@@ -12,7 +12,7 @@ public class ScoreMiddleGear extends CommandGroup {
 
 	public ScoreMiddleGear() {
 		addSequential(new InitGearIntake());
-		addSequential(new DriveEncoders(64, 0));
+		addSequential(new DriveEncoders(64));
 
 		addSequential(new GearIntakeSetDown());
 		addParallel(new CommandGroup() {
@@ -21,7 +21,7 @@ public class ScoreMiddleGear extends CommandGroup {
 				addSequential(new GearIntakeSetUp());
 			}
 		});
-		addSequential(new DriveEncoders(-40, 0));
+		addSequential(new DriveEncoders(-40));
 
 	}
 

@@ -25,9 +25,9 @@ public class ScoreCenterGearThenBallsRed extends CommandGroup {
 												ScoreCenterGearThenBallsData.DRIVE_1_STOP_AT_END));
 
 		// use PID for rest of distance
-		addSequential(new DriveEncoders(ScoreCenterGearThenBallsData.DRIVE_2_SETPOINT, 0));
+		addSequential(new DriveEncoders(ScoreCenterGearThenBallsData.DRIVE_2_SETPOINT));
 
-		addSequential(new DriveEncoders(ScoreCenterGearThenBallsData.DRIVE_3_SETPOINT, 0));
+		addSequential(new DriveEncoders(ScoreCenterGearThenBallsData.DRIVE_3_SETPOINT));
 
 		// shooting commands
 		// addSequential(new

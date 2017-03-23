@@ -12,12 +12,12 @@ public class DriveToHopperFromBoilerBlue extends CommandGroup {
 
 	public DriveToHopperFromBoilerBlue() {
 		// backup slightly
-		addSequential(new DriveEncoders(DriveToHopperFromBoilerData.DRIVE_1_SETPOINT, 0));
+		addSequential(new DriveEncoders(DriveToHopperFromBoilerData.DRIVE_1_SETPOINT));
 
 		// turn towards hoppers
 		addSequential(new TurnWithGyro(DriveToHopperFromBoilerData.TURN_1_ANGLE_BLUE));
 
 		// drive towards hoppers
-		addSequential(new DriveEncoders(DriveToHopperFromBoilerData.DRIVE_2_SETPOINT, 0));
+		addSequential(new DriveEncoders(DriveToHopperFromBoilerData.DRIVE_2_SETPOINT));
 	}
 }

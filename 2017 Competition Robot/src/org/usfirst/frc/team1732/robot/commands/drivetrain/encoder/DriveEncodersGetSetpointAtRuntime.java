@@ -11,22 +11,19 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class DriveEncodersGetSetpointAtRuntime extends Command {
 
-	private final DoubleSupplier leftDistance;
-	private final DoubleSupplier rightDistance;
+	private final DoubleSupplier	leftDistance;
+	private final DoubleSupplier	rightDistance;
 
-	private final double offset;
-
-	public DriveEncodersGetSetpointAtRuntime(DoubleSupplier distanceInches, double offset) {
-		this(distanceInches, distanceInches, offset);
+	public DriveEncodersGetSetpointAtRuntime(DoubleSupplier distanceInches) {
+		this(distanceInches, distanceInches);
 	}
 
-	public DriveEncodersGetSetpointAtRuntime(DoubleSupplier leftInches, DoubleSupplier rightInches, double offset) {
+	public DriveEncodersGetSetpointAtRuntime(DoubleSupplier leftInches, DoubleSupplier rightInches) {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
 		requires(driveTrain);
 		leftDistance = leftInches;
 		rightDistance = rightInches;
-		this.offset = offset;
 	}
 
 	// Called just before this Command runs the first time
@@ -61,7 +58,7 @@ public class DriveEncodersGetSetpointAtRuntime extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return driveTrain.encodersOnTarget(offset);
+		return driveTrain.encodersOnTarget();
 	}
 
 	// Called once after isFinished returns true
