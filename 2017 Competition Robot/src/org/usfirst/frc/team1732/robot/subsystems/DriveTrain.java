@@ -54,10 +54,10 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 	// gyro controllers
 	private final PIDController	gyroPID					= new PIDController(gyroP, gyroI, gyroD, gyro,
 																			DriveTrain::voidMethod);
-	public static final double	GYRO_DEADBAND_DEGREES	= 5;
-	public static final double	gyroP					= 0.0085;
-	public static final double	gyroI					= 0.000005;										// 0.00005
-	public static final double	gyroD					= 0;
+	public static final double	GYRO_DEADBAND_DEGREES	= 5; // 4
+	public static final double	gyroP					= 0.0085; // 0.0192
+	public static final double	gyroI					= 0.000005;	 // 0									// 0.00005
+	public static final double	gyroD					= 0; // 0.1
 
 	// encoders
 	// encoder sensors
@@ -70,20 +70,35 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 	// public static final double LEFT_MOTOR_OFFSET = 1.0;
 
 	// encoder controllers
-	private final PIDController	leftEncoderPID			= new PIDController(encoderP, encoderI, encoderD, leftEncoder,
-																			DriveTrain::voidMethod);
-	private final PIDController	rightEncoderPID			= new PIDController(encoderP, encoderI, encoderD, rightEncoder,
-																			DriveTrain::voidMethod);
-	public static final double	encoderP				= 0.02;															// 0.03
-	public static final double	encoderI				= 0;
-	public static final double	encoderD				= 0;
-	public static final double	ENCODER_DEADBAND_INCHES	= 6;
+	private final PIDController leftEncoderPID = new PIDController(encoderP, encoderI, encoderD, leftEncoder,
+			DriveTrain::voidMethod);
+	private final PIDController rightEncoderPID = new PIDController(encoderP, encoderI, encoderD, rightEncoder,
+			DriveTrain::voidMethod);
+	public static final double encoderP = 0.03; // 0.02
+	public static final double encoderI = 0;
+	public static final double encoderD = 0;
+	public static final double ENCODER_DEADBAND_INCHES = 3; // 6
+	public static final double errorDifferenceScalar = 0.035;
+
+	public static final double ENCODER_IZONE = 20;
+	public static final double ENCODER_IZONE_I = 0.0004;
+
+	public static final double encoderTurningP = 0.055;
+	public static final double encoderTurningI = 0;
+	public static final double encoderTurningD = 0.04;
+	public static final double ENCODER_TURNING_DEADBAND_INCHES = 1;
+
+	public static final double ENCODER_IZONE_TURNING = 4;
+	public static final double ENCODER_IZONE_TURNING_I = 0.001;
 
 	// Min and max output
-	public static final double	ENCODER_MAX_OUTPUT	= 0.5;
-	public static final double	ENCODER_MIN_OUTPUT	= -ENCODER_MAX_OUTPUT;
-	public static final double	GYRO_MAX_OUTPUT		= 0.5;
-	public static final double	GYRO_MIN_OUTPUT		= -GYRO_MAX_OUTPUT;
+	public static final double ENCODER_MAX_OUTPUT = 1;
+	public static final double ENCODER_MIN_OUTPUT = -ENCODER_MAX_OUTPUT;
+	// public static final double ENCODER_NOMINAL_POSITIVE = 0.1;
+	// public static final double ENCODER_NOMINAL_NEGATIVE =
+	// -ENCODER_NOMINAL_POSITIVE;
+	public static final double GYRO_MAX_OUTPUT = 0.8;
+	public static final double GYRO_MIN_OUTPUT = -GYRO_MAX_OUTPUT;
 	// public static final double MAX_OUTPUT = 0.5;
 	// public static final double MIN_OUTPUT = -ENCODER_MAX_OUTPUT;
 
@@ -318,36 +333,36 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 
 		// Left
 		String leftDirectory = directory + "Left/";
-		dashboard.addItem(SmartDashboardItem.newNumberSender(	leftDirectory + "Left Encoder Raw Counts",
-																leftEncoder::getRaw));
+		dashboard.addItem(
+				SmartDashboardItem.newNumberSender(leftDirectory + "Left Encoder Raw Counts", leftEncoder::getRaw));
 		dashboard.addItem(SmartDashboardItem.newNumberSender(leftDirectory + "Left Encoder Counts", leftEncoder::get));
-		dashboard.addItem(SmartDashboardItem.newNumberSender(	leftDirectory + "Left Encoder Distance",
-																leftEncoder::getDistance));
-		dashboard.addItem(SmartDashboardItem.newNumberSender(	leftDirectory + "Left Encoder Setpoint",
-																leftEncoderPID::getSetpoint));
+		dashboard.addItem(
+				SmartDashboardItem.newNumberSender(leftDirectory + "Left Encoder Distance", leftEncoder::getDistance));
+		dashboard.addItem(SmartDashboardItem.newNumberSender(leftDirectory + "Left Encoder Setpoint",
+				leftEncoderPID::getSetpoint));
 		dashboard.addItem(SmartDashboardItem.newNumberSender(leftDirectory + "Left Error", leftEncoderPID::getError));
-		dashboard.addItem(SmartDashboardItem.newBooleanSender(	leftDirectory + "At left setpoint?",
-																leftEncoderPID::onTarget));
+		dashboard.addItem(
+				SmartDashboardItem.newBooleanSender(leftDirectory + "At left setpoint?", leftEncoderPID::onTarget));
 		dashboard.addItem(SmartDashboardItem.newNumberSender(leftDirectory + "Left PID Output", leftEncoderPID::get));
-		SmartDashboard.putData("Left PID", leftEncoderPID);
+		// SmartDashboard.putData("Left PID", leftEncoderPID);
 
 		// Right
 		String rightDirectory = directory + "Right/";
-		dashboard.addItem(SmartDashboardItem.newNumberSender(	rightDirectory + "Right Encoder Raw Counts",
-																rightEncoder::getRaw));
-		dashboard.addItem(SmartDashboardItem.newNumberSender(	rightDirectory + "Right Encoder Counts",
-																rightEncoder::get));
-		dashboard.addItem(SmartDashboardItem.newNumberSender(	rightDirectory + "Right Encoder Distance",
-																rightEncoder::getDistance));
-		dashboard.addItem(SmartDashboardItem.newNumberSender(	rightDirectory + "Right Encoder Setpoint",
-																rightEncoderPID::getSetpoint));
+		dashboard.addItem(
+				SmartDashboardItem.newNumberSender(rightDirectory + "Right Encoder Raw Counts", rightEncoder::getRaw));
+		dashboard.addItem(
+				SmartDashboardItem.newNumberSender(rightDirectory + "Right Encoder Counts", rightEncoder::get));
+		dashboard.addItem(SmartDashboardItem.newNumberSender(rightDirectory + "Right Encoder Distance",
+				rightEncoder::getDistance));
+		dashboard.addItem(SmartDashboardItem.newNumberSender(rightDirectory + "Right Encoder Setpoint",
+				rightEncoderPID::getSetpoint));
 		dashboard
 				.addItem(SmartDashboardItem.newNumberSender(rightDirectory + "Right Error", rightEncoderPID::getError));
-		dashboard.addItem(SmartDashboardItem.newBooleanSender(	rightDirectory + "At right setpoint?",
-																rightEncoderPID::onTarget));
+		dashboard.addItem(
+				SmartDashboardItem.newBooleanSender(rightDirectory + "At right setpoint?", rightEncoderPID::onTarget));
 		dashboard
 				.addItem(SmartDashboardItem.newNumberSender(rightDirectory + "Right PID Output", rightEncoderPID::get));
-		SmartDashboard.putData("Right PID", rightEncoderPID);
+		// SmartDashboard.putData("Right PID", rightEncoderPID);
 
 		String gyroDirectory = directory + "Gyro/";
 		gyroISmartDashboard = dashboard
@@ -602,6 +617,11 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 		return leftEncoderOnTarget() && rightEncoderOnTarget();
 	}
 
+	public boolean encodersOnTarget(double offset) {
+		return Math.abs(leftEncoderPID.getError()) - offset < ENCODER_DEADBAND_INCHES
+				&& Math.abs(rightEncoderPID.getError()) - offset < ENCODER_DEADBAND_INCHES;
+	}
+
 	/**
 	 * Checks if the gyro is within the deadband of the setpoint
 	 * 
@@ -660,6 +680,10 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 		rightEncoderPID.setPID(p, i, d);
 	}
 
+	public void setGyroPIDS(double p, double i, double d) {
+		gyroPID.setPID(p, i, d);
+	}
+
 	public void setGyroI(double i) {
 		gyroPID.setPID(gyroPID.getP(), i, gyroPID.getD());
 	}
@@ -684,6 +708,31 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 
 	public double getGyroError() {
 		return gyroPID.getError();
+	}
+
+	public double getLeftPIDError() {
+		return leftEncoderPID.getError();
+	}
+
+	public double getRightPIDError() {
+		return rightEncoderPID.getError();
+	}
+
+	public double getLeftRightAdjustment() {
+		return (leftEncoderPID.getError() - rightEncoderPID.getError()) * errorDifferenceScalar;
+	}
+
+	public void setEncoderToTurningPID() {
+		leftEncoderPID.setPID(encoderTurningP, encoderTurningI, encoderTurningD);
+		rightEncoderPID.setPID(encoderTurningP, encoderTurningI, encoderTurningD);
+	}
+
+	public double getLeftVelocity() {
+		return leftEncoder.getRate();
+	}
+
+	public double getRightVelocity() {
+		return rightEncoder.getRate();
 	}
 
 }

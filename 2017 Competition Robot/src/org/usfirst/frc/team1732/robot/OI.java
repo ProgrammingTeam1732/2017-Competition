@@ -11,6 +11,7 @@ import org.usfirst.frc.team1732.robot.commands.climber.ClimberSetUp;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.ShiftHigh;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.ShiftLow;
 import org.usfirst.frc.team1732.robot.commands.feeder.FeederSetIn;
+import org.usfirst.frc.team1732.robot.commands.feeder.FeederSetOut;
 import org.usfirst.frc.team1732.robot.commands.feeder.FeederSetStop;
 import org.usfirst.frc.team1732.robot.commands.flywheel.DisableFlywheel;
 import org.usfirst.frc.team1732.robot.commands.flywheel.EnableFlywheel;
@@ -48,11 +49,11 @@ public class OI {
 
 	private final Button override = new JoystickButton(buttons, 5);
 
-	private final Button	conveyorIn			= new JoystickButton(buttons, 6);
+	private final Button	conveyorIn			= new JoystickButton(buttons, 7);
 	private final Trigger	conveyorInNormal	= newNormalButton(conveyorIn);
 	private final Trigger	conveyorInOverride	= newOverrideButton(conveyorIn);
 
-	private final Button	conveyorOut			= new JoystickButton(buttons, 7);
+	private final Button	conveyorOut			= new JoystickButton(buttons, 6);
 	private final Trigger	conveyorOutNormal	= newNormalButton(conveyorOut);
 	private final Trigger	conveyorOutOverride	= newOverrideButton(conveyorOut);
 
@@ -87,7 +88,15 @@ public class OI {
 	private final Trigger	shootNormal		= newNormalButton(shoot);
 	private final Trigger	shootOverride	= newOverrideButton(shoot);
 
-	private final Button	shifter					= new JoystickButton(left, 3);
+	private final Button	shifterLeft		= new JoystickButton(left, 3);
+	private final Button	shifterRight	= new JoystickButton(right, 3);
+	private final Trigger	shifter			= new Trigger() {
+												@Override
+												public boolean get() {
+													return shifterLeft.get() || shifterRight.get();
+												}
+											};
+
 	private final Button	gearStopperOverrideIn	= new JoystickButton(left, 10);
 	private final Button	gearStopperOverrideOut	= new JoystickButton(left, 11);
 
@@ -141,8 +150,8 @@ public class OI {
 		intakeOut.whenPressed(new OutputBalls());
 		intakeStop.whenActive(new StopIntakeAndFeeder());
 
-		shifter.whenPressed(new ShiftLow());
-		shifter.whenReleased(new ShiftHigh());
+		shifter.whenActive(new ShiftLow());
+		shifter.whenInactive(new ShiftHigh());
 
 		gearStopperOverrideIn.whenPressed(new GearIntakeSetStopperIn());
 		gearStopperOverrideOut.whenPressed(new GearIntakeSetStopperOut());
@@ -150,7 +159,7 @@ public class OI {
 		conveyorInOverride.whenActive(new FeederSetIn());
 		conveyorInOverride.whenInactive(new FeederSetStop());
 
-		conveyorOutOverride.whenActive(new FeederSetIn());
+		conveyorOutOverride.whenActive(new FeederSetOut());
 		conveyorOutOverride.whenInactive(new FeederSetStop());
 	}
 

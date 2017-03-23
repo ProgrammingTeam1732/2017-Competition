@@ -16,6 +16,8 @@ import org.usfirst.frc.team1732.robot.commands.drivetrain.ShiftLow;
 import org.usfirst.frc.team1732.robot.commands.feeder.FeederSetIn;
 import org.usfirst.frc.team1732.robot.commands.feeder.FeederSetOut;
 import org.usfirst.frc.team1732.robot.commands.feeder.FeederSetStop;
+import org.usfirst.frc.team1732.robot.commands.flywheel.DisableFlywheel;
+import org.usfirst.frc.team1732.robot.commands.flywheel.EnableFlywheel;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.base.GearIntakeSetDown;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.base.GearIntakeSetIn;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.base.GearIntakeSetOut;
@@ -57,7 +59,6 @@ import org.usfirst.frc.team1732.robot.subsystems.GearIntake;
 import org.usfirst.frc.team1732.robot.subsystems.PixyCamera;
 import org.usfirst.frc.team1732.robot.vision.VisionMain;
 
-import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -121,6 +122,10 @@ public class Robot extends IterativeRobot {
 			// dashboard.addItem(SmartDashboardItem.newDoubleReciever("Light
 			// Voltage", 0.0, pixyCamera::setLightVoltage));
 			dashboard.addItem(SmartDashboardItem.newNumberSender("robotPeriodic() frequency ms", this::getFrequency));
+			// dashboard.addItem(SmartDashboardItem.newDoubleReciever("Feeder
+			// Speed", 1.0, feeder::setSpeed));
+			// dashboard.addItem(SmartDashboardItem.newDoubleReciever("Intake
+			// Speed", -1.0, ballIntake::setSpeed));
 			SmartDashboard.putData(new TestVisionMain());
 			// addCamera();
 
@@ -147,6 +152,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousInit() {
 		Scheduler.getInstance().removeAll();
+		// new TurnLightsOn().start();
 		autoChooser.getSelected().start();
 	}
 
@@ -218,6 +224,9 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putData(new FlywheelReverse());
 		SmartDashboard.putData(new FlywheelStop());
 
+		SmartDashboard.putData(new EnableFlywheel());
+		SmartDashboard.putData(new DisableFlywheel());
+
 		SmartDashboard.putData(new MotorLTBackForward());
 		SmartDashboard.putData(new MotorLTBackReverse());
 		SmartDashboard.putData(new MotorLTBackStop());
@@ -282,16 +291,8 @@ public class Robot extends IterativeRobot {
 	}
 
 	private void addCamera() {
-		CameraServer.getInstance().startAutomaticCapture();
 		// Thread visionThread = new Thread(() -> {
-		// // Get the UsbCamera from CameraServer
-		// UsbCamera camera =
-		// CameraServer.getInstance().startAutomaticCapture();
-		// // Set the resolution
-		// camera.setResolution(320, 240);
 		//
-		// // Get a CvSink. This will capture Mats from the camera
-		// CvSink cvSink = CameraServer.getInstance().getVideo();
 		// // Setup a CvSource. This will send images back to the Dashboard
 		// CvSource outputStream = CameraServer.getInstance().putVideo("Video",
 		// 320, 240);
@@ -305,16 +306,9 @@ public class Robot extends IterativeRobot {
 		// while (!Thread.interrupted()) {
 		// // Tell the CvSink to grab a frame from the camera and put it
 		// // in the source mat. If there is an error notify the output.
-		// if (cvSink.grabFrame(mat) == 0) {
-		// // Send the output the error.
-		// outputStream.notifyError(cvSink.getError());
-		// // skip the rest of the current iteration
-		// continue;
-		// }
-		// // Put a cirlce on the image
-		//// Imgproc.circle(mat, new Point(160, 180), 40, new Scalar(new
-		// double[] { 255, 0, 0 }), 10);
-		// // Give the output stream a new image to display
+		//
+		// mat = new Mat(240, 320, org.opencv.core.CvType.CV_8UC(3));
+		// Imgproc.rectangle(img, pt1, pt2, color);
 		// outputStream.putFrame(mat);
 		// }
 		// });

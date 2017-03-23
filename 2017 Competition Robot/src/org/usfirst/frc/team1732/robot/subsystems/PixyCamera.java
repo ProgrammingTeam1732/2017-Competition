@@ -21,8 +21,12 @@ public class PixyCamera extends Subsystem {
 	public static final int	IMAGE_WIDTH		= 320;
 	public static final int	IMAGE_HEIGHT	= 200;
 
+	private boolean isLightOn = false;
+
 	public PixyCamera() {
 		// lightRelay.setDirection(Direction.kBoth);
+		lightController.configNominalOutputVoltage(MIN_VOLTAGE, MIN_VOLTAGE);
+		lightController.configPeakOutputVoltage(MAX_VOLTAGE, MIN_VOLTAGE);
 		lightController.changeControlMode(TalonControlMode.Voltage);
 		lightController.set(0);
 	}
@@ -31,29 +35,32 @@ public class PixyCamera extends Subsystem {
 	public void initDefaultCommand() {}
 
 	public void turnOnLights() {
-		lightController.set(limit(12));
-		//System.out.println("Turning on lights");
+		lightController.set(12);
+		isLightOn = true;
 	}
 
 	public void turnOffLights() {
-		lightController.set(limit(0));
-		//System.out.println("Turning off lights");
+		lightController.set(0);
+		isLightOn = false;
 	}
 
-	public void setLightVoltage(double d) {
-		lightController.set(limit(d));
-		//System.out.println("Setting on lights " + d);
+	public boolean isLightOn() {
+		return isLightOn;
 	}
 
-	public double limit(double d) {
-		return d > MAX_VOLTAGE ? MAX_VOLTAGE : d < MIN_VOLTAGE ? MIN_VOLTAGE : d;
+	public boolean isLightOff() {
+		return !isLightOn;
 	}
 
-	public void setLightsOn(boolean on) {
-		if (on)
-			turnOnLights();
-		else
-			turnOffLights();
-	}
+	// public void setLightVoltage(double d) {
+	// lightController.set(d);
+	// }
+
+	// public void setLightsOn(boolean on) {
+	// if (on)
+	// turnOnLights();
+	// else
+	// turnOffLights();
+	// }
 
 }

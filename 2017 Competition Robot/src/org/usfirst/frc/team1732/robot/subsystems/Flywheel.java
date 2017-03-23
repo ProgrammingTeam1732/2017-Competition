@@ -20,14 +20,19 @@ public class Flywheel extends Subsystem implements SmartDashboardGroup {
 	// public static final double REVERSE_SPEED = 1;
 
 	// public static final int COUNTS_PER_REVOLUTION = 1;
-	public static final int	COUNTS_PER_SECOND_TARGET	= -18000;
-	public static final int	COUNTS_PER_SECOND_ERROR		= COUNTS_PER_SECOND_TARGET / 50;
+	public static final int	COUNTS_PER_SECOND_TARGET	= 19000;
+	public static final int	COUNTS_PER_SECOND_ERROR		= 300;						// COUNTS_PER_SECOND_TARGET
+																					// /
+																					// 50;
+	private double			setpoint					= COUNTS_PER_SECOND_TARGET;
 
-	private static final double	P					= Float.MAX_VALUE;			// -Float.MAX_VALUE
+	public static final double	MAX_OUTPUT_VOLTAGE	= 12;
+	private static final double	MAX_VELOCITY		= 32000;
+	private static final double	BASE_VOLTAGE		= 8;
+	private static final double	P					= Double.MAX_VALUE;							// Float.MAX_VALUE;
 	private static final double	I					= 0;
 	private static final double	D					= 0;
-	private double				setpoint			= COUNTS_PER_SECOND_TARGET;
-	public static final double	MAX_OUTPUT_VOLTAGE	= -8;						// negate?
+	private static final double	F					= 0.75 * 1023 / COUNTS_PER_SECOND_TARGET;
 
 	private boolean isAutoControlled = false;
 
@@ -36,11 +41,12 @@ public class Flywheel extends Subsystem implements SmartDashboardGroup {
 	public Flywheel() {
 		super(NAME);
 		motor.setFeedbackDevice(FeedbackDevice.QuadEncoder);
-		motor.setAllowableClosedLoopErr(0);
+		motor.setAllowableClosedLoopErr(COUNTS_PER_SECOND_ERROR);
 		motor.configNominalOutputVoltage(0, 0);
-		motor.configPeakOutputVoltage(0, MAX_OUTPUT_VOLTAGE);
+		motor.configPeakOutputVoltage(MAX_OUTPUT_VOLTAGE, 0);
 		motor.setPID(P, I, D);
-		motor.reverseSensor(false);
+		// motor.setF(F);
+		motor.reverseSensor(true);
 		motor.enableBrakeMode(false);
 		motor.SetVelocityMeasurementPeriod(CANTalon.VelocityMeasurementPeriod.Period_1Ms);
 		motor.SetVelocityMeasurementWindow(10);
@@ -113,8 +119,6 @@ public class Flywheel extends Subsystem implements SmartDashboardGroup {
 	public static final double percentErrorAllowed = 0.05; // 5%
 
 	public boolean atSetpoint() {
-		// return Math.abs(motor.getSpeed() - motor.getSetpoint()) < .05 *
-		// motor.getSetpoint();
 		return Math.abs(motor.getError()) < Math.abs(percentErrorAllowed * motor.getSetpoint());
 	}
 
@@ -129,10 +133,11 @@ public class Flywheel extends Subsystem implements SmartDashboardGroup {
 		// TODO Auto-generated method stub
 		String directory = NAME + "/";
 		dashboard.addItem(SmartDashboardItem.newDoubleReciever(directory + "P", P, motor::setP));
-		dashboard.addItem(SmartDashboardItem.newDoubleReciever(directory + "I", P, motor::setI));
-		dashboard.addItem(SmartDashboardItem.newDoubleReciever(directory + "D", P, motor::setD));
+		dashboard.addItem(SmartDashboardItem.newDoubleReciever(directory + "I", I, motor::setI));
+		dashboard.addItem(SmartDashboardItem.newDoubleReciever(directory + "D", D, motor::setD));
 		dashboard.addItem(SmartDashboardItem.newDoubleReciever(	directory + "Setpoint",
 																(double) COUNTS_PER_SECOND_TARGET, this::setSetpoint));
+		dashboard.addItem(SmartDashboardItem.newDoubleReciever(directory + "Set speed", (double) 0, this::setSpeed));
 
 		dashboard.addItem(SmartDashboardItem.newNumberSender(directory + "Error", motor::getClosedLoopError));
 		dashboard.addItem(SmartDashboardItem.newNumberSender(directory + "Output", this::getOutput));
@@ -140,6 +145,8 @@ public class Flywheel extends Subsystem implements SmartDashboardGroup {
 		dashboard.addItem(SmartDashboardItem.newNumberSender(directory + "Voltage", motor::getOutputVoltage));
 		dashboard.addItem(SmartDashboardItem.newNumberSender(directory + "Encoder Velocity", motor::getEncVelocity));
 		dashboard.addItem(SmartDashboardItem.newNumberSender(directory + "Posistion", motor::getPosition));
+		dashboard.addItem(SmartDashboardItem.newNumberSender(directory + "Current", motor::getOutputCurrent));
+
 	}
 
 }
