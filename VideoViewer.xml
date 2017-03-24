@@ -1,10 +1,10 @@
 <xml version="1.0">
 <dashboard>
 	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.CameraServerViewer">
-		<location x="0" y="1"/>
-		<width>815</width>
-		<height>614</height>
-		<property name="Camera Choice" value=""/>
+		<location x="442" y="0"/>
+		<width>899</width>
+		<height>601</height>
+		<property name="Camera Choice" value="Gear Rectangles"/>
 	</static-widget>
 </dashboard>
 <live-window>
@@ -17,7 +17,6 @@
 	<hidden field="robotPeriodic() frequency ms"/>
 	<hidden field="Climber"/>
 	<hidden field="Vision PID"/>
-	<hidden field="GearIntakeSetStorageOut"/>
 	<hidden field="MotorLTFrontReverse"/>
 	<hidden field="BallIntakeSetStop"/>
 	<hidden field="Vision Main"/>
@@ -25,12 +24,11 @@
 	<hidden field="ShiftHigh"/>
 	<hidden field="FeederSetOut"/>
 	<hidden field="Right PID"/>
-	<hidden field="GearIntakeSetStorageIn"/>
+	<hidden field="Auto Number"/>
 	<hidden field="ShiftLow"/>
 	<hidden field="MotorRTBackStop"/>
-	<hidden field="Turning P Slope"/>
-	<hidden field="GearIntakeSetIn"/>
 	<hidden field="Drive Train"/>
+	<hidden field="GearIntakeSetIn"/>
 	<hidden field="Is Red Alliance?"/>
 	<hidden field="Ball Intake"/>
 	<hidden field="GearIntakeSetUp"/>
@@ -54,13 +52,15 @@
 	<hidden field="ClimberSetStop"/>
 	<hidden field="Feeder"/>
 	<hidden field="MotorLTBottomStop"/>
+	<hidden field="EnableFlywheel"/>
 	<hidden field="FlywheelStop"/>
 	<hidden field="Left PID"/>
-	<hidden field="Gyro PID"/>
 	<hidden field="MotorRTFrontStop"/>
 	<hidden field="FlywheelReverse"/>
 	<hidden field="Gear Intake"/>
+	<hidden field="Test Vision"/>
 	<hidden field="FeederSetIn"/>
+	<hidden field="DisableFlywheel"/>
 	<hidden field="AutonomousChooser"/>
 	<hidden field="BallIntakeSetUp"/>
 	<hidden field="FlywheelForward"/>
