@@ -8,6 +8,7 @@ import org.usfirst.frc.team1732.robot.commands.feeder.FeederSetStop;
 import org.usfirst.frc.team1732.robot.commands.flywheel.EnableFlywheel;
 import org.usfirst.frc.team1732.robot.commands.flywheel.ShootTime;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.InitGearIntake;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.ShuffleBallsWithWait;
 import org.usfirst.frc.team1732.robot.commands.helpercommands.Wait;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -55,12 +56,12 @@ public class GrabBallsKeylineAndShootBlue extends CommandGroup {
 		addParallel(new DriveTime(	GrabBallsKeylineAndShootData.SHOOT_TIME,
 									GrabBallsKeylineAndShootData.CREEP_TOWARD_BOILER_SPEED));
 		// Shuffle balls while shooting
-		//		addParallel(new CommandGroup() {
-		//			{
-		//				addSequential(new Wait(2));
-		//				addSequential(new ShuffleBallsWithWait());
-		//			}
-		//		});
+		addParallel(new CommandGroup() {
+			{
+				addSequential(new Wait(2));
+				addSequential(new ShuffleBallsWithWait());
+			}
+		});
 
 		addSequential(new ShootTime(GrabBallsKeylineAndShootData.SHOOT_TIME));
 	}

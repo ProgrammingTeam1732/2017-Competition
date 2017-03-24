@@ -130,6 +130,7 @@ public class OI {
 		//		gearScore.whenActive(new GearIntakeSetDownOut());
 		//		gearScore.whenInactive(new GearIntakeSetUpStop());
 		gearScore.whenActive(new ShuffleBallsWithWait());
+
 		flywheelOn.whenActive(new EnableFlywheel());
 		flywheelOn.whenInactive(new DisableFlywheel());
 
