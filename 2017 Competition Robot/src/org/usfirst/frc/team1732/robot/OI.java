@@ -20,9 +20,8 @@ import org.usfirst.frc.team1732.robot.commands.flywheel.StopShoot;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.base.GearIntakeSetStopperIn;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.base.GearIntakeSetStopperOut;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.GearIntakeSetDownIn;
-import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.GearIntakeSetDownOut;
-import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.GearIntakeSetUpStop;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.GearIntakeSetUpTimedIn;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.ShuffleBallsWithWait;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -128,9 +127,9 @@ public class OI {
 	public OI() {
 		gearPickup.whenActive(new GearIntakeSetDownIn());
 		gearPickup.whenInactive(new GearIntakeSetUpTimedIn(1));
-		gearScore.whenActive(new GearIntakeSetDownOut());
-		gearScore.whenInactive(new GearIntakeSetUpStop());
-
+		//		gearScore.whenActive(new GearIntakeSetDownOut());
+		//		gearScore.whenInactive(new GearIntakeSetUpStop());
+		gearScore.whenActive(new ShuffleBallsWithWait());
 		flywheelOn.whenActive(new EnableFlywheel());
 		flywheelOn.whenInactive(new DisableFlywheel());
 
