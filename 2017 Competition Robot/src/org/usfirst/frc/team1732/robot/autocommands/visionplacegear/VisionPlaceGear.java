@@ -36,7 +36,7 @@ public class VisionPlaceGear extends CommandGroup {
 		// addSequential(new TurnWithVision(0));
 		addSequential(new TurnLightsOn());
 		if (turn)
-			addSequential(new DriveWithVision(15, maxSetpoint));
+			addSequential(new DriveWithVision(10, maxSetpoint));
 		else
 			addSequential(new DriveWithVisionStraight(15, maxSetpoint));
 		addSequential(new BrakeDrive());
@@ -48,7 +48,7 @@ public class VisionPlaceGear extends CommandGroup {
 		addSequential(new GearIntakeSetDown());
 		addParallel(new CommandGroup() {
 			{
-				addSequential(new GearIntakeOutTime(.5));
+				addSequential(new GearIntakeOutTime(0.7));
 				addSequential(new GearIntakeSetUp());
 			}
 		});
