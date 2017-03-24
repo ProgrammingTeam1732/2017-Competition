@@ -739,4 +739,9 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 		return rightEncoder.getRate();
 	}
 
+	public void resetEncoderPID() {
+		leftEncoderPID.setPID(encoderP, encoderI, encoderD);
+		rightEncoderPID.setPID(encoderP, encoderI, encoderD);
+	}
+
 }

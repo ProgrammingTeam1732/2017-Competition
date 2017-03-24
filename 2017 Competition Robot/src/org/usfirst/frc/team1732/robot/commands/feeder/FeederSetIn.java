@@ -4,9 +4,6 @@ import org.usfirst.frc.team1732.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.InstantCommand;
 
-/**
- *
- */
 public class FeederSetIn extends InstantCommand {
 
 	public FeederSetIn() {

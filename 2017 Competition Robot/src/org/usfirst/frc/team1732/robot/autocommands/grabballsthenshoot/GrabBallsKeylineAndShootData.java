@@ -16,10 +16,12 @@ public class GrabBallsKeylineAndShootData {
 	static final double	DRIVE_INTO_HOPPER_LEFT_SPEED	= .3;
 	static final double	DRIVE_INTO_HOPPER_RIGHT_SPEED	= .3;
 
+	static final double CONVEYOR_SPEED = -0.4;
+
 	static final double	DRIVE_BACK_TIME		= .5;
 	static final double	DRIVE_BACK_SPEED	= -.6;
 
-	static final double CREEP_TOWARD_BOILER_SPEED = .2;
+	static final double CREEP_TOWARD_BOILER_SPEED = .3;
 
 	static final double	TURN_1_ANGLE_RED	= 30;
 	static final double	TURN_1_ANGLE_BLUE	= -TURN_1_ANGLE_RED;
@@ -42,6 +44,6 @@ public class GrabBallsKeylineAndShootData {
 	static final double	DRIVE_RIGHT_SPEED_BLUE	= -.1;
 	static final double	DRIVE_LEFT_SPEED_BLUE	= .5;
 
-	static final double SHOOT_TIME = 5;
+	static final double SHOOT_TIME = 10;
 
 }

@@ -36,6 +36,10 @@ public class Feeder extends Subsystem implements SmartDashboardGroup {
 		motor.set(OUT_SPEED);
 	}
 
+	public void setSpeed(double s) {
+		motor.set(s);
+	}
+
 	@Override
 	public void addToSmartDashboard(MySmartDashboard dashboard) {
 		String directory = NAME + "/";

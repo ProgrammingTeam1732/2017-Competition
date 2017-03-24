@@ -36,6 +36,7 @@ public class DriveWithVisionStraight extends Command {
 		driveTrain.setEncoderSetpoint(MAX_SETPOINT);
 		driveTrain.setGyroSetpoint(0);
 		visionMain.setGearSetpoint(0);
+		driveTrain.setEncoderPIDS(0.02, 0, 0);
 	}
 
 	public static final double	DEFAULT_TARGET_INCHES	= 10;
@@ -51,7 +52,7 @@ public class DriveWithVisionStraight extends Command {
 	private static double	lower	= 0.001;	// 0.001
 	private static double	upper	= 0.025;
 	private static double	slope	= 1.2E-4;	// Wed. 2-15-17 changed to 1.2//
-												// 0.03 / 75;// 0.0001;
+	// 0.03 / 75;// 0.0001;
 
 	// Add a safeguard to make sure we don't get stuck
 	// public static double slope = 0.03/75;
@@ -121,6 +122,7 @@ public class DriveWithVisionStraight extends Command {
 	protected void end() {
 		driveTrain.driveRaw(0, 0);
 		visionMain.resetGearPIDValues();
+		driveTrain.resetEncoderPIDValues();
 	}
 
 	public static double getMiddle() {

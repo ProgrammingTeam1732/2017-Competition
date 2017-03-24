@@ -3,6 +3,8 @@ package org.usfirst.frc.team1732.robot.autocommands.grabballsthenshoot;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveTime;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveEncoders;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.TurnWithEncoders;
+import org.usfirst.frc.team1732.robot.commands.feeder.FeederSetSpeed;
+import org.usfirst.frc.team1732.robot.commands.feeder.FeederSetStop;
 import org.usfirst.frc.team1732.robot.commands.flywheel.EnableFlywheel;
 import org.usfirst.frc.team1732.robot.commands.flywheel.ShootTime;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.InitGearIntake;
@@ -22,6 +24,7 @@ public class GrabBallsKeylineAndShootBlue extends CommandGroup {
 									GrabBallsKeylineAndShootData.TURN_TO_HOPPER_RIGHT_SPEED_BLUE));
 		// addSequential(new DriveTime(1, .1, .4));
 		// addSequential(new DriveTime(.5, .3, .3));
+		addSequential(new FeederSetSpeed(GrabBallsKeylineAndShootData.CONVEYOR_SPEED));
 		// Drive Into Hopper
 		addSequential(new DriveTime(GrabBallsKeylineAndShootData.DRIVE_INTO_HOPPER_TIME,
 									GrabBallsKeylineAndShootData.DRIVE_INTO_HOPPER_LEFT_SPEED,
@@ -30,6 +33,9 @@ public class GrabBallsKeylineAndShootBlue extends CommandGroup {
 		// DriveTime(GrabBallsKeylineAndShootData.DRIVE_3_SETPOINT, .4));
 		// Wait to fill up balls
 		addSequential(new Wait(GrabBallsKeylineAndShootData.WAIT_1_TIME));
+
+		addSequential(new FeederSetStop());
+
 		// Drive Backwards
 		addSequential(new DriveTime(GrabBallsKeylineAndShootData.DRIVE_BACK_TIME,
 									GrabBallsKeylineAndShootData.DRIVE_BACK_SPEED));
