@@ -25,6 +25,7 @@ import org.usfirst.frc.team1732.robot.commands.gearIntake.base.GearIntakeSetStop
 import org.usfirst.frc.team1732.robot.commands.gearIntake.base.GearIntakeSetStopperIn;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.base.GearIntakeSetStopperOut;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.base.GearIntakeSetUp;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.ShuffleBallsWithWait;
 import org.usfirst.frc.team1732.robot.commands.individual.FlywheelForward;
 import org.usfirst.frc.team1732.robot.commands.individual.FlywheelReverse;
 import org.usfirst.frc.team1732.robot.commands.individual.FlywheelStop;
@@ -223,6 +224,7 @@ public class Robot extends IterativeRobot {
 	}
 
 	private void addTestingToSmartDashbaord() {
+		SmartDashboard.putData(new ShuffleBallsWithWait());
 		SmartDashboard.putData(new FlywheelForward());
 		SmartDashboard.putData(new FlywheelReverse());
 		SmartDashboard.putData(new FlywheelStop());
