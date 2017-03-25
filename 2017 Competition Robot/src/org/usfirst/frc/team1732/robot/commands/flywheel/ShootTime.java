@@ -23,5 +23,6 @@ public class ShootTime extends CommandGroup {
 												// flywheel)
 		addSequential(new Wait(timeSeconds));
 		addSequential(new StopIntakeAndFeeder());
+		addSequential(new DisableFlywheel());
 	}
 }

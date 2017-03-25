@@ -18,6 +18,7 @@ import org.usfirst.frc.team1732.robot.autocommands.scoresidegearthenballs.ScoreG
 import org.usfirst.frc.team1732.robot.autocommands.scoresidegearthenballs.ScoreGearThenBallsRed;
 import org.usfirst.frc.team1732.robot.autocommands.sidetwogearauto.SideTwoGearAutoLeft;
 import org.usfirst.frc.team1732.robot.autocommands.sidetwogearauto.SideTwoGearAutoRight;
+import org.usfirst.frc.team1732.robot.autocommands.test.TestShootingWithBallAgitator;
 import org.usfirst.frc.team1732.robot.autocommands.twogearauto.TwoGearAutoLeft;
 import org.usfirst.frc.team1732.robot.autocommands.twogearauto.TwoGearAutoRight;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveTime;
@@ -66,14 +67,16 @@ public class AutoChooser implements SmartDashboardGroup {
 		// TurnWithEncoders90(new TurnWithEncoders(-90)),
 		// TurnWithEncoders45(new TurnWithEncoders(-45)),
 		DriveTime(new DriveTime(10, 0.3)),
-		DriveTimeBackwards(new DriveTime(10, -0.3));
+		DriveTimeBackwards(new DriveTime(10, -0.3)),
+
+		TestShootingWithAgitator(new TestShootingWithBallAgitator());
 		// ResetEncoders(new ClearTotalDistance()),
 		// DriveEncodersFar(new DriveEncoders(97.5)),
 		// DriveEncodersShort(new DriveEncoders(40));
 
-		private final BooleanSupplier	isRedAlliance;
-		private final Command			ifRed;
-		private final Command			ifBlue;
+		private final BooleanSupplier isRedAlliance;
+		private final Command ifRed;
+		private final Command ifBlue;
 
 		AutoModes(Command ifRed, Command ifBlue) {
 			isRedAlliance = Robot::isRedAlliance;
@@ -100,9 +103,8 @@ public class AutoChooser implements SmartDashboardGroup {
 
 	public AutoChooser() {
 		autoChooser.addDefault(
-								AutoModes.GrabBallsKeylineAndShoot.ordinal() + ": "
-										+ AutoModes.GrabBallsKeylineAndShoot.name(),
-								AutoModes.GrabBallsKeylineAndShoot);
+				AutoModes.GrabBallsKeylineAndShoot.ordinal() + ": " + AutoModes.GrabBallsKeylineAndShoot.name(),
+				AutoModes.GrabBallsKeylineAndShoot);
 		AutoModes[] autoModes = AutoModes.values();
 		for (int i = 0; i < autoModes.length; i++) {
 			autoChooser.addObject(autoModes[i].ordinal() + ": " + autoModes[i].name(), autoModes[i]);
@@ -124,8 +126,8 @@ public class AutoChooser implements SmartDashboardGroup {
 
 	@Override
 	public void addToSmartDashboard(MySmartDashboard dashboard) {
-		chosenauto = dashboard.addItem(SmartDashboardItem
-				.newDoubleReciever("Auto Number", (double) AutoModes.GrabBallsKeylineAndShoot.ordinal()));
+		chosenauto = dashboard.addItem(SmartDashboardItem.newDoubleReciever("Auto Number",
+				(double) AutoModes.GrabBallsKeylineAndShoot.ordinal()));
 	}
 
 }

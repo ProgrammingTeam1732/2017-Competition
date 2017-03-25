@@ -4,7 +4,7 @@ import org.usfirst.frc.team1732.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.InstantCommand;
 
-class GearIntakeSetDownNoCheck extends InstantCommand {
+public class GearIntakeSetDownNoCheck extends InstantCommand {
 
 	public GearIntakeSetDownNoCheck() {
 		super();
