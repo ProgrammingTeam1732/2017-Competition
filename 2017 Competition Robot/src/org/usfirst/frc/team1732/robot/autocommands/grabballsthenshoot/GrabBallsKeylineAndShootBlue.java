@@ -18,7 +18,7 @@ public class GrabBallsKeylineAndShootBlue extends CommandGroup {
 	public GrabBallsKeylineAndShootBlue() {
 		addSequential(new InitGearIntake());
 		// Drive Along Keyline To Hopper
-		addSequential(new DriveEncoders(GrabBallsKeylineAndShootData.DRIVE_1_SETPOINT));
+		addSequential(new DriveEncoders(GrabBallsKeylineAndShootData.DRIVE_1_SETPOINT_BLUE));
 		// Turn to Face Hopper
 		addSequential(new DriveTime(GrabBallsKeylineAndShootData.TURN_TO_HOPPER_TIME,
 									GrabBallsKeylineAndShootData.TURN_TO_HOPPER_LEFT_SPEED_BLUE,

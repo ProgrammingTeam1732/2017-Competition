@@ -4,7 +4,8 @@ package org.usfirst.frc.team1732.robot.autocommands.grabballsthenshoot;
  *
  */
 public class GrabBallsKeylineAndShootData {
-	static final double DRIVE_1_SETPOINT = 83;
+	static final double	DRIVE_1_SETPOINT_BLUE	= 87;
+	static final double	DRIVE_1_SETPOINT_RED	= 83;
 
 	static final double	TURN_TO_HOPPER_TIME				= 1;
 	static final double	TURN_TO_HOPPER_LEFT_SPEED_BLUE	= .1;
@@ -12,9 +13,9 @@ public class GrabBallsKeylineAndShootData {
 	static final double	TURN_TO_HOPPER_LEFT_SPEED_RED	= TURN_TO_HOPPER_RIGHT_SPEED_BLUE;
 	static final double	TURN_TO_HOPPER_RIGHT_SPEED_RED	= TURN_TO_HOPPER_LEFT_SPEED_BLUE;
 
-	static final double	DRIVE_INTO_HOPPER_TIME			= .5;
-	static final double	DRIVE_INTO_HOPPER_LEFT_SPEED	= .3;
-	static final double	DRIVE_INTO_HOPPER_RIGHT_SPEED	= .3;
+	static final double	DRIVE_INTO_HOPPER_TIME			= 1.3;
+	static final double	DRIVE_INTO_HOPPER_LEFT_SPEED	= .8;
+	static final double	DRIVE_INTO_HOPPER_RIGHT_SPEED	= .8;
 
 	static final double CONVEYOR_SPEED = -1;
 
@@ -28,7 +29,7 @@ public class GrabBallsKeylineAndShootData {
 
 	static final double DRIVE_2_TIME = 1;
 
-	static final double WAIT_1_TIME = 1;
+	static final double WAIT_1_TIME = .3;
 
 	static final double DRIVE_3_SETPOINT = 1;
 
