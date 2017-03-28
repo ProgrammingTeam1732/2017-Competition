@@ -1,10 +1,10 @@
 package org.usfirst.frc.team1732.robot.autocommands.grabballsthenshoot.keylinehoppershoot;
 
+import org.usfirst.frc.team1732.robot.commands.ballsystem.flywheel.EnableFlywheel;
+import org.usfirst.frc.team1732.robot.commands.ballsystem.flywheel.ShootTime;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveEncoders;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.gyro.DriveGyro;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.gyro.TurnWithGyro;
-import org.usfirst.frc.team1732.robot.commands.flywheel.EnableFlywheel;
-import org.usfirst.frc.team1732.robot.commands.flywheel.ShootTime;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.InitGearIntake;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;

@@ -3,12 +3,12 @@ package org.usfirst.frc.team1732.robot.autocommands.scoregearandballs.scoremiddl
 import org.usfirst.frc.team1732.robot.autocommands.drivetohoppersatend.drivetohopperfromboiler.DriveToHopperFromBoilerRed;
 import org.usfirst.frc.team1732.robot.autocommands.scoregear.scoresidegear.ScoreSideGearPart1Right;
 import org.usfirst.frc.team1732.robot.autocommands.scoregearandballs.scoreballsthengear.ScoreBallsThenGearData;
+import org.usfirst.frc.team1732.robot.commands.ballsystem.flywheel.ShootTime;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.ClearTotalDistance;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveEncoders;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveUntilEncoders;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.gyro.DriveGyro;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.gyro.TurnWithGyro;
-import org.usfirst.frc.team1732.robot.commands.flywheel.ShootTime;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.InitGearIntake;
 import org.usfirst.frc.team1732.robot.commands.vision.VisionPlaceGear;
 

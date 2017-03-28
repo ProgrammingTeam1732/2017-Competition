@@ -4,7 +4,7 @@ import org.usfirst.frc.team1732.robot.commands.drivetrain.SetMotorSpeed;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.ClearTotalDistance;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveEncodersGetSetpointAtRuntime;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.gyro.TurnWithGyro;
-import org.usfirst.frc.team1732.robot.commands.gearIntake.base.GearIntakeSetStop;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.base.motor.GearIntakeSetStop;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.GearIntakeSetUpTimedIn;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.GrabGear;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.InitGearIntake;

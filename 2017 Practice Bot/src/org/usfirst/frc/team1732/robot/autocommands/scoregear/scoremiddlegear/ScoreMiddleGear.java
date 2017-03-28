@@ -1,9 +1,9 @@
 package org.usfirst.frc.team1732.robot.autocommands.scoregear.scoremiddlegear;
 
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveEncoders;
-import org.usfirst.frc.team1732.robot.commands.gearIntake.base.GearIntakeOutTime;
-import org.usfirst.frc.team1732.robot.commands.gearIntake.base.GearIntakeSetDown;
-import org.usfirst.frc.team1732.robot.commands.gearIntake.base.GearIntakeSetUp;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.base.motor.GearIntakeOutTime;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.base.position.GearIntakeSetDown;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.base.position.GearIntakeSetUp;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.InitGearIntake;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;

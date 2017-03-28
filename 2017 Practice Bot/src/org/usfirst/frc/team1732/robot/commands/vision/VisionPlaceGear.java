@@ -4,9 +4,9 @@ import java.util.function.DoubleSupplier;
 
 import org.usfirst.frc.team1732.robot.commands.drivetrain.BrakeDrive;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveEncodersGetSetpointAtRuntime;
-import org.usfirst.frc.team1732.robot.commands.gearIntake.base.GearIntakeOutTime;
-import org.usfirst.frc.team1732.robot.commands.gearIntake.base.GearIntakeSetDown;
-import org.usfirst.frc.team1732.robot.commands.gearIntake.base.GearIntakeSetUp;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.base.motor.GearIntakeOutTime;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.base.position.GearIntakeSetDown;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.base.position.GearIntakeSetUp;
 import org.usfirst.frc.team1732.robot.commands.helpercommands.Wait;
 import org.usfirst.frc.team1732.robot.commands.vision.lights.TurnLightsOff;
 import org.usfirst.frc.team1732.robot.commands.vision.lights.TurnLightsOn;
