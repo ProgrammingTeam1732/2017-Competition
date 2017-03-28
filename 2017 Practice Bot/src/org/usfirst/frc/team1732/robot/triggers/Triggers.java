@@ -1,6 +1,6 @@
 package org.usfirst.frc.team1732.robot.triggers;
 
-import org.usfirst.frc.team1732.robot.commands.vision.FlashLEDs;
+import org.usfirst.frc.team1732.robot.commands.vision.lights.FlashLEDs;
 
 public class Triggers {
 
