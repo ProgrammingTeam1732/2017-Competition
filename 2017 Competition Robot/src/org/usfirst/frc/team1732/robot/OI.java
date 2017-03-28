@@ -4,6 +4,7 @@ import org.usfirst.frc.team1732.robot.commands.ballandfeeder.IntakeBalls;
 import org.usfirst.frc.team1732.robot.commands.ballandfeeder.OutputBalls;
 import org.usfirst.frc.team1732.robot.commands.ballandfeeder.StopIntakeAndFeeder;
 import org.usfirst.frc.team1732.robot.commands.climber.ArmSetIn;
+import org.usfirst.frc.team1732.robot.commands.climber.ArmSetOut;
 import org.usfirst.frc.team1732.robot.commands.climber.ArmSetOutGroup;
 import org.usfirst.frc.team1732.robot.commands.climber.ClimberSetDown;
 import org.usfirst.frc.team1732.robot.commands.climber.ClimberSetStop;
@@ -44,6 +45,22 @@ public class OI {
 	private final Trigger climbOverride = newOverrideButton(climb);
 
 	private final Button craaw = new JoystickButton(buttons, 2);
+	private final Trigger craawStopperOut = new Trigger() {
+
+		@Override
+		public boolean get() {
+			return Robot.gearIntake.isStopperOut() && craaw.get();
+		}
+
+	};
+	private final Trigger craawStopperIn = new Trigger() {
+
+		@Override
+		public boolean get() {
+			return Robot.gearIntake.isStopperIn() && craaw.get();
+		}
+
+	};
 	private final Trigger craawNormal = newNormalButton(craaw);
 	private final Trigger craawOverride = newOverrideButton(craaw);
 
@@ -125,6 +142,15 @@ public class OI {
 		}
 	};
 
+	private final Trigger craawIn = new Trigger() {
+
+		@Override
+		public boolean get() {
+			return !craawStopperOut.get() && !craawOverride.get() && !craawStopperIn.get();
+		}
+
+	};
+
 	public OI() {
 		gearPickup.whenActive(new GearIntakeSetDownIn());
 		gearPickup.whenInactive(new GearIntakeSetUpTimedIn(1));
@@ -138,8 +164,15 @@ public class OI {
 		shoot.whenPressed(new Shoot());
 		shoot.whenReleased(new StopShoot());
 
-		craaw.whenPressed(new ArmSetOutGroup());
-		craaw.whenReleased(new ArmSetIn());
+		craawStopperOut.whenActive(new ArmSetOutGroup());
+
+		craawStopperIn.whenActive(new ArmSetOut());
+		// craawRegular.whenInactive(new ArmSetIn());
+		// craaw.whenPressed(new ArmSetOut());
+		// craaw.whenReleased(new ArmSetIn());
+		craawOverride.whenActive(new ArmSetOutGroup());
+		// craawOverride.whenInactive(new ArmSetIn());
+		craawIn.whenActive(new ArmSetIn());
 
 		climbNormal.whenActive(new ClimberSetUp());
 		climbNormal.whenInactive(new ClimberSetStop());
