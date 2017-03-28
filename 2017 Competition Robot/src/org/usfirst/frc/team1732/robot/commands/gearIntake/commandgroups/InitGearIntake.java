@@ -1,10 +1,10 @@
 package org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups;
 
-import org.usfirst.frc.team1732.robot.commands.gearIntake.base.GearIntakeSetDown;
-import org.usfirst.frc.team1732.robot.commands.gearIntake.base.GearIntakeSetIn;
-import org.usfirst.frc.team1732.robot.commands.gearIntake.base.GearIntakeSetStop;
-import org.usfirst.frc.team1732.robot.commands.gearIntake.base.GearIntakeSetStopperOut;
-import org.usfirst.frc.team1732.robot.commands.gearIntake.base.GearIntakeSetUp;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.base.motor.GearIntakeSetIn;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.base.motor.GearIntakeSetStop;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.base.position.GearIntakeSetDown;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.base.position.GearIntakeSetUp;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.base.stopper.GearIntakeSetStopperOut;
 import org.usfirst.frc.team1732.robot.commands.helpercommands.Wait;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
