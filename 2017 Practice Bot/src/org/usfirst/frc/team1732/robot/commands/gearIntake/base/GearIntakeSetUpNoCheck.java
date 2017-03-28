@@ -4,15 +4,20 @@ import org.usfirst.frc.team1732.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.InstantCommand;
 
-public class GearIntakeSetDownNoCheck extends InstantCommand {
+/**
+ *
+ */
+public class GearIntakeSetUpNoCheck extends InstantCommand {
 
-	public GearIntakeSetDownNoCheck() {
+	public GearIntakeSetUpNoCheck() {
 		super();
 		requires(Robot.gearIntake);
 	}
 
+	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-		Robot.gearIntake.setDown();
+		Robot.gearIntake.setUp();
 	}
+
 }

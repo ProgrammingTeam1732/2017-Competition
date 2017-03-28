@@ -8,8 +8,8 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class DriveToHopperFromRightGearPeg extends CommandGroup {
 
 	public DriveToHopperFromRightGearPeg() {
-		addSequential(new DriveEncoders(DriveToHopperFromGearPegData.DRIVE_1_DISTANCE, 0));
+		addSequential(new DriveEncoders(DriveToHopperFromGearPegData.DRIVE_1_DISTANCE));
 		addSequential(new TurnWithGyro(DriveToHopperFromGearPegData.TURN_1_ANGLE_RIGHT));
-		addSequential(new DriveEncoders(DriveToHopperFromGearPegData.DRIVE_2_DISTANCE, 0));
+		addSequential(new DriveEncoders(DriveToHopperFromGearPegData.DRIVE_2_DISTANCE));
 	}
 }

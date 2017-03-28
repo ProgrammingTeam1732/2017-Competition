@@ -16,17 +16,19 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class GearIntake extends Subsystem implements SmartDashboardGroup {
 
 	private final CANTalon		motor			= new CANTalon(RobotMap.GEAR_INTAKE_MOTOR_DEVICE_NUMBER);
-	public static final double	OUT_SPEED		= .5;
+	public static final double	OUT_SPEED		= .6;														// 0.5
 	public static final double	STOP_SPEED		= 0;
-	public static final double	IN_SPEED		= -0.6;
+	public static final double	IN_SPEED		= -0.7;														// -0.6
 	private final Solenoid		gearPosition	= new Solenoid(	RobotMap.PCM_CAN_ID,
 																RobotMap.GEAR_POSITION_SOLENOID_NUMBER);
 	private final Solenoid		gearStopper		= new Solenoid(	RobotMap.PCM_CAN_ID,
 																RobotMap.GEAR_STOPPER_SOLENOID_NUMBER);
-	public static final boolean	UP				= false;
-	public static final boolean	DOWN			= !UP;
-	public static final boolean	IN				= false;
-	public static final boolean	OUT				= !IN;
+	// posistion
+	public static final boolean	UP		= false;
+	public static final boolean	DOWN	= !UP;
+	// stopper
+	public static final boolean	IN	= false;	// false
+	public static final boolean	OUT	= !IN;
 
 	public static final String NAME = "Gear Intake";
 
@@ -58,6 +60,7 @@ public class GearIntake extends Subsystem implements SmartDashboardGroup {
 	}
 
 	public boolean isUp() {
+		// System.out.println("Is gear up " + (gearPosition.get() == UP));
 		return gearPosition.get() == UP;
 	}
 
@@ -74,6 +77,7 @@ public class GearIntake extends Subsystem implements SmartDashboardGroup {
 	}
 
 	public boolean isStopperOut() {
+		// System.out.println("is stopper out: " + (gearStopper.get() == OUT));
 		return gearStopper.get() == OUT;
 	}
 
@@ -90,7 +94,7 @@ public class GearIntake extends Subsystem implements SmartDashboardGroup {
 		return motor.getOutputCurrent();
 	}
 
-	public static final double GEAR_IN_CURRENT_CUTOFF = 10;
+	public static final double GEAR_IN_CURRENT_CUTOFF = 10; // 14
 
 	public boolean gearIsIn() {
 		return getMotorCurrent() > GEAR_IN_CURRENT_CUTOFF;

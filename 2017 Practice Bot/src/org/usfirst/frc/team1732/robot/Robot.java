@@ -223,6 +223,7 @@ public class Robot extends IterativeRobot {
 	}
 
 	private void addTestingToSmartDashbaord() {
+		//		SmartDashboard.putData(new ShuffleBallsWithWait());
 		SmartDashboard.putData(new FlywheelForward());
 		SmartDashboard.putData(new FlywheelReverse());
 		SmartDashboard.putData(new FlywheelStop());
@@ -293,6 +294,7 @@ public class Robot extends IterativeRobot {
 		return startTime - start;
 	}
 
+	@SuppressWarnings("unused")
 	private void addCamera() {
 		// Thread visionThread = new Thread(() -> {
 		//

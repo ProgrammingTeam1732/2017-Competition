@@ -16,6 +16,7 @@ public class BrakeDrive extends Command {
 	}
 
 	// Called just before this Command runs the first time
+	@Override
 	protected void initialize() {
 		Robot.driveTrain.shiftLowGear();
 	}
@@ -23,6 +24,7 @@ public class BrakeDrive extends Command {
 	public static final double BRAKE_P = (-1 / (13.5 * 12)) * 4;
 
 	// Called repeatedly when this Command is scheduled to run
+	@Override
 	protected void execute() {
 		double leftV = Robot.driveTrain.getLeftVelocity();
 		double rightV = Robot.driveTrain.getRightVelocity();
@@ -30,18 +32,15 @@ public class BrakeDrive extends Command {
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
+	@Override
 	protected boolean isFinished() {
 		return Math.abs(Robot.driveTrain.getLeftVelocity()) < 5 && Math.abs(Robot.driveTrain.getRightVelocity()) < 5;
 	}
 
 	// Called once after isFinished returns true
+	@Override
 	protected void end() {
 		Robot.driveTrain.shiftHighGear();
 	}
 
-	// Called when another command which requires one or more of the same
-	// subsystems is scheduled to run
-	protected void interrupted() {
-		Robot.driveTrain.shiftHighGear();
-	}
 }

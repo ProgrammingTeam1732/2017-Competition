@@ -15,20 +15,20 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class BallIntake extends Subsystem implements SmartDashboardGroup {
 
-	private final CANTalon motor = new CANTalon(RobotMap.BALL_INTAKE_MOTOR_DEVICE_NUMBER);
-	private final Solenoid solenoid = new Solenoid(RobotMap.PCM_CAN_ID, RobotMap.BALL_INTAKE_SOLENOID_DEVICE_NUMBER);
-	public static final double IN_SPEED = -1; // 1
-	public static final double STOP_SPEED = 0;
-	public static final double OUT_SPEED = -IN_SPEED; // -1
+	private final CANTalon		motor		= new CANTalon(RobotMap.BALL_INTAKE_MOTOR_DEVICE_NUMBER);
+	private final Solenoid		solenoid	= new Solenoid(	RobotMap.PCM_CAN_ID,
+															RobotMap.BALL_INTAKE_SOLENOID_DEVICE_NUMBER);
+	public static final double	IN_SPEED	= -1;															//-1															// -1
+	public static final double	STOP_SPEED	= 0;
+	public static final double	OUT_SPEED	= -IN_SPEED;													// 1
 
-	public static final boolean UP = true; // false
-	public static final boolean DOWN = !UP;
+	public static final boolean	UP		= true;	// true
+	public static final boolean	DOWN	= !UP;
 
 	public static final String NAME = "Ball Intake";
 
 	@Override
-	public void initDefaultCommand() {
-	}
+	public void initDefaultCommand() {}
 
 	/**
 	 * Sets the ball intake to spin in
@@ -80,10 +80,6 @@ public class BallIntake extends Subsystem implements SmartDashboardGroup {
 	public boolean isPositionUp() {
 		return solenoid.get() == UP;
 	}
-
-//	public void setSpeed(double d) {
-//		IN_SPEED = d;
-//	}
 
 	@Override
 	public void addToSmartDashboard(MySmartDashboard dashboard) {

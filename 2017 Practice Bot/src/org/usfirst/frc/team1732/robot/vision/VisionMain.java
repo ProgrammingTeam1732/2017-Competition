@@ -75,6 +75,7 @@ public class VisionMain implements SmartDashboardGroup {
 			gearRectangles = parseData(gearArduino.getData(), gearRectangles);
 			updateGearTarget();
 			sendGearImage();
+			gearRectangles = new Rectangle[0];
 		}
 		if (isBoilerCameraEnabled()) {
 			boilerRectangles = parseData(boilerArduino.getData(), boilerRectangles);
@@ -375,24 +376,28 @@ public class VisionMain implements SmartDashboardGroup {
 	private Mat			mat;
 
 	public void sendGearImage() {
-		mat = new Mat(PixyCamera.IMAGE_WIDTH, PixyCamera.IMAGE_HEIGHT, org.opencv.core.CvType.CV_8UC3);
+		mat = new Mat(PixyCamera.IMAGE_HEIGHT, PixyCamera.IMAGE_WIDTH, org.opencv.core.CvType.CV_8UC3);
 		// Put a rectangle on the image
 		for (Rectangle r : gearRectangles) {
 			Imgproc.rectangle(	mat, new Point(r.x, r.y), new Point(r.getRightX(), r.getBottomY()),
-								new Scalar(255, 255, 255), 5);
+								new Scalar(255, 255, 255));
 		}
 		if (gearTarget != null) {
 			Rectangle left = gearTarget.left;
 			Rectangle right = gearTarget.right;
 			// left
 			Imgproc.rectangle(	mat, new Point(left.x, left.y), new Point(left.getRightX(), left.getBottomY()),
-								new Scalar(255, 0, 0), 5);
+								new Scalar(255, 0, 0));
 			// right
 			Imgproc.rectangle(	mat, new Point(right.x, right.y), new Point(right.getRightX(), right.getBottomY()),
-								new Scalar(255, 0, 0), 5);
+								new Scalar(255, 0, 0));
 		}
-		Imgproc.rectangle(mat, new Point(100, 100), new Point(400, 400), new Scalar(255, 255, 255), 5);
 		// Give the output stream a new image to display
 		outputStream.putFrame(mat);
+	}
+
+	public void resetEncoderPIDValues() {
+		// TODO Auto-generated method stub
+
 	}
 }

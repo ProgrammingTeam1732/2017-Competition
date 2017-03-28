@@ -14,8 +14,8 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class ShootTime extends CommandGroup {
 
 	public ShootTime(double timeSeconds) {
-		addSequential(new EnableFlywheel());
-		addSequential(new Wait(0.25)); // wait for flywheel to spin up
+		//addSequential(new EnableFlywheel());
+		//addSequential(new Wait(0.25)); // wait for flywheel to spin up
 		addSequential(new BallIntakeSetDown()); // sets ball intake down
 		addSequential(new FeederSetOut()); // sets feeder to go out (towards
 											// flywheel)
@@ -23,5 +23,6 @@ public class ShootTime extends CommandGroup {
 												// flywheel)
 		addSequential(new Wait(timeSeconds));
 		addSequential(new StopIntakeAndFeeder());
+		//addSequential(new DisableFlywheel());
 	}
 }

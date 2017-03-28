@@ -53,7 +53,7 @@ public class VisionPlaceGear extends CommandGroup {
 			}
 		});
 
-		addSequential(new DriveEncodersGetSetpointAtRuntime(leftDriveBackDistance, rightDriveBackDistance, 0));
+		addSequential(new DriveEncodersGetSetpointAtRuntime(leftDriveBackDistance, rightDriveBackDistance));
 	}
 
 }

@@ -24,8 +24,9 @@ public class SideTwoGearAutoLeft extends CommandGroup {
 		addSequential(new ClearTotalDistance());
 
 		// places the gear, drives back
-		addSequential(new VisionPlaceGear(SideTwoGearAutoData.DRIVE_2_LEFT_SETPOINT,
-				SideTwoGearAutoData.DRIVE_2_RIGHT_SETPOINT, SideTwoGearAutoData.MAX_SETPOINT, true));
+		addSequential(new VisionPlaceGear(	SideTwoGearAutoData.DRIVE_2_LEFT_SETPOINT,
+											SideTwoGearAutoData.DRIVE_2_RIGHT_SETPOINT,
+											SideTwoGearAutoData.MAX_SETPOINT, true));
 
 		addSequential(new TurnWithGyro(SideTwoGearAutoData.TURN_2_LEFT));
 
@@ -36,21 +37,21 @@ public class SideTwoGearAutoLeft extends CommandGroup {
 		// drops gear intake
 		addSequential(new GrabGear(SideTwoGearAutoData.GRAB_GEAR_USE_TIMEOUT, SideTwoGearAutoData.GRAB_GEAR_DISTANCE));
 
-		addSequential(
-				new SetMotorSpeed(SideTwoGearAutoData.DRIVE_2_STOP_SPEED, SideTwoGearAutoData.DRIVE_2_STOP_SPEED));
+		addSequential(new SetMotorSpeed(SideTwoGearAutoData.DRIVE_2_STOP_SPEED,
+										SideTwoGearAutoData.DRIVE_2_STOP_SPEED));
 
 		// raises gear intake
 		addParallel(new GearIntakeSetUpTimedIn(1));
 
 		// drives back
 		addSequential(new DriveEncodersGetSetpointAtRuntime(SideTwoGearAutoData.DRIVE_3_LEFT_SETPOINT,
-				SideTwoGearAutoData.DRIVE_3_RIGHT_SETPOINT, 0));
+															SideTwoGearAutoData.DRIVE_3_RIGHT_SETPOINT));
 
 		// turns to face gear peg
 		addSequential(new TurnWithGyro(SideTwoGearAutoData.TURN_3_ANGLE_LEFT));
 
 		// scores second gear!!!
-		addSequential(new VisionPlaceGear(SideTwoGearAutoData.DRIVE_4_DRIVE_BACK_SETPOINT,
-				SideTwoGearAutoData.MAX_SETPOINT, true));
+		addSequential(new VisionPlaceGear(	SideTwoGearAutoData.DRIVE_4_DRIVE_BACK_SETPOINT,
+											SideTwoGearAutoData.MAX_SETPOINT, true));
 	}
 }

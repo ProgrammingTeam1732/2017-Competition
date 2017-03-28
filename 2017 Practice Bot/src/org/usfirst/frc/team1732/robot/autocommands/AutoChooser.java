@@ -18,8 +18,10 @@ import org.usfirst.frc.team1732.robot.autocommands.scoresidegearthenballs.ScoreG
 import org.usfirst.frc.team1732.robot.autocommands.scoresidegearthenballs.ScoreGearThenBallsRed;
 import org.usfirst.frc.team1732.robot.autocommands.sidetwogearauto.SideTwoGearAutoLeft;
 import org.usfirst.frc.team1732.robot.autocommands.sidetwogearauto.SideTwoGearAutoRight;
+import org.usfirst.frc.team1732.robot.autocommands.test.TestShootingWithBallAgitator;
 import org.usfirst.frc.team1732.robot.autocommands.twogearauto.TwoGearAutoLeft;
 import org.usfirst.frc.team1732.robot.autocommands.twogearauto.TwoGearAutoRight;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveTime;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveEncodersWithBraking;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.TurnWithEncodersWithBraking;
 import org.usfirst.frc.team1732.robot.smartdashboard.MySmartDashboard;
@@ -40,37 +42,41 @@ public class AutoChooser implements SmartDashboardGroup {
 		ScoreMiddleGear(new ScoreMiddleGear()),
 		ScoreRightSideGear(new ScoreSideGearRight()),
 		ScoreLeftSideGear(new ScoreSideGearLeft()),
-		ScoreGearThenBalls(new ScoreGearThenBallsRed(), new ScoreGearThenBallsBlue()),
+
+		ScoreSideGearThenBalls(new ScoreGearThenBallsRed(), new ScoreGearThenBallsBlue()),
+		ScoreCenterGearThenBalls(new ScoreCenterGearThenBallsRed(), new ScoreCenterGearThenBallsBlue()),
 		ScoreBallsThenGear(new ScoreBallsThenGearRed(), new ScoreBallsThenGearBlue()),
-		// GrabBallsBackwardThenShoot(new GrabBallsBackwardAndShootRed(), new
-		// GrabBallsBackwardAndShootBlue()),
+
 		GrabBallsForwardThenShoot(new GrabBallsForwardAndShootRed(), new GrabBallsForwardAndShootBlue()),
+		GrabBallsKeylineAndShoot(new GrabBallsKeylineAndShootRed(), new GrabBallsKeylineAndShootBlue()),
+
 		TwoGearAutoLeft(new TwoGearAutoLeft()),
 		TwoGearAutoRight(new TwoGearAutoRight()),
 		SideTwoGearAutoLeft(new SideTwoGearAutoLeft()),
 		SideTwoGearAutoRight(new SideTwoGearAutoRight()),
-		GrabBallsForwardAndShoot(new GrabBallsForwardAndShootRed(), new GrabBallsForwardAndShootBlue()),
-		GrabBallsKeylineAndShoot(new GrabBallsKeylineAndShootRed(), new GrabBallsKeylineAndShootBlue()),
+
+		// testing
 		DriveEncodersBrake(new DriveEncodersWithBraking(110, 20)),
 		TurnWithEncodersWithBraking90(new TurnWithEncodersWithBraking(90)),
 		TurnWithEncodersWithBraking180(new TurnWithEncodersWithBraking(180)),
 		TurnWithEncodersWithBraking45(new TurnWithEncodersWithBraking(45)),
-		ScoreCenterGearAndBalls(new ScoreCenterGearThenBallsRed(), new ScoreCenterGearThenBallsBlue());
 
 		// Turn180Degrees(new TurnWithGyro(180)),
 		// Turn90Degrees(new TurnWithGyro(90)),
 		// TurnWithEncoders180(new TurnWithEncoders(-180)),
 		// TurnWithEncoders90(new TurnWithEncoders(-90)),
 		// TurnWithEncoders45(new TurnWithEncoders(-45)),
-		// DriveTime(new DriveTime(5, 0.3)),
-		// DriveTimeBackwards(new DriveTime(5, -0.3)),
+		DriveTime(new DriveTime(10, 0.3)),
+		DriveTimeBackwards(new DriveTime(10, -0.3)),
+
+		TestShootingWithAgitator(new TestShootingWithBallAgitator());
 		// ResetEncoders(new ClearTotalDistance()),
 		// DriveEncodersFar(new DriveEncoders(97.5)),
 		// DriveEncodersShort(new DriveEncoders(40));
 
-		private final BooleanSupplier	isRedAlliance;
-		private final Command			ifRed;
-		private final Command			ifBlue;
+		private final BooleanSupplier isRedAlliance;
+		private final Command ifRed;
+		private final Command ifBlue;
 
 		AutoModes(Command ifRed, Command ifBlue) {
 			isRedAlliance = Robot::isRedAlliance;
@@ -96,10 +102,11 @@ public class AutoChooser implements SmartDashboardGroup {
 	private final SendableChooser<AutoModes> autoChooser = new SendableChooser<>();
 
 	public AutoChooser() {
-		autoChooser.addDefault(	AutoModes.ScoreMiddleGear.ordinal() + ": " + AutoModes.ScoreMiddleGear.name(),
-								AutoModes.ScoreMiddleGear);
+		autoChooser.addDefault(
+				AutoModes.GrabBallsKeylineAndShoot.ordinal() + ": " + AutoModes.GrabBallsKeylineAndShoot.name(),
+				AutoModes.GrabBallsKeylineAndShoot);
 		AutoModes[] autoModes = AutoModes.values();
-		for (int i = 1; i < autoModes.length; i++) {
+		for (int i = 0; i < autoModes.length; i++) {
 			autoChooser.addObject(autoModes[i].ordinal() + ": " + autoModes[i].name(), autoModes[i]);
 		}
 		SmartDashboard.putData("AutonomousChooser", autoChooser);
@@ -119,7 +126,8 @@ public class AutoChooser implements SmartDashboardGroup {
 
 	@Override
 	public void addToSmartDashboard(MySmartDashboard dashboard) {
-		chosenauto = dashboard.addItem(SmartDashboardItem.newDoubleReciever("Auto Number", 0.0));
+		chosenauto = dashboard.addItem(SmartDashboardItem.newDoubleReciever("Auto Number",
+				(double) AutoModes.GrabBallsKeylineAndShoot.ordinal()));
 	}
 
 }
