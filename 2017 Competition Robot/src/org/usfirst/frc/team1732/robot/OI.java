@@ -36,56 +36,56 @@ import edu.wpi.first.wpilibj.buttons.Trigger;
  */
 public class OI {
 
-	private Joystick	buttons	= new Joystick(RobotMap.BUTTONS_USB);
-	private Joystick	left	= new Joystick(RobotMap.LEFT_JOYSTICK_USB);
-	private Joystick	right	= new Joystick(RobotMap.RIGHT_JOYSTICK_USB);
+	private final Joystick	buttons	= new Joystick(RobotMap.BUTTONS_USB);
+	private final Joystick	left	= new Joystick(RobotMap.LEFT_JOYSTICK_USB);
+	private final Joystick	right	= new Joystick(RobotMap.RIGHT_JOYSTICK_USB);
 
 	private final Button	climb			= new JoystickButton(buttons, 1);
 	private final Trigger	climbNormal		= newNormalButton(climb);
 	private final Trigger	climbOverride	= newOverrideButton(climb);
 
-	private final Button	craaw			= new JoystickButton(buttons, 2);
-	private final Trigger	craawStopperOut	= new Trigger() {
+	private final Button	arm				= new JoystickButton(buttons, 2);
+	private final Trigger	armNormal		= newNormalButton(arm);
+	private final Trigger	armOverride		= newOverrideButton(arm);
+	private final Trigger	armStopperOut	= new Trigger() {
 
 												@Override
 												public boolean get() {
-													return Robot.gearIntake.isStopperOut() && craaw.get();
+													return Robot.gearIntake.isStopperOut() && armNormal.get();
 												}
 
 											};
-	private final Trigger	craawStopperIn	= new Trigger() {
+	private final Trigger	armStopperIn	= new Trigger() {
 
 												@Override
 												public boolean get() {
-													return Robot.gearIntake.isStopperIn() && craaw.get();
+													return Robot.gearIntake.isStopperIn() && armNormal.get();
 												}
 
 											};
-	private final Trigger	craawNormal		= newNormalButton(craaw);
-	private final Trigger	craawOverride	= newOverrideButton(craaw);
 
 	private final Button override = new JoystickButton(buttons, 5);
 
-	private final Button	conveyorIn			= new JoystickButton(buttons, 7);
-	private final Trigger	conveyorInNormal	= newNormalButton(conveyorIn);
-	private final Trigger	conveyorInOverride	= newOverrideButton(conveyorIn);
+	private final Button	feederIn			= new JoystickButton(buttons, 7);
+	private final Trigger	feederInNormal		= newNormalButton(feederIn);
+	private final Trigger	feederInOverride	= newOverrideButton(feederIn);
 
-	private final Button	conveyorOut			= new JoystickButton(buttons, 6);
-	private final Trigger	conveyorOutNormal	= newNormalButton(conveyorOut);
-	private final Trigger	conveyorOutOverride	= newOverrideButton(conveyorOut);
+	private final Button	feederOut			= new JoystickButton(buttons, 6);
+	private final Trigger	feederOutNormal		= newNormalButton(feederOut);
+	private final Trigger	feederOutOverride	= newOverrideButton(feederOut);
 
-	private final Button	intakeOut			= new JoystickButton(buttons, 8);
-	private final Trigger	intakeOutNormal		= newNormalButton(intakeOut);
-	private final Trigger	intakeOutOverride	= newOverrideButton(intakeOut);
+	private final Button	ballIntakeOut			= new JoystickButton(buttons, 8);
+	private final Trigger	ballIntakeOutNormal		= newNormalButton(ballIntakeOut);
+	private final Trigger	ballIntakeOutOverride	= newOverrideButton(ballIntakeOut);
 
-	private final Button	intakeIn			= new JoystickButton(buttons, 9);
-	private final Trigger	intakeInNormal		= newNormalButton(intakeIn);
-	private final Trigger	intakeInOverride	= newOverrideButton(intakeIn);
+	private final Button	ballIntakeIn			= new JoystickButton(buttons, 9);
+	private final Trigger	ballIntakeInNormal		= newNormalButton(ballIntakeIn);
+	private final Trigger	ballIntakeInOverride	= newOverrideButton(ballIntakeIn);
 
-	private final Trigger intakeStop = new Trigger() {
+	private final Trigger ballIntakeStop = new Trigger() {
 		@Override
 		public boolean get() {
-			return !intakeIn.get() && !intakeOut.get();
+			return !ballIntakeIn.get() && !ballIntakeOut.get();
 		}
 	};
 
@@ -142,21 +142,11 @@ public class OI {
 		}
 	};
 
-	private final Trigger craawIn = new Trigger() {
-
-		@Override
-		public boolean get() {
-			return !craawStopperOut.get() && !craawOverride.get() && !craawStopperIn.get();
-		}
-
-	};
-
 	public OI() {
 		gearPickup.whenActive(new GearIntakeSetDownIn());
 		gearPickup.whenInactive(new GearIntakeSetUpTimedIn(1));
 		gearScore.whenActive(new GearIntakeSetDownOut());
 		gearScore.whenInactive(new GearIntakeSetUpStop());
-		// gearScore.whenActive(new ShuffleBallsWithWait());
 
 		flywheelOn.whenActive(new EnableFlywheel());
 		flywheelOn.whenInactive(new DisableFlywheel());
@@ -164,15 +154,13 @@ public class OI {
 		shoot.whenPressed(new Shoot());
 		shoot.whenReleased(new StopShoot());
 
-		craawStopperOut.whenActive(new ArmSetOutGroup());
-
-		craawStopperIn.whenActive(new ArmSetOut());
-		// craawRegular.whenInactive(new ArmSetIn());
-		// craaw.whenPressed(new ArmSetOut());
-		// craaw.whenReleased(new ArmSetIn());
-		craawOverride.whenActive(new ArmSetOutGroup());
-		// craawOverride.whenInactive(new ArmSetIn());
-		craawIn.whenActive(new ArmSetIn());
+		// only normal mode
+		armStopperOut.whenActive(new ArmSetOutGroup());
+		armStopperIn.whenActive(new ArmSetOut());
+		// only override mode
+		armOverride.whenActive(new ArmSetOutGroup());
+		// any mode
+		arm.whenReleased(new ArmSetIn());
 
 		climbNormal.whenActive(new ClimberSetUp());
 		climbNormal.whenInactive(new ClimberSetStop());
@@ -180,9 +168,9 @@ public class OI {
 		climbOverride.whenActive(new ClimberSetDown());
 		climbOverride.whenInactive(new ClimberSetStop());
 
-		intakeIn.whenPressed(new IntakeBalls());
-		intakeOut.whenPressed(new OutputBalls());
-		intakeStop.whenActive(new StopIntakeAndFeeder());
+		ballIntakeIn.whenPressed(new IntakeBalls());
+		ballIntakeOut.whenPressed(new OutputBalls());
+		ballIntakeStop.whenActive(new StopIntakeAndFeeder());
 
 		shifter.whenActive(new ShiftLow());
 		shifter.whenInactive(new ShiftHigh());
@@ -190,11 +178,11 @@ public class OI {
 		gearStopperOverrideIn.whenPressed(new GearIntakeSetStopperIn());
 		gearStopperOverrideOut.whenPressed(new GearIntakeSetStopperOut());
 
-		conveyorIn.whenActive(new FeederSetIn());
-		conveyorIn.whenInactive(new FeederSetStop());
+		feederIn.whenActive(new FeederSetIn());
+		feederIn.whenInactive(new FeederSetStop());
 
-		conveyorOut.whenActive(new FeederSetOut());
-		conveyorOut.whenInactive(new FeederSetStop());
+		feederOut.whenActive(new FeederSetOut());
+		feederOut.whenInactive(new FeederSetStop());
 	}
 
 	public double getLeftSpeed() {
