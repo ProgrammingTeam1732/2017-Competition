@@ -17,7 +17,7 @@ public class SideTwoGearAutoRight extends CommandGroup {
 	public SideTwoGearAutoRight() {
 		addSequential(new InitGearIntake());
 
-		addSequential(new DriveEncoders(SideTwoGearAutoData.DRIVE_1_SETPOINT, 0));
+		addSequential(new DriveEncoders(SideTwoGearAutoData.DRIVE_1_SETPOINT));
 
 		addSequential(new TurnWithGyro(SideTwoGearAutoData.TURN_1_RIGHT));
 

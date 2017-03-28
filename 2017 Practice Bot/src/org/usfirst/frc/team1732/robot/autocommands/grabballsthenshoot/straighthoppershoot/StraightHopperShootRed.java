@@ -17,21 +17,19 @@ public class StraightHopperShootRed extends CommandGroup {
 
 	public StraightHopperShootRed() {
 		addSequential(new InitGearIntake());
-		addSequential(new DriveEncoders(StraightHopperShootData.DRIVE_1_SETPOINT, 0));
+		addSequential(new DriveEncoders(StraightHopperShootData.DRIVE_1_SETPOINT));
 
 		addSequential(new TurnWithEncoders(StraightHopperShootData.TURN_1_ANGLE_RED));
 
-		addSequential(new DriveTime(StraightHopperShootData.DRIVE_2_TIME,
-									StraightHopperShootData.DRIVE_2_SPEED));
+		addSequential(new DriveTime(StraightHopperShootData.DRIVE_2_TIME, StraightHopperShootData.DRIVE_2_SPEED));
 
 		addSequential(new Wait(StraightHopperShootData.WAIT_1_TIME));
 
-		addSequential(new DriveTime(StraightHopperShootData.DRIVE_3_TIME,
-									StraightHopperShootData.DRIVE_3_SPEED));
+		addSequential(new DriveTime(StraightHopperShootData.DRIVE_3_TIME, StraightHopperShootData.DRIVE_3_SPEED));
 
 		addSequential(new TurnWithEncoders(StraightHopperShootData.TURN_2_ANGLE_RED));
 
-		addSequential(new DriveEncoders(StraightHopperShootData.DRIVE_4_SETPOINT, 0));
+		addSequential(new DriveEncoders(StraightHopperShootData.DRIVE_4_SETPOINT));
 		addParallel(new EnableFlywheel());
 		addSequential(new DriveTime(StraightHopperShootData.TURN_3_TIME_RED,
 									StraightHopperShootData.DRIVE_LEFT_SPEED_RED,

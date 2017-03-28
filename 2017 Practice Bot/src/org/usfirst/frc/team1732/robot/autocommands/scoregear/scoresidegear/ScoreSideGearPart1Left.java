@@ -10,7 +10,7 @@ public class ScoreSideGearPart1Left extends CommandGroup {
 
 	public ScoreSideGearPart1Left() {
 		// drive forward to turn to position
-		addSequential(new DriveEncoders(ScoreSideGearData.DRIVE_1_SETPOINT, 0));
+		addSequential(new DriveEncoders(ScoreSideGearData.DRIVE_1_SETPOINT));
 
 		addSequential(new TurnWithGyro(ScoreSideGearData.TURN_1_LEFT_SIDE));
 

@@ -17,7 +17,7 @@ public class SideTwoGearAutoLeft extends CommandGroup {
 	public SideTwoGearAutoLeft() {
 		addSequential(new InitGearIntake());
 
-		addSequential(new DriveEncoders(SideTwoGearAutoData.DRIVE_1_SETPOINT, 0));
+		addSequential(new DriveEncoders(SideTwoGearAutoData.DRIVE_1_SETPOINT));
 
 		addSequential(new TurnWithGyro(SideTwoGearAutoData.TURN_1_LEFT));
 
