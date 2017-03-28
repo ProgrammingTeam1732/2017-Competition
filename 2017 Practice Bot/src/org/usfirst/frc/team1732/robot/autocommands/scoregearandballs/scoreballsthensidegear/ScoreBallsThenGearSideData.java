@@ -1,6 +1,6 @@
-package org.usfirst.frc.team1732.robot.autocommands.scoregearandballs.scoreballsthengear;
+package org.usfirst.frc.team1732.robot.autocommands.scoregearandballs.scoreballsthensidegear;
 
-public class ScoreBallsThenGearData {
+public class ScoreBallsThenGearSideData {
 
 	static final double MAX_SETPOINT = 80;
 

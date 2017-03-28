@@ -4,7 +4,7 @@ import java.util.function.DoubleSupplier;
 
 import org.usfirst.frc.team1732.robot.Robot;
 
-public class ScoreGearThenBallsData {
+public class ScoreSideGearThenBallsData {
 
 	static final double MAX_SETPOINT = 80;
 
