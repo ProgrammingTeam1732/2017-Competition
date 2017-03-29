@@ -24,6 +24,6 @@ public class ScoreSideGearThenBallsData {
 
 	static final double DRIVE_3_SETPOINT = 45;
 
-	static final double SHOOT_TIME = 5;
+	static final double SHOOT_TIME = 15;
 
 }

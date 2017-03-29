@@ -45,6 +45,6 @@ public class KeylineHopperShootData {
 	static final double	DRIVE_RIGHT_SPEED_BLUE	= -.1;
 	static final double	DRIVE_LEFT_SPEED_BLUE	= .5;
 
-	static final double SHOOT_TIME = 10;
+	static final double SHOOT_TIME = 15;
 
 }

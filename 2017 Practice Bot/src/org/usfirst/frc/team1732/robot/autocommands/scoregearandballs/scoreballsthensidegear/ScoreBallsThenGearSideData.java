@@ -14,7 +14,7 @@ public class ScoreBallsThenGearSideData {
 	static final double	TURN_1_LEFT_SPEED_BLUE	= TURN_1_RIGHT_SPEED_RED;
 	static final double	TURN_1_RIGHT_SPEED_BLUE	= TURN_1_LEFT_SPEED_RED;
 
-	static final double SHOOT_TIME = 5;
+	static final double SHOOT_TIME = 7;
 
 	static final double DRIVE_2_SETPOINT = -15;
 

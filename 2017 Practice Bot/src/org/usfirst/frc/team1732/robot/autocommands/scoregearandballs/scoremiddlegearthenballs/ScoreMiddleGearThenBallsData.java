@@ -31,6 +31,6 @@ public class ScoreMiddleGearThenBallsData {
 	static final double	TURN_2_LEFT_SPEED_BLUE	= -.5;
 	static final double	TURN_2_RIGHT_SPEED_BLUE	= .1;
 
-	static final double SHOOT_TIME = 5;
+	static final double SHOOT_TIME = 15;
 
 }

@@ -22,13 +22,13 @@ public class StraightHopperShootData {
 	static final double	TURN_2_ANGLE_RED	= 90;
 	static final double	TURN_2_ANGLE_BLUE	= -TURN_2_ANGLE_RED;
 
-	static final double	TURN_3_TIME_RED		= 1;
+	static final double	TURN_3_TIME_RED			= 1;
 	static final double	TURN_3_TIME_BLUE		= 1;
 	static final double	DRIVE_RIGHT_SPEED_RED	= .5;
 	static final double	DRIVE_LEFT_SPEED_RED	= -.1;
 	static final double	DRIVE_RIGHT_SPEED_BLUE	= -.1;
 	static final double	DRIVE_LEFT_SPEED_BLUE	= .5;
 
-	static final double SHOOT_TIME = 5;
+	static final double SHOOT_TIME = 15;
 
 }
