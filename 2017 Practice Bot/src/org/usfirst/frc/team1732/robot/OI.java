@@ -8,7 +8,7 @@ import org.usfirst.frc.team1732.robot.commands.ballsystem.feeder.FeederSetOut;
 import org.usfirst.frc.team1732.robot.commands.ballsystem.feeder.FeederSetStop;
 import org.usfirst.frc.team1732.robot.commands.ballsystem.flywheel.DisableFlywheel;
 import org.usfirst.frc.team1732.robot.commands.ballsystem.flywheel.EnableFlywheel;
-import org.usfirst.frc.team1732.robot.commands.ballsystem.flywheel.Shoot;
+import org.usfirst.frc.team1732.robot.commands.ballsystem.flywheel.ShootWithShuffle;
 import org.usfirst.frc.team1732.robot.commands.ballsystem.flywheel.StopShoot;
 import org.usfirst.frc.team1732.robot.commands.climber.ArmSetIn;
 import org.usfirst.frc.team1732.robot.commands.climber.ArmSetOut;
@@ -151,7 +151,7 @@ public class OI {
 		flywheelOn.whenActive(new EnableFlywheel());
 		flywheelOn.whenInactive(new DisableFlywheel());
 
-		shoot.whenPressed(new Shoot());
+		shoot.whenPressed(new ShootWithShuffle());
 		shoot.whenReleased(new StopShoot());
 
 		// only normal mode

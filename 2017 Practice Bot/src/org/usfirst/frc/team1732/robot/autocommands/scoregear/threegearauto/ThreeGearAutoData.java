@@ -8,10 +8,8 @@ public class ThreeGearAutoData {
 
 	static final double MAX_SETPOINT = 80;
 
-	static final DoubleSupplier	DRIVE_1_LEFT_SETPOINT	= () -> Robot.getDistanceToDriveBackForTwoGear()
-			- Robot.driveTrain.getTotalLeftDistance();
-	static final DoubleSupplier	DRIVE_1_RIGHT_SETPOINT	= () -> Robot.getDistanceToDriveBackForTwoGear()
-			- Robot.driveTrain.getTotalRightDistance();
+	static final DoubleSupplier	DRIVE_1_LEFT_SETPOINT	= () -> 60 - Robot.driveTrain.getTotalLeftDistance();
+	static final DoubleSupplier	DRIVE_1_RIGHT_SETPOINT	= () -> 60 - Robot.driveTrain.getTotalRightDistance();
 
 	static final double	TURN_1_ANGLE_RED	= -90;
 	static final double	TURN_1_ANGLE_BLUE	= -TURN_1_ANGLE_RED;

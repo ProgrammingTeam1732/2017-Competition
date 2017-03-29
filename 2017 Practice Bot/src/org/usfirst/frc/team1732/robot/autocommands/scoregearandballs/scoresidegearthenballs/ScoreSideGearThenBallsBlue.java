@@ -4,7 +4,7 @@ import org.usfirst.frc.team1732.robot.autocommands.scoregear.scoresidegear.Score
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.ClearTotalDistance;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveEncoders;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveUntilEncoders;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.gyro.TurnWithGyro;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.TurnWithEncoders;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.InitGearIntake;
 import org.usfirst.frc.team1732.robot.commands.vision.VisionPlaceGear;
 
@@ -33,7 +33,7 @@ public class ScoreSideGearThenBallsBlue extends CommandGroup {
 		// BALL SCORING
 
 		// turn to face boiler
-		addSequential(new TurnWithGyro(ScoreSideGearThenBallsData.TURN_1_ANGLE_BLUE));
+		addSequential(new TurnWithEncoders(ScoreSideGearThenBallsData.TURN_1_ANGLE_BLUE));
 
 		// drive fast for part of distance
 		addSequential(new DriveUntilEncoders(	ScoreSideGearThenBallsData.DRIVE_2_SETPOINT,

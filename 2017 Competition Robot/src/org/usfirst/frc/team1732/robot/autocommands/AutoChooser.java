@@ -59,8 +59,8 @@ public class AutoChooser implements SmartDashboardGroup {
 		TurnWithEncodersWithBraking180(new TurnWithEncodersWithBraking(180)),
 		TurnWithEncodersWithBraking45(new TurnWithEncodersWithBraking(45)),
 
-		// Turn180Degrees(new TurnWithGyro(180)),
-		// Turn90Degrees(new TurnWithGyro(90)),
+		// Turn180Degrees(new TurnWithEncoders(180)),
+		// Turn90Degrees(new TurnWithEncoders(90)),
 		// TurnWithEncoders180(new TurnWithEncoders(-180)),
 		// TurnWithEncoders90(new TurnWithEncoders(-90)),
 		// TurnWithEncoders45(new TurnWithEncoders(-45)),

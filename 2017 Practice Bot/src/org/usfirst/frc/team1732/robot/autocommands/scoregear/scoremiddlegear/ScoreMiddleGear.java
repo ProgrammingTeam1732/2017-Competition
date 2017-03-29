@@ -10,7 +10,7 @@ public class ScoreMiddleGear extends CommandGroup {
 	public ScoreMiddleGear() {
 		addSequential(new InitGearIntake());
 		addSequential(new VisionPlaceGear(-40, 80, false));
-		//		addSequential(new DriveEncoders(64));
+		//		addSequential(new DriveEncoders(75));
 		//
 		//		addSequential(new GearIntakeSetDown());
 		//		addParallel(new CommandGroup() {

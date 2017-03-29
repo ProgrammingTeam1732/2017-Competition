@@ -3,7 +3,7 @@ package org.usfirst.frc.team1732.robot.autocommands.scoregear.threegearauto;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.SetMotorSpeed;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.ClearTotalDistance;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveEncodersGetSetpointAtRuntime;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.gyro.TurnWithGyro;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.TurnWithEncoders;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.base.motor.GearIntakeSetStop;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.GearIntakeSetUpTimedIn;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.GrabGear;
@@ -25,8 +25,8 @@ public class ThreeGearAutoRed extends CommandGroup {
 											true));
 
 		// turns to face the gear on ground
-		// addSequential(new TurnWithGyro(ThreeGearAutoData.TURN_1_ANGLE_RED));
-		addSequential(new TurnWithGyro(ThreeGearAutoData.TURN_1_ANGLE_RED));
+		// addSequential(new TurnWithEncoders(ThreeGearAutoData.TURN_1_ANGLE_RED));
+		addSequential(new TurnWithEncoders(ThreeGearAutoData.TURN_1_ANGLE_RED));
 
 		addSequential(new ClearTotalDistance());
 
@@ -50,8 +50,8 @@ public class ThreeGearAutoRed extends CommandGroup {
 															ThreeGearAutoData.DRIVE_3_RIGHT_SETPOINT));
 
 		// turns to face gear peg
-		// addSequential(new TurnWithGyro(ThreeGearAutoData.TURN_2_ANGLE_RED));
-		addSequential(new TurnWithGyro(ThreeGearAutoData.TURN_2_ANGLE_RED));
+		// addSequential(new TurnWithEncoders(ThreeGearAutoData.TURN_2_ANGLE_RED));
+		addSequential(new TurnWithEncoders(ThreeGearAutoData.TURN_2_ANGLE_RED));
 
 		addSequential(new ClearTotalDistance());
 
@@ -61,8 +61,8 @@ public class ThreeGearAutoRed extends CommandGroup {
 											true));
 
 		// turns to face the gear on ground
-		// addSequential(new TurnWithGyro(ThreeGearAutoData.TURN_1_ANGLE_RED));
-		addSequential(new TurnWithGyro(ThreeGearAutoData.TURN_2_ANGLE_RED));
+		// addSequential(new TurnWithEncoders(ThreeGearAutoData.TURN_1_ANGLE_RED));
+		addSequential(new TurnWithEncoders(ThreeGearAutoData.TURN_2_ANGLE_RED));
 
 		addSequential(new ClearTotalDistance());
 
@@ -86,8 +86,8 @@ public class ThreeGearAutoRed extends CommandGroup {
 															ThreeGearAutoData.DRIVE_3_RIGHT_SETPOINT));
 
 		// turns to face gear peg
-		// addSequential(new TurnWithGyro(ThreeGearAutoData.TURN_2_ANGLE_RED));
-		addSequential(new TurnWithGyro(ThreeGearAutoData.TURN_1_ANGLE_RED));
+		// addSequential(new TurnWithEncoders(ThreeGearAutoData.TURN_2_ANGLE_RED));
+		addSequential(new TurnWithEncoders(ThreeGearAutoData.TURN_1_ANGLE_RED));
 
 		// scores third gear!!!
 		addSequential(new VisionPlaceGear(	ThreeGearAutoData.DRIVE_4_DRIVE_BACK_SETPOINT, ThreeGearAutoData.MAX_SETPOINT,

@@ -2,7 +2,6 @@ package org.usfirst.frc.team1732.robot.commands.vision.lights;
 
 import org.usfirst.frc.team1732.robot.Robot;
 
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 
 /**

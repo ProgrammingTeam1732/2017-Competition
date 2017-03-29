@@ -14,7 +14,7 @@ public class ScoreMiddleGearThenBallsData {
 	static final DoubleSupplier	DRIVE_1_RIGHT_SETPOINT	= () -> distanceStop - Robot.driveTrain.getTotalRightDistance();
 	// maybe average the left and right for DRIVE_1 setpoint
 
-	static final double	TURN_1_ANGLE_RED	= -90;
+	static final double	TURN_1_ANGLE_RED	= 90;
 	static final double	TURN_1_ANGLE_BLUE	= -TURN_1_ANGLE_RED;
 
 	static final double		DRIVE_2_SETPOINT	= 30;
@@ -23,14 +23,13 @@ public class ScoreMiddleGearThenBallsData {
 	static final boolean	DRIVE_2_STOP_AT_END	= false;
 
 	static final double DRIVE_3_SETPOINT = 45;
-	
-	static final double TURN_2_ANGLE_RED  = -40;
-	static final double TURN_2_ANGLE_BLUE  = 40;
-	static final double TURN_2_LEFT_SPEED_RED = -.1;
-	static final double TURN_2_RIGHT_SPEED_RED = .5;
-	static final double TURN_2_LEFT_SPEED_BLUE = -.5;
-	static final double TURN_2_RIGHT_SPEED_BLUE = .1;
-	
+
+	static final double	TURN_2_ANGLE_RED		= -40;
+	static final double	TURN_2_ANGLE_BLUE		= 40;
+	static final double	TURN_2_LEFT_SPEED_RED	= -.1;
+	static final double	TURN_2_RIGHT_SPEED_RED	= .5;
+	static final double	TURN_2_LEFT_SPEED_BLUE	= -.5;
+	static final double	TURN_2_RIGHT_SPEED_BLUE	= .1;
 
 	static final double SHOOT_TIME = 5;
 

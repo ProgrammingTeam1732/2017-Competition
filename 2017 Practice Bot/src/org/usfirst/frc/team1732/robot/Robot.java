@@ -91,8 +91,9 @@ public class Robot extends IterativeRobot {
 	private static MySmartDashboard	dashboard;
 
 	private static AutoChooser					autoChooser;
-	private static SmartDashboardItem<Boolean>	isRedAlliance;
-	private static SmartDashboardItem<Double>	distanceToDriveBackForTwoGear;
+	public static SmartDashboardItem<Boolean>	isRedAlliance;
+	public static SmartDashboardItem<Double>	startOnWallAndShootWait;
+	public static SmartDashboardItem<Double>	startOnWallAndShootDistance;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -122,13 +123,12 @@ public class Robot extends IterativeRobot {
 			addSubsystemsToSmartDashboard();
 			addAutonomousToSmartDashboard();
 			addTestingToSmartDashbaord();
-			// dashboard.addItem(SmartDashboardItem.newDoubleReciever("Light
-			// Voltage", 0.0, pixyCamera::setLightVoltage));
+
 			dashboard.addItem(SmartDashboardItem.newNumberSender("robotPeriodic() frequency ms", this::getFrequency));
-			// dashboard.addItem(SmartDashboardItem.newDoubleReciever("Feeder
-			// Speed", 1.0, feeder::setSpeed));
-			// dashboard.addItem(SmartDashboardItem.newDoubleReciever("Intake
-			// Speed", -1.0, ballIntake::setSpeed));
+			startOnWallAndShootWait = dashboard
+					.addItem(SmartDashboardItem.newDoubleReciever("Start wall and shoot wait time", 2.0));
+			startOnWallAndShootDistance = dashboard
+					.addItem(SmartDashboardItem.newDoubleReciever("Start wall and shoot wait distance", 100.0));
 			SmartDashboard.putData(new TestVisionMain());
 			// addCamera();
 
@@ -197,21 +197,10 @@ public class Robot extends IterativeRobot {
 		autoChooser.addToSmartDashboard(dashboard);
 	}
 
-	public static boolean isRedAlliance() {
-		return isRedAlliance.getValue();
-	}
-
-	public static double getDistanceToDriveBackForTwoGear() {
-		return distanceToDriveBackForTwoGear.getValue();
-	}
-
 	private void addAutonomousToSmartDashboard() {
 		isRedAlliance = dashboard.addItem(SmartDashboardItem
 				.newBooleanSender(	"Is Red Alliance?",
 									() -> DriverStation.getInstance().getAlliance().equals(Alliance.Red)));
-
-		distanceToDriveBackForTwoGear = dashboard
-				.addItem(SmartDashboardItem.newDoubleReciever("Two Gear Auto: inches from wall to go to", 50.0));
 
 		dashboard.addItem(SmartDashboardItem.newStringSender("Selected Auto Command", () -> {
 			try {

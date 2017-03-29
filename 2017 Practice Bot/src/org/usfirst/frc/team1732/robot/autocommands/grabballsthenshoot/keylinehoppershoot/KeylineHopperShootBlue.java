@@ -26,15 +26,13 @@ public class KeylineHopperShootBlue extends CommandGroup {
 		addSequential(new DriveTime(KeylineHopperShootData.TURN_TO_HOPPER_TIME,
 									KeylineHopperShootData.TURN_TO_HOPPER_LEFT_SPEED_BLUE,
 									KeylineHopperShootData.TURN_TO_HOPPER_RIGHT_SPEED_BLUE));
-		// addSequential(new DriveTime(1, .1, .4));
-		// addSequential(new DriveTime(.5, .3, .3));
+
 		addSequential(new FeederSetSpeed(KeylineHopperShootData.CONVEYOR_SPEED));
 		// Drive Into Hopper
 		addSequential(new DriveTime(KeylineHopperShootData.DRIVE_INTO_HOPPER_TIME,
 									KeylineHopperShootData.DRIVE_INTO_HOPPER_LEFT_SPEED,
 									KeylineHopperShootData.DRIVE_INTO_HOPPER_RIGHT_SPEED));
-		// addSequential(new
-		// DriveTime(KeylineHopperShootData.DRIVE_3_SETPOINT, .4));
+
 		// Wait to fill up balls
 		addSequential(new Wait(KeylineHopperShootData.WAIT_1_TIME));
 
