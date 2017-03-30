@@ -17,6 +17,6 @@ public class ScoreSideGearRightEncoders extends CommandGroup {
 		addSequential(new ScoreSideGearPart1Right());
 
 		// Drive and place
-		addSequential(new EncoderPlaceGear(45));
+		addSequential(new EncoderPlaceGear(50, -40));
 	}
 }
