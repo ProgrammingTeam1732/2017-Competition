@@ -92,7 +92,7 @@ public class Robot extends IterativeRobot {
 
 	private static AutoChooser					autoChooser;
 	public static SmartDashboardItem<Boolean>	isRedAlliance;
-	public static SmartDashboardItem<Double>	startOnWallAndShootWait;
+	public static SmartDashboardItem<Double>	autoWaitTime;
 	public static SmartDashboardItem<Double>	startOnWallAndShootDistance;
 
 	/**
@@ -125,8 +125,7 @@ public class Robot extends IterativeRobot {
 			addTestingToSmartDashbaord();
 
 			dashboard.addItem(SmartDashboardItem.newNumberSender("robotPeriodic() frequency ms", this::getFrequency));
-			startOnWallAndShootWait = dashboard
-					.addItem(SmartDashboardItem.newDoubleReciever("Start wall and shoot wait time", 2.0));
+			autoWaitTime = dashboard.addItem(SmartDashboardItem.newDoubleReciever("Auto wait time", 0.0));
 			startOnWallAndShootDistance = dashboard
 					.addItem(SmartDashboardItem.newDoubleReciever("Start wall and shoot wait distance", 100.0));
 			SmartDashboard.putData(new TestVisionMain());

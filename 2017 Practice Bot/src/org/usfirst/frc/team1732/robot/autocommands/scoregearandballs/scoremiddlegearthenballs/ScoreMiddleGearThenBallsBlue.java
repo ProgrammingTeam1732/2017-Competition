@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1732.robot.autocommands.scoregearandballs.scoremiddlegearthenballs;
 
+import org.usfirst.frc.team1732.robot.Robot;
 import org.usfirst.frc.team1732.robot.autocommands.drivetohoppersatend.drivetohopperfromboiler.DriveToHopperFromBoilerBlue;
 import org.usfirst.frc.team1732.robot.commands.ballsystem.flywheel.ShootTime;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.ClearTotalDistance;
@@ -7,6 +8,7 @@ import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveUntilEnco
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.TurnWithEncoders;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.gyro.DriveGyro;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.InitGearIntake;
+import org.usfirst.frc.team1732.robot.commands.helpercommands.Wait;
 import org.usfirst.frc.team1732.robot.commands.vision.VisionPlaceGear;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -15,6 +17,8 @@ public class ScoreMiddleGearThenBallsBlue extends CommandGroup {
 
 	public ScoreMiddleGearThenBallsBlue() {
 		addSequential(new InitGearIntake());
+		// wait to move
+		addSequential(new Wait(Robot.autoWaitTime.getValue()));
 
 		// GEAR SCORING
 

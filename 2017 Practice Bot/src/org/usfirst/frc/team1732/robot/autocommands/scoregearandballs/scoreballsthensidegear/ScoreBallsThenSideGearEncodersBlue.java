@@ -9,9 +9,9 @@ import org.usfirst.frc.team1732.robot.commands.vision.VisionPlaceGear;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class ScoreBallsThenSideGearBlue extends CommandGroup {
+public class ScoreBallsThenSideGearEncodersBlue extends CommandGroup {
 
-	public ScoreBallsThenSideGearBlue() {
+	public ScoreBallsThenSideGearEncodersBlue() {
 		addSequential(new InitGearIntake());
 		// wait to move
 		addSequential(new Wait(Robot.autoWaitTime.getValue()));

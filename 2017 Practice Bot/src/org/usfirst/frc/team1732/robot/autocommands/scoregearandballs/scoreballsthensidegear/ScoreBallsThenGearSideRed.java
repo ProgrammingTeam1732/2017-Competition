@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1732.robot.autocommands.scoregearandballs.scoreballsthensidegear;
 
+import org.usfirst.frc.team1732.robot.Robot;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveEncoders;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.gyro.DriveGyro;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.InitGearIntake;
@@ -12,6 +13,8 @@ public class ScoreBallsThenGearSideRed extends CommandGroup {
 
 	public ScoreBallsThenGearSideRed() {
 		addSequential(new InitGearIntake());
+		// wait to move
+		addSequential(new Wait(Robot.autoWaitTime.getValue()));
 
 		// drive forward slightly
 		addSequential(new DriveEncoders(ScoreBallsThenGearSideData.DRIVE_1_SETPOINT));

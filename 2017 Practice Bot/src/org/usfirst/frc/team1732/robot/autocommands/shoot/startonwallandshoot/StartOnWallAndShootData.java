@@ -6,7 +6,7 @@ import org.usfirst.frc.team1732.robot.Robot;
 
 public class StartOnWallAndShootData {
 
-	static final DoubleSupplier	WAIT_TO_MOVE_TIME	= Robot.startOnWallAndShootWait::getValue;
+	static final DoubleSupplier	WAIT_TO_MOVE_TIME	= Robot.autoWaitTime::getValue;
 	static final DoubleSupplier	DISTANCE_TO_MOVE	= Robot.startOnWallAndShootDistance::getValue;
 
 	static final double	DRIVE_INTO_BOILER_LEFT_SPEED_RED	= 0.7;

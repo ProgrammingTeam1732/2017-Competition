@@ -28,6 +28,7 @@ public class ScoreBallsThenGearSideData {
 
 	static final double DRIVE_3_SETPOINT = -15;
 
-	static final double DRIVE_4_DRIVE_BACK_SETPOINT = -40;
+	static final double	DRIVE_TO_GEAR_SETPOINT		= 70;
+	static final double	DRIVE_4_DRIVE_BACK_SETPOINT	= -40;
 
 }
