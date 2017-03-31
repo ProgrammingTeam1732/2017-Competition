@@ -8,6 +8,8 @@ public class ScoreSideGearThenBallsData {
 
 	static final double MAX_SETPOINT = 80;
 
+	static final double	DRIVE_INTO_GEAR_PEG_SETPOINT	= 50;
+	static final double	DRIVE_BACK_SETPOINT				= 50;
 	// determine distanceStop with tape measure
 	private static final double	distanceStop			= 100;
 	static final DoubleSupplier	DRIVE_1_LEFT_SETPOINT	= () -> distanceStop - Robot.driveTrain.getTotalLeftDistance();

@@ -4,9 +4,9 @@ import org.usfirst.frc.team1732.robot.autocommands.scoregear.scoresidegear.Score
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.ClearTotalDistance;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveEncoders;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveUntilEncoders;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.EncoderPlaceGear;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.TurnWithEncoders;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.InitGearIntake;
-import org.usfirst.frc.team1732.robot.commands.vision.VisionPlaceGear;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -26,9 +26,8 @@ public class ScoreSideGearThenBallsEncodersRed extends CommandGroup {
 		addSequential(new ClearTotalDistance());
 
 		// places the gear, drives back
-		addSequential(new VisionPlaceGear(	ScoreSideGearThenBallsData.DRIVE_1_LEFT_SETPOINT,
-											ScoreSideGearThenBallsData.DRIVE_1_RIGHT_SETPOINT,
-											ScoreSideGearThenBallsData.MAX_SETPOINT, true));
+		addSequential(new EncoderPlaceGear(	ScoreSideGearThenBallsData.DRIVE_INTO_GEAR_PEG_SETPOINT,
+											ScoreSideGearThenBallsData.DRIVE_BACK_SETPOINT));
 
 		// BALL SCORING
 

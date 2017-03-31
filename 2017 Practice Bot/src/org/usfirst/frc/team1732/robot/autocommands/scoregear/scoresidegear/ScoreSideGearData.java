@@ -11,6 +11,7 @@ public class ScoreSideGearData {
 
 	static final double WAIT_1_TIME = 0.2;
 
-	static final double DRIVE_2_DRIVE_BACK_SETPOINT = -25;
+	static final double	DRIVE_INTO_GEARPEG_SETPOINT	= 50;
+	static final double	DRIVE_2_DRIVE_BACK_SETPOINT	= -25;
 
 }
