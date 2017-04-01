@@ -46,6 +46,7 @@ import org.usfirst.frc.team1732.robot.commands.gearIntake.base.position.GearInta
 import org.usfirst.frc.team1732.robot.commands.gearIntake.base.position.GearIntakeSetUp;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.base.stopper.GearIntakeSetStopperIn;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.base.stopper.GearIntakeSetStopperOut;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.ShuffleBallsWithWait;
 import org.usfirst.frc.team1732.robot.commands.vision.TestVisionMain;
 import org.usfirst.frc.team1732.robot.smartdashboard.MySmartDashboard;
 import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardItem;
@@ -102,36 +103,21 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void robotInit() {
 		try {
-			// initialize subsystems - always do this first
-			driveTrain = new DriveTrain();
-			flywheel = new Flywheel();
-			ballIntake = new BallIntake();
-			climber = new Climber();
-			feeder = new Feeder();
-			arm = new Arm();
-			gearIntake = new GearIntake();
-			pixyCamera = new PixyCamera();
-			triggers = new Triggers();
-			autoChooser = new AutoChooser();
+			// initialize smartdashboard
+			initializeMySmartDashboardItems();
+			initializeSubsystems();
+			initializeVision();
+			initializeInput();
 
-			oi = new OI();
-			visionMain = new VisionMain();
-
-			// Smartdashboard code
-			dashboard = new MySmartDashboard();
 			// Add items to smartdashboard
 			addSubsystemsToSmartDashboard();
-			addAutonomousToSmartDashboard();
+			// addAutonomousToSmartDashboard();
 			addTestingToSmartDashbaord();
-
-			dashboard.addItem(SmartDashboardItem.newNumberSender("robotPeriodic() frequency ms", this::getFrequency));
-			autoWaitTime = dashboard.addItem(SmartDashboardItem.newDoubleReciever("Auto wait time", 0.0));
-			startOnWallAndShootDistance = dashboard
-					.addItem(SmartDashboardItem.newDoubleReciever("Start wall and shoot wait distance", 100.0));
-			SmartDashboard.putData(new TestVisionMain());
 			// addCamera();
 
-			// Initialize smartdashboard
+			dashboard.addItem(SmartDashboardItem.newNumberSender("robotPeriodic() frequency ms", this::getFrequency));
+
+			// initially sends items that have been added to driverstation
 			dashboard.init();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -155,7 +141,7 @@ public class Robot extends IterativeRobot {
 	public void autonomousInit() {
 		Scheduler.getInstance().removeAll();
 		// new TurnLightsOn().start();
-		autoChooser.getSelected().start();
+		//		autoChooser.getSelected().start();
 	}
 
 	@Override
@@ -184,6 +170,37 @@ public class Robot extends IterativeRobot {
 		LiveWindow.run();
 	}
 
+	private void initializeMySmartDashboardItems() {
+		dashboard = new MySmartDashboard();
+
+		autoWaitTime = dashboard.addItem(SmartDashboardItem.newDoubleReciever("Auto wait time", 0.0));
+		startOnWallAndShootDistance = dashboard
+				.addItem(SmartDashboardItem.newDoubleReciever("Start wall and shoot wait distance", 100.0));
+		isRedAlliance = dashboard.addItem(SmartDashboardItem
+				.newBooleanSender(	"Is Red Alliance?",
+									() -> DriverStation.getInstance().getAlliance().equals(Alliance.Red)));
+	}
+
+	private void initializeSubsystems() {
+		driveTrain = new DriveTrain();
+		flywheel = new Flywheel();
+		ballIntake = new BallIntake();
+		climber = new Climber();
+		feeder = new Feeder();
+		arm = new Arm();
+		gearIntake = new GearIntake();
+	}
+
+	private void initializeVision() {
+		pixyCamera = new PixyCamera();
+		visionMain = new VisionMain();
+	}
+
+	private void initializeInput() {
+		triggers = new Triggers();
+		oi = new OI();
+	}
+
 	private void addSubsystemsToSmartDashboard() {
 		driveTrain.addToSmartDashboard(dashboard);
 		flywheel.addToSmartDashboard(dashboard);
@@ -193,14 +210,11 @@ public class Robot extends IterativeRobot {
 		arm.addToSmartDashboard(dashboard);
 		gearIntake.addToSmartDashboard(dashboard);
 		visionMain.addToSmartDashboard(dashboard);
-		autoChooser.addToSmartDashboard(dashboard);
 	}
 
 	private void addAutonomousToSmartDashboard() {
-		isRedAlliance = dashboard.addItem(SmartDashboardItem
-				.newBooleanSender(	"Is Red Alliance?",
-									() -> DriverStation.getInstance().getAlliance().equals(Alliance.Red)));
-
+		autoChooser = new AutoChooser();
+		autoChooser.addToSmartDashboard(dashboard);
 		dashboard.addItem(SmartDashboardItem.newStringSender("Selected Auto Command", () -> {
 			try {
 				return autoChooser.getSelected().getName();
@@ -211,7 +225,9 @@ public class Robot extends IterativeRobot {
 	}
 
 	private void addTestingToSmartDashbaord() {
-		//		SmartDashboard.putData(new ShuffleBallsWithWait());
+		SmartDashboard.putData(new ShuffleBallsWithWait());
+		SmartDashboard.putData(new TestVisionMain());
+
 		SmartDashboard.putData(new FlywheelForward());
 		SmartDashboard.putData(new FlywheelReverse());
 		SmartDashboard.putData(new FlywheelStop());
