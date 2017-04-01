@@ -77,24 +77,24 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends IterativeRobot {
 
-	public static OI			oi;
-	public static DriveTrain	driveTrain;
-	public static BallIntake	ballIntake;
-	public static Climber		climber;
-	public static Feeder		feeder;
-	public static Flywheel		flywheel;
-	public static GearIntake	gearIntake;
-	public static Arm			arm;
-	public static PixyCamera	pixyCamera;
-	public static Triggers		triggers;
+	public static OI oi;
+	public static DriveTrain driveTrain;
+	public static BallIntake ballIntake;
+	public static Climber climber;
+	public static Feeder feeder;
+	public static Flywheel flywheel;
+	public static GearIntake gearIntake;
+	public static Arm arm;
+	public static PixyCamera pixyCamera;
+	public static Triggers triggers;
 
-	public static VisionMain		visionMain;
-	private static MySmartDashboard	dashboard;
+	public static VisionMain visionMain;
+	private static MySmartDashboard dashboard;
 
-	private static AutoChooser					autoChooser;
-	public static SmartDashboardItem<Boolean>	isRedAlliance;
-	public static SmartDashboardItem<Double>	autoWaitTime;
-	public static SmartDashboardItem<Double>	startOnWallAndShootDistance;
+	private static AutoChooser autoChooser;
+	public static SmartDashboardItem<Boolean> isRedAlliance;
+	public static SmartDashboardItem<Double> autoWaitTime;
+	public static SmartDashboardItem<Double> startOnWallAndShootDistance;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -114,7 +114,6 @@ public class Robot extends IterativeRobot {
 			// addAutonomousToSmartDashboard();
 			addTestingToSmartDashbaord();
 			// addCamera();
-
 			dashboard.addItem(SmartDashboardItem.newNumberSender("robotPeriodic() frequency ms", this::getFrequency));
 
 			// initially sends items that have been added to driverstation
@@ -127,10 +126,12 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void robotPeriodic() {
 		dashboard.run();
+		// /System.out.println(OI.isArmRunning);
 	}
 
 	@Override
-	public void disabledInit() {}
+	public void disabledInit() {
+	}
 
 	@Override
 	public void disabledPeriodic() {
@@ -141,7 +142,7 @@ public class Robot extends IterativeRobot {
 	public void autonomousInit() {
 		Scheduler.getInstance().removeAll();
 		// new TurnLightsOn().start();
-		//		autoChooser.getSelected().start();
+		// autoChooser.getSelected().start();
 	}
 
 	@Override
@@ -163,7 +164,8 @@ public class Robot extends IterativeRobot {
 	}
 
 	@Override
-	public void testInit() {}
+	public void testInit() {
+	}
 
 	@Override
 	public void testPeriodic() {
@@ -176,9 +178,8 @@ public class Robot extends IterativeRobot {
 		autoWaitTime = dashboard.addItem(SmartDashboardItem.newDoubleReciever("Auto wait time", 0.0));
 		startOnWallAndShootDistance = dashboard
 				.addItem(SmartDashboardItem.newDoubleReciever("Start wall and shoot wait distance", 100.0));
-		isRedAlliance = dashboard.addItem(SmartDashboardItem
-				.newBooleanSender(	"Is Red Alliance?",
-									() -> DriverStation.getInstance().getAlliance().equals(Alliance.Red)));
+		isRedAlliance = dashboard.addItem(SmartDashboardItem.newBooleanSender("Is Red Alliance?",
+				() -> DriverStation.getInstance().getAlliance().equals(Alliance.Red)));
 	}
 
 	private void initializeSubsystems() {
