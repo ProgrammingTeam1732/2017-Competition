@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1732.robot.autocommands.grabballsthenshoot.keylinehoppershoot;
 
+import org.usfirst.frc.team1732.robot.Robot;
 import org.usfirst.frc.team1732.robot.commands.ballsystem.feeder.FeederSetSpeed;
 import org.usfirst.frc.team1732.robot.commands.ballsystem.feeder.FeederSetStop;
 import org.usfirst.frc.team1732.robot.commands.ballsystem.flywheel.EnableFlywheel;
@@ -20,6 +21,9 @@ public class KeylineHopperShootRed extends CommandGroup {
 
 	public KeylineHopperShootRed() {
 		addSequential(new InitGearIntake());
+		// wait to move
+		addSequential(new Wait(Robot.autoWaitTime::getValue));
+
 		// Drive Along Keyline To Hopper
 		addSequential(new DriveEncoders(KeylineHopperShootData.DRIVE_1_SETPOINT_RED));
 		// Turn to Face Hopper

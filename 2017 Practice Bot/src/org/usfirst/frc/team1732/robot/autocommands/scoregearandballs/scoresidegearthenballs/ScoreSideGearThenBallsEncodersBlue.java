@@ -17,7 +17,7 @@ public class ScoreSideGearThenBallsEncodersBlue extends CommandGroup {
 	public ScoreSideGearThenBallsEncodersBlue() {
 		addSequential(new InitGearIntake());
 		// wait to move
-		addSequential(new Wait(Robot.autoWaitTime.getValue()));
+		addSequential(new Wait(Robot.autoWaitTime::getValue));
 
 		// GEAR SCORING
 

@@ -14,7 +14,7 @@ public class ScoreBallsThenGearSideRed extends CommandGroup {
 	public ScoreBallsThenGearSideRed() {
 		addSequential(new InitGearIntake());
 		// wait to move
-		addSequential(new Wait(Robot.autoWaitTime.getValue()));
+		addSequential(new Wait(Robot.autoWaitTime::getValue));
 
 		// drive forward slightly
 		addSequential(new DriveEncoders(ScoreBallsThenGearSideData.DRIVE_1_SETPOINT));
@@ -27,6 +27,9 @@ public class ScoreBallsThenGearSideRed extends CommandGroup {
 		// insert shooting commands
 		addSequential(new Wait(ScoreBallsThenGearSideData.SHOOT_TIME));
 		// addSequential(new ShootTime(ScoreBallsThenGearData.SHOOT_TIME));
+
+		// wait to move
+		addSequential(new Wait(Robot.autoWaitTime::getValue));
 
 		// drive backwards slightly to avoid knocking wall
 		addSequential(new DriveEncoders(ScoreBallsThenGearSideData.DRIVE_2_SETPOINT));

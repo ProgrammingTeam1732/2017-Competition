@@ -40,6 +40,7 @@ public class AutoChooser implements SmartDashboardGroup {
 	 * Class to help with choosing autos Just add autos to here, if there are
 	 * separate red and blue add the red first then the blue
 	 */
+
 	private static enum AutoModes {
 		ScoreMiddleGear(new ScoreMiddleGear()),
 		ScoreRightSideGear(new ScoreSideGearRight()),

@@ -20,8 +20,6 @@ public class ScoreMiddleGearThenBallsEncodersBlue extends CommandGroup {
 
 	public ScoreMiddleGearThenBallsEncodersBlue() {
 		addSequential(new InitGearIntake());
-		// wait to move
-		addSequential(new Wait(Robot.autoWaitTime.getValue()));
 
 		// GEAR SCORING
 
@@ -39,6 +37,9 @@ public class ScoreMiddleGearThenBallsEncodersBlue extends CommandGroup {
 											ScoreMiddleGearThenBallsData.DRIVE_1_RIGHT_SETPOINT));
 
 		// BALL SCORING
+
+		// wait to move
+		addSequential(new Wait(Robot.autoWaitTime::getValue));
 
 		// turn to face boiler
 		addSequential(new TurnWithEncoders(ScoreMiddleGearThenBallsData.TURN_1_ANGLE_BLUE));

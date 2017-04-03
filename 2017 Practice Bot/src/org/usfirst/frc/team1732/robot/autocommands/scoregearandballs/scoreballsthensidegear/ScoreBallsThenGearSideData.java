@@ -2,6 +2,8 @@ package org.usfirst.frc.team1732.robot.autocommands.scoregearandballs.scoreballs
 
 public class ScoreBallsThenGearSideData {
 
+	static final double DRIVE_INTO_GEARPEG_SETPOINT = 50;
+
 	static final double MAX_SETPOINT = 80;
 
 	static final double DRIVE_1_SETPOINT = 15;

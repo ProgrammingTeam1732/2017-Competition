@@ -111,7 +111,7 @@ public class Robot extends IterativeRobot {
 
 			// Add items to smartdashboard
 			addSubsystemsToSmartDashboard();
-			// addAutonomousToSmartDashboard();
+			addAutonomousToSmartDashboard();
 			addTestingToSmartDashbaord();
 			// addCamera();
 
@@ -140,8 +140,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousInit() {
 		Scheduler.getInstance().removeAll();
-		// new TurnLightsOn().start();
-		//		autoChooser.getSelected().start();
+		autoChooser.getSelected().start();
 	}
 
 	@Override

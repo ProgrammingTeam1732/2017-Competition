@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1732.robot.autocommands.grabballsthenshoot.straighthoppershoot;
 
+import org.usfirst.frc.team1732.robot.Robot;
 import org.usfirst.frc.team1732.robot.commands.ballsystem.flywheel.EnableFlywheel;
 import org.usfirst.frc.team1732.robot.commands.ballsystem.flywheel.ShootTime;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveTime;
@@ -17,6 +18,9 @@ public class StraightHopperShootRed extends CommandGroup {
 
 	public StraightHopperShootRed() {
 		addSequential(new InitGearIntake());
+		// wait to move
+		addSequential(new Wait(Robot.autoWaitTime::getValue));
+
 		addSequential(new DriveEncoders(StraightHopperShootData.DRIVE_1_SETPOINT));
 
 		addSequential(new TurnWithEncoders(StraightHopperShootData.TURN_1_ANGLE_RED));

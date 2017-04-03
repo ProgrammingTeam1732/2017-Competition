@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1732.robot.autocommands.scoregear.threegearauto;
 
+import org.usfirst.frc.team1732.robot.Robot;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.SetMotorSpeed;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.ClearTotalDistance;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveEncodersGetSetpointAtRuntime;
@@ -8,6 +9,7 @@ import org.usfirst.frc.team1732.robot.commands.gearIntake.base.motor.GearIntakeS
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.GearIntakeSetUpTimedIn;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.GrabGear;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.InitGearIntake;
+import org.usfirst.frc.team1732.robot.commands.helpercommands.Wait;
 import org.usfirst.frc.team1732.robot.commands.vision.VisionPlaceGear;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -16,6 +18,9 @@ public class ThreeGearAutoRed extends CommandGroup {
 
 	public ThreeGearAutoRed() {
 		addSequential(new InitGearIntake());
+
+		// wait to move
+		addSequential(new Wait(Robot.autoWaitTime::getValue));
 
 		addSequential(new ClearTotalDistance());
 

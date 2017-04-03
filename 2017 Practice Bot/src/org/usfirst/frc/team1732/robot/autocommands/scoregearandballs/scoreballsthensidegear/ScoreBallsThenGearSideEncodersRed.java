@@ -2,10 +2,10 @@ package org.usfirst.frc.team1732.robot.autocommands.scoregearandballs.scoreballs
 
 import org.usfirst.frc.team1732.robot.Robot;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveEncoders;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.EncoderPlaceGear;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.gyro.DriveGyro;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.InitGearIntake;
 import org.usfirst.frc.team1732.robot.commands.helpercommands.Wait;
-import org.usfirst.frc.team1732.robot.commands.vision.VisionPlaceGear;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -27,7 +27,7 @@ public class ScoreBallsThenGearSideEncodersRed extends CommandGroup {
 		//		addSequential(new ShootTime(ScoreBallsThenGearData.SHOOT_TIME));
 
 		// wait to move
-		addSequential(new Wait(Robot.autoWaitTime.getValue()));
+		addSequential(new Wait(Robot.autoWaitTime::getValue));
 
 		// drive backwards slightly to avoid knocking wall
 		addSequential(new DriveEncoders(ScoreBallsThenGearSideData.DRIVE_2_SETPOINT));
@@ -43,8 +43,8 @@ public class ScoreBallsThenGearSideEncodersRed extends CommandGroup {
 
 		// drive back forward 40 inches after placing gear
 		//		addSequential(new EncoderPlaceGear(ScoreBallsThenGearSideDataScoreBallsThenGearSideData.DRIVE_4_DRIVE_BACK_SETPOINT));
-		addSequential(new VisionPlaceGear(	ScoreBallsThenGearSideData.DRIVE_4_DRIVE_BACK_SETPOINT,
-											ScoreBallsThenGearSideData.MAX_SETPOINT, true));
+		addSequential(new EncoderPlaceGear(	ScoreBallsThenGearSideData.DRIVE_INTO_GEARPEG_SETPOINT,
+											ScoreBallsThenGearSideData.DRIVE_4_DRIVE_BACK_SETPOINT));
 
 		// drive to hoppers
 		// addSequential(new DriveToHopperFromRightGearPeg());
