@@ -114,7 +114,6 @@ public class Robot extends IterativeRobot {
 			addAutonomousToSmartDashboard();
 			addTestingToSmartDashbaord();
 			// addCamera();
-
 			dashboard.addItem(SmartDashboardItem.newNumberSender("robotPeriodic() frequency ms", this::getFrequency));
 
 			// initially sends items that have been added to driverstation
@@ -127,6 +126,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void robotPeriodic() {
 		dashboard.run();
+		// /System.out.println(OI.isArmRunning);
 	}
 
 	@Override

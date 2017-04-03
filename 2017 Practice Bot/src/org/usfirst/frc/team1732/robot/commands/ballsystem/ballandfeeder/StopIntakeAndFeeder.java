@@ -13,7 +13,7 @@ public class StopIntakeAndFeeder extends CommandGroup {
 
 	public StopIntakeAndFeeder() {
 		addSequential(new BallIntakeSetDown());
-		addSequential(new BallIntakeSetTimedIn(3));
+		addSequential(new BallIntakeSetTimedIn(1));
 		addSequential(new FeederSetStop());
 	}
 }
