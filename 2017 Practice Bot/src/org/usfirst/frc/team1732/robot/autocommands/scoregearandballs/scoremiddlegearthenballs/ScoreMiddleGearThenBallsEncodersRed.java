@@ -3,11 +3,11 @@ package org.usfirst.frc.team1732.robot.autocommands.scoregearandballs.scoremiddl
 import org.usfirst.frc.team1732.robot.Robot;
 import org.usfirst.frc.team1732.robot.autocommands.drivetohoppersatend.drivetohopperfromboiler.DriveToHopperFromBoilerRed;
 import org.usfirst.frc.team1732.robot.commands.ballsystem.flywheel.ShootTime;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveTime;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.ClearTotalDistance;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveUntilEncoders;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.EncoderPlaceGear;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.TurnWithEncoders;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.gyro.DriveGyro;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.InitGearIntake;
 import org.usfirst.frc.team1732.robot.commands.helpercommands.Wait;
 
@@ -32,9 +32,8 @@ public class ScoreMiddleGearThenBallsEncodersRed extends CommandGroup {
 		addSequential(new ClearTotalDistance());
 
 		// places the gear, drives back
-		addSequential(new EncoderPlaceGear(	() -> ScoreMiddleGearThenBallsData.DRIVE_FORWARD_INTO_GEAR_PEG,
-											ScoreMiddleGearThenBallsData.DRIVE_1_LEFT_SETPOINT,
-											ScoreMiddleGearThenBallsData.DRIVE_1_RIGHT_SETPOINT));
+		addSequential(new EncoderPlaceGear(ScoreMiddleGearThenBallsData.DRIVE_FORWARD_INTO_GEAR_PEG,
+				ScoreMiddleGearThenBallsData.DRIVE_1_SETPOINT));
 
 		// BALL SCORING
 
@@ -45,17 +44,16 @@ public class ScoreMiddleGearThenBallsEncodersRed extends CommandGroup {
 		addSequential(new TurnWithEncoders(ScoreMiddleGearThenBallsData.TURN_1_ANGLE_RED));
 
 		// drive fast for part of distance
-		addSequential(new DriveUntilEncoders(	ScoreMiddleGearThenBallsData.DRIVE_2_SETPOINT,
-												ScoreMiddleGearThenBallsData.DRIVE_2_LEFT_SPEED,
-												ScoreMiddleGearThenBallsData.DRIVE_2_RIGHT_SPEED,
-												ScoreMiddleGearThenBallsData.DRIVE_2_STOP_AT_END));
+		addSequential(new DriveUntilEncoders(ScoreMiddleGearThenBallsData.DRIVE_2_SETPOINT,
+				ScoreMiddleGearThenBallsData.DRIVE_2_LEFT_SPEED, ScoreMiddleGearThenBallsData.DRIVE_2_RIGHT_SPEED,
+				ScoreMiddleGearThenBallsData.DRIVE_2_STOP_AT_END));
 
 		// use PID for rest of distance
 		// addSequential(new
 		// DriveEncoders(ScoreMiddleGearThenBallsData.DRIVE_3_SETPOINT));
-		addSequential(new DriveGyro(ScoreMiddleGearThenBallsData.TURN_2_ANGLE_RED,
-									ScoreMiddleGearThenBallsData.TURN_2_LEFT_SPEED_RED,
-									ScoreMiddleGearThenBallsData.TURN_2_RIGHT_SPEED_RED));
+		addSequential(new DriveTime(ScoreMiddleGearThenBallsData.DRIVE_INTO_BOILER_TIME,
+				ScoreMiddleGearThenBallsData.DRIVE_INTO_BOILER_LEFT_SPEED_RED,
+				ScoreMiddleGearThenBallsData.DRIVE_INTO_BOILER_RIGHT_SPEED_RED));
 		// shooting commands
 		addSequential(new ShootTime(ScoreMiddleGearThenBallsData.SHOOT_TIME));
 

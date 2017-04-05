@@ -42,7 +42,8 @@ public class EncoderPlaceGear extends CommandGroup {
 				addSequential(new GearIntakeSetUp());
 			}
 		});
-
+		addSequential(new SetEncoderPID(.05, 0, 0));
 		addSequential(new DriveEncodersGetSetpointAtRuntime(leftDriveBackDistance, rightDriveBackDistance));
+		addSequential(new ResetEncoderPID());
 	}
 }
