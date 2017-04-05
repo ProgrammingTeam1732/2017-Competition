@@ -16,6 +16,10 @@ public class SetMotorSpeed extends InstantCommand {
 		right = rightspeed;
 	}
 
+	public SetMotorSpeed(double speed) {
+		this(speed, speed);
+	}
+
 	// Called once when the command executes
 	@Override
 	protected void initialize() {

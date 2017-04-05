@@ -10,9 +10,6 @@ import org.usfirst.frc.team1732.robot.commands.helpercommands.Wait;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-/**
- *
- */
 public class EncoderPlaceGear extends CommandGroup {
 
 	public EncoderPlaceGear(double driveForwardDistance, double driveBackDistance) {
