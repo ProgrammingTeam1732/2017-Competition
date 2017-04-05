@@ -2,6 +2,7 @@ package org.usfirst.frc.team1732.robot.commands.drivetrain.encoder;
 
 import java.util.function.DoubleSupplier;
 
+import org.usfirst.frc.team1732.robot.Robot;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.base.motor.GearIntakeOutTime;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.base.position.GearIntakeSetDown;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.base.position.GearIntakeSetUp;
@@ -30,6 +31,7 @@ public class EncoderPlaceGear extends CommandGroup {
 			DoubleSupplier rightDriveBackDistance) {
 		// drive into gear peg
 		// addSequential(new TurnWithVision(0));
+		addSequential(new SetEncoderPID(0.1, 0, 0));
 		addSequential(new DriveEncodersWithBraking(driveForwardDistance));
 		addSequential(new Wait(0.1));
 
@@ -45,5 +47,15 @@ public class EncoderPlaceGear extends CommandGroup {
 		addSequential(new SetEncoderPID(.05, 0, 0));
 		addSequential(new DriveEncodersGetSetpointAtRuntime(leftDriveBackDistance, rightDriveBackDistance));
 		addSequential(new ResetEncoderPID());
+	}
+
+	@Override
+	public void interrupted() {
+		end();
+	}
+
+	@Override
+	public void end() {
+		Robot.driveTrain.resetEncoderPID();
 	}
 }

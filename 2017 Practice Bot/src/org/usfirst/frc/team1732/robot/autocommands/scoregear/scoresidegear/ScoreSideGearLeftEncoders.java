@@ -15,7 +15,7 @@ public class ScoreSideGearLeftEncoders extends CommandGroup {
 	public ScoreSideGearLeftEncoders() {
 		addSequential(new InitGearIntake());
 		// wait to move
-		addSequential(new Wait(Robot.autoWaitTime::getValue));
+		addSequential(new Wait(Robot.autoWaitTime.getValue()));
 
 		// get into position to score gear
 		addSequential(new ScoreSideGearPart1Left());

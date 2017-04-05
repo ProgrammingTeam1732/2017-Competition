@@ -10,23 +10,16 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class ScoreMiddleGear extends CommandGroup {
 
 	public ScoreMiddleGear() {
+		this(-40);
+	}
+
+	public ScoreMiddleGear(double driveBackDistance) {
 		addSequential(new InitGearIntake());
 
 		// wait to move
-		addSequential(new Wait(Robot.autoWaitTime::getValue));
+		addSequential(new Wait(Robot.autoWaitTime.getValue()));
 
-		addSequential(new VisionPlaceGear(-40, 80, false));
-		//		addSequential(new DriveEncoders(75));
-		//
-		//		addSequential(new GearIntakeSetDown());
-		//		addParallel(new CommandGroup() {
-		//			{
-		//				addSequential(new GearIntakeOutTime(.5));
-		//				addSequential(new GearIntakeSetUp());
-		//			}
-		//		});
-		//		addSequential(new DriveEncoders(-40));
-
+		addSequential(new VisionPlaceGear(driveBackDistance, 80, false));
 	}
 
 }

@@ -47,4 +47,5 @@ public class ShuffleBallsWithWait extends CommandGroup {
 
 		System.out.println("Shuffle Balls 3");
 	}
+
 }
