@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1732.robot.autocommands.scoregear.scoresidegear.base;
 
 import org.usfirst.frc.team1732.robot.Robot;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.EncoderPlaceGear;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.InitGearIntake;
 import org.usfirst.frc.team1732.robot.commands.helpercommands.Wait;
 import org.usfirst.frc.team1732.robot.commands.vision.VisionPlaceGear;
@@ -9,7 +10,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class ScoreSideGear extends CommandGroup {
 
-	public ScoreSideGear(boolean isLeft) {
+	public ScoreSideGear(boolean useVision, boolean isLeft) {
 		addSequential(new InitGearIntake());
 		// wait to move
 		addSequential(new Wait(Robot.autoWaitTime.getValue()));
@@ -19,9 +20,13 @@ public class ScoreSideGear extends CommandGroup {
 
 		// score gear, drive back 25 inches
 		double driveBackDistance = -25;
-		double maxSetpoint = 80;
-		addSequential(new VisionPlaceGear(driveBackDistance, maxSetpoint, true));
-
+		if (useVision) {
+			double maxSetpoint = 80;
+			addSequential(new VisionPlaceGear(driveBackDistance, maxSetpoint, true));
+		} else {
+			double driveForwardDistance = 50;
+			addSequential(new EncoderPlaceGear(driveForwardDistance, driveBackDistance));
+		}
 		// drive to hoppers
 		// addSequential(new DriveToHopperFromLeftGearPeg());
 	}

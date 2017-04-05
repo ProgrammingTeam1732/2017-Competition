@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1732.robot.autocommands.scoregear.scoremiddlegear;
 
 import org.usfirst.frc.team1732.robot.Robot;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.EncoderPlaceGear;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.InitGearIntake;
 import org.usfirst.frc.team1732.robot.commands.helpercommands.Wait;
 import org.usfirst.frc.team1732.robot.commands.vision.VisionPlaceGear;
@@ -9,17 +10,20 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class ScoreMiddleGear extends CommandGroup {
 
-	public ScoreMiddleGear() {
-		this(-40);
+	public ScoreMiddleGear(boolean useVision) {
+		this(useVision, -40);
 	}
 
-	public ScoreMiddleGear(double driveBackDistance) {
+	public ScoreMiddleGear(boolean useVision, double driveBackDistance) {
 		addSequential(new InitGearIntake());
 
 		// wait to move
 		addSequential(new Wait(Robot.autoWaitTime.getValue()));
-
-		addSequential(new VisionPlaceGear(driveBackDistance, 80, false));
+		if (useVision) {
+			addSequential(new VisionPlaceGear(driveBackDistance, 80, false));
+		} else {
+			addSequential(new EncoderPlaceGear(59, driveBackDistance));
+		}
 	}
 
 }

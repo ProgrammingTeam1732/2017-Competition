@@ -4,18 +4,18 @@ import java.util.function.Supplier;
 
 import org.usfirst.frc.team1732.robot.autocommands.grabballsthenshoot.keylinehoppershoot.KeylineHopperShoot;
 import org.usfirst.frc.team1732.robot.autocommands.grabballsthenshoot.straighthoppershoot.StraightHopperShoot;
-import org.usfirst.frc.team1732.robot.autocommands.scoregear.scoremiddlegear.ScoreMiddleGear;
 import org.usfirst.frc.team1732.robot.autocommands.scoregear.scoremiddlegear.ScoreMiddleGearEncoders;
-import org.usfirst.frc.team1732.robot.autocommands.scoregear.scoresidegear.ScoreSideGearLeft;
+import org.usfirst.frc.team1732.robot.autocommands.scoregear.scoremiddlegear.ScoreMiddleGearVision;
 import org.usfirst.frc.team1732.robot.autocommands.scoregear.scoresidegear.ScoreSideGearLeftEncoders;
-import org.usfirst.frc.team1732.robot.autocommands.scoregear.scoresidegear.ScoreSideGearRight;
+import org.usfirst.frc.team1732.robot.autocommands.scoregear.scoresidegear.ScoreSideGearLeftVision;
 import org.usfirst.frc.team1732.robot.autocommands.scoregear.scoresidegear.ScoreSideGearRightEncoders;
-import org.usfirst.frc.team1732.robot.autocommands.scoregearandballs.scoreballsthensidegear.ScoreBallsThenSideGear;
+import org.usfirst.frc.team1732.robot.autocommands.scoregear.scoresidegear.ScoreSideGearRightVision;
 import org.usfirst.frc.team1732.robot.autocommands.scoregearandballs.scoreballsthensidegear.ScoreBallsThenSideGearEncoders;
-import org.usfirst.frc.team1732.robot.autocommands.scoregearandballs.scoremiddlegearthenballs.ScoreMiddleGearThenBalls;
+import org.usfirst.frc.team1732.robot.autocommands.scoregearandballs.scoreballsthensidegear.ScoreBallsThenSideGearVision;
 import org.usfirst.frc.team1732.robot.autocommands.scoregearandballs.scoremiddlegearthenballs.ScoreMiddleGearThenBallsEncoders;
-import org.usfirst.frc.team1732.robot.autocommands.scoregearandballs.scoresidegearthenballs.ScoreSideGearThenBalls;
+import org.usfirst.frc.team1732.robot.autocommands.scoregearandballs.scoremiddlegearthenballs.ScoreMiddleGearThenBallsVision;
 import org.usfirst.frc.team1732.robot.autocommands.scoregearandballs.scoresidegearthenballs.ScoreSideGearThenBallsEncoders;
+import org.usfirst.frc.team1732.robot.autocommands.scoregearandballs.scoresidegearthenballs.ScoreSideGearThenBallsVision;
 import org.usfirst.frc.team1732.robot.autocommands.shoot.besideboilerandshoot.StartBesideBoilerAndShoot;
 import org.usfirst.frc.team1732.robot.autocommands.shoot.startonwallandshoot.StartOnWallAndShoot;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveTime;
@@ -38,27 +38,28 @@ public class AutoChooser implements SmartDashboardGroup {
 	 */
 
 	public static enum AutoModes {
-		MiddleGear(ScoreMiddleGear::new),
+		MiddleGear(ScoreMiddleGearVision::new),
 		MiddleGearEncoders(ScoreMiddleGearEncoders::new),
-		RightGear(ScoreSideGearRight::new),
+		RightGear(ScoreSideGearRightVision::new),
 		RightGearEncoders(ScoreSideGearRightEncoders::new),
-		LeftGear(ScoreSideGearLeft::new),
+		LeftGear(ScoreSideGearLeftVision::new),
 		LeftGearEncoders(ScoreSideGearLeftEncoders::new),
 
-		LeftGearThenShootBalls(ScoreSideGearThenBalls::new),
+		LeftGearThenShootBalls(ScoreSideGearThenBallsVision::new),
 		LeftGearThenShootBallsEncoders(ScoreSideGearThenBallsEncoders::new),
-		MiddleGearThenShootBalls(ScoreMiddleGearThenBalls::new),
+		MiddleGearThenShootBalls(ScoreMiddleGearThenBallsVision::new),
 		MiddleGearThenShootBallsEncoders(ScoreMiddleGearThenBallsEncoders::new),
-		ShootBallsThenSideGear(ScoreBallsThenSideGear::new),
+		ShootBallsThenSideGear(ScoreBallsThenSideGearVision::new),
 		ShootBallsThenSideGearEncoders(ScoreBallsThenSideGearEncoders::new),
 
 		GrabBallsForwardThenShoot(StraightHopperShoot::new),
 		GrabBallsKeylineThenShoot(KeylineHopperShoot::new),
 
-		//		TwoGearAutoLeft(new TwoGearAutoLeft()),
-		//		TwoGearAutoRight(new TwoGearAutoRight()),
-		//		SideTwoGearAutoLeft(new SideTwoGearAutoLeft()),
-		//		SideTwoGearAutoRight(new SideTwoGearAutoRight()),
+		//		TwoGearAutoLeft(TwoGearAutoLeft::new),
+		//		TwoGearAutoRight(TwoGearAutoRight::new),
+		//		SideTwoGearAutoLeft(SideTwoGearAutoLeft::new),
+		//		SideTwoGearAutoRight(SideTwoGearAutoRight::new),
+		//		MiddleSideTwoGear(TwoGearMiddleThenSideAuto::new),
 
 		StartOnWallThenShoot(StartOnWallAndShoot::new),
 		StartBesideBoilerThenShoot(StartBesideBoilerAndShoot::new),
@@ -71,7 +72,7 @@ public class AutoChooser implements SmartDashboardGroup {
 
 		DriveTime(() -> new DriveTime(2, 0.5)),
 		DriveTimeBackwards(() -> new DriveTime(2, -0.5)),
-		ResetEncoders(() -> new ClearTotalDistance());
+		ResetEncoders(ClearTotalDistance::new);
 
 		// DriveEncodersFar(new DriveEncoders(97.5)),
 		// DriveEncodersShort(new DriveEncoders(40)),

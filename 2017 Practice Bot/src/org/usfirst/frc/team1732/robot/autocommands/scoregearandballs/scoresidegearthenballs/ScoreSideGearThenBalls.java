@@ -14,12 +14,13 @@ import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.TurnWithEncode
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.InitGearIntake;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.ShuffleBallsWithWait;
 import org.usfirst.frc.team1732.robot.commands.helpercommands.Wait;
+import org.usfirst.frc.team1732.robot.commands.vision.VisionPlaceGear;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class ScoreSideGearThenBalls extends CommandGroup {
 
-	public ScoreSideGearThenBalls() {
+	public ScoreSideGearThenBalls(boolean useVision) {
 		boolean isRed = Robot.isRedAlliance.getValue();
 
 		addSequential(new InitGearIntake());
@@ -39,9 +40,14 @@ public class ScoreSideGearThenBalls extends CommandGroup {
 		addSequential(new ClearTotalDistance());
 
 		// places the gear, drives back
-		double placeGearForward = 50;
 		double placeGearBackwardDistance = -50;
-		addSequential(new EncoderPlaceGear(placeGearForward, placeGearBackwardDistance));
+		if (useVision) {
+			double placeGearMaxSetpoint = 80;
+			addSequential(new VisionPlaceGear(placeGearBackwardDistance, placeGearMaxSetpoint, true));
+		} else {
+			double placeGearForward = 50;
+			addSequential(new EncoderPlaceGear(placeGearForward, placeGearBackwardDistance));
+		}
 
 		// BALL SCORING
 

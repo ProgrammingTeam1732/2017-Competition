@@ -1,7 +1,8 @@
 package org.usfirst.frc.team1732.robot.autocommands.scoregearandballs.scoremiddlegearthenballs;
 
 import org.usfirst.frc.team1732.robot.Robot;
-import org.usfirst.frc.team1732.robot.autocommands.scoregear.scoremiddlegear.ScoreMiddleGear;
+import org.usfirst.frc.team1732.robot.autocommands.scoregear.scoremiddlegear.ScoreMiddleGearEncoders;
+import org.usfirst.frc.team1732.robot.autocommands.scoregear.scoremiddlegear.ScoreMiddleGearVision;
 import org.usfirst.frc.team1732.robot.commands.ballsystem.flywheel.EnableFlywheel;
 import org.usfirst.frc.team1732.robot.commands.ballsystem.flywheel.ShootTime;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveTime;
@@ -14,14 +15,18 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class ScoreMiddleGearThenBalls extends CommandGroup {
 
-	public ScoreMiddleGearThenBalls() {
+	public ScoreMiddleGearThenBalls(boolean useVision) {
 		boolean isRed = Robot.isRedAlliance.getValue();
 
 		// GEAR SCORING
 
 		// places the gear, drives back
 		double driveBackDistance = -50;
-		addSequential(new ScoreMiddleGear(driveBackDistance));
+		if (useVision) {
+			addSequential(new ScoreMiddleGearVision(driveBackDistance));
+		} else {
+			addSequential(new ScoreMiddleGearEncoders(driveBackDistance));
+		}
 
 		// BALL SCORING
 

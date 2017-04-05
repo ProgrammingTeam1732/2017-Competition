@@ -4,9 +4,9 @@ import org.usfirst.frc.team1732.robot.autocommands.scoregear.scoresidegear.base.
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class ScoreSideGearRight extends CommandGroup {
+public class ScoreSideGearRightVision extends CommandGroup {
 
-	public ScoreSideGearRight() {
-		addSequential(new ScoreSideGear(false));
+	public ScoreSideGearRightVision() {
+		addSequential(new ScoreSideGear(true, false));
 	}
 }
