@@ -34,7 +34,7 @@ public class BrakeDrive extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return Math.abs(Robot.driveTrain.getLeftVelocity()) < 5 && Math.abs(Robot.driveTrain.getRightVelocity()) < 5;
+		return Math.abs(Robot.driveTrain.getLeftVelocity()) < 2 && Math.abs(Robot.driveTrain.getRightVelocity()) < 2;
 	}
 
 	// Called once after isFinished returns true

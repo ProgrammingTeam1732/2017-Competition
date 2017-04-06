@@ -3,6 +3,7 @@ package org.usfirst.frc.team1732.robot.autocommands;
 import java.util.function.Supplier;
 
 import org.usfirst.frc.team1732.robot.autocommands.grabballsthenshoot.keylinehoppershoot.KeylineHopperShoot;
+import org.usfirst.frc.team1732.robot.autocommands.grabballsthenshoot.keylinehoppershoot.KeylineHopperShootWings;
 import org.usfirst.frc.team1732.robot.autocommands.grabballsthenshoot.straighthoppershoot.StraightHopperShoot;
 import org.usfirst.frc.team1732.robot.autocommands.scoregear.scoremiddlegear.ScoreMiddleGearEncoders;
 import org.usfirst.frc.team1732.robot.autocommands.scoregear.scoremiddlegear.ScoreMiddleGearVision;
@@ -54,6 +55,7 @@ public class AutoChooser implements SmartDashboardGroup {
 
 		GrabBallsForwardThenShoot(StraightHopperShoot::new),
 		GrabBallsKeylineThenShoot(KeylineHopperShoot::new),
+		GrabBallsKeylineThenShootWings(KeylineHopperShootWings::new),
 
 		//		TwoGearAutoLeft(TwoGearAutoLeft::new),
 		//		TwoGearAutoRight(TwoGearAutoRight::new),

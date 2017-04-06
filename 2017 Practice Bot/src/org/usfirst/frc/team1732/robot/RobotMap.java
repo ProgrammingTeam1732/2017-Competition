@@ -50,6 +50,9 @@ public class RobotMap {
 	public static final int	GEAR_POSITION_SOLENOID_NUMBER	= 4;
 	public static final int	GEAR_STOPPER_SOLENOID_NUMBER	= 5;
 
+	// wings
+	public static final int WING_SOLENOID_NUMER = 1;
+
 	// Hopper/Feeder/Index
 	public static final int FEEDER_MOTOR_DEVICE_NUMBER = 10;
 

@@ -58,6 +58,7 @@ import org.usfirst.frc.team1732.robot.subsystems.Feeder;
 import org.usfirst.frc.team1732.robot.subsystems.Flywheel;
 import org.usfirst.frc.team1732.robot.subsystems.GearIntake;
 import org.usfirst.frc.team1732.robot.subsystems.PixyCamera;
+import org.usfirst.frc.team1732.robot.subsystems.Wings;
 import org.usfirst.frc.team1732.robot.triggers.Triggers;
 import org.usfirst.frc.team1732.robot.vision.VisionMain;
 
@@ -85,6 +86,7 @@ public class Robot extends IterativeRobot {
 	public static Flywheel		flywheel;
 	public static GearIntake	gearIntake;
 	public static Arm			arm;
+	public static Wings			wings;
 	public static PixyCamera	pixyCamera;
 	public static Triggers		triggers;
 
@@ -153,7 +155,9 @@ public class Robot extends IterativeRobot {
 		Scheduler.getInstance().removeAll(); // Cancels commands
 		Robot.driveTrain.clearEncoderIntgral();
 		Robot.driveTrain.clearGyroIntgral();
-
+		Robot.feeder.setStop(); // stop feeder
+		Robot.gearIntake.setUp(); // make sure gearIntake is up after shuffling
+		Robot.flywheel.disableAutoControl(); // turn off flywheel
 	}
 
 	@Override
@@ -188,6 +192,7 @@ public class Robot extends IterativeRobot {
 		feeder = new Feeder();
 		arm = new Arm();
 		gearIntake = new GearIntake();
+		wings = new Wings();
 	}
 
 	private void initializeVision() {
@@ -207,6 +212,7 @@ public class Robot extends IterativeRobot {
 		climber.addToSmartDashboard(dashboard);
 		feeder.addToSmartDashboard(dashboard);
 		arm.addToSmartDashboard(dashboard);
+		wings.addToSmartDashboard(dashboard);
 		gearIntake.addToSmartDashboard(dashboard);
 		visionMain.addToSmartDashboard(dashboard);
 	}

@@ -12,20 +12,20 @@ public class DriveToHopperFromBoiler extends CommandGroup {
 		boolean isRed = Robot.isRedAlliance.getValue();
 
 		// backup slightly
-		double backUpDistance = -60;
+		double backUpDistance = -40;
 		addSequential(new DriveEncoders(backUpDistance));
 
 		// turn towards other side
 		double faceHopperAngle = 0;
 		if (isRed) {
-			faceHopperAngle = -135;
+			faceHopperAngle = -150;
 		} else {
-			faceHopperAngle = 135;
+			faceHopperAngle = 150;
 		}
 		addSequential(new TurnWithEncoders(faceHopperAngle));
 
 		// drive towards hoppers
-		double driveToHoppersDistance = 40;
+		double driveToHoppersDistance = 50;
 		addSequential(new DriveEncoders(driveToHoppersDistance));
 	}
 }

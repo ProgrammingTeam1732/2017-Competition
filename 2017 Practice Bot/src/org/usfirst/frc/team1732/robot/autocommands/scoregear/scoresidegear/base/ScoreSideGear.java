@@ -24,7 +24,7 @@ public class ScoreSideGear extends CommandGroup {
 			double maxSetpoint = 80;
 			addSequential(new VisionPlaceGear(driveBackDistance, maxSetpoint, true));
 		} else {
-			double driveForwardDistance = 50;
+			double driveForwardDistance = 15;
 			addSequential(new EncoderPlaceGear(driveForwardDistance, driveBackDistance));
 		}
 		// drive to hoppers

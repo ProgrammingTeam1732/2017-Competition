@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1732.robot.autocommands.grabballsthenshoot.straighthoppershoot;
+package org.usfirst.frc.team1732.robot.autocommands.grabballsthenshoot.keylinehoppershoot;
 
 import org.usfirst.frc.team1732.robot.Robot;
 import org.usfirst.frc.team1732.robot.commands.ballsystem.feeder.FeederSetSpeed;
@@ -7,7 +7,6 @@ import org.usfirst.frc.team1732.robot.commands.ballsystem.flywheel.EnableFlywhee
 import org.usfirst.frc.team1732.robot.commands.ballsystem.flywheel.ShootTime;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveTime;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveEncoders;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveEncodersWithBraking;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.TurnWithEncoders;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.InitGearIntake;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.ShuffleBallsWithWait;
@@ -17,9 +16,9 @@ import org.usfirst.frc.team1732.robot.commands.wings.WingsSetOut;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class StraightHopperShoot extends CommandGroup {
+public class KeylineHopperShootWings extends CommandGroup {
 
-	public StraightHopperShoot() {
+	public KeylineHopperShootWings() {
 		boolean isRed = Robot.isRedAlliance.getValue();
 
 		addSequential(new InitGearIntake());
@@ -27,35 +26,43 @@ public class StraightHopperShoot extends CommandGroup {
 		// wait to move
 		addSequential(new Wait(Robot.autoWaitTime.getValue()));
 
-		// drive towards hopper
-		double driveTowardHopperDistance = 68;
-		addSequential(new DriveEncodersWithBraking(driveTowardHopperDistance));
+		// Drive Along Keyline To Hopper
+		double keylineDriveDistance = 0;
+		if (isRed) {
+			keylineDriveDistance = 65;
+		} else {
+			keylineDriveDistance = 65;
+		}
+		addSequential(new DriveEncoders(keylineDriveDistance));
 
 		addSequential(new WingsSetOut());
 
-		double faceHopperAngle = 0;
+		// Turn to Face Hopper
+		double faceHopperTime = 1;
+		double faceHopperLeftSpeed = 0;
+		double faceHopperRightSpeed = 0;
 		if (isRed) {
-			faceHopperAngle = 105;
+			faceHopperLeftSpeed = .4;
+			faceHopperRightSpeed = 0.1;
 		} else {
-			faceHopperAngle = -105;
+			faceHopperLeftSpeed = 0.1;
+			faceHopperRightSpeed = .4;
 		}
-		addSequential(new TurnWithEncoders(faceHopperAngle));
+		addSequential(new DriveTime(faceHopperTime, faceHopperLeftSpeed, faceHopperRightSpeed));
 
 		// turn on feeder while getting balls
-		double feederSpeed = -0.5;
+		double feederSpeed = -1;
 		addSequential(new FeederSetSpeed(feederSpeed));
 
-		// drive into hopper
-		double driveIntoHopperTime = 2;
-		double driveIntoHopperSpeed = 0.4;
-		addSequential(new DriveTime(driveIntoHopperTime, driveIntoHopperSpeed));
+		// Drive Into Hopper
+		double driveIntoHopperTime = 1.3;
+		double driveIntoHopperLeftSpeed = 0.8;
+		double driveIntoHopperRightSpeed = 0.8;
+		addSequential(new DriveTime(driveIntoHopperTime, driveIntoHopperLeftSpeed, driveIntoHopperRightSpeed));
 
-		// wait while picking up balls
-		double ballWaitTime = 1;
-		addSequential(new Wait(ballWaitTime));
-
-		// turn off feeder
-		addSequential(new FeederSetStop());
+		// Wait to fill up balls
+		double ballFillUpWaitTime = 0.3;
+		addSequential(new Wait(ballFillUpWaitTime));
 
 		// Drive Backwards away from hopper
 		double driveAwayFromHopperTime = .5;
