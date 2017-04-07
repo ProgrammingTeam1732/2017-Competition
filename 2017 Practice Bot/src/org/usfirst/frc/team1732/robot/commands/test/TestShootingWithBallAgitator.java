@@ -1,7 +1,7 @@
 package org.usfirst.frc.team1732.robot.commands.test;
 
-import org.usfirst.frc.team1732.robot.commands.ballsystem.flywheel.ShootTime;
-import org.usfirst.frc.team1732.robot.commands.ballsystem.flywheel.ShuffleBallsWithWait;
+import org.usfirst.frc.team1732.robot.commands.ballsystem.shooting.ShootTime;
+import org.usfirst.frc.team1732.robot.commands.ballsystem.shooting.ShuffleBallsWithWait;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 

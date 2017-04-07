@@ -221,7 +221,8 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 	 *            right % voltage
 	 */
 	private void tankDrive(double left, double right) {
-		driveRawWithRamp(left, right);
+		driveRawLimit(left, right, -1, 1);
+		//		driveRawWithRamp(left, right);
 	}
 
 	/**

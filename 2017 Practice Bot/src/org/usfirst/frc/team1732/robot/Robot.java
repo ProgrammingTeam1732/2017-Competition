@@ -1,6 +1,10 @@
 
 package org.usfirst.frc.team1732.robot;
 
+import org.opencv.core.Mat;
+import org.opencv.core.Point;
+import org.opencv.core.Scalar;
+import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team1732.robot.autocommands.AutoChooser;
 import org.usfirst.frc.team1732.robot.commands.ballsystem.ballintake.motor.BallIntakeSetIn;
 import org.usfirst.frc.team1732.robot.commands.ballsystem.ballintake.motor.BallIntakeSetOut;
@@ -12,10 +16,10 @@ import org.usfirst.frc.team1732.robot.commands.ballsystem.feeder.FeederSetOut;
 import org.usfirst.frc.team1732.robot.commands.ballsystem.feeder.FeederSetStop;
 import org.usfirst.frc.team1732.robot.commands.ballsystem.flywheel.DisableFlywheel;
 import org.usfirst.frc.team1732.robot.commands.ballsystem.flywheel.EnableFlywheel;
-import org.usfirst.frc.team1732.robot.commands.ballsystem.flywheel.ShuffleBallsWithWait;
 import org.usfirst.frc.team1732.robot.commands.ballsystem.flywheel.manual.FlywheelForward;
 import org.usfirst.frc.team1732.robot.commands.ballsystem.flywheel.manual.FlywheelReverse;
 import org.usfirst.frc.team1732.robot.commands.ballsystem.flywheel.manual.FlywheelStop;
+import org.usfirst.frc.team1732.robot.commands.ballsystem.shooting.ShuffleBallsWithWait;
 import org.usfirst.frc.team1732.robot.commands.climber.ArmSetIn;
 import org.usfirst.frc.team1732.robot.commands.climber.ArmSetOut;
 import org.usfirst.frc.team1732.robot.commands.climber.ClimberSetStop;
@@ -62,6 +66,9 @@ import org.usfirst.frc.team1732.robot.subsystems.Wings;
 import org.usfirst.frc.team1732.robot.triggers.Triggers;
 import org.usfirst.frc.team1732.robot.vision.VisionMain;
 
+import edu.wpi.cscore.CvSink;
+import edu.wpi.cscore.CvSource;
+import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -306,29 +313,56 @@ public class Robot extends IterativeRobot {
 
 	@SuppressWarnings("unused")
 	private void addCamera() {
-		CameraServer.getInstance().startAutomaticCapture(0);
-		//		 Thread visionThread = new Thread(() -> {
-		//		
-		//		 // Setup a CvSource. This will send images back to the Dashboard
-		//		 CvSource outputStream = CameraServer.getInstance().putVideo("Video",
-		//		 320, 240);
-		//		
-		//		 // Mats are very memory expensive. Lets reuse this Mat.
-		//		 Mat mat = new Mat();
-		//		
-		//		 // This cannot be 'true'. The program will never exit if it is. This
-		//		 // lets the robot stop this thread when restarting robot code or
-		//		 // deploying.
-		//		 while (!Thread.interrupted()) {
-		//		 // Tell the CvSink to grab a frame from the camera and put it
-		//		 // in the source mat. If there is an error notify the output.
-		//		
-		//		 mat = new Mat(240, 320, org.opencv.core.CvType.CV_8UC(3));
-		//		 Imgproc.rectangle(img, pt1, pt2, color);
-		//		 outputStream.putFrame(mat);
-		//		 }
-		//		 });
-		//		 visionThread.setDaemon(true);
-		//		 visionThread.start();
+		int width = 320;
+		int height = 240;
+		int thickness = 10;
+		Scalar color = new Scalar(0, 255, 0);
+		Thread visionThread = new Thread(() -> {
+
+			// Get the UsbCamera from CameraServer
+			UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+			// Set the resolution
+			camera.setResolution(width, height);
+
+			// Get a CvSink. This will capture Mats from the camera
+			CvSink cvSink = CameraServer.getInstance().getVideo(camera);
+			// Setup a CvSource. This will send images back to the Dashboard
+			CvSource outputStream = CameraServer.getInstance().putVideo("Video", width, height);
+
+			// Mats are very memory expensive. Lets reuse this Mat.
+			// Mats are very memory expensive. Lets reuse this Mat.
+			Mat mat = new Mat();
+
+			// This cannot be 'true'. The program will never exit if it is. This
+			// lets the robot stop this thread when restarting robot code or
+			// deploying.
+			while (!Thread.interrupted()) {
+				// Tell the CvSink to grab a frame from the camera and put it
+				// in the source mat.  If there is an error notify the output.
+				if (cvSink.grabFrame(mat) == 0) {
+					// Send the output the error.
+					outputStream.notifyError(cvSink.getError());
+					System.out.println("Error getting frame");
+					// skip the rest of the current iteration
+					continue;
+				}
+				// Put a border on the image
+				if (gearIntake.gearIsHeld() || gearIntake.gearIsIn()) {
+					// upper edge
+					Imgproc.rectangle(mat, new Point(0, 0), new Point(width, thickness), color, thickness);
+					// left edge
+					Imgproc.rectangle(mat, new Point(0, 0), new Point(thickness, height), color, thickness);
+					// right edge
+					Imgproc.rectangle(mat, new Point(width - thickness, 0), new Point(width, height), color, thickness);
+					// bottom edge
+					Imgproc.rectangle(	mat, new Point(0, height - thickness), new Point(width, height), color,
+										thickness);
+				}
+				// Give the output stream a new image to display
+				outputStream.putFrame(mat);
+			}
+		});
+		visionThread.setDaemon(true);
+		visionThread.start();
 	}
 }

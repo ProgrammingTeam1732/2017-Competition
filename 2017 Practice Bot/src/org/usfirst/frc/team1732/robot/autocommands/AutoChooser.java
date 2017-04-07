@@ -19,6 +19,7 @@ import org.usfirst.frc.team1732.robot.autocommands.scoregearandballs.scoresidege
 import org.usfirst.frc.team1732.robot.autocommands.scoregearandballs.scoresidegearthenballs.ScoreSideGearThenBallsVision;
 import org.usfirst.frc.team1732.robot.autocommands.shoot.besideboilerandshoot.StartBesideBoilerAndShoot;
 import org.usfirst.frc.team1732.robot.autocommands.shoot.startonwallandshoot.StartOnWallAndShoot;
+import org.usfirst.frc.team1732.robot.commands.ballsystem.shooting.TestShoot;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveTime;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.ClearTotalDistance;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveEncodersWithBraking;
@@ -74,7 +75,8 @@ public class AutoChooser implements SmartDashboardGroup {
 
 		DriveTime(() -> new DriveTime(2, 0.5)),
 		DriveTimeBackwards(() -> new DriveTime(2, -0.5)),
-		ResetEncoders(ClearTotalDistance::new);
+		ResetEncoders(ClearTotalDistance::new),
+		TestShooter(TestShoot::new);
 
 		// DriveEncodersFar(new DriveEncoders(97.5)),
 		// DriveEncodersShort(new DriveEncoders(40)),

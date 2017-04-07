@@ -3,7 +3,7 @@ package org.usfirst.frc.team1732.robot.autocommands.scoregearandballs.scoreballs
 import org.usfirst.frc.team1732.robot.Robot;
 import org.usfirst.frc.team1732.robot.commands.ballsystem.flywheel.DisableFlywheel;
 import org.usfirst.frc.team1732.robot.commands.ballsystem.flywheel.EnableFlywheel;
-import org.usfirst.frc.team1732.robot.commands.ballsystem.flywheel.ShootTime;
+import org.usfirst.frc.team1732.robot.commands.ballsystem.shooting.ShootTime;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveTime;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveEncoders;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.EncoderPlaceGear;

@@ -19,7 +19,7 @@ public class GearIntake extends Subsystem implements SmartDashboardGroup {
 	public static final double	OUT_SPEED		= .6;														// 0.5
 	public static final double	STOP_SPEED		= 0;
 	public static final double	IN_SPEED		= -0.7;														// -0.6
-	public static final double	HOLD_SPEED		= -0.4;														// -0.6
+	public static final double	HOLD_SPEED		= -0.15;													// -0.6
 	private final Solenoid		gearPosition	= new Solenoid(	RobotMap.PCM_CAN_ID,
 																RobotMap.GEAR_POSITION_SOLENOID_NUMBER);
 	private final Solenoid		gearStopper		= new Solenoid(	RobotMap.PCM_CAN_ID,
@@ -93,6 +93,8 @@ public class GearIntake extends Subsystem implements SmartDashboardGroup {
 		dashboard.addItem(SmartDashboardItem.newBooleanSender(directory + "Gear stopper is in?", this::isStopperIn));
 		dashboard.addItem(SmartDashboardItem.newNumberSender(directory + "Gear rollers output", motor::get));
 		dashboard.addItem(SmartDashboardItem.newNumberSender(directory + "Gear motor current", this::getMotorCurrent));
+		dashboard.addItem(SmartDashboardItem.newBooleanSender(directory + "Gear is in", this::gearIsIn));
+		dashboard.addItem(SmartDashboardItem.newBooleanSender(directory + "Gear is held", this::gearIsHeld));
 	}
 
 	public double getMotorCurrent() {
@@ -100,13 +102,13 @@ public class GearIntake extends Subsystem implements SmartDashboardGroup {
 	}
 
 	public static final double	GEAR_IN_CURRENT_CUTOFF		= 12;	// 14
-	public static final double	GEAR_IN_HOLD_CURRENT_CUTOFF	= 10;	// 14
+	public static final double	GEAR_IN_HOLD_CURRENT_CUTOFF	= 0;	// 14
 
 	public boolean gearIsIn() {
 		return getMotorCurrent() > GEAR_IN_CURRENT_CUTOFF;
 	}
 
-	public boolean gearIsInHold() {
+	public boolean gearIsHeld() {
 		return getMotorCurrent() > GEAR_IN_HOLD_CURRENT_CUTOFF;
 	}
 }

@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1732.robot.commands.ballsystem.flywheel;
+package org.usfirst.frc.team1732.robot.commands.ballsystem.shooting;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 

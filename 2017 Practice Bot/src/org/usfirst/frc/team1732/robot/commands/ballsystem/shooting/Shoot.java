@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1732.robot.commands.ballsystem.flywheel;
+package org.usfirst.frc.team1732.robot.commands.ballsystem.shooting;
 
 import org.usfirst.frc.team1732.robot.commands.ballsystem.ballintake.motor.BallIntakeSetIn;
 import org.usfirst.frc.team1732.robot.commands.ballsystem.ballintake.position.BallIntakeSetDown;
