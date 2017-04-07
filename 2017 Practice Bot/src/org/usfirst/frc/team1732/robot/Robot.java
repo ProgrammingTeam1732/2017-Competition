@@ -136,11 +136,12 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void robotPeriodic() {
 		dashboard.run();
-		// /System.out.println(OI.isArmRunning);
 	}
 
 	@Override
-	public void disabledInit() {}
+	public void disabledInit() {
+		setRobotToDefaultStates();
+	}
 
 	@Override
 	public void disabledPeriodic() {
@@ -161,11 +162,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopInit() {
 		Scheduler.getInstance().removeAll(); // Cancels commands
-		Robot.driveTrain.clearEncoderIntgral();
-		Robot.driveTrain.clearGyroIntgral();
-		Robot.feeder.setStop(); // stop feeder
-		Robot.gearIntake.setUp(); // make sure gearIntake is up after shuffling
-		Robot.flywheel.disableAutoControl(); // turn off flywheel
+		setRobotToDefaultStates();
 	}
 
 	@Override
@@ -364,5 +361,29 @@ public class Robot extends IterativeRobot {
 		});
 		visionThread.setDaemon(true);
 		visionThread.start();
+	}
+
+	/**
+	 * Sets the robot to its default states Default states <br>
+	 * -solenoid default positions (what position they are when in disabled
+	 * mode) <br>
+	 * -motors turned off
+	 */
+	private void setRobotToDefaultStates() {
+		driveTrain.clearEncoderIntgral();
+		driveTrain.clearGyroIntgral();
+		// moters
+		feeder.setStop(); // stop feeder
+		flywheel.disableAutoControl(); // turn off flywheel
+		driveTrain.driveRaw(0, 0);
+		climber.setStop();
+		gearIntake.setStop();
+		ballIntake.setSpeedStop();
+		// pnuematics
+		arm.setIn();
+		gearIntake.setUp();
+		ballIntake.setPositionDown();
+		driveTrain.shiftHighGear();
+		wings.setIn();
 	}
 }
