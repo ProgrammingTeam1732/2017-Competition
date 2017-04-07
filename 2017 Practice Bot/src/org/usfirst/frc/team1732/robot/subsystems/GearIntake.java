@@ -15,24 +15,26 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class GearIntake extends Subsystem implements SmartDashboardGroup {
 
-	private final CANTalon motor = new CANTalon(RobotMap.GEAR_INTAKE_MOTOR_DEVICE_NUMBER);
-	public static final double OUT_SPEED = .6; // 0.5
-	public static final double STOP_SPEED = 0;
-	public static final double IN_SPEED = -0.7; // -0.6
-	private final Solenoid gearPosition = new Solenoid(RobotMap.PCM_CAN_ID, RobotMap.GEAR_POSITION_SOLENOID_NUMBER);
-	private final Solenoid gearStopper = new Solenoid(RobotMap.PCM_CAN_ID, RobotMap.GEAR_STOPPER_SOLENOID_NUMBER);
+	private final CANTalon		motor			= new CANTalon(RobotMap.GEAR_INTAKE_MOTOR_DEVICE_NUMBER);
+	public static final double	OUT_SPEED		= .6;														// 0.5
+	public static final double	STOP_SPEED		= 0;
+	public static final double	IN_SPEED		= -0.7;														// -0.6
+	public static final double	HOLD_SPEED		= -0.4;														// -0.6
+	private final Solenoid		gearPosition	= new Solenoid(	RobotMap.PCM_CAN_ID,
+																RobotMap.GEAR_POSITION_SOLENOID_NUMBER);
+	private final Solenoid		gearStopper		= new Solenoid(	RobotMap.PCM_CAN_ID,
+																RobotMap.GEAR_STOPPER_SOLENOID_NUMBER);
 	// posistion
-	public static final boolean UP = false;
-	public static final boolean DOWN = !UP;
+	public static final boolean	UP		= false;
+	public static final boolean	DOWN	= !UP;
 	// stopper
-	public static final boolean IN = false; // false
-	public static final boolean OUT = !IN;
+	public static final boolean	IN	= false;	// false
+	public static final boolean	OUT	= !IN;
 
 	public static final String NAME = "Gear Intake";
 
 	@Override
-	public void initDefaultCommand() {
-	}
+	public void initDefaultCommand() {}
 
 	public void setDown() {
 		gearPosition.set(DOWN);
@@ -52,6 +54,10 @@ public class GearIntake extends Subsystem implements SmartDashboardGroup {
 
 	public void setIn() {
 		motor.set(IN_SPEED);
+	}
+
+	public void setHold() {
+		motor.set(HOLD_SPEED);
 	}
 
 	public boolean isDown() {
@@ -93,9 +99,14 @@ public class GearIntake extends Subsystem implements SmartDashboardGroup {
 		return motor.getOutputCurrent();
 	}
 
-	public static final double GEAR_IN_CURRENT_CUTOFF = 14; // 14
+	public static final double	GEAR_IN_CURRENT_CUTOFF		= 12;	// 14
+	public static final double	GEAR_IN_HOLD_CURRENT_CUTOFF	= 10;	// 14
 
 	public boolean gearIsIn() {
 		return getMotorCurrent() > GEAR_IN_CURRENT_CUTOFF;
+	}
+
+	public boolean gearIsInHold() {
+		return getMotorCurrent() > GEAR_IN_HOLD_CURRENT_CUTOFF;
 	}
 }

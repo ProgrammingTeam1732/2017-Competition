@@ -23,7 +23,7 @@ import org.usfirst.frc.team1732.robot.commands.gearIntake.base.stopper.GearIntak
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.GearIntakeSetDownIn;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.GearIntakeSetDownOut;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.GearIntakeSetUpStop;
-import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.GearIntakeSetUpTimedIn;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.TeleopGearIntakeSetUpTimeIn;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -37,55 +37,56 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class OI {
 
-	private Joystick buttons = new Joystick(RobotMap.BUTTONS_USB);
-	private Joystick left = new Joystick(RobotMap.LEFT_JOYSTICK_USB);
-	private Joystick right = new Joystick(RobotMap.RIGHT_JOYSTICK_USB);
+	private Joystick	buttons	= new Joystick(RobotMap.BUTTONS_USB);
+	private Joystick	left	= new Joystick(RobotMap.LEFT_JOYSTICK_USB);
+	private Joystick	right	= new Joystick(RobotMap.RIGHT_JOYSTICK_USB);
 
-	private final Button climb = new JoystickButton(buttons, 1);
-	private final Trigger climbNormal = newNormalButton(climb);
-	private final Trigger climbOverride = newOverrideButton(climb);
+	private final Button	climb			= new JoystickButton(buttons, 1);
+	private final Trigger	climbNormal		= newNormalButton(climb);
+	private final Trigger	climbOverride	= newOverrideButton(climb);
 
-	private final Button arm = new JoystickButton(buttons, 2);
-	private final Trigger armNormal = newNormalButton(arm);
-	private final Trigger armOverride = newOverrideButton(arm);
+	private final Button	arm			= new JoystickButton(buttons, 2);
+	private final Trigger	armNormal	= newNormalButton(arm);
+	private final Trigger	armOverride	= newOverrideButton(arm);
 	// public static boolean isArmRunning = false;
-	private Command ArmSetOutGroupLocal = new ArmSetOutGroup();
-	private final Trigger armStopperOut = new Trigger() {
+	private Command			ArmSetOutGroupLocal	= new ArmSetOutGroup();
+	private final Trigger	armStopperOut		= new Trigger() {
 
-		@Override
-		public boolean get() {
-			return Robot.gearIntake.isStopperOut() && armNormal.get();// &&
-																		// !isArmRunning;
-		}
+													@Override
+													public boolean get() {
+														return Robot.gearIntake.isStopperOut() && armNormal.get();		// &&
+														// !isArmRunning;
+													}
 
-	};
-	private final Trigger armStopperIn = new Trigger() {
+												};
+	private final Trigger	armStopperIn		= new Trigger() {
 
-		@Override
-		public boolean get() {
-			return Robot.gearIntake.isStopperIn() && armNormal.get() && !ArmSetOutGroupLocal.isRunning();// &&
-			// !isArmRunning;
-		}
+													@Override
+													public boolean get() {
+														return Robot.gearIntake.isStopperIn() && armNormal.get()
+																&& !ArmSetOutGroupLocal.isRunning();					// &&
+														// !isArmRunning;
+													}
 
-	};
+												};
 
 	private final Button override = new JoystickButton(buttons, 5);
 
-	private final Button feederIn = new JoystickButton(buttons, 7);
-	private final Trigger feederInNormal = newNormalButton(feederIn);
-	private final Trigger feederInOverride = newOverrideButton(feederIn);
+	private final Button	feederIn			= new JoystickButton(buttons, 7);
+	private final Trigger	feederInNormal		= newNormalButton(feederIn);
+	private final Trigger	feederInOverride	= newOverrideButton(feederIn);
 
-	private final Button feederOut = new JoystickButton(buttons, 6);
-	private final Trigger feederOutNormal = newNormalButton(feederOut);
-	private final Trigger feederOutOverride = newOverrideButton(feederOut);
+	private final Button	feederOut			= new JoystickButton(buttons, 6);
+	private final Trigger	feederOutNormal		= newNormalButton(feederOut);
+	private final Trigger	feederOutOverride	= newOverrideButton(feederOut);
 
-	private final Button ballIntakeOutButton = new JoystickButton(buttons, 8);
-	private final Trigger ballIntakeOutButtonNormal = newNormalButton(ballIntakeOutButton);
-	private final Trigger ballIntakeOutButtonOverride = newOverrideButton(ballIntakeOutButton);
+	private final Button	ballIntakeOutButton			= new JoystickButton(buttons, 8);
+	private final Trigger	ballIntakeOutButtonNormal	= newNormalButton(ballIntakeOutButton);
+	private final Trigger	ballIntakeOutButtonOverride	= newOverrideButton(ballIntakeOutButton);
 
-	private final Button ballIntakeInButton = new JoystickButton(buttons, 9);
-	private final Trigger ballIntakeInButtonNormal = newNormalButton(ballIntakeInButton);
-	private final Trigger ballIntakeInButtonOverride = newOverrideButton(ballIntakeInButton);
+	private final Button	ballIntakeInButton			= new JoystickButton(buttons, 9);
+	private final Trigger	ballIntakeInButtonNormal	= newNormalButton(ballIntakeInButton);
+	private final Trigger	ballIntakeInButtonOverride	= newOverrideButton(ballIntakeInButton);
 
 	private final Button ballIntakeController = new JoystickButton(right, 3);
 
@@ -112,28 +113,28 @@ public class OI {
 		}
 	};
 
-	private final Trigger flywheelOnNormal = newNormalButton(flywheelOn);
-	private final Trigger flywheelOnOverride = newOverrideButton(flywheelOn);
+	private final Trigger	flywheelOnNormal	= newNormalButton(flywheelOn);
+	private final Trigger	flywheelOnOverride	= newOverrideButton(flywheelOn);
 
-	private final Button shoot = new JoystickButton(buttons, 11);
-	private final Trigger shootNormal = newNormalButton(shoot);
-	private final Trigger shootOverride = newOverrideButton(shoot);
+	private final Button	shoot			= new JoystickButton(buttons, 11);
+	private final Trigger	shootNormal		= newNormalButton(shoot);
+	private final Trigger	shootOverride	= newOverrideButton(shoot);
 
 	private final Button shifterLeft = new JoystickButton(left, 3);
 
-	private final Button gearStopperOverrideIn = new JoystickButton(left, 10);
-	private final Button gearStopperOverrideOut = new JoystickButton(left, 11);
+	private final Button	gearStopperOverrideIn	= new JoystickButton(left, 10);
+	private final Button	gearStopperOverrideOut	= new JoystickButton(left, 11);
 
-	private final Button joystickGearPickup = new JoystickButton(left, 1);
-	private final Button joystickGearScore = new JoystickButton(right, 1);
+	private final Button	joystickGearPickup	= new JoystickButton(left, 1);
+	private final Button	joystickGearScore	= new JoystickButton(right, 1);
 
-	private final Button buttonGearPickup = new JoystickButton(buttons, 3);
-	private final Trigger buttonGearPickupNormal = newNormalButton(buttonGearPickup);
-	private final Trigger buttonGearPickupOverride = newOverrideButton(buttonGearPickup);
+	private final Button	buttonGearPickup			= new JoystickButton(buttons, 3);
+	private final Trigger	buttonGearPickupNormal		= newNormalButton(buttonGearPickup);
+	private final Trigger	buttonGearPickupOverride	= newOverrideButton(buttonGearPickup);
 
-	private final Button buttonGearScore = new JoystickButton(buttons, 4);
-	private final Trigger buttonGearScoreNormal = newNormalButton(buttonGearScore);
-	private final Trigger buttonGearScoreOverride = newOverrideButton(buttonGearScore);
+	private final Button	buttonGearScore			= new JoystickButton(buttons, 4);
+	private final Trigger	buttonGearScoreNormal	= newNormalButton(buttonGearScore);
+	private final Trigger	buttonGearScoreOverride	= newOverrideButton(buttonGearScore);
 
 	private final Trigger gearScore = new Trigger() {
 		@Override
@@ -151,7 +152,7 @@ public class OI {
 
 	public OI() {
 		gearPickup.whenActive(new GearIntakeSetDownIn());
-		gearPickup.whenInactive(new GearIntakeSetUpTimedIn(1));
+		gearPickup.whenInactive(new TeleopGearIntakeSetUpTimeIn(1));
 		gearScore.whenActive(new GearIntakeSetDownOut());
 		gearScore.whenInactive(new GearIntakeSetUpStop());
 
