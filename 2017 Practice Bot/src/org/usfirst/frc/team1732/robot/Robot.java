@@ -347,7 +347,7 @@ public class Robot extends IterativeRobot {
 					continue;
 				}
 				// Put a border on the image
-				if (gearIntake.gearIsHeld() || gearIntake.gearIsIn()) {
+				if (gearIntake.gearIsIn()) {//gearIntake.gearIsHeld() ||) {
 					// upper edge
 					Imgproc.rectangle(mat, new Point(0, 0), new Point(width, thickness), color, thickness);
 					// left edge
