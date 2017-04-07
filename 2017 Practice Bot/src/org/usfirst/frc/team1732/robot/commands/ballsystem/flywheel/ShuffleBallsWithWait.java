@@ -1,7 +1,7 @@
-package org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups;
+package org.usfirst.frc.team1732.robot.commands.ballsystem.flywheel;
 
-import org.usfirst.frc.team1732.robot.commands.gearIntake.base.motor.GearIntakeInTime;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.base.motor.GearIntakeSetIn;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.base.motor.GearIntakeSetStop;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.base.position.GearIntakeSetDownNoCheck;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.base.position.GearIntakeSetUpNoCheck;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.base.stopper.GearIntakeSetStopperIn;
@@ -25,15 +25,23 @@ public class ShuffleBallsWithWait extends CommandGroup {
 		addSequential(new Wait(0.1));
 		addSequential(new GearIntakeSetUpNoCheck());
 
-		double IN_TIME = 1;
-		double WAIT = 0;
+		double WAIT = 0; // amount of time to wait before running gear intake in
+		double IN_TIME = 1; // amount of time to run gear intake in
+		// sum of these times is time between shuffles
 
 		class ShuffleBallUnit extends CommandGroup {
 
 			public ShuffleBallUnit() {
-				addSequential(new GearIntakeInTime(IN_TIME));
 				addSequential(new Wait(WAIT));
-				addSequential(new ShuffleBalls());
+				addSequential(new GearIntakeSetIn());
+				addSequential(new Wait(IN_TIME));
+
+				// shuffle balls
+				addSequential(new GearIntakeSetDownNoCheck());
+				addSequential(new Wait(0.3));
+				addSequential(new GearIntakeSetUpNoCheck());
+				if (WAIT != 0)
+					addSequential(new GearIntakeSetStop());
 			}
 		}
 

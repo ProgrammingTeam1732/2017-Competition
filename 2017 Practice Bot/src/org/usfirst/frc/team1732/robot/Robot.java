@@ -12,6 +12,7 @@ import org.usfirst.frc.team1732.robot.commands.ballsystem.feeder.FeederSetOut;
 import org.usfirst.frc.team1732.robot.commands.ballsystem.feeder.FeederSetStop;
 import org.usfirst.frc.team1732.robot.commands.ballsystem.flywheel.DisableFlywheel;
 import org.usfirst.frc.team1732.robot.commands.ballsystem.flywheel.EnableFlywheel;
+import org.usfirst.frc.team1732.robot.commands.ballsystem.flywheel.ShuffleBallsWithWait;
 import org.usfirst.frc.team1732.robot.commands.ballsystem.flywheel.manual.FlywheelForward;
 import org.usfirst.frc.team1732.robot.commands.ballsystem.flywheel.manual.FlywheelReverse;
 import org.usfirst.frc.team1732.robot.commands.ballsystem.flywheel.manual.FlywheelStop;
@@ -46,7 +47,6 @@ import org.usfirst.frc.team1732.robot.commands.gearIntake.base.position.GearInta
 import org.usfirst.frc.team1732.robot.commands.gearIntake.base.position.GearIntakeSetUp;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.base.stopper.GearIntakeSetStopperIn;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.base.stopper.GearIntakeSetStopperOut;
-import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.ShuffleBallsWithWait;
 import org.usfirst.frc.team1732.robot.commands.vision.TestVisionMain;
 import org.usfirst.frc.team1732.robot.smartdashboard.MySmartDashboard;
 import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardItem;
