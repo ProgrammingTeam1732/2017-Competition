@@ -62,6 +62,7 @@ import org.usfirst.frc.team1732.robot.subsystems.Wings;
 import org.usfirst.frc.team1732.robot.triggers.Triggers;
 import org.usfirst.frc.team1732.robot.vision.VisionMain;
 
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -115,7 +116,7 @@ public class Robot extends IterativeRobot {
 			addSubsystemsToSmartDashboard();
 			addAutonomousToSmartDashboard();
 			addTestingToSmartDashbaord();
-			// addCamera();
+			addCamera();
 			dashboard.addItem(SmartDashboardItem.newNumberSender("robotPeriodic() frequency ms", this::getFrequency));
 
 			// initially sends items that have been added to driverstation
@@ -305,28 +306,29 @@ public class Robot extends IterativeRobot {
 
 	@SuppressWarnings("unused")
 	private void addCamera() {
-		// Thread visionThread = new Thread(() -> {
-		//
-		// // Setup a CvSource. This will send images back to the Dashboard
-		// CvSource outputStream = CameraServer.getInstance().putVideo("Video",
-		// 320, 240);
-		//
-		// // Mats are very memory expensive. Lets reuse this Mat.
-		// Mat mat = new Mat();
-		//
-		// // This cannot be 'true'. The program will never exit if it is. This
-		// // lets the robot stop this thread when restarting robot code or
-		// // deploying.
-		// while (!Thread.interrupted()) {
-		// // Tell the CvSink to grab a frame from the camera and put it
-		// // in the source mat. If there is an error notify the output.
-		//
-		// mat = new Mat(240, 320, org.opencv.core.CvType.CV_8UC(3));
-		// Imgproc.rectangle(img, pt1, pt2, color);
-		// outputStream.putFrame(mat);
-		// }
-		// });
-		// visionThread.setDaemon(true);
-		// visionThread.start();
+		CameraServer.getInstance().startAutomaticCapture(0);
+		//		 Thread visionThread = new Thread(() -> {
+		//		
+		//		 // Setup a CvSource. This will send images back to the Dashboard
+		//		 CvSource outputStream = CameraServer.getInstance().putVideo("Video",
+		//		 320, 240);
+		//		
+		//		 // Mats are very memory expensive. Lets reuse this Mat.
+		//		 Mat mat = new Mat();
+		//		
+		//		 // This cannot be 'true'. The program will never exit if it is. This
+		//		 // lets the robot stop this thread when restarting robot code or
+		//		 // deploying.
+		//		 while (!Thread.interrupted()) {
+		//		 // Tell the CvSink to grab a frame from the camera and put it
+		//		 // in the source mat. If there is an error notify the output.
+		//		
+		//		 mat = new Mat(240, 320, org.opencv.core.CvType.CV_8UC(3));
+		//		 Imgproc.rectangle(img, pt1, pt2, color);
+		//		 outputStream.putFrame(mat);
+		//		 }
+		//		 });
+		//		 visionThread.setDaemon(true);
+		//		 visionThread.start();
 	}
 }
