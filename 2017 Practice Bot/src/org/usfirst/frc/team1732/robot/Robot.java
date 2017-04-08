@@ -314,53 +314,65 @@ public class Robot extends IterativeRobot {
 		int height = 240;
 		int thickness = 10;
 		Scalar color = new Scalar(0, 255, 0);
-		Thread visionThread = new Thread(() -> {
+		Runnable visionRun = new Runnable() {
+			@Override
+			public void run() {
+				// Get the UsbCamera from CameraServer
+				UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+				// Set the resolution
+				camera.setResolution(width, height);
 
-			// Get the UsbCamera from CameraServer
-			UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
-			// Set the resolution
-			camera.setResolution(width, height);
+				// Get a CvSink. This will capture Mats from the camera
+				CvSink cvSink = CameraServer.getInstance().getVideo(camera);
+				// Setup a CvSource. This will send images back to the Dashboard
+				CvSource outputStream = CameraServer.getInstance().putVideo("Video", width, height);
 
-			// Get a CvSink. This will capture Mats from the camera
-			CvSink cvSink = CameraServer.getInstance().getVideo(camera);
-			// Setup a CvSource. This will send images back to the Dashboard
-			CvSource outputStream = CameraServer.getInstance().putVideo("Video", width, height);
+				// Mats are very memory expensive. Lets reuse this Mat.
+				// Mats are very memory expensive. Lets reuse this Mat.
+				Mat mat = new Mat();
 
-			// Mats are very memory expensive. Lets reuse this Mat.
-			// Mats are very memory expensive. Lets reuse this Mat.
-			Mat mat = new Mat();
-
-			// This cannot be 'true'. The program will never exit if it is. This
-			// lets the robot stop this thread when restarting robot code or
-			// deploying.
-			while (!Thread.interrupted()) {
-				// Tell the CvSink to grab a frame from the camera and put it
-				// in the source mat.  If there is an error notify the output.
-				if (cvSink.grabFrame(mat) == 0) {
-					// Send the output the error.
-					outputStream.notifyError(cvSink.getError());
-					System.out.println("Error getting frame");
-					// skip the rest of the current iteration
-					continue;
+				// This cannot be 'true'. The program will never exit if it is. This
+				// lets the robot stop this thread when restarting robot code or
+				// deploying.
+				while (!Thread.interrupted()) {
+					// Tell the CvSink to grab a frame from the camera and put it
+					// in the source mat.  If there is an error notify the output.
+					if (cvSink.grabFrame(mat) == 0) {
+						// Send the output the error.
+						outputStream.notifyError(cvSink.getError());
+						System.out.println("Error getting frame");
+						// skip the rest of the current iteration
+						continue;
+					}
+					// Put a border on the image
+					if (gearIntake.gearIsIn()) {//gearIntake.gearIsHeld() ||) {
+						// upper edge
+						Imgproc.rectangle(mat, new Point(0, 0), new Point(width, thickness), color, thickness);
+						// left edge
+						Imgproc.rectangle(mat, new Point(0, 0), new Point(thickness, height), color, thickness);
+						// right edge
+						Imgproc.rectangle(	mat, new Point(width - thickness, 0), new Point(width, height), color,
+											thickness);
+						// bottom edge
+						Imgproc.rectangle(	mat, new Point(0, height - thickness), new Point(width, height), color,
+											thickness);
+					}
+					// add lines for karl target
+					Scalar lineColor = new Scalar(0, 0, 0);
+					Imgproc.line(	mat, new Point((int) (width * 0.34651), 0),
+									new Point((int) (width * 0.031217), height), lineColor, 2);
+					Imgproc.line(	mat, new Point((int) (width * 0.537981), 0),
+									new Point((int) (width * 0.816857), height), lineColor, 2);
+					// Give the output stream a new image to display
+					outputStream.putFrame(mat);
 				}
-				// Put a border on the image
-				if (gearIntake.gearIsIn()) {//gearIntake.gearIsHeld() ||) {
-					// upper edge
-					Imgproc.rectangle(mat, new Point(0, 0), new Point(width, thickness), color, thickness);
-					// left edge
-					Imgproc.rectangle(mat, new Point(0, 0), new Point(thickness, height), color, thickness);
-					// right edge
-					Imgproc.rectangle(mat, new Point(width - thickness, 0), new Point(width, height), color, thickness);
-					// bottom edge
-					Imgproc.rectangle(	mat, new Point(0, height - thickness), new Point(width, height), color,
-										thickness);
-				}
-				// Give the output stream a new image to display
-				outputStream.putFrame(mat);
 			}
-		});
+
+		};
+		Thread visionThread = new Thread(visionRun);
 		visionThread.setDaemon(true);
 		visionThread.start();
+
 	}
 
 	/**

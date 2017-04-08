@@ -20,10 +20,10 @@ public class Flywheel extends Subsystem implements SmartDashboardGroup {
 	// public static final double REVERSE_SPEED = 1;
 
 	// public static final int COUNTS_PER_REVOLUTION = 1;
-	public static final int	COUNTS_PER_SECOND_TARGET	= 19500;
+	public static final int	COUNTS_PER_SECOND_TARGET	= 19100;
 	public static final int	COUNTS_PER_SECOND_ERROR		= 300;	// COUNTS_PER_SECOND_TARGET
-															// /
-															// 50;
+	// /
+	// 50;
 	private double setpoint = COUNTS_PER_SECOND_TARGET;
 
 	public static final double	MAX_OUTPUT_VOLTAGE	= 12;
