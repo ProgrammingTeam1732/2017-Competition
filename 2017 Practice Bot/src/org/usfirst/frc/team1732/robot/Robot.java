@@ -6,6 +6,7 @@ import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team1732.robot.autocommands.AutoChooser;
+import org.usfirst.frc.team1732.robot.commands.SetRobotToStartState;
 import org.usfirst.frc.team1732.robot.commands.ballsystem.ballintake.motor.BallIntakeSetIn;
 import org.usfirst.frc.team1732.robot.commands.ballsystem.ballintake.motor.BallIntakeSetOut;
 import org.usfirst.frc.team1732.robot.commands.ballsystem.ballintake.motor.BallIntakeSetStop;
@@ -86,25 +87,25 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends IterativeRobot {
 
-	public static OI			oi;
-	public static DriveTrain	driveTrain;
-	public static BallIntake	ballIntake;
-	public static Climber		climber;
-	public static Feeder		feeder;
-	public static Flywheel		flywheel;
-	public static GearIntake	gearIntake;
-	public static Arm			arm;
-	public static Wings			wings;
-	public static PixyCamera	pixyCamera;
-	public static Triggers		triggers;
+	public static OI oi;
+	public static DriveTrain driveTrain;
+	public static BallIntake ballIntake;
+	public static Climber climber;
+	public static Feeder feeder;
+	public static Flywheel flywheel;
+	public static GearIntake gearIntake;
+	public static Arm arm;
+	public static Wings wings;
+	public static PixyCamera pixyCamera;
+	public static Triggers triggers;
 
-	public static VisionMain		visionMain;
-	private static MySmartDashboard	dashboard;
+	public static VisionMain visionMain;
+	private static MySmartDashboard dashboard;
 
-	private static AutoChooser					autoChooser;
-	public static SmartDashboardItem<Boolean>	isRedAlliance;
-	public static SmartDashboardItem<Double>	autoWaitTime;
-	public static SmartDashboardItem<Double>	startOnWallAndShootDistance;
+	private static AutoChooser autoChooser;
+	public static SmartDashboardItem<Boolean> isRedAlliance;
+	public static SmartDashboardItem<Double> autoWaitTime;
+	public static SmartDashboardItem<Double> startOnWallAndShootDistance;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -162,7 +163,8 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopInit() {
 		Scheduler.getInstance().removeAll(); // Cancels commands
-		setRobotToDefaultStates();
+		// setRobotToDefaultStates();
+		new SetRobotToStartState().start();
 	}
 
 	@Override
@@ -171,7 +173,8 @@ public class Robot extends IterativeRobot {
 	}
 
 	@Override
-	public void testInit() {}
+	public void testInit() {
+	}
 
 	@Override
 	public void testPeriodic() {
@@ -184,9 +187,8 @@ public class Robot extends IterativeRobot {
 		autoWaitTime = dashboard.addItem(SmartDashboardItem.newDoubleReciever("Auto wait time", 0.0));
 		startOnWallAndShootDistance = dashboard
 				.addItem(SmartDashboardItem.newDoubleReciever("Start wall and shoot wait distance", 100.0));
-		isRedAlliance = dashboard.addItem(SmartDashboardItem
-				.newBooleanSender(	"Is Red Alliance?",
-									() -> DriverStation.getInstance().getAlliance().equals(Alliance.Red)));
+		isRedAlliance = dashboard.addItem(SmartDashboardItem.newBooleanSender("Is Red Alliance?",
+				() -> DriverStation.getInstance().getAlliance().equals(Alliance.Red)));
 	}
 
 	private void initializeSubsystems() {
@@ -331,12 +333,15 @@ public class Robot extends IterativeRobot {
 				// Mats are very memory expensive. Lets reuse this Mat.
 				Mat mat = new Mat();
 
-				// This cannot be 'true'. The program will never exit if it is. This
+				// This cannot be 'true'. The program will never exit if it is.
+				// This
 				// lets the robot stop this thread when restarting robot code or
 				// deploying.
 				while (!Thread.interrupted()) {
-					// Tell the CvSink to grab a frame from the camera and put it
-					// in the source mat.  If there is an error notify the output.
+					// Tell the CvSink to grab a frame from the camera and put
+					// it
+					// in the source mat. If there is an error notify the
+					// output.
 					if (cvSink.grabFrame(mat) == 0) {
 						// Send the output the error.
 						outputStream.notifyError(cvSink.getError());
@@ -345,24 +350,24 @@ public class Robot extends IterativeRobot {
 						continue;
 					}
 					// Put a border on the image
-					if (gearIntake.gearIsIn()) {//gearIntake.gearIsHeld() ||) {
+					if (gearIntake.gearIsIn()) {// gearIntake.gearIsHeld() ||) {
 						// upper edge
 						Imgproc.rectangle(mat, new Point(0, 0), new Point(width, thickness), color, thickness);
 						// left edge
 						Imgproc.rectangle(mat, new Point(0, 0), new Point(thickness, height), color, thickness);
 						// right edge
-						Imgproc.rectangle(	mat, new Point(width - thickness, 0), new Point(width, height), color,
-											thickness);
+						Imgproc.rectangle(mat, new Point(width - thickness, 0), new Point(width, height), color,
+								thickness);
 						// bottom edge
-						Imgproc.rectangle(	mat, new Point(0, height - thickness), new Point(width, height), color,
-											thickness);
+						Imgproc.rectangle(mat, new Point(0, height - thickness), new Point(width, height), color,
+								thickness);
 					}
 					// add lines for karl target
 					Scalar lineColor = new Scalar(0, 0, 0);
-					Imgproc.line(	mat, new Point((int) (width * 0.34651), 0),
-									new Point((int) (width * 0.031217), height), lineColor, 2);
-					Imgproc.line(	mat, new Point((int) (width * 0.537981), 0),
-									new Point((int) (width * 0.816857), height), lineColor, 2);
+					Imgproc.line(mat, new Point((int) (width * 0.34651), 0),
+							new Point((int) (width * 0.031217), height), lineColor, 2);
+					Imgproc.line(mat, new Point((int) (width * 0.537981), 0),
+							new Point((int) (width * 0.816857), height), lineColor, 2);
 					// Give the output stream a new image to display
 					outputStream.putFrame(mat);
 				}
