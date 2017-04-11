@@ -5,6 +5,7 @@ import java.util.function.Supplier;
 import org.usfirst.frc.team1732.robot.autocommands.grabballsthenshoot.keylinehoppershoot.KeylineHopperShoot;
 import org.usfirst.frc.team1732.robot.autocommands.grabballsthenshoot.keylinehoppershoot.KeylineHopperShootWings;
 import org.usfirst.frc.team1732.robot.autocommands.grabballsthenshoot.straighthoppershoot.StraightHopperShoot;
+import org.usfirst.frc.team1732.robot.autocommands.scoregear.scoremiddlegear.ScoreGearWithTurningVisionLeft;
 import org.usfirst.frc.team1732.robot.autocommands.scoregear.scoremiddlegear.ScoreMiddleGearEncoders;
 import org.usfirst.frc.team1732.robot.autocommands.scoregear.scoremiddlegear.ScoreMiddleGearVision;
 import org.usfirst.frc.team1732.robot.autocommands.scoregear.scoresidegear.ScoreSideGearLeftEncoders;
@@ -59,11 +60,11 @@ public class AutoChooser implements SmartDashboardGroup {
 		GrabBallsKeylineThenShoot(KeylineHopperShoot::new),
 		GrabBallsKeylineThenShootWings(KeylineHopperShootWings::new),
 
-		//		TwoGearAutoLeft(TwoGearAutoLeft::new),
-		//		TwoGearAutoRight(TwoGearAutoRight::new),
-		//		SideTwoGearAutoLeft(SideTwoGearAutoLeft::new),
-		//		SideTwoGearAutoRight(SideTwoGearAutoRight::new),
-		//		MiddleSideTwoGear(TwoGearMiddleThenSideAuto::new),
+		// TwoGearAutoLeft(TwoGearAutoLeft::new),
+		// TwoGearAutoRight(TwoGearAutoRight::new),
+		// SideTwoGearAutoLeft(SideTwoGearAutoLeft::new),
+		// SideTwoGearAutoRight(SideTwoGearAutoRight::new),
+		// MiddleSideTwoGear(TwoGearMiddleThenSideAuto::new),
 
 		StartOnWallThenShoot(StartOnWallAndShoot::new),
 		StartBesideBoilerThenShoot(StartBesideBoilerAndShoot::new),
@@ -78,8 +79,9 @@ public class AutoChooser implements SmartDashboardGroup {
 		DriveTimeBackwards(() -> new DriveTime(2, -0.5)),
 		ResetEncoders(ClearTotalDistance::new),
 		TestShooterShort(TestShootShort::new),
-		TestShooterLong(TestShootLong::new);
+		TestShooterLong(TestShootLong::new),
 
+		TestVisionTurning(ScoreGearWithTurningVisionLeft::new);
 		// DriveEncodersFar(new DriveEncoders(97.5)),
 		// DriveEncodersShort(new DriveEncoders(40)),
 

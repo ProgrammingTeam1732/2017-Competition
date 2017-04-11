@@ -34,8 +34,8 @@ public class Arduino {
 		}
 	}
 
-	private long	startTime	= System.currentTimeMillis();
-	private long	maxWait		= 5000;
+	private long startTime = System.currentTimeMillis();
+	private long maxWait = 5000;
 
 	/**
 	 * @return the String read from the arduino, could be an empty String
@@ -48,6 +48,7 @@ public class Arduino {
 				startTime = System.currentTimeMillis(); // gets the start time
 				while (System.currentTimeMillis() - startTime < maxWait && !s.contains("\n")) {
 					s += this.serial.readString();
+					// System.out.println(s);
 				} // until a new line is found (or the loop runs for 5 seconds),
 					// add
 					// the read string to end of output
