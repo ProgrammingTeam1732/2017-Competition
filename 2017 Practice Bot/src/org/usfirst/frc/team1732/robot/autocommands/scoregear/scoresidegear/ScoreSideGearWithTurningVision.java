@@ -1,6 +1,5 @@
-package org.usfirst.frc.team1732.robot.autocommands.scoregear.scoremiddlegear;
+package org.usfirst.frc.team1732.robot.autocommands.scoregear.scoresidegear;
 
-import org.usfirst.frc.team1732.robot.autocommands.scoregear.scoresidegear.ScoreSideGearPart1Left;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.EncoderPlaceGear;
 import org.usfirst.frc.team1732.robot.commands.helpercommands.Wait;
 import org.usfirst.frc.team1732.robot.commands.vision.lights.TurnLightsOn;
@@ -11,10 +10,14 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 /**
  *
  */
-public class ScoreGearWithTurningVisionLeft extends CommandGroup {
+public class ScoreSideGearWithTurningVision extends CommandGroup {
 
-	public ScoreGearWithTurningVisionLeft() {
-		addSequential(new ScoreSideGearPart1Left());
+	public ScoreSideGearWithTurningVision(boolean isLeft) {
+		if (isLeft) {
+			addSequential(new ScoreSideGearPart1Left());
+		} else {
+			addSequential(new ScoreSideGearPart1Right());
+		}
 		addSequential(new TurnLightsOn());
 		addSequential(new Wait(.5));
 		addSequential(new TurnWithVision(0));
