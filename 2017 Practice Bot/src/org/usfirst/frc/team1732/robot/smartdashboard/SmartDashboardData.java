@@ -15,6 +15,7 @@ public class SmartDashboardData<T extends Sendable> {
 		SmartDashboard.putData(key, value);
 	}
 
+	@SuppressWarnings("unchecked")
 	public T getValue() {
 		return (T) SmartDashboard.getData(key);
 	}

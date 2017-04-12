@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class StartBesideBoilerAndShoot extends CommandGroup {
 
 	public StartBesideBoilerAndShoot() {
-		boolean isRed = Robot.isRedAlliance.getValue();
+		//		boolean isRed = Robot.isRedAlliance.getValue();
 
 		addSequential(new EnableFlywheel());
 
@@ -37,7 +37,7 @@ public class StartBesideBoilerAndShoot extends CommandGroup {
 		// wait for flywheel to ramp up
 		addSequential(new Wait(2));
 
-		double smartDashboardWait = Robot.autoWaitTime.getValue();
+		//		double smartDashboardWait = Robot.autoWaitTime.getValue();
 		double shootTime = 10.5;//smartDashboardWait > 3 ? smartDashboardWait - 3 : smartDashboardWait;
 
 		// shoot balls

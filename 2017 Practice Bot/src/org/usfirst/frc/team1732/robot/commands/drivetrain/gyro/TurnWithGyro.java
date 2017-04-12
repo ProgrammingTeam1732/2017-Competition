@@ -3,6 +3,7 @@ package org.usfirst.frc.team1732.robot.commands.drivetrain.gyro;
 import static org.usfirst.frc.team1732.robot.Robot.driveTrain;
 
 import org.usfirst.frc.team1732.robot.Robot;
+import org.usfirst.frc.team1732.robot.subsystems.DriveTrain;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -12,8 +13,6 @@ import edu.wpi.first.wpilibj.command.Command;
 public class TurnWithGyro extends Command {
 
 	private final double setpoint;
-
-	private final double IZONE = 10;
 
 	public TurnWithGyro(double degreesSetpoint) {
 		// Use requires() here to declare subsystem dependencies
@@ -37,8 +36,8 @@ public class TurnWithGyro extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		if (Math.abs(driveTrain.getGyroError()) < driveTrain.GYRO_IZONE) {
-			driveTrain.setGyroPIDS(driveTrain.gyroP, driveTrain.GYRO_IZONE_I, driveTrain.gyroD);
+		if (Math.abs(driveTrain.getGyroError()) < DriveTrain.GYRO_IZONE) {
+			driveTrain.setGyroPIDS(DriveTrain.gyroP, DriveTrain.GYRO_IZONE_I, DriveTrain.gyroD);
 		} else {
 			driveTrain.resetGyroPIDValues();
 		}

@@ -72,21 +72,21 @@ public class OI {
 
 	private final Button override = new JoystickButton(buttons, 5);
 
-	private final Button	feederIn			= new JoystickButton(buttons, 7);
-	private final Trigger	feederInNormal		= newNormalButton(feederIn);
-	private final Trigger	feederInOverride	= newOverrideButton(feederIn);
+	private final Button feederIn = new JoystickButton(buttons, 7);
+	//	private final Trigger	feederInNormal		= newNormalButton(feederIn);
+	//	private final Trigger	feederInOverride	= newOverrideButton(feederIn);
 
-	private final Button	feederOut			= new JoystickButton(buttons, 6);
-	private final Trigger	feederOutNormal		= newNormalButton(feederOut);
-	private final Trigger	feederOutOverride	= newOverrideButton(feederOut);
+	private final Button feederOut = new JoystickButton(buttons, 6);
+	//	private final Trigger	feederOutNormal		= newNormalButton(feederOut);
+	//	private final Trigger	feederOutOverride	= newOverrideButton(feederOut);
 
-	private final Button	ballIntakeOutButton			= new JoystickButton(buttons, 8);
-	private final Trigger	ballIntakeOutButtonNormal	= newNormalButton(ballIntakeOutButton);
-	private final Trigger	ballIntakeOutButtonOverride	= newOverrideButton(ballIntakeOutButton);
+	private final Button ballIntakeOutButton = new JoystickButton(buttons, 8);
+	//	private final Trigger	ballIntakeOutButtonNormal	= newNormalButton(ballIntakeOutButton);
+	//	private final Trigger	ballIntakeOutButtonOverride	= newOverrideButton(ballIntakeOutButton);
 
-	private final Button	ballIntakeInButton			= new JoystickButton(buttons, 9);
-	private final Trigger	ballIntakeInButtonNormal	= newNormalButton(ballIntakeInButton);
-	private final Trigger	ballIntakeInButtonOverride	= newOverrideButton(ballIntakeInButton);
+	private final Button ballIntakeInButton = new JoystickButton(buttons, 9);
+	//	private final Trigger	ballIntakeInButtonNormal	= newNormalButton(ballIntakeInButton);
+	//	private final Trigger	ballIntakeInButtonOverride	= newOverrideButton(ballIntakeInButton);
 
 	private final Button ballIntakeController = new JoystickButton(right, 3);
 
@@ -113,12 +113,12 @@ public class OI {
 		}
 	};
 
-	private final Trigger	flywheelOnNormal	= newNormalButton(flywheelOn);
-	private final Trigger	flywheelOnOverride	= newOverrideButton(flywheelOn);
+	//	private final Trigger	flywheelOnNormal	= newNormalButton(flywheelOn);
+	//	private final Trigger	flywheelOnOverride	= newOverrideButton(flywheelOn);
 
-	private final Button	shoot			= new JoystickButton(buttons, 11);
-	private final Trigger	shootNormal		= newNormalButton(shoot);
-	private final Trigger	shootOverride	= newOverrideButton(shoot);
+	private final Button shoot = new JoystickButton(buttons, 11);
+	//	private final Trigger	shootNormal		= newNormalButton(shoot);
+	//	private final Trigger	shootOverride	= newOverrideButton(shoot);
 
 	private final Button shifterLeft = new JoystickButton(left, 3);
 
@@ -128,13 +128,13 @@ public class OI {
 	private final Button	joystickGearPickup	= new JoystickButton(left, 1);
 	private final Button	joystickGearScore	= new JoystickButton(right, 1);
 
-	private final Button	buttonGearPickup			= new JoystickButton(buttons, 3);
-	private final Trigger	buttonGearPickupNormal		= newNormalButton(buttonGearPickup);
-	private final Trigger	buttonGearPickupOverride	= newOverrideButton(buttonGearPickup);
+	private final Button buttonGearPickup = new JoystickButton(buttons, 3);
+	//	private final Trigger	buttonGearPickupNormal		= newNormalButton(buttonGearPickup);
+	//	private final Trigger	buttonGearPickupOverride	= newOverrideButton(buttonGearPickup);
 
-	private final Button	buttonGearScore			= new JoystickButton(buttons, 4);
-	private final Trigger	buttonGearScoreNormal	= newNormalButton(buttonGearScore);
-	private final Trigger	buttonGearScoreOverride	= newOverrideButton(buttonGearScore);
+	private final Button buttonGearScore = new JoystickButton(buttons, 4);
+	//	private final Trigger	buttonGearScoreNormal	= newNormalButton(buttonGearScore);
+	//	private final Trigger	buttonGearScoreOverride	= newOverrideButton(buttonGearScore);
 
 	private final Trigger gearScore = new Trigger() {
 		@Override

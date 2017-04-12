@@ -6,18 +6,17 @@ import static org.usfirst.frc.team1732.robot.Robot.visionMain;
 import org.usfirst.frc.team1732.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Use this command to control turning the robot with the camera.
  */
 public class TurnWithVision extends Command {
 
-	private final double angleSetpoint;
-	private long startTime;
-	private double ditherInterval;
-	private double ditherLength;
-	private long absStartTime;
+	private final double	angleSetpoint;
+	private long			startTime;
+	private double			ditherInterval;
+	private double			ditherLength;
+	private long			absStartTime;
 
 	public TurnWithVision(double angle, double ditherInterval, double ditherLength) {
 		requires(driveTrain);
@@ -26,7 +25,6 @@ public class TurnWithVision extends Command {
 		setTimeout(10);
 		this.ditherInterval = ditherInterval;
 		this.ditherLength = ditherLength;
-		absStartTime = System.currentTimeMillis();
 	}
 
 	// Called just before this Command runs the first time
@@ -35,6 +33,7 @@ public class TurnWithVision extends Command {
 		Robot.pixyCamera.turnOnLights();
 		visionMain.setGearSetpoint(angleSetpoint);
 		startTime = System.currentTimeMillis();
+		absStartTime = System.currentTimeMillis();
 	}
 
 	private boolean foundOnce = false;
@@ -48,12 +47,9 @@ public class TurnWithVision extends Command {
 			foundOnce = true;
 			double output = visionMain.getGearPIDOutput();
 			// double output = 0;
+			// after every ditherInterval time, run motors at 0.35 speed for ditherLenthtime
 			if (System.currentTimeMillis() - startTime > ditherInterval) {
-				if (System.currentTimeMillis() - startTime
-						- ditherInterval < ditherLength/*
-														 * && Math.abs(output) <
-														 * .35
-														 */)
+				if (System.currentTimeMillis() - startTime - ditherInterval < ditherLength)// && Math.abs(output) <.35)
 					output = Math.copySign(.35, output);
 				else
 					startTime = System.currentTimeMillis();
@@ -61,7 +57,7 @@ public class TurnWithVision extends Command {
 			} else
 				output = 0;
 			// 1 - // Math.abs(angle/angleSetpoint);
-			SmartDashboard.putString("Gear Drive", driveTrain.driveRawAbsLimit(output, -output, .178, 1));
+			driveTrain.driveRawAbsoluteLimit(output, -output, .178, 1);
 		}
 	}
 
