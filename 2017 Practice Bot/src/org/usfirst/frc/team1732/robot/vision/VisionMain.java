@@ -37,7 +37,7 @@ public class VisionMain implements SmartDashboardGroup {
 	private final PIDSource gearAngleSource = getGearPIDSource();
 	private final PIDController gearPID = new PIDController(gearP, gearI, gearD, gearAngleSource,
 			VisionMain::voidMethod);
-	public static final double gearP = 0.06;
+	public static final double gearP = 0.04;
 	public static final double gearI = 0;
 	public static final double gearD = 0;
 
@@ -48,7 +48,7 @@ public class VisionMain implements SmartDashboardGroup {
 	public static final double boilerI = 0;
 	public static final double boilerD = 0;
 
-	public static final double VISION_DEADBAND_DEGREES = 1;
+	public static final double VISION_DEADBAND_DEGREES = 2;
 	public static final double MAX_OUTPUT = 0.4;
 	public static final double MIN_OUTPUT = -MAX_OUTPUT;
 
