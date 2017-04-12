@@ -33,7 +33,7 @@ public class TurnWithVision extends Command {
 		Robot.pixyCamera.turnOnLights();
 		visionMain.setGearSetpoint(angleSetpoint);
 		startTime = System.currentTimeMillis();
-		absStartTime = System.currentTimeMillis();
+		absStartTime = startTime;
 	}
 
 	private boolean foundOnce = false;
@@ -57,7 +57,7 @@ public class TurnWithVision extends Command {
 			} else
 				output = 0;
 			// 1 - // Math.abs(angle/angleSetpoint);
-			driveTrain.driveRawAbsoluteLimit(output, -output, .178, 1);
+			driveTrain.driveRawAbsoluteLimit(-output, output, .178, 1);
 		}
 	}
 

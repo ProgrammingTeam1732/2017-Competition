@@ -271,8 +271,9 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 
 	public void driveRawLimit(double left, double right, double maximumNegative, double minimumNegative,
 			double maximumPositive, double minimumPositive) {
-		left = limit(left, maximumNegative, minimumNegative, maximumPositive, minimumPositive);
-		right = limit(right, maximumNegative, minimumNegative, maximumPositive, minimumPositive);
+		// HAVE TO NEGATE MOTORS
+		left = limit(-left, maximumNegative, minimumNegative, maximumPositive, minimumPositive);
+		right = limit(-right, maximumNegative, minimumNegative, maximumPositive, minimumPositive);
 		prevLeft = left;
 		prevRight = right;
 		left *= left < 0 ? LEFT_PERCENTAGE_BACKWARD : LEFT_PERCENTAGE_FORWARD;
