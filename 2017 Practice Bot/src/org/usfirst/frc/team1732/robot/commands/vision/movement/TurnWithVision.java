@@ -25,7 +25,6 @@ public class TurnWithVision extends Command {
 		setTimeout(10);
 		this.ditherInterval = ditherInterval;
 		this.ditherLength = ditherLength;
-		absStartTime = System.currentTimeMillis();
 	}
 
 	// Called just before this Command runs the first time
@@ -34,6 +33,7 @@ public class TurnWithVision extends Command {
 		Robot.pixyCamera.turnOnLights();
 		visionMain.setGearSetpoint(angleSetpoint);
 		startTime = System.currentTimeMillis();
+		absStartTime = System.currentTimeMillis();
 	}
 
 	private boolean foundOnce = false;
