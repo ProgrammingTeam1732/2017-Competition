@@ -23,92 +23,94 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 
-	public static final double RIGHT_PERCENTAGE_FORWARD = 1;// 0.95648717383821848004664142981469;
-	public static final double RIGHT_PERCENTAGE_BACKWARD = 1;
-	public static final double LEFT_PERCENTAGE_FORWARD = 1;// 0.95811863563969703302801219362789;
-	public static final double LEFT_PERCENTAGE_BACKWARD = 1;// 0.90787825604332140794575823714271;
+	public static final double	RIGHT_PERCENTAGE_FORWARD	= 1;// 0.95648717383821848004664142981469;
+	public static final double	RIGHT_PERCENTAGE_BACKWARD	= 1;
+	public static final double	LEFT_PERCENTAGE_FORWARD		= 1;// 0.95811863563969703302801219362789;
+	public static final double	LEFT_PERCENTAGE_BACKWARD	= 1;// 0.90787825604332140794575823714271;
 	// motors
 	// left motors
 	/**
 	 * The motor that the other left motors follow
 	 */
-	private final CANTalon leftMaster = new CANTalon(RobotMap.LEFT_MASTER_MOTOR_DEVICE_NUMBER);
-	private final CANTalon left1 = new CANTalon(RobotMap.LEFT_1_MOTOR_DEVICE_NUMBER);
-	private final CANTalon left2 = new CANTalon(RobotMap.LEFT_2_MOTOR_DEVICE_NUMBER);
+	private final CANTalon	leftMaster	= new CANTalon(RobotMap.LEFT_MASTER_MOTOR_DEVICE_NUMBER);
+	private final CANTalon	left1		= new CANTalon(RobotMap.LEFT_1_MOTOR_DEVICE_NUMBER);
+	private final CANTalon	left2		= new CANTalon(RobotMap.LEFT_2_MOTOR_DEVICE_NUMBER);
 	// right motors
 	/**
 	 * The motor the other right motors follow
 	 */
-	private final CANTalon rightMaster = new CANTalon(RobotMap.RIGHT_MASTER_MOTOR_DEVICE_NUMBER);
-	private final CANTalon right1 = new CANTalon(RobotMap.RIGHT_1_MOTOR_DEVICE_NUMBER);
-	private final CANTalon right2 = new CANTalon(RobotMap.RIGHT_2_MOTOR_DEVICE_NUMBER);
+	private final CANTalon	rightMaster	= new CANTalon(RobotMap.RIGHT_MASTER_MOTOR_DEVICE_NUMBER);
+	private final CANTalon	right1		= new CANTalon(RobotMap.RIGHT_1_MOTOR_DEVICE_NUMBER);
+	private final CANTalon	right2		= new CANTalon(RobotMap.RIGHT_2_MOTOR_DEVICE_NUMBER);
 
-	private final Solenoid shifter = new Solenoid(RobotMap.PCM_CAN_ID,
-			RobotMap.DRIVE_TRAIN_SHIFTER_SOLENOID_DEVICE_NUMBER);
-	public static final boolean HIGH_GEAR = false;
-	public static final boolean LOW_GEAR = !HIGH_GEAR;
+	private final Solenoid		shifter		= new Solenoid(	RobotMap.PCM_CAN_ID,
+															RobotMap.DRIVE_TRAIN_SHIFTER_SOLENOID_DEVICE_NUMBER);
+	public static final boolean	HIGH_GEAR	= false;
+	public static final boolean	LOW_GEAR	= !HIGH_GEAR;
 
 	// gyro
 	// gyro sensors
-	private final AnalogGyro gyro = new AnalogGyro(RobotMap.GYRO_CHANNEL_NUMBER);
-	public static final double GYRO_VOLTS_PER_DEGREE_PER_SECOND = 0.007;
+	private final AnalogGyro	gyro								= new AnalogGyro(RobotMap.GYRO_CHANNEL_NUMBER);
+	public static final double	GYRO_VOLTS_PER_DEGREE_PER_SECOND	= 0.007;
 
 	// gyro controllers
-	private final PIDController gyroPID = new PIDController(gyroP, gyroI, gyroD, gyro, DriveTrain::voidMethod);
-	public static final double GYRO_DEADBAND_DEGREES = 4; // 5
-	public static final double gyroP = 0.0192; // 0.0085 // 0.025
-	public static final double gyroI = 0; // 0.000005
-	public static final double gyroD = 0.1;
+	private final PIDController	gyroPID					= new PIDController(gyroP, gyroI, gyroD, gyro,
+																			DriveTrain::voidMethod);
+	public static final double	GYRO_DEADBAND_DEGREES	= 4;											// 5
+	public static final double	gyroP					= 0.0192;										// 0.0085 // 0.025
+	public static final double	gyroI					= 0;											// 0.000005
+	public static final double	gyroD					= 0.1;
 
-	public static final double GYRO_IZONE = 25;
-	public static final double GYRO_IZONE_I = -0.00032;
+	public static final double	GYRO_IZONE		= 25;
+	public static final double	GYRO_IZONE_I	= -0.00032;
 	// encoders
 	// encoder sensors
-	private final Encoder leftEncoder = new Encoder(RobotMap.LEFT_ENCODER_CHANNEL_A, RobotMap.LEFT_ENCODER_CHANNEL_B);
-	private final Encoder rightEncoder = new Encoder(RobotMap.RIGHT_ENCODER_CHANNEL_A,
-			RobotMap.RIGHT_ENCODER_CHANNEL_B);
-	public static final double INCHES_PER_ENCODER_COUNT = 44 / 5425.4;
+	private final Encoder		leftEncoder					= new Encoder(	RobotMap.LEFT_ENCODER_CHANNEL_A,
+																			RobotMap.LEFT_ENCODER_CHANNEL_B);
+	private final Encoder		rightEncoder				= new Encoder(	RobotMap.RIGHT_ENCODER_CHANNEL_A,
+																			RobotMap.RIGHT_ENCODER_CHANNEL_B);
+	public static final double	INCHES_PER_ENCODER_COUNT	= 44 / 5425.4;
 	// 0.0134 * 4;
 	// public static final double LEFT_MOTOR_OFFSET = 1.0;
 
 	// encoder controllers
-	private final PIDController leftEncoderPID = new PIDController(encoderP, encoderI, encoderD, leftEncoder,
-			DriveTrain::voidMethod);
-	private final PIDController rightEncoderPID = new PIDController(encoderP, encoderI, encoderD, rightEncoder,
-			DriveTrain::voidMethod);
-	public static final double encoderP = 0.03; // 0.02
-	public static final double encoderI = 0;
-	public static final double encoderD = 0;
-	public static final double ENCODER_DEADBAND_INCHES = 3;
-	public static final double errorDifferenceScalar = 0.035;
+	private final PIDController	leftEncoderPID			= new PIDController(encoderP, encoderI, encoderD, leftEncoder,
+																			DriveTrain::voidMethod);
+	private final PIDController	rightEncoderPID			= new PIDController(encoderP, encoderI, encoderD, rightEncoder,
+																			DriveTrain::voidMethod);
+	public static final double	encoderP				= 0.03;															// 0.02
+	public static final double	encoderI				= 0;
+	public static final double	encoderD				= 0;
+	public static final double	ENCODER_DEADBAND_INCHES	= 3;
+	public static final double	errorDifferenceScalar	= 0.035;
 
-	public static final double ENCODER_IZONE = 20;
-	public static final double ENCODER_IZONE_I = 0.0004;
+	public static final double	ENCODER_IZONE	= 20;
+	public static final double	ENCODER_IZONE_I	= 0.0004;
 
-	public static final double encoderTurningP = 0.055;
-	public static final double encoderTurningI = 0;
-	public static final double encoderTurningD = 0.04;
-	public static final double ENCODER_TURNING_DEADBAND_INCHES = 1;
+	public static final double	encoderTurningP					= 0.055;
+	public static final double	encoderTurningI					= 0;
+	public static final double	encoderTurningD					= 0.04;
+	public static final double	ENCODER_TURNING_DEADBAND_INCHES	= 1;
 
-	public static final double ENCODER_IZONE_TURNING = 4;
-	public static final double ENCODER_IZONE_TURNING_I = 0.001;
+	public static final double	ENCODER_IZONE_TURNING	= 4;
+	public static final double	ENCODER_IZONE_TURNING_I	= 0.001;
 
 	// Min and max output
-	public static final double ENCODER_MAX_OUTPUT = 1;
-	public static final double ENCODER_MIN_OUTPUT = -ENCODER_MAX_OUTPUT;
+	public static final double	ENCODER_MAX_OUTPUT	= 1;
+	public static final double	ENCODER_MIN_OUTPUT	= -ENCODER_MAX_OUTPUT;
 	// public static final double ENCODER_NOMINAL_POSITIVE = 0.1;
 	// public static final double ENCODER_NOMINAL_NEGATIVE =
 	// -ENCODER_NOMINAL_POSITIVE;
-	public static final double GYRO_MAX_OUTPUT = 0.8;
-	public static final double GYRO_MIN_OUTPUT = -GYRO_MAX_OUTPUT;
+	public static final double	GYRO_MAX_OUTPUT	= 0.8;
+	public static final double	GYRO_MIN_OUTPUT	= -GYRO_MAX_OUTPUT;
 	// public static final double MAX_OUTPUT = 0.5;
 	// public static final double MIN_OUTPUT = -ENCODER_MAX_OUTPUT;
 
 	// public static final double VOLTAGE_RAMP_RATE = 6;
 
-	public static final double ROBOT_WIDTH_INCHES = 26;
-	public static final double ROBOT_LENGTH_INCHES = 34.5;
-	public static final double TURNING_CIRCUMFERENCE = Math.PI * ROBOT_WIDTH_INCHES;
+	public static final double	ROBOT_WIDTH_INCHES		= 26;
+	public static final double	ROBOT_LENGTH_INCHES		= 34.5;
+	public static final double	TURNING_CIRCUMFERENCE	= Math.PI * ROBOT_WIDTH_INCHES;
 
 	public static final String NAME = "Drive Train";
 
@@ -247,14 +249,14 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 	 *            left % voltage
 	 * @param right
 	 *            right % voltage
-	 * @param lower
+	 * @param maximumNegative
 	 *            maximum negative % voltage
-	 * @param upper
+	 * @param maximumPositive
 	 *            maximum positive % voltage
 	 */
-	public void driveRawLimitWithRamp(double left, double right, double lower, double upper) {
-		left = rampVoltage(prevLeft, limit(-left, lower, upper));
-		right = rampVoltage(prevRight, limit(-right, lower, upper));
+	public void driveRawLimitWithRamp(double left, double right, double maximumNegative, double maximumPositive) {
+		left = rampVoltage(prevLeft, limit(left, maximumNegative, maximumPositive));
+		right = rampVoltage(prevRight, limit(right, maximumNegative, maximumPositive));
 		prevLeft = left;
 		prevRight = right;
 		left *= left < 0 ? LEFT_PERCENTAGE_BACKWARD : LEFT_PERCENTAGE_FORWARD;
@@ -263,9 +265,14 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 		rightMaster.set(right);
 	}
 
-	public void driveRawLimit(double left, double right, double lower, double upper) {
-		left = limit(-left, lower, upper);
-		right = limit(-right, lower, upper);
+	public void driveRawLimit(double left, double right, double maximumNegative, double maximumPositive) {
+		driveRawLimit(left, right, maximumNegative, 0, maximumPositive, 0);
+	}
+
+	public void driveRawLimit(double left, double right, double maximumNegative, double minimumNegative,
+			double maximumPositive, double minimumPositive) {
+		left = limit(left, maximumNegative, minimumNegative, maximumPositive, minimumPositive);
+		right = limit(right, maximumNegative, minimumNegative, maximumPositive, minimumPositive);
 		prevLeft = left;
 		prevRight = right;
 		left *= left < 0 ? LEFT_PERCENTAGE_BACKWARD : LEFT_PERCENTAGE_FORWARD;
@@ -274,25 +281,15 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 		rightMaster.set(right);
 	}
 
-	public String driveRawAbsLimit(double left, double right, double lower, double upper) {
-		double leftDir = (left / Math.abs(left));
-		double rightDir = (right / Math.abs(right));
-		left = Math.abs(left) < lower ? leftDir * lower : Math.abs(left) > upper ? leftDir * upper : left;
-		right = Math.abs(right) < rightDir * lower ? lower : Math.abs(right) > upper ? rightDir * upper : right;
-		prevLeft = left;
-		prevRight = right;
-		left *= left < 0 ? LEFT_PERCENTAGE_BACKWARD : LEFT_PERCENTAGE_FORWARD;
-		right *= right < 0 ? RIGHT_PERCENTAGE_BACKWARD : RIGHT_PERCENTAGE_FORWARD;
-		leftMaster.set(left);
-		rightMaster.set(right);
-		return right + " " + left;
+	public void driveRawAbsoluteLimit(double left, double right, double absoluteMinimum, double absoluteMaximum) {
+		driveRawLimit(left, right, -absoluteMaximum, -absoluteMinimum, absoluteMaximum, absoluteMinimum);
 	}
 
-	private double prevLeft = 0;
-	private double prevRight = 0;
+	private double	prevLeft	= 0;
+	private double	prevRight	= 0;
 
-	public static final double RAMP_RATE = 0.2;
-	public static final double MIN_RAMP_LEVEL = 0.5;
+	public static final double	RAMP_RATE		= 0.2;
+	public static final double	MIN_RAMP_LEVEL	= 0.5;
 
 	public double rampVoltage(double prev, double requested) {
 		if (isHighGear() && Math.abs(requested) > MIN_RAMP_LEVEL && Math.abs(prev - requested) > RAMP_RATE) {
@@ -302,8 +299,8 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 		}
 	}
 
-	public static final double ENCODER_RAMP_RATE = 0;
-	public static final double MAX_INCHES_PER_SECOND = 40;
+	public static final double	ENCODER_RAMP_RATE		= 0;
+	public static final double	MAX_INCHES_PER_SECOND	= 40;
 
 	public double rampWithEncoders(double prev, double requested, Encoder encoder) {
 		if (isHighGear() && Math.abs(requested) > MIN_RAMP_LEVEL
@@ -319,14 +316,38 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 	 * 
 	 * @param value
 	 *            input value to limit
-	 * @param lower
+	 * @param maximumNegative
 	 *            the lower limit
-	 * @param upper
+	 * @param maximumPositive
 	 *            the upper limit
 	 * @return the limited value
 	 */
-	private double limit(double value, double lower, double upper) {
-		return value < lower ? lower : (value > upper ? upper : value);
+	private double limit(double value, double maximumNegative, double maximumPositive) {
+		return limit(value, maximumNegative, 0, maximumPositive, 0);
+	}
+
+	@SuppressWarnings("unused")
+	private double limitAbsolute(double value, double absoluteMinimum, double absoluteMaximum) {
+		return limit(value, -absoluteMaximum, -absoluteMinimum, absoluteMaximum, absoluteMinimum);
+	}
+
+	private double limit(double value, double maximumNegative, double minimumNegative, double maximumPositive,
+			double minimumPositive) {
+		if (value < 0) {
+			if (value < maximumNegative)
+				return maximumNegative;
+			else if (value > minimumNegative)
+				return minimumNegative;
+			else
+				return value;
+		} else {
+			if (value > maximumPositive)
+				return maximumPositive;
+			else if (value < minimumPositive)
+				return minimumPositive;
+			else
+				return value;
+		}
 	}
 
 	/**
@@ -336,12 +357,13 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 	 *            input double to method to fulfill requirements of PIDOutput
 	 *            interface
 	 */
-	private static void voidMethod(double d) {
-	}
+	private static void voidMethod(double d) {}
 
-	private SmartDashboardItem<Double> gyroISmartDashboard;
-	private SmartDashboardItem<Double> gyroPSmartDashboard;
-	private SmartDashboardItem<Double> gyroDSmartDashboard;
+	private SmartDashboardItem<Double>	gyroISmartDashboard;
+	@SuppressWarnings("unused")
+	private SmartDashboardItem<Double>	gyroPSmartDashboard;
+	@SuppressWarnings("unused")
+	private SmartDashboardItem<Double>	gyroDSmartDashboard;
 
 	public double getSmartDashboardGyroI() {
 		if (gyroISmartDashboard != null) {
@@ -356,35 +378,43 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 
 		// Left
 		String leftDirectory = directory + "Left/";
-		dashboard.addItem(
-				SmartDashboardItem.newNumberSender(leftDirectory + "Left Encoder Raw Counts", leftEncoder::getRaw));
+		dashboard.addItem(SmartDashboardItem.newNumberSender(	leftDirectory + "Left Encoder Raw Counts",
+																leftEncoder::getRaw));
 		dashboard.addItem(SmartDashboardItem.newNumberSender(leftDirectory + "Left Encoder Counts", leftEncoder::get));
-		dashboard.addItem(
-				SmartDashboardItem.newNumberSender(leftDirectory + "Left Encoder Distance", leftEncoder::getDistance));
-		dashboard.addItem(SmartDashboardItem.newNumberSender(leftDirectory + "Left Encoder Setpoint",
-				leftEncoderPID::getSetpoint));
+		dashboard.addItem(SmartDashboardItem.newNumberSender(	leftDirectory + "Left Encoder Distance",
+																leftEncoder::getDistance));
+		dashboard.addItem(SmartDashboardItem.newNumberSender(	leftDirectory + "Left Encoder Setpoint",
+																leftEncoderPID::getSetpoint));
 		dashboard.addItem(SmartDashboardItem.newNumberSender(leftDirectory + "Left Error", leftEncoderPID::getError));
-		dashboard.addItem(
-				SmartDashboardItem.newBooleanSender(leftDirectory + "At left setpoint?", leftEncoderPID::onTarget));
+		dashboard.addItem(SmartDashboardItem.newBooleanSender(	leftDirectory + "At left setpoint?",
+																leftEncoderPID::onTarget));
 		dashboard.addItem(SmartDashboardItem.newNumberSender(leftDirectory + "Left PID Output", leftEncoderPID::get));
+		dashboard.addItem(SmartDashboardItem.newNumberSender(leftDirectory + "Left Setpoint", leftMaster::getSetpoint));
+		dashboard.addItem(SmartDashboardItem.newNumberSender(	leftDirectory + "Left Voltage",
+																leftMaster::getOutputVoltage));
+
 		// SmartDashboard.putData("Left PID", leftEncoderPID);
 
 		// Right
 		String rightDirectory = directory + "Right/";
-		dashboard.addItem(
-				SmartDashboardItem.newNumberSender(rightDirectory + "Right Encoder Raw Counts", rightEncoder::getRaw));
-		dashboard.addItem(
-				SmartDashboardItem.newNumberSender(rightDirectory + "Right Encoder Counts", rightEncoder::get));
-		dashboard.addItem(SmartDashboardItem.newNumberSender(rightDirectory + "Right Encoder Distance",
-				rightEncoder::getDistance));
-		dashboard.addItem(SmartDashboardItem.newNumberSender(rightDirectory + "Right Encoder Setpoint",
-				rightEncoderPID::getSetpoint));
+		dashboard.addItem(SmartDashboardItem.newNumberSender(	rightDirectory + "Right Encoder Raw Counts",
+																rightEncoder::getRaw));
+		dashboard.addItem(SmartDashboardItem.newNumberSender(	rightDirectory + "Right Encoder Counts",
+																rightEncoder::get));
+		dashboard.addItem(SmartDashboardItem.newNumberSender(	rightDirectory + "Right Encoder Distance",
+																rightEncoder::getDistance));
+		dashboard.addItem(SmartDashboardItem.newNumberSender(	rightDirectory + "Right Encoder Setpoint",
+																rightEncoderPID::getSetpoint));
 		dashboard
 				.addItem(SmartDashboardItem.newNumberSender(rightDirectory + "Right Error", rightEncoderPID::getError));
-		dashboard.addItem(
-				SmartDashboardItem.newBooleanSender(rightDirectory + "At right setpoint?", rightEncoderPID::onTarget));
+		dashboard.addItem(SmartDashboardItem.newBooleanSender(	rightDirectory + "At right setpoint?",
+																rightEncoderPID::onTarget));
 		dashboard
 				.addItem(SmartDashboardItem.newNumberSender(rightDirectory + "Right PID Output", rightEncoderPID::get));
+		dashboard.addItem(SmartDashboardItem.newNumberSender(	rightDirectory + "Right Setpoint",
+																rightMaster::getSetpoint));
+		dashboard.addItem(SmartDashboardItem.newNumberSender(	rightDirectory + "right Voltage",
+																rightMaster::getOutputVoltage));
 		// SmartDashboard.putData("Right PID", rightEncoderPID);
 
 		String gyroDirectory = directory + "Gyro/";
@@ -549,8 +579,8 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 	 * Total distance the robot has traveled (only incremented on reset of
 	 * encoders)
 	 */
-	private double leftDistanceTraveled = 0;
-	private double rightDistanceTraveled = 0;
+	private double	leftDistanceTraveled	= 0;
+	private double	rightDistanceTraveled	= 0;
 
 	/**
 	 * @return the total distance the left encoder has traveled

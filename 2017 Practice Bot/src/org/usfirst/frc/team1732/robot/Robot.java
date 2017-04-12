@@ -87,25 +87,25 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends IterativeRobot {
 
-	public static OI oi;
-	public static DriveTrain driveTrain;
-	public static BallIntake ballIntake;
-	public static Climber climber;
-	public static Feeder feeder;
-	public static Flywheel flywheel;
-	public static GearIntake gearIntake;
-	public static Arm arm;
-	public static Wings wings;
-	public static PixyCamera pixyCamera;
-	public static Triggers triggers;
+	public static OI			oi;
+	public static DriveTrain	driveTrain;
+	public static BallIntake	ballIntake;
+	public static Climber		climber;
+	public static Feeder		feeder;
+	public static Flywheel		flywheel;
+	public static GearIntake	gearIntake;
+	public static Arm			arm;
+	public static Wings			wings;
+	public static PixyCamera	pixyCamera;
+	public static Triggers		triggers;
 
-	public static VisionMain visionMain;
-	private static MySmartDashboard dashboard;
+	public static VisionMain		visionMain;
+	private static MySmartDashboard	dashboard;
 
-	private static AutoChooser autoChooser;
-	public static SmartDashboardItem<Boolean> isRedAlliance;
-	public static SmartDashboardItem<Double> autoWaitTime;
-	public static SmartDashboardItem<Double> startOnWallAndShootDistance;
+	private static AutoChooser					autoChooser;
+	public static SmartDashboardItem<Boolean>	isRedAlliance;
+	public static SmartDashboardItem<Double>	autoWaitTime;
+	public static SmartDashboardItem<Double>	startOnWallAndShootDistance;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -173,8 +173,7 @@ public class Robot extends IterativeRobot {
 	}
 
 	@Override
-	public void testInit() {
-	}
+	public void testInit() {}
 
 	@Override
 	public void testPeriodic() {
@@ -187,8 +186,9 @@ public class Robot extends IterativeRobot {
 		autoWaitTime = dashboard.addItem(SmartDashboardItem.newDoubleReciever("Auto wait time", 0.0));
 		startOnWallAndShootDistance = dashboard
 				.addItem(SmartDashboardItem.newDoubleReciever("Start wall and shoot wait distance", 100.0));
-		isRedAlliance = dashboard.addItem(SmartDashboardItem.newBooleanSender("Is Red Alliance?",
-				() -> DriverStation.getInstance().getAlliance().equals(Alliance.Red)));
+		isRedAlliance = dashboard.addItem(SmartDashboardItem
+				.newBooleanSender(	"Is Red Alliance?",
+									() -> DriverStation.getInstance().getAlliance().equals(Alliance.Red)));
 	}
 
 	private void initializeSubsystems() {
@@ -310,7 +310,6 @@ public class Robot extends IterativeRobot {
 		return startTime - start;
 	}
 
-	@SuppressWarnings("unused")
 	private void addCamera() {
 		int width = 320;
 		int height = 240;
@@ -356,18 +355,18 @@ public class Robot extends IterativeRobot {
 						// left edge
 						Imgproc.rectangle(mat, new Point(0, 0), new Point(thickness, height), color, thickness);
 						// right edge
-						Imgproc.rectangle(mat, new Point(width - thickness, 0), new Point(width, height), color,
-								thickness);
+						Imgproc.rectangle(	mat, new Point(width - thickness, 0), new Point(width, height), color,
+											thickness);
 						// bottom edge
-						Imgproc.rectangle(mat, new Point(0, height - thickness), new Point(width, height), color,
-								thickness);
+						Imgproc.rectangle(	mat, new Point(0, height - thickness), new Point(width, height), color,
+											thickness);
 					}
 					// add lines for karl target
 					Scalar lineColor = new Scalar(0, 0, 0);
-					Imgproc.line(mat, new Point((int) (width * 0.34651), 0),
-							new Point((int) (width * 0.031217), height), lineColor, 2);
-					Imgproc.line(mat, new Point((int) (width * 0.537981), 0),
-							new Point((int) (width * 0.816857), height), lineColor, 2);
+					Imgproc.line(	mat, new Point((int) (width * 0.34651), 0),
+									new Point((int) (width * 0.031217), height), lineColor, 2);
+					Imgproc.line(	mat, new Point((int) (width * 0.537981), 0),
+									new Point((int) (width * 0.816857), height), lineColor, 2);
 					// Give the output stream a new image to display
 					outputStream.putFrame(mat);
 				}

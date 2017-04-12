@@ -2,6 +2,8 @@ package org.usfirst.frc.team1732.robot.commands.drivetrain.encoder;
 
 import static org.usfirst.frc.team1732.robot.Robot.driveTrain;
 
+import org.usfirst.frc.team1732.robot.subsystems.DriveTrain;
+
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -35,9 +37,9 @@ public class DriveEncoders extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		if (Math.abs(driveTrain.getLeftPIDError()) < driveTrain.ENCODER_IZONE
-				|| Math.abs(driveTrain.getRightPIDError()) < driveTrain.ENCODER_IZONE) {
-			driveTrain.setEncoderPIDS(driveTrain.encoderP, driveTrain.ENCODER_IZONE_I, driveTrain.encoderD);
+		if (Math.abs(driveTrain.getLeftPIDError()) < DriveTrain.ENCODER_IZONE
+				|| Math.abs(driveTrain.getRightPIDError()) < DriveTrain.ENCODER_IZONE) {
+			driveTrain.setEncoderPIDS(DriveTrain.encoderP, DriveTrain.ENCODER_IZONE_I, DriveTrain.encoderD);
 		} else {
 			driveTrain.resetEncoderPIDValues();
 		}

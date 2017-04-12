@@ -2,11 +2,11 @@ package org.usfirst.frc.team1732.robot.vision;
 
 public class GearTarget extends VisionTarget {
 
-	public static final double GEAR_TARGET_WIDTH_INCHES = 10.25;
-	public static final double GEAR_TARGET_HEIGHT_INCHES = 5;
-	public static final double GEAR_TARGET_AREA = GEAR_TARGET_WIDTH_INCHES * GEAR_TARGET_HEIGHT_INCHES;
-	public static final double GEAR_TARGET_TAPE_WIDTH = 2;
-	public static final double GEAR_TARGET_TAPE_AREA = GEAR_TARGET_HEIGHT_INCHES * GEAR_TARGET_TAPE_WIDTH;
+	public static final double	GEAR_TARGET_WIDTH_INCHES	= 10.25;
+	public static final double	GEAR_TARGET_HEIGHT_INCHES	= 5;
+	public static final double	GEAR_TARGET_AREA			= GEAR_TARGET_WIDTH_INCHES * GEAR_TARGET_HEIGHT_INCHES;
+	public static final double	GEAR_TARGET_TAPE_WIDTH		= 2;
+	public static final double	GEAR_TARGET_TAPE_AREA		= GEAR_TARGET_HEIGHT_INCHES * GEAR_TARGET_TAPE_WIDTH;
 
 	/**
 	 * The minimum score (max of 5) a gearTarget needs in order to be considered
@@ -53,6 +53,7 @@ public class GearTarget extends VisionTarget {
 
 		// Widths and heights should be about the same
 		double widthRatioScore = getScore(((double) left.width) / right.width);
+		totalScore += widthRatioScore;
 		double heightRatioScore = getScore(((double) left.height) / right.height);
 		totalScore += heightRatioScore;
 

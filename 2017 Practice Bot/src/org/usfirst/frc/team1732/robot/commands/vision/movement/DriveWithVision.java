@@ -38,6 +38,7 @@ public class DriveWithVision extends Command {
 	}
 
 	public static final double	DEFAULT_TARGET_INCHES	= 10;
+	@SuppressWarnings("unused")
 	private static double		smartDashboardDistance	= DEFAULT_TARGET_INCHES;
 
 	private final double	MAX_SETPOINT;
