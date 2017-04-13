@@ -6,11 +6,11 @@ import org.usfirst.frc.team1732.robot.commands.ballsystem.flywheel.EnableFlywhee
 import org.usfirst.frc.team1732.robot.commands.ballsystem.shooting.ShootTime;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveTime;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveEncoders;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.EncoderPlaceGear;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.gyro.DriveGyro;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.InitGearIntake;
 import org.usfirst.frc.team1732.robot.commands.helpercommands.Wait;
-import org.usfirst.frc.team1732.robot.commands.vision.VisionPlaceGear;
+import org.usfirst.frc.team1732.robot.commands.placegear.EncoderPlaceGear;
+import org.usfirst.frc.team1732.robot.commands.placegear.VisionPlaceGear;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 

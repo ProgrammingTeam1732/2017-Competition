@@ -20,9 +20,9 @@ public class ScoreSideGearPart1 extends CommandGroup {
 		// turn to face gear peg
 		double angle = 0;
 		if (isLeft) {
-			angle = 70;
+			angle = 60;
 		} else {
-			angle = -70;
+			angle = -60;
 		}
 		addSequential(new TurnWithEncoders(angle));
 

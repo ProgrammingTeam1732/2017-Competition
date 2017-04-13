@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1732.robot.commands.vision;
+package org.usfirst.frc.team1732.robot.commands.placegear;
 
 import java.util.function.DoubleSupplier;
 

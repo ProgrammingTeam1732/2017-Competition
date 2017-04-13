@@ -11,7 +11,7 @@ import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.GearInta
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.GrabGear;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.InitGearIntake;
 import org.usfirst.frc.team1732.robot.commands.helpercommands.Wait;
-import org.usfirst.frc.team1732.robot.commands.vision.VisionPlaceGear;
+import org.usfirst.frc.team1732.robot.commands.placegear.VisionPlaceGear;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 

@@ -23,34 +23,34 @@ public class VisionMain implements SmartDashboardGroup {
 	private Arduino gearArduino;
 	// private Arduino boilerArduino;
 
-	private GearTarget gearTarget;
-	private Rectangle[] gearRectangles = new Rectangle[0];
-	private double previousGearScore = 0;
-	private boolean isNewGearDataAvailable = false;
+	private GearTarget	gearTarget;
+	private Rectangle[]	gearRectangles			= new Rectangle[0];
+	private double		previousGearScore		= 0;
+	private boolean		isNewGearDataAvailable	= false;
 
-	private BoilerTarget boilerTarget;
-	private Rectangle[] boilerRectangles = new Rectangle[0];
-	private double previousBoilerScore = 0;
-	private boolean isNewBoilerDataAvailable = false;
+	private BoilerTarget	boilerTarget;
+	private Rectangle[]		boilerRectangles			= new Rectangle[0];
+	private double			previousBoilerScore			= 0;
+	private boolean			isNewBoilerDataAvailable	= false;
 
 	// Vision Angle Stuff
-	private final PIDSource gearAngleSource = getGearPIDSource();
-	private final PIDController gearPID = new PIDController(gearP, gearI, gearD, gearAngleSource,
-			VisionMain::voidMethod);
-	public static final double gearP = 0.04;
-	public static final double gearI = 0;
-	public static final double gearD = 0;
+	private final PIDSource		gearAngleSource	= getGearPIDSource();
+	private final PIDController	gearPID			= new PIDController(gearP, gearI, gearD, gearAngleSource,
+																	VisionMain::voidMethod);
+	public static final double	gearP			= 0.04;
+	public static final double	gearI			= 0;
+	public static final double	gearD			= 0;
 
-	private final PIDSource boilerAngleSource = getBoilerPIDSource();
-	private final PIDController boilerPID = new PIDController(boilerP, boilerI, boilerD, boilerAngleSource,
-			VisionMain::voidMethod);
-	public static final double boilerP = 0.02;
-	public static final double boilerI = 0;
-	public static final double boilerD = 0;
+	private final PIDSource		boilerAngleSource	= getBoilerPIDSource();
+	private final PIDController	boilerPID			= new PIDController(boilerP, boilerI, boilerD, boilerAngleSource,
+																		VisionMain::voidMethod);
+	public static final double	boilerP				= 0.02;
+	public static final double	boilerI				= 0;
+	public static final double	boilerD				= 0;
 
-	public static final double VISION_DEADBAND_DEGREES = 2;
-	public static final double MAX_OUTPUT = 0.4;
-	public static final double MIN_OUTPUT = -MAX_OUTPUT;
+	public static final double	VISION_DEADBAND_DEGREES	= 3;
+	public static final double	MAX_OUTPUT				= 0.4;
+	public static final double	MIN_OUTPUT				= -MAX_OUTPUT;
 
 	public static final String NAME = "Vision Main";
 
@@ -62,8 +62,8 @@ public class VisionMain implements SmartDashboardGroup {
 		gearPID.setContinuous(false);
 		gearPID.setOutputRange(MIN_OUTPUT, MAX_OUTPUT);
 		gearPID.enable();
-		outputStream = CameraServer.getInstance().putVideo("Gear Rectangles", PixyCamera.IMAGE_WIDTH,
-				PixyCamera.IMAGE_HEIGHT);
+		outputStream = CameraServer.getInstance().putVideo(	"Gear Rectangles", PixyCamera.IMAGE_WIDTH,
+															PixyCamera.IMAGE_HEIGHT);
 		mat = new Mat();
 	}
 
@@ -86,9 +86,9 @@ public class VisionMain implements SmartDashboardGroup {
 		}
 	}
 
-	private String total = "";
-	private boolean found = false;
-	private boolean started = false;
+	private String	total	= "";
+	private boolean	found	= false;
+	private boolean	started	= false;
 
 	/**
 	 * Parses the data and puts found rectangles into rectangles array
@@ -118,12 +118,12 @@ public class VisionMain implements SmartDashboardGroup {
 					for (int j = 0; j < rects.length; j++) {
 						String[] data = rects[j].split(" ");
 						try {
-							output[j] = new Rectangle(Integer.parseInt(data[1]), Integer.parseInt(data[3]),
-									Integer.parseInt(data[5]), Integer.parseInt(data[7]), Integer.parseInt(data[9]));
+							output[j] = new Rectangle(	Integer.parseInt(data[1]), Integer.parseInt(data[3]),
+														Integer.parseInt(data[5]), Integer.parseInt(data[7]),
+														Integer.parseInt(data[9]));
 							// System.out.println("[" + j + ": " + rects[j] +
 							// "]");
-						} catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
-						}
+						} catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {}
 					}
 				}
 				total = "";
@@ -201,7 +201,7 @@ public class VisionMain implements SmartDashboardGroup {
 		// IMAGE_HEIGHT);
 
 		return gearTarget.getHorizontalDistance(GearTarget.GEAR_TARGET_WIDTH_INCHES,
-				PixyCamera.HORIZONTAL_FIELD_OF_VIEW, PixyCamera.IMAGE_WIDTH);
+												PixyCamera.HORIZONTAL_FIELD_OF_VIEW, PixyCamera.IMAGE_WIDTH);
 	}
 
 	public double getInchesToBoiler() {
@@ -211,8 +211,8 @@ public class VisionMain implements SmartDashboardGroup {
 		// GearTarget.GEAR_TARGET_HEIGHT_INCHES, VERTICAL_FIELD_OF_VIEW,
 		// IMAGE_HEIGHT);
 
-		return boilerTarget.getHorizontalDistance(BoilerTarget.BOILER_TARGET_WIDTH_INCHES,
-				PixyCamera.HORIZONTAL_FIELD_OF_VIEW, PixyCamera.IMAGE_WIDTH);
+		return boilerTarget.getHorizontalDistance(	BoilerTarget.BOILER_TARGET_WIDTH_INCHES,
+													PixyCamera.HORIZONTAL_FIELD_OF_VIEW, PixyCamera.IMAGE_WIDTH);
 	}
 
 	/**
@@ -245,8 +245,7 @@ public class VisionMain implements SmartDashboardGroup {
 	private PIDSource getGearPIDSource() {
 		return new PIDSource() {
 			@Override
-			public void setPIDSourceType(PIDSourceType pidSource) {
-			}
+			public void setPIDSourceType(PIDSourceType pidSource) {}
 
 			@Override
 			public PIDSourceType getPIDSourceType() {
@@ -263,8 +262,7 @@ public class VisionMain implements SmartDashboardGroup {
 	private PIDSource getBoilerPIDSource() {
 		return new PIDSource() {
 			@Override
-			public void setPIDSourceType(PIDSourceType pidSource) {
-			}
+			public void setPIDSourceType(PIDSourceType pidSource) {}
 
 			@Override
 			public PIDSourceType getPIDSourceType() {
@@ -278,8 +276,7 @@ public class VisionMain implements SmartDashboardGroup {
 		};
 	}
 
-	private static void voidMethod(double d) {
-	}
+	private static void voidMethod(double d) {}
 
 	@Override
 	public void addToSmartDashboard(MySmartDashboard dashboard) {
@@ -291,26 +288,27 @@ public class VisionMain implements SmartDashboardGroup {
 				.addItem(SmartDashboardItem.newNumberSender(visionDirectory + "Gear inches", this::getInchesToGearPeg));
 		dashboard
 				.addItem(SmartDashboardItem.newNumberSender(visionDirectory + "Gear degrees", this::getAngleToGearPeg));
-		dashboard.addItem(
-				SmartDashboardItem.newBooleanSender(visionDirectory + "Can see gear peg?", this::canSeeGearPeg));
+		dashboard.addItem(SmartDashboardItem.newBooleanSender(	visionDirectory + "Can see gear peg?",
+																this::canSeeGearPeg));
 
 		dashboard.addItem(SmartDashboardItem.newNumberSender(visionDirectory + "Gear Setpoint", gearPID::getSetpoint));
 		dashboard.addItem(SmartDashboardItem.newNumberSender(visionDirectory + "Gear Error", gearPID::getError));
 		dashboard
 				.addItem(SmartDashboardItem.newBooleanSender(visionDirectory + "At gear setpoint?", gearPID::onTarget));
 		dashboard.addItem(SmartDashboardItem.newNumberSender(visionDirectory + "Gear PID Output", gearPID::get));
-		dashboard.addItem(SmartDashboardItem.newBooleanSender(visionDirectory + "Gear Camera Enabled",
-				this::isGearCameraEnabled));
-		dashboard.addItem(SmartDashboardItem.newBooleanSender(visionDirectory + "Boiler Camera Enabled",
-				this::isBoilerCameraEnabled));
-		dashboard.addItem(SmartDashboardItem.newDoubleReciever(visionDirectory + "Turning P Slope",
-				DriveWithVision.getSlope(), DriveWithVision::setSlope));
-		dashboard.addItem(SmartDashboardItem.newDoubleReciever(visionDirectory + "Turning P Lower",
-				DriveWithVision.getLower(), DriveWithVision::setLower));
-		dashboard.addItem(SmartDashboardItem.newDoubleReciever(visionDirectory + "Turning P Upper",
-				DriveWithVision.getUpper(), DriveWithVision::setUpper));
-		dashboard.addItem(SmartDashboardItem.newDoubleReciever(visionDirectory + "Turning P Middle",
-				DriveWithVision.getMiddle(), DriveWithVision::setMiddle));
+		dashboard.addItem(SmartDashboardItem.newBooleanSender(	visionDirectory + "Gear Camera Enabled",
+																this::isGearCameraEnabled));
+		dashboard.addItem(SmartDashboardItem.newBooleanSender(	visionDirectory + "Boiler Camera Enabled",
+																this::isBoilerCameraEnabled));
+		dashboard.addItem(SmartDashboardItem.newDoubleReciever(	visionDirectory + "Turning P Slope",
+																DriveWithVision.getSlope(), DriveWithVision::setSlope));
+		dashboard.addItem(SmartDashboardItem.newDoubleReciever(	visionDirectory + "Turning P Lower",
+																DriveWithVision.getLower(), DriveWithVision::setLower));
+		dashboard.addItem(SmartDashboardItem.newDoubleReciever(	visionDirectory + "Turning P Upper",
+																DriveWithVision.getUpper(), DriveWithVision::setUpper));
+		dashboard.addItem(SmartDashboardItem.newDoubleReciever(	visionDirectory + "Turning P Middle",
+																DriveWithVision.getMiddle(),
+																DriveWithVision::setMiddle));
 		SmartDashboard.putData("Vision PID", gearPID);
 	}
 
@@ -378,25 +376,25 @@ public class VisionMain implements SmartDashboardGroup {
 		}
 	}
 
-	private CvSource outputStream;
-	private Mat mat;
+	private CvSource	outputStream;
+	private Mat			mat;
 
 	public void sendGearImage() {
 		mat = new Mat(PixyCamera.IMAGE_HEIGHT, PixyCamera.IMAGE_WIDTH, org.opencv.core.CvType.CV_8UC3);
 		// Put a rectangle on the image
 		for (Rectangle r : gearRectangles) {
-			Imgproc.rectangle(mat, new Point(r.x, r.y), new Point(r.getRightX(), r.getBottomY()),
-					new Scalar(255, 255, 255));
+			Imgproc.rectangle(	mat, new Point(r.x, r.y), new Point(r.getRightX(), r.getBottomY()),
+								new Scalar(255, 255, 255));
 		}
 		if (gearTarget != null) {
 			Rectangle left = gearTarget.left;
 			Rectangle right = gearTarget.right;
 			// left
-			Imgproc.rectangle(mat, new Point(left.x, left.y), new Point(left.getRightX(), left.getBottomY()),
-					new Scalar(255, 0, 0));
+			Imgproc.rectangle(	mat, new Point(left.x, left.y), new Point(left.getRightX(), left.getBottomY()),
+								new Scalar(255, 0, 0));
 			// right
-			Imgproc.rectangle(mat, new Point(right.x, right.y), new Point(right.getRightX(), right.getBottomY()),
-					new Scalar(255, 0, 0));
+			Imgproc.rectangle(	mat, new Point(right.x, right.y), new Point(right.getRightX(), right.getBottomY()),
+								new Scalar(255, 0, 0));
 		}
 		// Give the output stream a new image to display
 		outputStream.putFrame(mat);
