@@ -39,8 +39,8 @@ public class TurnWithEncoders extends Command {
 	protected void execute() {
 		if (Math.abs(driveTrain.getLeftPIDError()) < DriveTrain.ENCODER_IZONE_TURNING
 				|| Math.abs(driveTrain.getRightPIDError()) < DriveTrain.ENCODER_IZONE_TURNING) {
-			driveTrain.setEncoderPIDS(DriveTrain.encoderTurningP, DriveTrain.ENCODER_IZONE_TURNING_I,
-					DriveTrain.encoderTurningD);
+			driveTrain.setEncoderPIDS(	DriveTrain.encoderTurningP, DriveTrain.ENCODER_IZONE_TURNING_I,
+										DriveTrain.encoderTurningD);
 		} else {
 			driveTrain.setEncoderToTurningPID();
 		}

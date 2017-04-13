@@ -11,6 +11,8 @@ import org.usfirst.frc.team1732.robot.autocommands.scoregear.scoresidegear.Score
 import org.usfirst.frc.team1732.robot.autocommands.scoregear.scoresidegear.ScoreSideGearRightEncoders;
 import org.usfirst.frc.team1732.robot.autocommands.scoregear.scoresidegear.ScoreSideGearWithTurningVisionLeft;
 import org.usfirst.frc.team1732.robot.autocommands.scoregear.scoresidegear.ScoreSideGearWithTurningVisionRight;
+import org.usfirst.frc.team1732.robot.autocommands.scoregear.twogearmiddlethensideauto.TwoGearMiddleThenSideAutoLeft;
+import org.usfirst.frc.team1732.robot.autocommands.scoregear.twogearmiddlethensideauto.TwoGearMiddleThenSideAutoRight;
 import org.usfirst.frc.team1732.robot.autocommands.scoregearandballs.scoreballsthensidegear.ScoreBallsThenSideGearEncoders;
 import org.usfirst.frc.team1732.robot.autocommands.scoregearandballs.scoreballsthensidegear.ScoreBallsThenSideGearVision;
 import org.usfirst.frc.team1732.robot.autocommands.scoregearandballs.scoremiddlegearthenballs.ScoreMiddleGearThenBallsEncoders;
@@ -62,9 +64,10 @@ public class AutoChooser implements SmartDashboardGroup {
 
 		// TwoGearAutoLeft(TwoGearAutoLeft::new),
 		// TwoGearAutoRight(TwoGearAutoRight::new),
-		//		 SideTwoGearAutoLeft(SideTwoGearAutoLeft::new),
-		//		 SideTwoGearAutoRight(SideTwoGearAutoRight::new),
-		// MiddleSideTwoGear(TwoGearMiddleThenSideAuto::new),
+		//		SideTwoGearAutoLeft(SideTwoGearAutoLeft::new),
+		//		SideTwoGearAutoRight(SideTwoGearAutoRight::new),
+		MiddleSideTwoGearLeft(TwoGearMiddleThenSideAutoLeft::new),
+		MiddleSideTwoGearRight(TwoGearMiddleThenSideAutoRight::new),
 
 		StartOnWallThenShoot(StartOnWallAndShoot::new),
 		StartBesideBoilerThenShoot(StartBesideBoilerAndShoot::new),
