@@ -27,7 +27,7 @@ import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveTime;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.ClearTotalDistance;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveEncodersWithBraking;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.TurnWithEncodersWithBraking;
-import org.usfirst.frc.team1732.robot.commands.vision.movement.TurnWithVision;
+import org.usfirst.frc.team1732.robot.commands.vision.movement.DitherTurnWithVision;
 import org.usfirst.frc.team1732.robot.smartdashboard.MySmartDashboard;
 import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardGroup;
 import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardItem;
@@ -84,7 +84,7 @@ public class AutoChooser implements SmartDashboardGroup {
 		TestShooterShort(TestShootShort::new),
 		TestShooterLong(TestShootLong::new),
 
-		TestVisionTurning(() -> new TurnWithVision(0));
+		TestVisionTurning(() -> new DitherTurnWithVision(0));
 		// DriveEncodersFar(new DriveEncoders(97.5)),
 		// DriveEncodersShort(new DriveEncoders(40)),
 

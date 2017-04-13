@@ -4,7 +4,7 @@ import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.InitGear
 import org.usfirst.frc.team1732.robot.commands.helpercommands.Wait;
 import org.usfirst.frc.team1732.robot.commands.placegear.EncoderPlaceGear;
 import org.usfirst.frc.team1732.robot.commands.vision.lights.TurnLightsOn;
-import org.usfirst.frc.team1732.robot.commands.vision.movement.TurnWithVision;
+import org.usfirst.frc.team1732.robot.commands.vision.movement.DitherTurnWithVision;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -22,7 +22,7 @@ public class ScoreSideGearWithTurningVision extends CommandGroup {
 		}
 		addSequential(new TurnLightsOn());
 		addSequential(new Wait(.5));
-		addSequential(new TurnWithVision(0));
+		addSequential(new DitherTurnWithVision(0));
 		addSequential(new EncoderPlaceGear(15, -30));
 	}
 

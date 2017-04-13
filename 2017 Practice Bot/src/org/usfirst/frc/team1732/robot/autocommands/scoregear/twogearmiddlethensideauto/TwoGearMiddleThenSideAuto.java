@@ -13,7 +13,7 @@ import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.InitGear
 import org.usfirst.frc.team1732.robot.commands.helpercommands.Wait;
 import org.usfirst.frc.team1732.robot.commands.placegear.EncoderPlaceGear;
 import org.usfirst.frc.team1732.robot.commands.placegear.EncoderVisionPlaceGear;
-import org.usfirst.frc.team1732.robot.commands.vision.movement.TurnWithVision;
+import org.usfirst.frc.team1732.robot.commands.vision.movement.DitherTurnWithVision;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.InstantCommand;
@@ -118,7 +118,7 @@ public class TwoGearMiddleThenSideAuto extends CommandGroup {
 		}
 		addSequential(new TurnWithEncoders(faceGearPegAngle));
 
-		addSequential(new TurnWithVision(0));
+		addSequential(new DitherTurnWithVision(0));
 
 		// place second gear
 		DoubleSupplier driveForwardDistance = () -> distanceToPeg - HALF_ROBOT_WIDTH - 10;

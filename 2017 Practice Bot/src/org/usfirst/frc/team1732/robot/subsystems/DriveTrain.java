@@ -286,19 +286,19 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 		driveRawLimit(left, right, -absoluteMaximum, -absoluteMinimum, absoluteMaximum, absoluteMinimum);
 	}
 
-	public String driveRawAbsLimit(double left, double right, double lower, double upper) {
-		double leftDir = (left / Math.abs(left));
-		double rightDir = (right / Math.abs(right));
-		left = Math.abs(left) < lower ? leftDir * lower : Math.abs(left) > upper ? leftDir * upper : left;
-		right = Math.abs(right) < rightDir * lower ? lower : Math.abs(right) > upper ? rightDir * upper : right;
-		prevLeft = left;
-		prevRight = right;
-		left *= left < 0 ? LEFT_PERCENTAGE_BACKWARD : LEFT_PERCENTAGE_FORWARD;
-		right *= right < 0 ? RIGHT_PERCENTAGE_BACKWARD : RIGHT_PERCENTAGE_FORWARD;
-		leftMaster.set(left);
-		rightMaster.set(right);
-		return right + " " + left;
-	}
+	//	public String driveRawAbsLimit(double left, double right, double lower, double upper) {
+	//		double leftDir = (left / Math.abs(left));
+	//		double rightDir = (right / Math.abs(right));
+	//		left = Math.abs(left) < lower ? leftDir * lower : Math.abs(left) > upper ? leftDir * upper : left;
+	//		right = Math.abs(right) < rightDir * lower ? lower : Math.abs(right) > upper ? rightDir * upper : right;
+	//		prevLeft = left;
+	//		prevRight = right;
+	//		left *= left < 0 ? LEFT_PERCENTAGE_BACKWARD : LEFT_PERCENTAGE_FORWARD;
+	//		right *= right < 0 ? RIGHT_PERCENTAGE_BACKWARD : RIGHT_PERCENTAGE_FORWARD;
+	//		leftMaster.set(left);
+	//		rightMaster.set(right);
+	//		return right + " " + left;
+	//	}
 
 	private double	prevLeft	= 0;
 	private double	prevRight	= 0;
@@ -404,7 +404,7 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 		dashboard.addItem(SmartDashboardItem.newBooleanSender(	leftDirectory + "At left setpoint?",
 																leftEncoderPID::onTarget));
 		dashboard.addItem(SmartDashboardItem.newNumberSender(leftDirectory + "Left PID Output", leftEncoderPID::get));
-		dashboard.addItem(SmartDashboardItem.newNumberSender(leftDirectory + "Left Setpoint", leftMaster::getSetpoint));
+		dashboard.addItem(SmartDashboardItem.newNumberSender(leftDirectory + "Left Percent Volts", () -> prevLeft));
 		dashboard.addItem(SmartDashboardItem.newNumberSender(	leftDirectory + "Left Voltage",
 																leftMaster::getOutputVoltage));
 
@@ -426,9 +426,8 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 																rightEncoderPID::onTarget));
 		dashboard
 				.addItem(SmartDashboardItem.newNumberSender(rightDirectory + "Right PID Output", rightEncoderPID::get));
-		dashboard.addItem(SmartDashboardItem.newNumberSender(	rightDirectory + "Right Setpoint",
-																rightMaster::getSetpoint));
-		dashboard.addItem(SmartDashboardItem.newNumberSender(	rightDirectory + "right Voltage",
+		dashboard.addItem(SmartDashboardItem.newNumberSender(rightDirectory + "Right Percent Volts", () -> prevRight));
+		dashboard.addItem(SmartDashboardItem.newNumberSender(	rightDirectory + "Right Voltage",
 																rightMaster::getOutputVoltage));
 		// SmartDashboard.putData("Right PID", rightEncoderPID);
 
