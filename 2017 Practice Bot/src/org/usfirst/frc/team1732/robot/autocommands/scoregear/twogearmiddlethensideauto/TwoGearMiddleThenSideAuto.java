@@ -57,7 +57,6 @@ public class TwoGearMiddleThenSideAuto extends CommandGroup {
 
 		// drops gear intake
 		boolean gearPickupUseTimeout = false; // will use distance to end command
-
 		double gearPickupMaxDistance = 90;
 		addSequential(new GrabGear(gearPickupUseTimeout, gearPickupMaxDistance));
 
