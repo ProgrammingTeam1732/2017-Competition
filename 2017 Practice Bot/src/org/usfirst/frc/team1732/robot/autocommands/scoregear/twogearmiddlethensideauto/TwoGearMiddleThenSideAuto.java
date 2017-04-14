@@ -12,7 +12,7 @@ import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.InitGear
 import org.usfirst.frc.team1732.robot.commands.helpercommands.Wait;
 import org.usfirst.frc.team1732.robot.commands.placegear.EncoderVisionPlaceGear;
 import org.usfirst.frc.team1732.robot.commands.placegear.VisionPlaceGear;
-import org.usfirst.frc.team1732.robot.commands.vision.movement.DitherTurnWithVision;
+import org.usfirst.frc.team1732.robot.commands.vision.movement.TurnWithVision;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -61,7 +61,6 @@ public class TwoGearMiddleThenSideAuto extends CommandGroup {
 		addSequential(new GrabGear(gearPickupUseTimeout, gearPickupMaxDistance));
 
 		// stop robot
-		//		addSequential(new BrakeDrive());
 		double stopSpeed = 0;
 		addSequential(new SetMotorSpeed(stopSpeed));
 
@@ -77,10 +76,8 @@ public class TwoGearMiddleThenSideAuto extends CommandGroup {
 
 		//		 drive upfield towards gear peg
 		DoubleSupplier driveUpFieldDistance = () -> {
-
 			distanceDrove = (Robot.driveTrain.getTotalLeftDistance() + Robot.driveTrain.getTotalRightDistance()) / 2.0;
 			distanceDroveMinusDistanceBetweenPegs = distanceDrove - DISTANCE_BETWEEN_PEGS;
-
 			distanceToPeg = (1.0 / Math.cos(Math.toRadians(30))) * distanceDroveMinusDistanceBetweenPegs;
 			distanceFromWallToGearPegMinusDistanceDrove = Math.cos(Math.toRadians(60)) * distanceToPeg;
 			return DISTANCE_FROM_WALL_TO_SIDE_PEG - distanceFromWallToGearPegMinusDistanceDrove;
@@ -96,7 +93,7 @@ public class TwoGearMiddleThenSideAuto extends CommandGroup {
 		}
 		addSequential(new TurnWithEncoders(faceGearPegAngle));
 
-		addSequential(new DitherTurnWithVision(0));
+		addSequential(new TurnWithVision(0));
 
 		// place second gear
 		DoubleSupplier driveForwardDistance = () -> distanceToPeg;
