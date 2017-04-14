@@ -1,5 +1,7 @@
 package org.usfirst.frc.team1732.robot.commands.drivetrain.encoder;
 
+import static org.usfirst.frc.team1732.robot.Robot.driveTrain;
+
 import java.util.function.DoubleSupplier;
 
 import org.usfirst.frc.team1732.robot.Robot;
@@ -24,6 +26,7 @@ public class DriveWithEncoderAndVisionCorrection extends Command {
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
+		driveTrain.resetEncoders();
 		Robot.driveTrain.setEncoderSetpoint(distance.getAsDouble());
 	}
 

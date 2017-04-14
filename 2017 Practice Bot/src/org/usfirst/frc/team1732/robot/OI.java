@@ -24,6 +24,8 @@ import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.GearInta
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.GearIntakeSetDownOut;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.GearIntakeSetUpStop;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.TeleopGearIntakeSetUpTimeIn;
+import org.usfirst.frc.team1732.robot.commands.wings.WingsSetIn;
+import org.usfirst.frc.team1732.robot.commands.wings.WingsSetOut;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -150,6 +152,8 @@ public class OI {
 		}
 	};
 
+	private final Button wings = new JoystickButton(right, 8);
+
 	public OI() {
 		gearPickup.whenActive(new GearIntakeSetDownIn());
 		gearPickup.whenInactive(new TeleopGearIntakeSetUpTimeIn(1));
@@ -191,6 +195,9 @@ public class OI {
 
 		feederOut.whenActive(new FeederSetOut());
 		feederOut.whenInactive(new FeederSetStop());
+
+		wings.whenPressed(new WingsSetOut());
+		wings.whenReleased(new WingsSetIn());
 	}
 
 	public double getLeftSpeed() {

@@ -124,7 +124,7 @@ public class Robot extends IterativeRobot {
 			addSubsystemsToSmartDashboard();
 			addAutonomousToSmartDashboard();
 			addTestingToSmartDashbaord();
-			addCamera();
+			//			addCamera();
 			dashboard.addItem(SmartDashboardItem.newNumberSender("robotPeriodic() frequency ms", this::getFrequency));
 
 			// initially sends items that have been added to driverstation

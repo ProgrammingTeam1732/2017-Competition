@@ -14,6 +14,9 @@ public class DriveEncodersGetSetpointAtRuntime extends Command {
 	private final DoubleSupplier	leftDistance;
 	private final DoubleSupplier	rightDistance;
 
+	private double	left	= 0;
+	private double	right	= 0;
+
 	public DriveEncodersGetSetpointAtRuntime(DoubleSupplier distanceInches) {
 		this(distanceInches, distanceInches);
 	}
@@ -30,8 +33,10 @@ public class DriveEncodersGetSetpointAtRuntime extends Command {
 	@Override
 	protected void initialize() {
 		driveTrain.resetEncoders();
-		driveTrain.setLeftEncoderSetpoint(leftDistance.getAsDouble());
-		driveTrain.setRightEncoderSetpoint(rightDistance.getAsDouble());
+		left = ((int) (leftDistance.getAsDouble() * 1000)) / 1000.0;
+		right = ((int) (rightDistance.getAsDouble() * 1000)) / 1000.0;
+		driveTrain.setLeftEncoderSetpoint(left);
+		driveTrain.setRightEncoderSetpoint(right);
 	}
 
 	// Called repeatedly when this Command is scheduled to run
@@ -40,7 +45,7 @@ public class DriveEncodersGetSetpointAtRuntime extends Command {
 		double leftOutput = driveTrain.getLeftPIDOutput();
 		double rightOutput = driveTrain.getRightPIDOutput();
 
-		if (leftDistance.getAsDouble() == rightDistance.getAsDouble()) {
+		if (left == right) {
 			leftOutput = leftOutput + driveTrain.getLeftRightAdjustment();
 			rightOutput = rightOutput - driveTrain.getLeftRightAdjustment();
 		}

@@ -11,6 +11,8 @@ import org.usfirst.frc.team1732.robot.autocommands.scoregear.scoresidegear.Score
 import org.usfirst.frc.team1732.robot.autocommands.scoregear.scoresidegear.ScoreSideGearRightEncoders;
 import org.usfirst.frc.team1732.robot.autocommands.scoregear.scoresidegear.ScoreSideGearWithTurningVisionLeft;
 import org.usfirst.frc.team1732.robot.autocommands.scoregear.scoresidegear.ScoreSideGearWithTurningVisionRight;
+import org.usfirst.frc.team1732.robot.autocommands.scoregear.twogearauto.TwoGearAutoLeft;
+import org.usfirst.frc.team1732.robot.autocommands.scoregear.twogearauto.TwoGearAutoRight;
 import org.usfirst.frc.team1732.robot.autocommands.scoregear.twogearmiddlethensideauto.TwoGearMiddleThenSideAutoLeft;
 import org.usfirst.frc.team1732.robot.autocommands.scoregear.twogearmiddlethensideauto.TwoGearMiddleThenSideAutoRight;
 import org.usfirst.frc.team1732.robot.autocommands.scoregearandballs.scoreballsthensidegear.ScoreBallsThenSideGearEncoders;
@@ -26,6 +28,7 @@ import org.usfirst.frc.team1732.robot.commands.ballsystem.shooting.TestShootShor
 import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveTime;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.ClearTotalDistance;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveEncodersWithBraking;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.TurnWithEncoders;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.TurnWithEncodersWithBraking;
 import org.usfirst.frc.team1732.robot.commands.vision.movement.DitherTurnWithVision;
 import org.usfirst.frc.team1732.robot.smartdashboard.MySmartDashboard;
@@ -62,8 +65,8 @@ public class AutoChooser implements SmartDashboardGroup {
 		GrabBallsKeylineThenShoot(KeylineHopperShoot::new),
 		GrabBallsKeylineThenShootWings(KeylineHopperShootWings::new),
 
-		// TwoGearAutoLeft(TwoGearAutoLeft::new),
-		// TwoGearAutoRight(TwoGearAutoRight::new),
+		TwoGearMiddleLeft(TwoGearAutoLeft::new),
+		TwoGearMiddleRight(TwoGearAutoRight::new),
 		//		SideTwoGearAutoLeft(SideTwoGearAutoLeft::new),
 		//		SideTwoGearAutoRight(SideTwoGearAutoRight::new),
 		MiddleSideTwoGearLeft(TwoGearMiddleThenSideAutoLeft::new),
@@ -84,12 +87,13 @@ public class AutoChooser implements SmartDashboardGroup {
 		TestShooterShort(TestShootShort::new),
 		TestShooterLong(TestShootLong::new),
 
-		TestVisionTurning(() -> new DitherTurnWithVision(0));
+		TestVisionTurning(() -> new DitherTurnWithVision(0)),
 		// DriveEncodersFar(new DriveEncoders(97.5)),
 		// DriveEncodersShort(new DriveEncoders(40)),
 
 		// Turn180Degrees(new TurnWithEncoders(180)),
-		// Turn90Degrees(new TurnWithEncoders(90)),
+		Turn90DegreesNew(() -> new TurnWithEncoders(() -> 90)),
+		Turn90DegreesOld(() -> new TurnWithEncoders(() -> 90));
 		// TurnWithEncoders180(new TurnWithEncoders(-180)),
 		// TurnWithEncoders90(new TurnWithEncoders(-90)),
 		// TurnWithEncoders45(new TurnWithEncoders(-45)),

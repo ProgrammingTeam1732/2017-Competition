@@ -6,6 +6,7 @@ import static org.usfirst.frc.team1732.robot.Robot.visionMain;
 import org.usfirst.frc.team1732.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Use this command to control turning the robot with the camera.
@@ -59,8 +60,8 @@ public class DitherTurnWithVision extends Command {
 			} else {
 				gearPIDOutput = 0;
 			}
-			driveTrain.driveRawAbsoluteLimit(gearPIDOutput, -gearPIDOutput, minimum, maximum);
-			//			SmartDashboard.putString("Gear Drive", driveTrain.driveRawAbsLimit(output, -output, .178, 1));
+			//			driveTrain.driveRawAbsoluteLimit(-gearPIDOutput, gearPIDOutput, minimum, maximum);
+			SmartDashboard.putString("Gear Drive", driveTrain.driveRawAbsLimit(gearPIDOutput, -gearPIDOutput, .178, 1));
 		}
 	}
 

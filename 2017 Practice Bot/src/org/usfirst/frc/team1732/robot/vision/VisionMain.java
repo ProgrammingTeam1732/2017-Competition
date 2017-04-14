@@ -11,7 +11,6 @@ import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardItem;
 import org.usfirst.frc.team1732.robot.subsystems.PixyCamera;
 
 import edu.wpi.cscore.CvSource;
-import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
@@ -62,8 +61,8 @@ public class VisionMain implements SmartDashboardGroup {
 		gearPID.setContinuous(false);
 		gearPID.setOutputRange(MIN_OUTPUT, MAX_OUTPUT);
 		gearPID.enable();
-		outputStream = CameraServer.getInstance().putVideo(	"Gear Rectangles", PixyCamera.IMAGE_WIDTH,
-															PixyCamera.IMAGE_HEIGHT);
+		//		outputStream = CameraServer.getInstance().putVideo(	"Gear Rectangles", PixyCamera.IMAGE_WIDTH,
+		//															PixyCamera.IMAGE_HEIGHT);
 		mat = new Mat();
 	}
 

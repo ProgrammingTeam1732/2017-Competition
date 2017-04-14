@@ -69,10 +69,12 @@ public class TwoGearMiddleThenSideAuto extends CommandGroup {
 
 		// drops gear intake
 		boolean gearPickupUseTimeout = false; // will use distance to end command
-		double gearPickupMaxDistance = 80;
-		addSequential(new GrabGear(gearPickupUseTimeout, gearPickupMaxDistance));
+		double gearPickupMaxDistance = 70;
+		double gearPickupMinDistance = 30;
+		addSequential(new GrabGear(gearPickupUseTimeout, gearPickupMaxDistance, gearPickupMinDistance));
 
 		// stop robot
+		//		addSequential(new BrakeDrive());
 		double stopSpeed = 0;
 		addSequential(new SetMotorSpeed(stopSpeed));
 
@@ -97,7 +99,7 @@ public class TwoGearMiddleThenSideAuto extends CommandGroup {
 
 		DoubleSupplier driveUpFieldDistance = () -> {
 			double distanceFromSidePegToRobot = DISTANCE_FROM_WALL_TO_SIDE_PEG
-					- ((firstLeftDistance + firstRightDistance) / 2.0) - HALF_ROBOT_WIDTH;
+					- ((firstLeftDistance + firstRightDistance) / 2.0) - HALF_ROBOT_WIDTH - 4;
 
 			double distanceDrove = (secondLeftDistance + secondRightDistance) / 2.0;
 			double distanceDroveMinusDistanceBetweenPegs = distanceDrove - DISTANCE_BETWEEN_PEGS;
