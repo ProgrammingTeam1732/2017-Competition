@@ -11,10 +11,6 @@ import org.usfirst.frc.team1732.robot.autocommands.scoregear.scoresidegear.Score
 import org.usfirst.frc.team1732.robot.autocommands.scoregear.scoresidegear.ScoreSideGearRightEncoders;
 import org.usfirst.frc.team1732.robot.autocommands.scoregear.scoresidegear.ScoreSideGearWithTurningVisionLeft;
 import org.usfirst.frc.team1732.robot.autocommands.scoregear.scoresidegear.ScoreSideGearWithTurningVisionRight;
-import org.usfirst.frc.team1732.robot.autocommands.scoregear.twogearauto.TwoGearAutoLeft;
-import org.usfirst.frc.team1732.robot.autocommands.scoregear.twogearauto.TwoGearAutoRight;
-import org.usfirst.frc.team1732.robot.autocommands.scoregear.twogearmiddlethensideauto.TwoGearMiddleThenSideAutoLeft;
-import org.usfirst.frc.team1732.robot.autocommands.scoregear.twogearmiddlethensideauto.TwoGearMiddleThenSideAutoRight;
 import org.usfirst.frc.team1732.robot.autocommands.scoregearandballs.scoreballsthensidegear.ScoreBallsThenSideGearEncoders;
 import org.usfirst.frc.team1732.robot.autocommands.scoregearandballs.scoreballsthensidegear.ScoreBallsThenSideGearVision;
 import org.usfirst.frc.team1732.robot.autocommands.scoregearandballs.scoremiddlegearthenballs.ScoreMiddleGearThenBallsEncoders;
@@ -65,12 +61,11 @@ public class AutoChooser implements SmartDashboardGroup {
 		GrabBallsKeylineThenShoot(KeylineHopperShoot::new),
 		GrabBallsKeylineThenShootWings(KeylineHopperShootWings::new),
 
-		TwoGearMiddleLeft(TwoGearAutoLeft::new),
-		TwoGearMiddleRight(TwoGearAutoRight::new),
-		//		SideTwoGearAutoLeft(SideTwoGearAutoLeft::new),
-		//		SideTwoGearAutoRight(SideTwoGearAutoRight::new),
-		MiddleSideTwoGearLeft(TwoGearMiddleThenSideAutoLeft::new),
-		MiddleSideTwoGearRight(TwoGearMiddleThenSideAutoRight::new),
+		// TwoGearAutoLeft(TwoGearAutoLeft::new),
+		// TwoGearAutoRight(TwoGearAutoRight::new),
+		//		 SideTwoGearAutoLeft(SideTwoGearAutoLeft::new),
+		//		 SideTwoGearAutoRight(SideTwoGearAutoRight::new),
+		// MiddleSideTwoGear(TwoGearMiddleThenSideAuto::new),
 
 		StartOnWallThenShoot(StartOnWallAndShoot::new),
 		StartBesideBoilerThenShoot(StartBesideBoilerAndShoot::new),

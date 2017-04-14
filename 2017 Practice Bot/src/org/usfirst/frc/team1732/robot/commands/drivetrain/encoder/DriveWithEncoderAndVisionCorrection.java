@@ -13,7 +13,7 @@ public class DriveWithEncoderAndVisionCorrection extends Command {
 
 	private DoubleSupplier distance;
 
-	public static final double ANGLE_P = 0.01;
+	public static final double ANGLE_P = 0.04;
 
 	public DriveWithEncoderAndVisionCorrection(DoubleSupplier distance) {
 		this.distance = distance;
