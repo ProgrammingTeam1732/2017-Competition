@@ -9,24 +9,24 @@ import org.usfirst.frc.team1732.robot.subsystems.DriveTrain;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class TurnWithEncodersWithRamping extends Command {
+public class DriveEncodersWithRamping extends Command {
 
-    public TurnWithEncodersWithRamping(DoubleSupplier angle) {
-	this(angle, DEFAULT_STOP_RAMP_PERCENTAGE, DEFAULT_STOP_FLAT_PERCENTAGE);
+    public DriveEncodersWithRamping(DoubleSupplier distance) {
+	this(distance, DEFAULT_STOP_RAMP_PERCENTAGE, DEFAULT_STOP_FLAT_PERCENTAGE);
     }
 
-    public TurnWithEncodersWithRamping(double angle) {
-	this(angle, DEFAULT_STOP_RAMP_PERCENTAGE, DEFAULT_STOP_FLAT_PERCENTAGE);
+    public DriveEncodersWithRamping(double distance) {
+	this(distance, DEFAULT_STOP_RAMP_PERCENTAGE, DEFAULT_STOP_FLAT_PERCENTAGE);
     }
 
-    public TurnWithEncodersWithRamping(DoubleSupplier angle, double stopRampPercent, double stopFlatPercent) {
-	this.angleSupplier = angle;
+    public DriveEncodersWithRamping(DoubleSupplier distance, double stopRampPercent, double stopFlatPercent) {
+	this.distanceSupplier = distance;
 	if (stopFlatPercent < stopRampPercent)
 	    stopFlatPercent = stopRampPercent;
     }
 
-    public TurnWithEncodersWithRamping(double angle, double stopRampPercent, double stopFlatPercent) {
-	this(() -> angle, stopRampPercent, stopFlatPercent);
+    public DriveEncodersWithRamping(double distance, double stopRampPercent, double stopFlatPercent) {
+	this(() -> distance, stopRampPercent, stopFlatPercent);
     }
 
     // Called just before this Command runs the first time
@@ -37,18 +37,16 @@ public class TurnWithEncodersWithRamping extends Command {
 	// Robot.driveTrain.setEncoderDeadband(3);
 	Robot.driveTrain.resetEncoders();
 
-	angle = angleSupplier.getAsDouble();
-	setpoint = angle / 360.0 * DriveTrain.TURNING_CIRCUMFERENCE;
-	targetMotorOutput = Math.abs(setpoint) * stopRampPercentage * DriveTrain.encoderTurningP;
+	driveTrain.resetEncoders();
+	driveTrain.resetEncoderPID();
+	driveTrain.resetEncoderDeadband();
+	setpoint = distanceSupplier.getAsDouble();
 
-	Robot.driveTrain.setLeftEncoderSetpoint(setpoint);
-	Robot.driveTrain.setRightEncoderSetpoint(-setpoint);
-	Robot.driveTrain.setEncoderToTurningPID();
-	Robot.driveTrain.setEncoderDeadband(DriveTrain.ENCODER_TURNING_DEADBAND_INCHES);
+	driveTrain.setEncoderSetpoint(setpoint);
+	targetMotorOutput = Math.abs(setpoint) * stopRampPercentage * DriveTrain.encoderP;
     }
 
-    private final DoubleSupplier angleSupplier;
-    private double angle;
+    private final DoubleSupplier distanceSupplier;
     private double setpoint;
     private double targetMotorOutput;
     private final double stopRampPercentage = DEFAULT_STOP_RAMP_PERCENTAGE;
@@ -63,8 +61,7 @@ public class TurnWithEncodersWithRamping extends Command {
     @Override
     protected void execute() {
 	// the error is how far away the robot is from the setpoint
-	double averageError = (Math.abs(Robot.driveTrain.getLeftPIDError())
-		+ Math.abs(Robot.driveTrain.getRightPIDError())) / 2.0;
+	double averageError = (Math.abs(driveTrain.getLeftPIDError()) + Math.abs(driveTrain.getRightPIDError())) / 2.0;
 	double percentCompleted = 1.0 - (averageError / Math.abs(setpoint));
 
 	if (percentCompleted < stopRampPercentage) {
@@ -76,32 +73,28 @@ public class TurnWithEncodersWithRamping extends Command {
 	    if (output < MINIMUM_OUTPUT) {
 		output = MINIMUM_OUTPUT; // minimum output needed to move
 		// hopefully this doesn't really ever happen because then the
-		// robot wouldn't be able to complete the turn anyways
-		// using just the pid turning
+		// robot wouldn't be able to complete the drive anyways
+		// using just the pid
 	    }
 	    output = Math.copySign(output, Robot.visionMain.getGearPIDOutput());
-	    Robot.driveTrain.driveRaw(output, -output);
+	    driveTrain.driveRaw(output, -output);
 	} else if (percentCompleted >= stopRampPercentage && percentCompleted <= stopFlatPercentage) {
 	    // move at previous set speed until STOP_FLAT_PERCENTAGE is reached
-	} else { // finish turn normally
-	    if (Math.abs(driveTrain.getLeftPIDError()) < DriveTrain.ENCODER_IZONE_TURNING
-		    || Math.abs(driveTrain.getRightPIDError()) < DriveTrain.ENCODER_IZONE_TURNING) {
-		driveTrain.setEncoderPIDS(DriveTrain.encoderTurningP, DriveTrain.ENCODER_IZONE_TURNING_I,
-			DriveTrain.encoderTurningD);
-	    } else {
-		driveTrain.setEncoderToTurningPID();
+	} else { // finish drive normally
+	    double leftOutput = driveTrain.getLeftPIDOutput();
+	    double rightOutput = driveTrain.getRightPIDOutput();
+
+	    leftOutput = leftOutput + driveTrain.getLeftRightAdjustment();
+	    rightOutput = rightOutput - driveTrain.getLeftRightAdjustment();
+
+	    double max = Math.max(Math.abs(leftOutput), Math.abs(rightOutput));
+
+	    if (max > 1) {
+		leftOutput = leftOutput / max;
+		rightOutput = rightOutput / max;
 	    }
 
-	    double leftError = Robot.driveTrain.getLeftPIDError();
-	    double rightError = Robot.driveTrain.getRightPIDError();
-	    double leftRightAdjustment = (leftError + rightError) * DriveTrain.errorDifferenceScalar;
-
-	    double left = Robot.driveTrain.getLeftPIDOutput();
-	    double right = Robot.driveTrain.getRightPIDOutput();
-
-	    left = left + leftRightAdjustment;
-	    right = right + leftRightAdjustment;
-	    Robot.driveTrain.driveRaw(left, right);
+	    driveTrain.driveRaw(leftOutput, rightOutput);
 	}
 
     }
@@ -109,14 +102,14 @@ public class TurnWithEncodersWithRamping extends Command {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-	return Robot.driveTrain.encodersOnTarget();
+	return driveTrain.encodersOnTarget();
     }
 
     // Called once after isFinished returns true
     @Override
     protected void end() {
-	Robot.driveTrain.driveRaw(0, 0);
-	Robot.driveTrain.resetEncoderPIDValues();
-	Robot.driveTrain.resetEncoderDeadband();
+	driveTrain.driveRaw(0, 0);
+	driveTrain.resetEncoderPIDValues();
+	driveTrain.resetEncoderDeadband();
     }
 }
