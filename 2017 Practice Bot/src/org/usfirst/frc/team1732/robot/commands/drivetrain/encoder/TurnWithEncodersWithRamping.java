@@ -39,7 +39,7 @@ public class TurnWithEncodersWithRamping extends Command {
 
 	angle = angleSupplier.getAsDouble();
 	setpoint = angle / 360.0 * DriveTrain.TURNING_CIRCUMFERENCE;
-	targetMotorOutput = Math.abs(setpoint) * stopRampPercentage * DriveTrain.encoderTurningP;
+	targetMotorOutput = Math.abs(setpoint) * stopFlatPercentage * DriveTrain.encoderTurningP;
 
 	Robot.driveTrain.setLeftEncoderSetpoint(setpoint);
 	Robot.driveTrain.setRightEncoderSetpoint(-setpoint);

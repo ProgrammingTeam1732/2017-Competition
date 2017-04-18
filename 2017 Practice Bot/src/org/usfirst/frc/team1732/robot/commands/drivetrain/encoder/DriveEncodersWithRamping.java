@@ -43,7 +43,7 @@ public class DriveEncodersWithRamping extends Command {
 	setpoint = distanceSupplier.getAsDouble();
 
 	driveTrain.setEncoderSetpoint(setpoint);
-	targetMotorOutput = Math.abs(setpoint) * stopRampPercentage * DriveTrain.encoderP;
+	targetMotorOutput = Math.abs(setpoint) * stopFlatPercentage * DriveTrain.encoderP;
     }
 
     private final DoubleSupplier distanceSupplier;
