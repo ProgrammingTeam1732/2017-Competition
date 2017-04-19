@@ -23,6 +23,8 @@ public class TurnWithEncodersWithRamping extends Command {
 	this.angleSupplier = angle;
 	if (stopFlatPercent < stopRampPercent)
 	    stopFlatPercent = stopRampPercent;
+	this.stopRampPercentage = stopRampPercent;
+	this.stopFlatPercentage = stopFlatPercent;
     }
 
     public TurnWithEncodersWithRamping(double angle, double stopRampPercent, double stopFlatPercent) {
@@ -38,7 +40,7 @@ public class TurnWithEncodersWithRamping extends Command {
 	Robot.driveTrain.resetEncoders();
 
 	angle = angleSupplier.getAsDouble();
-	setpoint = angle / 360.0 * DriveTrain.TURNING_CIRCUMFERENCE;
+	setpoint = angle / 360.0 * DriveTrain.EFFECTIVE_TURNING_CIRCUMFERENCE;
 	targetMotorOutput = Math.abs(setpoint) * stopFlatPercentage * DriveTrain.encoderTurningP;
 
 	Robot.driveTrain.setLeftEncoderSetpoint(setpoint);
@@ -51,8 +53,8 @@ public class TurnWithEncodersWithRamping extends Command {
     private double angle;
     private double setpoint;
     private double targetMotorOutput;
-    private final double stopRampPercentage = DEFAULT_STOP_RAMP_PERCENTAGE;
-    private final double stopFlatPercentage = DEFAULT_STOP_FLAT_PERCENTAGE;
+    private final double stopRampPercentage;
+    private final double stopFlatPercentage;
     private static final double DEFAULT_STOP_RAMP_PERCENTAGE = 0.33;
     private static final double DEFAULT_STOP_FLAT_PERCENTAGE = 0.33;
     // stop ramping after completed 33% of the turn
@@ -80,7 +82,16 @@ public class TurnWithEncodersWithRamping extends Command {
 		// using just the pid turning
 	    }
 	    output = Math.copySign(output, Robot.visionMain.getGearPIDOutput());
-	    Robot.driveTrain.driveRaw(output, -output);
+	    double leftError = Robot.driveTrain.getLeftPIDError();
+	    double rightError = Robot.driveTrain.getRightPIDError();
+	    double leftRightAdjustment = (leftError + rightError) * DriveTrain.errorDifferenceScalar;
+
+	    double left = output;
+	    double right = -output;
+
+	    left = left + leftRightAdjustment;
+	    right = right + leftRightAdjustment;
+	    Robot.driveTrain.driveRaw(left, right);
 	} else if (percentCompleted >= stopRampPercentage && percentCompleted <= stopFlatPercentage) {
 	    // move at previous set speed until STOP_FLAT_PERCENTAGE is reached
 	} else { // finish turn normally
