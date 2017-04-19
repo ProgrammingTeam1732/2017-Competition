@@ -23,6 +23,8 @@ public class DriveEncodersWithRamping extends Command {
 	this.distanceSupplier = distance;
 	if (stopFlatPercent < stopRampPercent)
 	    stopFlatPercent = stopRampPercent;
+	this.stopRampPercentage = stopRampPercent;
+	this.stopFlatPercentage = stopFlatPercent;
     }
 
     public DriveEncodersWithRamping(double distance, double stopRampPercent, double stopFlatPercent) {
@@ -49,8 +51,8 @@ public class DriveEncodersWithRamping extends Command {
     private final DoubleSupplier distanceSupplier;
     private double setpoint;
     private double targetMotorOutput;
-    private final double stopRampPercentage = DEFAULT_STOP_RAMP_PERCENTAGE;
-    private final double stopFlatPercentage = DEFAULT_STOP_FLAT_PERCENTAGE;
+    private final double stopRampPercentage;
+    private final double stopFlatPercentage;
     private static final double DEFAULT_STOP_RAMP_PERCENTAGE = 0.33;
     private static final double DEFAULT_STOP_FLAT_PERCENTAGE = 0.33;
     // stop ramping after completed 33% of the turn
@@ -76,8 +78,20 @@ public class DriveEncodersWithRamping extends Command {
 		// robot wouldn't be able to complete the drive anyways
 		// using just the pid
 	    }
-	    output = Math.copySign(output, Robot.visionMain.getGearPIDOutput());
-	    driveTrain.driveRaw(output, -output);
+	    output = Math.copySign(output, driveTrain.getLeftPIDOutput());
+	    double leftOutput = output;
+	    double rightOutput = output;
+	    leftOutput = leftOutput + driveTrain.getLeftRightAdjustment();
+	    rightOutput = rightOutput - driveTrain.getLeftRightAdjustment();
+
+	    double max = Math.max(Math.abs(leftOutput), Math.abs(rightOutput));
+
+	    if (max > 1) {
+		leftOutput = leftOutput / max;
+		rightOutput = rightOutput / max;
+	    }
+
+	    driveTrain.driveRaw(leftOutput, rightOutput);
 	} else if (percentCompleted >= stopRampPercentage && percentCompleted <= stopFlatPercentage) {
 	    // move at previous set speed until STOP_FLAT_PERCENTAGE is reached
 	} else { // finish drive normally
