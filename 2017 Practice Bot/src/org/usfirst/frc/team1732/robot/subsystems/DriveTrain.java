@@ -88,7 +88,7 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
     public static final double encoderTurningP = 0.055;
     public static final double encoderTurningI = 0;
     public static final double encoderTurningD = 0.04;
-    public static final double ENCODER_TURNING_DEADBAND_INCHES = 1;
+    public static final double ENCODER_TURNING_DEADBAND_INCHES = 0.75;
 
     public static final double ENCODER_IZONE_TURNING = 4;
     public static final double ENCODER_IZONE_TURNING_I = 0.001;
