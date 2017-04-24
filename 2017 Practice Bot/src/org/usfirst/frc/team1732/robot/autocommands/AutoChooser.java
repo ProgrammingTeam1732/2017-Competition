@@ -6,11 +6,12 @@ import org.usfirst.frc.team1732.robot.autocommands.grabballsthenshoot.keylinehop
 import org.usfirst.frc.team1732.robot.autocommands.grabballsthenshoot.keylinehoppershoot.KeylineHopperShootWings;
 import org.usfirst.frc.team1732.robot.autocommands.grabballsthenshoot.straighthoppershoot.StraightHopperShoot;
 import org.usfirst.frc.team1732.robot.autocommands.scoregear.scoremiddlegear.ScoreMiddleGearEncoders;
-import org.usfirst.frc.team1732.robot.autocommands.scoregear.scoremiddlegear.ScoreMiddleGearVision;
 import org.usfirst.frc.team1732.robot.autocommands.scoregear.scoresidegear.ScoreSideGearLeftEncoders;
 import org.usfirst.frc.team1732.robot.autocommands.scoregear.scoresidegear.ScoreSideGearRightEncoders;
 import org.usfirst.frc.team1732.robot.autocommands.scoregear.scoresidegear.ScoreSideGearWithTurningVisionLeft;
 import org.usfirst.frc.team1732.robot.autocommands.scoregear.scoresidegear.ScoreSideGearWithTurningVisionRight;
+import org.usfirst.frc.team1732.robot.autocommands.scoregear.twogearauto.TwoGearAutoLeft;
+import org.usfirst.frc.team1732.robot.autocommands.scoregear.twogearauto.TwoGearAutoRight;
 import org.usfirst.frc.team1732.robot.autocommands.scoregearandballs.scoreballsthensidegear.ScoreBallsThenSideGearEncoders;
 import org.usfirst.frc.team1732.robot.autocommands.scoregearandballs.scoreballsthensidegear.ScoreBallsThenSideGearVision;
 import org.usfirst.frc.team1732.robot.autocommands.scoregearandballs.scoremiddlegearthenballs.ScoreMiddleGearThenBallsEncoders;
@@ -23,11 +24,11 @@ import org.usfirst.frc.team1732.robot.commands.ballsystem.shooting.TestShootLong
 import org.usfirst.frc.team1732.robot.commands.ballsystem.shooting.TestShootShort;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveTime;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.ClearTotalDistance;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveEncoders;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveEncodersWithBraking;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.TurnWithEncoders;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.TurnWithEncodersSimpleRamp;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.TurnWithEncodersWithBraking;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.TurnWithEncodersWithRamping;
 import org.usfirst.frc.team1732.robot.commands.vision.movement.DitherTurnWithVision;
 import org.usfirst.frc.team1732.robot.smartdashboard.MySmartDashboard;
 import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardGroup;
@@ -45,7 +46,7 @@ public class AutoChooser implements SmartDashboardGroup {
      */
 
     public static enum AutoModes {
-	MiddleGear(ScoreMiddleGearVision::new),
+	// MiddleGear(ScoreMiddleGearVision::new),
 	MiddleGearEncoders(ScoreMiddleGearEncoders::new),
 	RightGear(ScoreSideGearWithTurningVisionRight::new),
 	RightGearEncoders(ScoreSideGearRightEncoders::new),
@@ -63,8 +64,8 @@ public class AutoChooser implements SmartDashboardGroup {
 	GrabBallsKeylineThenShoot(KeylineHopperShoot::new),
 	GrabBallsKeylineThenShootWings(KeylineHopperShootWings::new),
 
-	// TwoGearAutoLeft(TwoGearAutoLeft::new),
-	// TwoGearAutoRight(TwoGearAutoRight::new),
+	TwoGearAutoLeftSide(TwoGearAutoLeft::new),
+	TwoGearAutoRightSide(TwoGearAutoRight::new),
 	// SideTwoGearAutoLeft(SideTwoGearAutoLeft::new),
 	// SideTwoGearAutoRight(SideTwoGearAutoRight::new),
 	// MiddleSideTwoGear(TwoGearMiddleThenSideAuto::new),
@@ -86,11 +87,12 @@ public class AutoChooser implements SmartDashboardGroup {
 
 	TestVisionTurning(() -> new DitherTurnWithVision(0)),
 	// DriveEncodersFar(new DriveEncoders(97.5)),
-	// DriveEncodersShort(new DriveEncoders(40)),
+	DriveEncodersTest(() -> new DriveEncoders(100)),
+	DriveEncodersReverse(() -> new DriveEncoders(-100)),
 
 	// Turn180Degrees(new TurnWithEncoders(180)),
-	Turn90DegreesSimpleRamp(() -> new TurnWithEncodersSimpleRamp(90)),
-	Turn90DegreesHardRamp(() -> new TurnWithEncodersWithRamping(90)),
+	TurnNegative90DegreesRamp(() -> new TurnWithEncodersSimpleRamp(-90)),
+	Turn90DegreesRamp(() -> new TurnWithEncodersSimpleRamp(90)),
 	Turn90DegreesOld(() -> new TurnWithEncoders(90));
 	// TurnWithEncoders180(new TurnWithEncoders(-180)),
 	// TurnWithEncoders90(new TurnWithEncoders(-90)),
