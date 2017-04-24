@@ -10,25 +10,25 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class ScoreSideGear extends CommandGroup {
 
-	public ScoreSideGear(boolean useVision, boolean isLeft) {
-		addSequential(new InitGearIntake());
-		// wait to move
-		addSequential(new Wait(Robot.autoWaitTime.getValue()));
+    public ScoreSideGear(boolean useVision, boolean isLeft) {
+	addSequential(new InitGearIntake());
+	// wait to move
+	addSequential(new Wait(Robot.autoWaitTime.getValue()));
 
-		// get into position to score gear
-		addSequential(new ScoreSideGearPart1(isLeft));
+	// get into position to score gear
+	addSequential(new ScoreSideGearPart1(isLeft));
 
-		// score gear, drive back 25 inches
-		double driveBackDistance = -25;
-		if (useVision) {
-			double maxSetpoint = 80;
-			addSequential(new VisionPlaceGear(driveBackDistance, maxSetpoint, true));
-		} else {
-			double driveForwardDistance = 15;
-			addSequential(new EncoderPlaceGear(driveForwardDistance, driveBackDistance));
-		}
-		// drive to hoppers
-		// addSequential(new DriveToHopperFromLeftGearPeg());
+	// score gear, drive back 25 inches
+	double driveBackDistance = -25;
+	if (useVision) {
+	    double maxSetpoint = 80;
+	    addSequential(new VisionPlaceGear(driveBackDistance, maxSetpoint, true));
+	} else {
+	    double driveForwardDistance = 15;
+	    addSequential(new EncoderPlaceGear(driveForwardDistance, driveBackDistance));
 	}
+	// drive to hoppers
+	// addSequential(new DriveToHopperFromLeftGearPeg());
+    }
 
 }
