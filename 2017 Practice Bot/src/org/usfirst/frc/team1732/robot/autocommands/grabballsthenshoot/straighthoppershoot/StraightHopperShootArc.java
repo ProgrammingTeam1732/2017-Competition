@@ -1,5 +1,7 @@
 package org.usfirst.frc.team1732.robot.autocommands.grabballsthenshoot.straighthoppershoot;
 
+import java.util.function.DoubleSupplier;
+
 import org.usfirst.frc.team1732.robot.Robot;
 import org.usfirst.frc.team1732.robot.commands.ballsystem.feeder.FeederSetSpeed;
 import org.usfirst.frc.team1732.robot.commands.ballsystem.feeder.FeederSetStop;
@@ -9,7 +11,8 @@ import org.usfirst.frc.team1732.robot.commands.ballsystem.shooting.ShuffleBallsW
 import org.usfirst.frc.team1732.robot.commands.drivetrain.BrakeDriveNoShift;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveTime;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveEncoders;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveEncodersWithBraking;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveEncodersSimpleRamp;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveUntilEncoders;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.TurnWithEncodersSimpleRamp;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.InitGearIntake;
 import org.usfirst.frc.team1732.robot.commands.helpercommands.Wait;
@@ -18,9 +21,9 @@ import org.usfirst.frc.team1732.robot.commands.wings.WingsSetOut;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class StraightHopperShoot extends CommandGroup {
+public class StraightHopperShootArc extends CommandGroup {
 
-    public StraightHopperShoot() {
+    public StraightHopperShootArc() {
 	boolean isRed = Robot.isRedAlliance.getValue();
 
 	addSequential(new InitGearIntake());
@@ -29,26 +32,45 @@ public class StraightHopperShoot extends CommandGroup {
 	addSequential(new Wait(Robot.autoWaitTime.getValue()));
 
 	// drive towards hopper
-	double driveTowardHopperDistance = 68;
-	addSequential(new DriveEncodersWithBraking(driveTowardHopperDistance));
+	double driveTowardHopperDistance = 19;
+	double driveTowardHopperSpeed = 1;
+	boolean stop = false;
+	addSequential(new DriveUntilEncoders(driveTowardHopperDistance, driveTowardHopperSpeed, driveTowardHopperSpeed,
+		stop));
 
 	addSequential(new WingsSetOut());
 
-	double faceHopperAngle = 0;
+	DoubleSupplier leftArc;
+	DoubleSupplier rightArc;
+	double a = 33 * Math.PI;
+	double b = 20 * Math.PI;
+	double ratio = a / b;
+	double A = a - 5;
+	double B = A / ratio;
 	if (isRed) {
-	    faceHopperAngle = 90;
+	    leftArc = () -> A;
+	    rightArc = () -> B;
 	} else {
-	    faceHopperAngle = -90;
+	    leftArc = () -> B;
+	    rightArc = () -> A;
 	}
-	addSequential(new TurnWithEncodersSimpleRamp(faceHopperAngle));
+
+	addSequential(new DriveEncodersSimpleRamp(leftArc, rightArc));
+	// double faceHopperAngle = 0;
+	// if (isRed) {
+	// faceHopperAngle = 90;
+	// } else {
+	// faceHopperAngle = -90;
+	// }
+	// addSequential(new TurnWithEncodersSimpleRamp(faceHopperAngle));
 
 	// turn on feeder while getting balls
 	double feederSpeed = -0.5;
 	addSequential(new FeederSetSpeed(feederSpeed));
 
 	// drive into hopper
-	double driveIntoHopperTime = 2;
-	double driveIntoHopperSpeed = 0.4;
+	double driveIntoHopperTime = 1;
+	double driveIntoHopperSpeed = 0.3;
 	addSequential(new DriveTime(driveIntoHopperTime, driveIntoHopperSpeed));
 
 	// wait while picking up balls

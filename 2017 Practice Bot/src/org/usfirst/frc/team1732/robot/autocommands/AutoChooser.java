@@ -5,6 +5,7 @@ import java.util.function.Supplier;
 import org.usfirst.frc.team1732.robot.autocommands.grabballsthenshoot.keylinehoppershoot.KeylineHopperShoot;
 import org.usfirst.frc.team1732.robot.autocommands.grabballsthenshoot.keylinehoppershoot.KeylineHopperShootWings;
 import org.usfirst.frc.team1732.robot.autocommands.grabballsthenshoot.straighthoppershoot.StraightHopperShoot;
+import org.usfirst.frc.team1732.robot.autocommands.grabballsthenshoot.straighthoppershoot.StraightHopperShootArc;
 import org.usfirst.frc.team1732.robot.autocommands.scoregear.scoremiddlegear.ScoreMiddleGearEncoders;
 import org.usfirst.frc.team1732.robot.autocommands.scoregear.scoresidegear.ScoreSideGearLeftEncoders;
 import org.usfirst.frc.team1732.robot.autocommands.scoregear.scoresidegear.ScoreSideGearRightEncoders;
@@ -25,6 +26,7 @@ import org.usfirst.frc.team1732.robot.commands.ballsystem.shooting.TestShootShor
 import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveTime;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.ClearTotalDistance;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveEncoders;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveEncodersSimpleRampBase;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveEncodersWithBraking;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.TurnWithEncoders;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.TurnWithEncodersSimpleRamp;
@@ -61,6 +63,7 @@ public class AutoChooser implements SmartDashboardGroup {
 	ShootBallsThenSideGearEncoders(ScoreBallsThenSideGearEncoders::new),
 
 	GrabBallsForwardThenShoot(StraightHopperShoot::new),
+	GrabBallsForwardThenShootArc(StraightHopperShootArc::new),
 	GrabBallsKeylineThenShoot(KeylineHopperShoot::new),
 	GrabBallsKeylineThenShootWings(KeylineHopperShootWings::new),
 
@@ -90,6 +93,9 @@ public class AutoChooser implements SmartDashboardGroup {
 	DriveEncodersTest(() -> new DriveEncoders(100)),
 	DriveEncodersReverse(() -> new DriveEncoders(-100)),
 
+	// DriveEncodersArc(()->new DriveUntilEncoders(20 * Math.PI, 33 *
+	// Math.PI, )),
+	DriveEncodersSimpleRamping(() -> new DriveEncodersSimpleRampBase(() -> 20 * Math.PI, () -> 33 * Math.PI)),
 	// Turn180Degrees(new TurnWithEncoders(180)),
 	TurnNegative90DegreesRamp(() -> new TurnWithEncodersSimpleRamp(-90)),
 	Turn90DegreesRamp(() -> new TurnWithEncodersSimpleRamp(90)),
