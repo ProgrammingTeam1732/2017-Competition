@@ -9,15 +9,15 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 /**
  *
  */
-public class TurnWithEncoders extends CommandGroup {
+public class TurnWithEncodersSimpleRamp extends CommandGroup {
 
-    public TurnWithEncoders(double angle) {
+    public TurnWithEncodersSimpleRamp(double angle) {
 	addSequential(new DriveTime(0.001, 0));
-	addSequential(new TurnWithEncodersBase(angle));
+	addSequential(new TurnWithEncodersSimpleRampBase(angle));
     }
 
-    public TurnWithEncoders(DoubleSupplier angle) {
+    public TurnWithEncodersSimpleRamp(DoubleSupplier angle) {
 	addSequential(new DriveTime(0.001, 0));
-	addSequential(new TurnWithEncodersBase(angle));
+	addSequential(new TurnWithEncodersSimpleRampBase(angle));
     }
 }
