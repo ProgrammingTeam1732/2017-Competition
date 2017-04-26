@@ -22,6 +22,7 @@ public class DriveEncodersSimpleRampBase extends Command {
 	    stopFlatPercent = stopRampPercent;
 	this.stopRampPercentage = stopRampPercent;
 	this.stopFlatPercentage = stopFlatPercent;
+	setTimeout(1);
     }
 
     // Called just before this Command runs the first time
@@ -129,9 +130,11 @@ public class DriveEncodersSimpleRampBase extends Command {
 
 	double max = Math.max(Math.abs(leftOutput), Math.abs(rightOutput));
 
-	if (max > 1) {
-	    leftOutput = leftOutput / max;
-	    rightOutput = rightOutput / max;
+	double maxValue = 0.85;
+
+	if (max > maxValue) {
+	    leftOutput = (leftOutput / max) * maxValue;
+	    rightOutput = (rightOutput / max) * maxValue;
 	}
 
 	prevOutput = output;
@@ -146,7 +149,7 @@ public class DriveEncodersSimpleRampBase extends Command {
     protected boolean isFinished() {
 	boolean leftOvershoot = Math.abs(Robot.driveTrain.getLeftDistance()) > Math.abs(leftSetpoint);
 	boolean rightOvershoot = Math.abs(Robot.driveTrain.getRightDistance()) > Math.abs(rightSetpoint);
-	return Robot.driveTrain.encodersOnTarget() || (leftOvershoot && rightOvershoot);
+	return Robot.driveTrain.encodersOnTarget() || (leftOvershoot || rightOvershoot);
     }
 
     // Called once after isFinished returns true
