@@ -8,13 +8,13 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class TurnWithEncodersWithBraking extends CommandGroup {
 
-	public TurnWithEncodersWithBraking(double setpoint) {
-		this(() -> setpoint);
-	}
+    public TurnWithEncodersWithBraking(double setpoint) {
+	this(() -> setpoint);
+    }
 
-	public TurnWithEncodersWithBraking(DoubleSupplier setpoint) {
-		addSequential(new TurnWithEncoders(setpoint));
-		addSequential(new BrakeDrive());
-	}
+    public TurnWithEncodersWithBraking(DoubleSupplier setpoint) {
+	addSequential(new TurnWithEncoders(setpoint));
+	addSequential(new BrakeDrive());
+    }
 
 }

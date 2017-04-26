@@ -39,7 +39,7 @@ public class TurnWithVision extends Command {
 			foundOnce = true;
 			double output = visionMain.getGearPIDOutput();
 			// 1 - // Math.abs(angle/angleSetpoint);
-			driveTrain.driveRaw(-output / 2, output / 2);
+			driveTrain.driveRaw(output, -output);
 		}
 	}
 
