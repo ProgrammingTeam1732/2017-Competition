@@ -7,31 +7,12 @@ import org.usfirst.frc.team1732.robot.autocommands.grabballsthenshoot.keylinehop
 import org.usfirst.frc.team1732.robot.autocommands.grabballsthenshoot.straighthoppershoot.StraightHopperShoot;
 import org.usfirst.frc.team1732.robot.autocommands.grabballsthenshoot.straighthoppershoot.StraightHopperShootArc;
 import org.usfirst.frc.team1732.robot.autocommands.scoregear.scoremiddlegear.ScoreMiddleGearEncoders;
-import org.usfirst.frc.team1732.robot.autocommands.scoregear.scoresidegear.ScoreSideGearLeftEncoders;
-import org.usfirst.frc.team1732.robot.autocommands.scoregear.scoresidegear.ScoreSideGearRightEncoders;
 import org.usfirst.frc.team1732.robot.autocommands.scoregear.scoresidegear.ScoreSideGearWithTurningVisionLeft;
 import org.usfirst.frc.team1732.robot.autocommands.scoregear.scoresidegear.ScoreSideGearWithTurningVisionRight;
 import org.usfirst.frc.team1732.robot.autocommands.scoregear.twogearauto.TwoGearAutoLeft;
 import org.usfirst.frc.team1732.robot.autocommands.scoregear.twogearauto.TwoGearAutoRight;
-import org.usfirst.frc.team1732.robot.autocommands.scoregearandballs.scoreballsthensidegear.ScoreBallsThenSideGearEncoders;
-import org.usfirst.frc.team1732.robot.autocommands.scoregearandballs.scoreballsthensidegear.ScoreBallsThenSideGearVision;
 import org.usfirst.frc.team1732.robot.autocommands.scoregearandballs.scoremiddlegearthenballs.ScoreMiddleGearThenBallsEncoders;
-import org.usfirst.frc.team1732.robot.autocommands.scoregearandballs.scoremiddlegearthenballs.ScoreMiddleGearThenBallsVision;
-import org.usfirst.frc.team1732.robot.autocommands.scoregearandballs.scoresidegearthenballs.ScoreSideGearThenBallsEncoders;
-import org.usfirst.frc.team1732.robot.autocommands.scoregearandballs.scoresidegearthenballs.ScoreSideGearThenBallsVision;
 import org.usfirst.frc.team1732.robot.autocommands.shoot.besideboilerandshoot.StartBesideBoilerAndShoot;
-import org.usfirst.frc.team1732.robot.autocommands.shoot.startonwallandshoot.StartOnWallAndShoot;
-import org.usfirst.frc.team1732.robot.commands.ballsystem.shooting.TestShootLong;
-import org.usfirst.frc.team1732.robot.commands.ballsystem.shooting.TestShootShort;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveTime;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.ClearTotalDistance;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveEncoders;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveEncodersSimpleRampBase;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveEncodersWithBraking;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.TurnWithEncoders;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.TurnWithEncodersSimpleRamp;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.TurnWithEncodersWithBraking;
-import org.usfirst.frc.team1732.robot.commands.vision.movement.DitherTurnWithVision;
 import org.usfirst.frc.team1732.robot.smartdashboard.MySmartDashboard;
 import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardGroup;
 import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardItem;
@@ -48,58 +29,63 @@ public class AutoChooser implements SmartDashboardGroup {
      */
 
     public static enum AutoModes {
+	MiddleGearEncoders(ScoreMiddleGearEncoders::new), // 0
+	RightGear(ScoreSideGearWithTurningVisionRight::new), // 1
+	LeftGear(ScoreSideGearWithTurningVisionLeft::new), // 2
+	MiddleGearThenShootBallsEncoders(ScoreMiddleGearThenBallsEncoders::new), // 3
+	GrabBallsForwardThenShoot(StraightHopperShoot::new), // 4
+	GrabBallsForwardThenShootArc(StraightHopperShootArc::new), // 5
+	GrabBallsKeylineThenShootNoWings(KeylineHopperShoot::new), // 6
+	GrabBallsKeylineThenShootWings(KeylineHopperShootWings::new), // 7
+	TwoGearAutoLeftSide(TwoGearAutoLeft::new), // 8
+	TwoGearAutoRightSide(TwoGearAutoRight::new), // 9
+	StartBesideBoilerThenShoot(StartBesideBoilerAndShoot::new);// 10
+
 	// MiddleGear(ScoreMiddleGearVision::new),
-	MiddleGearEncoders(ScoreMiddleGearEncoders::new),
-	RightGear(ScoreSideGearWithTurningVisionRight::new),
-	RightGearEncoders(ScoreSideGearRightEncoders::new),
-	LeftGear(ScoreSideGearWithTurningVisionLeft::new),
-	LeftGearEncoders(ScoreSideGearLeftEncoders::new),
 
-	LeftGearThenShootBalls(ScoreSideGearThenBallsVision::new),
-	LeftGearThenShootBallsEncoders(ScoreSideGearThenBallsEncoders::new),
-	MiddleGearThenShootBalls(ScoreMiddleGearThenBallsVision::new),
-	MiddleGearThenShootBallsEncoders(ScoreMiddleGearThenBallsEncoders::new),
-	ShootBallsThenSideGear(ScoreBallsThenSideGearVision::new),
-	ShootBallsThenSideGearEncoders(ScoreBallsThenSideGearEncoders::new),
+	// RightGearEncoders(ScoreSideGearRightEncoders::new),
+	// LeftGearEncoders(ScoreSideGearLeftEncoders::new),
 
-	GrabBallsForwardThenShoot(StraightHopperShoot::new),
-	GrabBallsForwardThenShootArc(StraightHopperShootArc::new),
-	GrabBallsKeylineThenShoot(KeylineHopperShoot::new),
-	GrabBallsKeylineThenShootWings(KeylineHopperShootWings::new),
+	// LeftGearThenShootBalls(ScoreSideGearThenBallsVision::new),
+	// LeftGearThenShootBallsEncoders(ScoreSideGearThenBallsEncoders::new),
+	// MiddleGearThenShootBalls(ScoreMiddleGearThenBallsVision::new),
+	// ShootBallsThenSideGear(ScoreBallsThenSideGearVision::new),
+	// ShootBallsThenSideGearEncoders(ScoreBallsThenSideGearEncoders::new),
 
-	TwoGearAutoLeftSide(TwoGearAutoLeft::new),
-	TwoGearAutoRightSide(TwoGearAutoRight::new),
 	// SideTwoGearAutoLeft(SideTwoGearAutoLeft::new),
 	// SideTwoGearAutoRight(SideTwoGearAutoRight::new),
 	// MiddleSideTwoGear(TwoGearMiddleThenSideAuto::new),
 
-	StartOnWallThenShoot(StartOnWallAndShoot::new),
-	StartBesideBoilerThenShoot(StartBesideBoilerAndShoot::new),
+	// StartOnWallThenShoot(StartOnWallAndShoot::new),
 
 	// testing
-	DriveEncodersBrake(() -> new DriveEncodersWithBraking(110, 20)),
-	TurnWithEncodersWithBraking90(() -> new TurnWithEncodersWithBraking(90)),
-	TurnWithEncodersWithBraking180(() -> new TurnWithEncodersWithBraking(180)),
-	TurnWithEncodersWithBraking45(() -> new TurnWithEncodersWithBraking(45)),
-
-	DriveTime(() -> new DriveTime(2, 0.5)),
-	DriveTimeBackwards(() -> new DriveTime(2, -0.5)),
-	ResetEncoders(ClearTotalDistance::new),
-	TestShooterShort(TestShootShort::new),
-	TestShooterLong(TestShootLong::new),
-
-	TestVisionTurning(() -> new DitherTurnWithVision(0)),
-	// DriveEncodersFar(new DriveEncoders(97.5)),
-	DriveEncodersTest(() -> new DriveEncoders(100)),
-	DriveEncodersReverse(() -> new DriveEncoders(-100)),
+	// DriveEncodersBrake(() -> new DriveEncodersWithBraking(110, 20)),
+	// TurnWithEncodersWithBraking90(() -> new
+	// TurnWithEncodersWithBraking(90)),
+	// TurnWithEncodersWithBraking180(() -> new
+	// TurnWithEncodersWithBraking(180)),
+	// TurnWithEncodersWithBraking45(() -> new
+	// TurnWithEncodersWithBraking(45)),
+	//
+	// DriveTime(() -> new DriveTime(2, 0.5)),
+	// DriveTimeBackwards(() -> new DriveTime(2, -0.5)),
+	// ResetEncoders(ClearTotalDistance::new),
+	// TestShooterShort(TestShootShort::new),
+	// TestShooterLong(TestShootLong::new),
+	//
+	// TestVisionTurning(() -> new DitherTurnWithVision(0)),
+	// // DriveEncodersFar(new DriveEncoders(97.5)),
+	// DriveEncodersTest(() -> new DriveEncoders(100)),
+	// DriveEncodersReverse(() -> new DriveEncoders(-100)),
 
 	// DriveEncodersArc(()->new DriveUntilEncoders(20 * Math.PI, 33 *
 	// Math.PI, )),
-	DriveEncodersSimpleRamping(() -> new DriveEncodersSimpleRampBase(() -> 20 * Math.PI, () -> 33 * Math.PI)),
-	// Turn180Degrees(new TurnWithEncoders(180)),
-	TurnNegative90DegreesRamp(() -> new TurnWithEncodersSimpleRamp(-90)),
-	Turn90DegreesRamp(() -> new TurnWithEncodersSimpleRamp(90)),
-	Turn90DegreesOld(() -> new TurnWithEncoders(90));
+	// DriveEncodersSimpleRamping(() -> new DriveEncodersSimpleRampBase(()
+	// -> 20 * Math.PI, () -> 33 * Math.PI)),
+	// // Turn180Degrees(new TurnWithEncoders(180)),
+	// TurnNegative90DegreesRamp(() -> new TurnWithEncodersSimpleRamp(-90)),
+	// Turn90DegreesRamp(() -> new TurnWithEncodersSimpleRamp(90)),
+	// Turn90DegreesOld(() -> new TurnWithEncoders(90));
 	// TurnWithEncoders180(new TurnWithEncoders(-180)),
 	// TurnWithEncoders90(new TurnWithEncoders(-90)),
 	// TurnWithEncoders45(new TurnWithEncoders(-45)),
@@ -121,7 +107,7 @@ public class AutoChooser implements SmartDashboardGroup {
 
     private final SendableChooser<AutoModes> autoChooser = new SendableChooser<>();
 
-    public static final AutoModes defaultAuto = AutoModes.GrabBallsKeylineThenShoot;
+    public static final AutoModes defaultAuto = AutoModes.GrabBallsKeylineThenShootNoWings;
 
     public AutoChooser() {
 	autoChooser.addDefault(defaultAuto.ordinal() + ": " + defaultAuto.name(), defaultAuto);
