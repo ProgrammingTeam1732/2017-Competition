@@ -54,7 +54,7 @@ public class TurnWithEncodersSimpleRampBase extends Command {
     private double setpoint;
     private double prevLeft = 0;
     private double prevRight = 0;
-    private static final double RAMP_RATE = 0.025; // max delta % Volt
+    private static final double RAMP_RATE = 0.035; // max delta % Volt
 						   // per 20 ms
     private final double stopRampPercentage;
     private final double stopFlatPercentage;
