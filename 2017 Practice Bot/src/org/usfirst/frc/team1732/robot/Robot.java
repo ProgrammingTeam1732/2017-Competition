@@ -227,7 +227,7 @@ public class Robot extends IterativeRobot {
     private void addAutonomousToSmartDashboard() {
 	autoChooser = new AutoChooser();
 	autoChooser.addToSmartDashboard(dashboard);
-	dashboard.addItem(SmartDashboardItem.newStringSender("Selected Auto Command", () -> {
+	dashboard.addItem(SmartDashboardItem.newStringSender("AUTO:", () -> {
 	    try {
 		return autoChooser.getSelected().name();
 	    } catch (Exception e) {
