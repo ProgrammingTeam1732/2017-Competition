@@ -23,7 +23,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 
-    public static final double RIGHT_PERCENTAGE_FORWARD = 0.94880776378458293024342626784969;
+    public static final double RIGHT_PERCENTAGE_FORWARD = 1;
     // public static final double RIGHT_PERCENTAGE_FORWARD = 1;//
     // 0.95648717383821848004664142981469;
     public static final double RIGHT_PERCENTAGE_BACKWARD = 1;
@@ -93,7 +93,7 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
     public static final double encoderTurningP = 0.055;
     public static final double encoderTurningI = 0;
     public static final double encoderTurningD = 0.04;
-    public static final double ENCODER_TURNING_DEADBAND_INCHES = 1;
+    public static final double ENCODER_TURNING_DEADBAND_INCHES = 0.75;
 
     public static final double ENCODER_IZONE_TURNING = 4;
     public static final double ENCODER_IZONE_TURNING_I = 0.001;
@@ -112,7 +112,9 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
     // public static final double VOLTAGE_RAMP_RATE = 6;
 
     public static final double ROBOT_WIDTH_INCHES = 26;
+    public static final double ROBOT_LENGTH_INCHES = 34.5;
     public static final double TURNING_CIRCUMFERENCE = Math.PI * ROBOT_WIDTH_INCHES;
+    public static final double EFFECTIVE_TURNING_CIRCUMFERENCE = TURNING_CIRCUMFERENCE * 1;
 
     public static final String NAME = "Drive Train";
 
@@ -356,8 +358,6 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 
     public static final double ENCODER_RAMP_RATE = 0;
     public static final double MAX_INCHES_PER_SECOND = 40;
-
-    public static final double EFFECTIVE_TURNING_CIRCUMFERENCE = TURNING_CIRCUMFERENCE * 1;
 
     public double rampWithEncoders(double prev, double requested, Encoder encoder) {
 	if (isHighGear() && Math.abs(requested) > MIN_RAMP_LEVEL

@@ -6,6 +6,7 @@ import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team1732.robot.autocommands.AutoChooser;
+import org.usfirst.frc.team1732.robot.commands.SetRobotToStartState;
 import org.usfirst.frc.team1732.robot.commands.ballsystem.ballintake.motor.BallIntakeSetIn;
 import org.usfirst.frc.team1732.robot.commands.ballsystem.ballintake.motor.BallIntakeSetOut;
 import org.usfirst.frc.team1732.robot.commands.ballsystem.ballintake.motor.BallIntakeSetStop;
@@ -19,6 +20,7 @@ import org.usfirst.frc.team1732.robot.commands.ballsystem.flywheel.EnableFlywhee
 import org.usfirst.frc.team1732.robot.commands.ballsystem.flywheel.manual.FlywheelForward;
 import org.usfirst.frc.team1732.robot.commands.ballsystem.flywheel.manual.FlywheelReverse;
 import org.usfirst.frc.team1732.robot.commands.ballsystem.flywheel.manual.FlywheelStop;
+import org.usfirst.frc.team1732.robot.commands.ballsystem.shooting.ShuffleBallsWithWait;
 import org.usfirst.frc.team1732.robot.commands.climber.ArmSetIn;
 import org.usfirst.frc.team1732.robot.commands.climber.ArmSetOut;
 import org.usfirst.frc.team1732.robot.commands.climber.ClimberSetStop;
@@ -50,6 +52,7 @@ import org.usfirst.frc.team1732.robot.commands.gearIntake.base.position.GearInta
 import org.usfirst.frc.team1732.robot.commands.gearIntake.base.position.GearIntakeSetUp;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.base.stopper.GearIntakeSetStopperIn;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.base.stopper.GearIntakeSetStopperOut;
+import org.usfirst.frc.team1732.robot.commands.vision.TestVisionMain;
 import org.usfirst.frc.team1732.robot.smartdashboard.MySmartDashboard;
 import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardItem;
 import org.usfirst.frc.team1732.robot.subsystems.Arm;
@@ -101,7 +104,6 @@ public class Robot extends IterativeRobot {
 
     private static AutoChooser autoChooser;
     public static SmartDashboardItem<Boolean> isRedAlliance;
-    private static SmartDashboardItem<Double> distanceToDriveBackForTwoGear;
     public static SmartDashboardItem<Double> autoWaitTime;
     public static SmartDashboardItem<Double> startOnWallAndShootDistance;
 
@@ -112,11 +114,13 @@ public class Robot extends IterativeRobot {
     @Override
     public void robotInit() {
 	try {
-	    // initialize subsystems - always do this first
+	    // initialize smartdashboard
 	    initializeMySmartDashboardItems();
 	    initializeSubsystems();
 	    initializeVision();
 	    initializeInput();
+
+	    // Add items to smartdashboard
 	    addSubsystemsToSmartDashboard();
 	    addAutonomousToSmartDashboard();
 	    addTestingToSmartDashbaord();
@@ -125,39 +129,6 @@ public class Robot extends IterativeRobot {
 
 	    // initially sends items that have been added to driverstation
 	    dashboard.init();
-	    // driveTrain = new DriveTrain();
-	    // flywheel = new Flywheel();
-	    // ballIntake = new BallIntake();
-	    // climber = new Climber();
-	    // feeder = new Feeder();
-	    // arm = new Arm();
-	    // gearIntake = new GearIntake();
-	    // pixyCamera = new PixyCamera();
-	    // triggers = new Triggers();
-	    // autoChooser = new AutoChooser();
-	    //
-	    // oi = new OI();
-	    // visionMain = new VisionMain();
-	    //
-	    // // Smartdashboard code
-	    // dashboard = new MySmartDashboard();
-	    // // Add items to smartdashboard
-	    // addSubsystemsToSmartDashboard();
-	    // addAutonomousToSmartDashboard();
-	    // addTestingToSmartDashbaord();
-	    // // dashboard.addItem(SmartDashboardItem.newDoubleReciever("Light
-	    // // Voltage", 0.0, pixyCamera::setLightVoltage));
-	    // dashboard.addItem(SmartDashboardItem.newNumberSender("robotPeriodic()
-	    // frequency ms", this::getFrequency));
-	    // // dashboard.addItem(SmartDashboardItem.newDoubleReciever("Feeder
-	    // // Speed", 1.0, feeder::setSpeed));
-	    // // dashboard.addItem(SmartDashboardItem.newDoubleReciever("Intake
-	    // // Speed", -1.0, ballIntake::setSpeed));
-	    // SmartDashboard.putData(new TestVisionMain());
-	    // // addCamera();
-	    //
-	    // // Initialize smartdashboard
-	    // dashboard.init();
 	} catch (Exception e) {
 	    e.printStackTrace();
 	}
@@ -181,7 +152,6 @@ public class Robot extends IterativeRobot {
     @Override
     public void autonomousInit() {
 	Scheduler.getInstance().removeAll();
-	// new TurnLightsOn().start();
 	autoChooser.getSelected().start();
     }
 
@@ -193,9 +163,8 @@ public class Robot extends IterativeRobot {
     @Override
     public void teleopInit() {
 	Scheduler.getInstance().removeAll(); // Cancels commands
-	Robot.driveTrain.clearEncoderIntgral();
-	Robot.driveTrain.clearGyroIntgral();
-
+	// setRobotToDefaultStates();
+	new SetRobotToStartState().start();
     }
 
     @Override
@@ -250,37 +219,27 @@ public class Robot extends IterativeRobot {
 	climber.addToSmartDashboard(dashboard);
 	feeder.addToSmartDashboard(dashboard);
 	arm.addToSmartDashboard(dashboard);
+	wings.addToSmartDashboard(dashboard);
 	gearIntake.addToSmartDashboard(dashboard);
 	visionMain.addToSmartDashboard(dashboard);
-	autoChooser.addToSmartDashboard(dashboard);
-    }
-
-    public static boolean isRedAlliance() {
-	return isRedAlliance.getValue();
-    }
-
-    public static double getDistanceToDriveBackForTwoGear() {
-	return distanceToDriveBackForTwoGear.getValue();
     }
 
     private void addAutonomousToSmartDashboard() {
-	isRedAlliance = dashboard.addItem(SmartDashboardItem.newBooleanSender("Is Red Alliance?",
-		() -> DriverStation.getInstance().getAlliance().equals(Alliance.Red)));
-
-	distanceToDriveBackForTwoGear = dashboard
-		.addItem(SmartDashboardItem.newDoubleReciever("Two Gear Auto: inches from wall to go to", 50.0));
-
-	dashboard.addItem(SmartDashboardItem.newStringSender("Selected Auto Command", () -> {
+	autoChooser = new AutoChooser();
+	autoChooser.addToSmartDashboard(dashboard);
+	dashboard.addItem(SmartDashboardItem.newStringSender("AUTO:", () -> {
 	    try {
 		return autoChooser.getSelected().name();
 	    } catch (Exception e) {
-		return "null";
+		return "Error";
 	    }
 	}));
     }
 
     private void addTestingToSmartDashbaord() {
-	// SmartDashboard.putData(new ShuffleBallsWithWait());
+	SmartDashboard.putData(new ShuffleBallsWithWait());
+	SmartDashboard.putData(new TestVisionMain());
+
 	SmartDashboard.putData(new FlywheelForward());
 	SmartDashboard.putData(new FlywheelReverse());
 	SmartDashboard.putData(new FlywheelStop());
@@ -351,7 +310,6 @@ public class Robot extends IterativeRobot {
 	return startTime - start;
     }
 
-    @SuppressWarnings("unused")
     private void addCamera() {
 	int width = 320;
 	int height = 240;
@@ -421,8 +379,15 @@ public class Robot extends IterativeRobot {
 	Thread visionThread = new Thread(visionRun);
 	visionThread.setDaemon(true);
 	visionThread.start();
+
     }
 
+    /**
+     * Sets the robot to its default states Default states <br>
+     * -solenoid default positions (what position they are when in disabled
+     * mode) <br>
+     * -motors turned off
+     */
     private void setRobotToDefaultStates() {
 	driveTrain.clearEncoderIntgral();
 	driveTrain.clearGyroIntgral();

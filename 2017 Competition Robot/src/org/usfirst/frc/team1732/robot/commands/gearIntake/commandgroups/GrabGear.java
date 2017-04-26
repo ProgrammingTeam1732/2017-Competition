@@ -23,12 +23,17 @@ public class GrabGear extends CommandGroup {
 	 *            positive setpoint If time, the command will end after that
 	 *            much time has passed
 	 */
+
 	public GrabGear(boolean useTimeout, double stopPoint) {
+		this(useTimeout, stopPoint, 0);
+	}
+
+	public GrabGear(boolean useTimeout, double stopPoint, double minStopPoint) {
 		addSequential(new GearIntakeSetDown());
 		if (useTimeout) {
-			addSequential(new GearIntakeInCurrentTime(stopPoint, useTimeout));
+			addSequential(new GearIntakeInCurrentTime(minStopPoint, stopPoint, true));
 		} else {
-			addSequential(new GearIntakeInCurrentDistance(stopPoint));
+			addSequential(new GearIntakeInCurrentDistance(minStopPoint, stopPoint));
 
 		}
 		addParallel(new GearIntakeSetUpTimedIn(.3));

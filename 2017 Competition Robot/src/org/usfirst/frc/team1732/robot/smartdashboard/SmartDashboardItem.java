@@ -29,12 +29,15 @@ public abstract class SmartDashboardItem<T> {
 
 	protected abstract void init();
 
-	/**
+	/*
 	 * Theoretically, when using the smartDashboard, one should only be sending
 	 * or receiving data, but not both.
-	 * </nl>
+	 * 
 	 * If one was trying to do both, the sending data would overwrite any
 	 * changes the user makes on the smartdashboard and receiving data would not
+	 * function
+	 * 
+	 * This is why there is only 1 function, run(), not a send() and recieve()
 	 * function
 	 */
 	protected abstract void run();
