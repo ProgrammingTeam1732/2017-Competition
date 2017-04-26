@@ -32,7 +32,7 @@ public class StraightHopperShootArc extends CommandGroup {
 	addSequential(new Wait(Robot.autoWaitTime.getValue()));
 
 	// drive towards hopper
-	double driveTowardHopperDistance = 19;
+	double driveTowardHopperDistance = 20;
 	double driveTowardHopperSpeed = 1;
 	boolean stop = false;
 	addSequential(new DriveUntilEncoders(driveTowardHopperDistance, driveTowardHopperSpeed, driveTowardHopperSpeed,
@@ -42,17 +42,19 @@ public class StraightHopperShootArc extends CommandGroup {
 
 	DoubleSupplier leftArc;
 	DoubleSupplier rightArc;
-	double a = 33 * Math.PI;
-	double b = 20 * Math.PI;
-	double ratio = a / b;
-	double A = a - 5;
-	double B = A / ratio;
+	double innerRadius = 35;
+	double outerRadius = innerRadius + 25;
+	double innerCircle = Math.PI * 2 * innerRadius / 4; // C = 2pi*r/4
+	double outerCircle = Math.PI * 2 * outerRadius / 4; // C = 2pi*r/4
+	double ratio = innerCircle / outerCircle;
+	// double A = a;
+	// double B = A / ratio;
 	if (isRed) {
-	    leftArc = () -> A;
-	    rightArc = () -> B;
+	    leftArc = () -> outerCircle;
+	    rightArc = () -> innerCircle;
 	} else {
-	    leftArc = () -> B;
-	    rightArc = () -> A;
+	    leftArc = () -> innerCircle;
+	    rightArc = () -> outerCircle;
 	}
 
 	addSequential(new DriveEncodersSimpleRamp(leftArc, rightArc));
@@ -69,7 +71,7 @@ public class StraightHopperShootArc extends CommandGroup {
 	addSequential(new FeederSetSpeed(feederSpeed));
 
 	// drive into hopper
-	double driveIntoHopperTime = 1;
+	double driveIntoHopperTime = 0.5;
 	double driveIntoHopperSpeed = 0.3;
 	addSequential(new DriveTime(driveIntoHopperTime, driveIntoHopperSpeed));
 
@@ -111,7 +113,7 @@ public class StraightHopperShootArc extends CommandGroup {
 	addSequential(new EnableFlywheel());
 
 	// Drive to boiler
-	double driveToBoilerDistance = 60;
+	double driveToBoilerDistance = 55;
 	addSequential(new DriveEncoders(driveToBoilerDistance));
 
 	// Turn to face boiler
