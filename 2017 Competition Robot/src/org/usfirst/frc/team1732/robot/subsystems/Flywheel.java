@@ -26,7 +26,7 @@ public class Flywheel extends Subsystem implements SmartDashboardGroup {
 															// 50;
 	private double setpoint = COUNTS_PER_SECOND_TARGET;
 
-	public static final double	MAX_OUTPUT_VOLTAGE	= 12;
+	public static final double	MAX_OUTPUT_VOLTAGE	= 9.5;
 	private static final double	MAX_VELOCITY		= 32000;
 	private static final double	BASE_VOLTAGE		= 8;
 	private static final double	P					= Double.MAX_VALUE;							// Float.MAX_VALUE;

@@ -209,13 +209,13 @@ public class OI {
 
     public double getLeftSpeed() {
 	// return -controller.getRawAxis(1);// for use with game controller
-	return -left.getRawAxis(RobotMap.LEFT_JOYSTICK_Y_AXIS);
+	return left.getRawAxis(RobotMap.LEFT_JOYSTICK_Y_AXIS);
 	// return -buttons.getRawAxis(1);
     }
 
     public double getRightSpeed() {
 	// return -controller.getRawAxis(3);// for use with game controller
-	return -right.getRawAxis(RobotMap.RIGHT_JOYSTICK_Y_AXIS);
+	return right.getRawAxis(RobotMap.RIGHT_JOYSTICK_Y_AXIS);
 	// return -buttons.getRawAxis(3);
     }
 

@@ -336,42 +336,51 @@ public class Robot extends IterativeRobot {
 		// This
 		// lets the robot stop this thread when restarting robot code or
 		// deploying.
+		int index = 0;
 		while (!Thread.interrupted()) {
 		    // Tell the CvSink to grab a frame from the camera and put
 		    // it
 		    // in the source mat. If there is an error notify the
 		    // output.
-		    if (cvSink.grabFrame(mat) == 0) {
-			// Send the output the error.
-			outputStream.notifyError(cvSink.getError());
-			System.out.println("Error getting frame");
-			// skip the rest of the current iteration
-			continue;
+		    if (index % 10 == 0) {
+			if (cvSink.grabFrame(mat) == 0) {
+			    // Send the output the error.
+			    outputStream.notifyError(cvSink.getError());
+			    System.out.println("Error getting frame");
+			    // skip the rest of the current iteration
+			    continue;
+			}
+			// Put a border on the image
+			if (gearIntake.gearIsIn()) {// gearIntake.gearIsHeld()
+						    // ||) {
+			    // upper edge
+			    Imgproc.rectangle(mat, new Point(0, 0), new Point(width, thickness), color, thickness);
+			    // left edge
+			    Imgproc.rectangle(mat, new Point(0, 0), new Point(thickness, height), color, thickness);
+			    // right edge
+			    Imgproc.rectangle(mat, new Point(width - thickness, 0), new Point(width, height), color,
+				    thickness);
+			    // bottom edge
+			    Imgproc.rectangle(mat, new Point(0, height - thickness), new Point(width, height), color,
+				    thickness);
+			}
+			// add lines for karl target
+			// Scalar lineColor = new Scalar(0, 0, 0);
+			// Imgproc.line( mat, new Point((int) (width * 0.34651),
+			// 0),
+			// new Point((int) (width * 0.031217), height),
+			// lineColor,
+			// 2);
+			// Imgproc.line( mat, new Point((int) (width *
+			// 0.537981),
+			// 0),
+			// new Point((int) (width * 0.816857), height),
+			// lineColor,
+			// 2);
+			// Give the output stream a new image to display
+			outputStream.putFrame(mat);
 		    }
-		    // Put a border on the image
-		    if (gearIntake.gearIsIn()) {// gearIntake.gearIsHeld() ||) {
-			// upper edge
-			Imgproc.rectangle(mat, new Point(0, 0), new Point(width, thickness), color, thickness);
-			// left edge
-			Imgproc.rectangle(mat, new Point(0, 0), new Point(thickness, height), color, thickness);
-			// right edge
-			Imgproc.rectangle(mat, new Point(width - thickness, 0), new Point(width, height), color,
-				thickness);
-			// bottom edge
-			Imgproc.rectangle(mat, new Point(0, height - thickness), new Point(width, height), color,
-				thickness);
-		    }
-		    // add lines for karl target
-		    // Scalar lineColor = new Scalar(0, 0, 0);
-		    // Imgproc.line( mat, new Point((int) (width * 0.34651), 0),
-		    // new Point((int) (width * 0.031217), height), lineColor,
-		    // 2);
-		    // Imgproc.line( mat, new Point((int) (width * 0.537981),
-		    // 0),
-		    // new Point((int) (width * 0.816857), height), lineColor,
-		    // 2);
-		    // Give the output stream a new image to display
-		    outputStream.putFrame(mat);
+		    index++;
 		}
 	    }
 

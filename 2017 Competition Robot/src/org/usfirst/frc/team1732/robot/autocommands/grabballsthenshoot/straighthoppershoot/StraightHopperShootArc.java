@@ -18,6 +18,7 @@ import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.InitGear
 import org.usfirst.frc.team1732.robot.commands.helpercommands.Wait;
 import org.usfirst.frc.team1732.robot.commands.wings.WingsSetIn;
 import org.usfirst.frc.team1732.robot.commands.wings.WingsSetOut;
+import org.usfirst.frc.team1732.robot.subsystems.DriveTrain;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -32,7 +33,7 @@ public class StraightHopperShootArc extends CommandGroup {
 	addSequential(new Wait(Robot.autoWaitTime.getValue()));
 
 	// drive towards hopper
-	double driveTowardHopperDistance = 20;
+	double driveTowardHopperDistance = 23;
 	double driveTowardHopperSpeed = 1;
 	boolean stop = false;
 	addSequential(new DriveUntilEncoders(driveTowardHopperDistance, driveTowardHopperSpeed, driveTowardHopperSpeed,
@@ -42,8 +43,8 @@ public class StraightHopperShootArc extends CommandGroup {
 
 	DoubleSupplier leftArc;
 	DoubleSupplier rightArc;
-	double innerRadius = 35;
-	double outerRadius = innerRadius + 25;
+	double innerRadius = 32;
+	double outerRadius = innerRadius + DriveTrain.EFFECTIVE_TURNING_CIRCUMFERENCE;
 	double innerCircle = Math.PI * 2 * innerRadius / 4; // C = 2pi*r/4
 	double outerCircle = Math.PI * 2 * outerRadius / 4; // C = 2pi*r/4
 	double ratio = innerCircle / outerCircle;
@@ -113,7 +114,7 @@ public class StraightHopperShootArc extends CommandGroup {
 	addSequential(new EnableFlywheel());
 
 	// Drive to boiler
-	double driveToBoilerDistance = 55;
+	double driveToBoilerDistance = 53;
 	addSequential(new DriveEncoders(driveToBoilerDistance));
 
 	// Turn to face boiler
