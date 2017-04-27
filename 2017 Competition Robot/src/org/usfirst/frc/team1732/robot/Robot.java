@@ -314,6 +314,7 @@ public class Robot extends IterativeRobot {
 	int width = 320;
 	int height = 240;
 	int thickness = 10;
+	int fps = 10;
 	Scalar color = new Scalar(0, 255, 0);
 	Runnable visionRun = new Runnable() {
 	    @Override
@@ -322,6 +323,7 @@ public class Robot extends IterativeRobot {
 		UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
 		// Set the resolution
 		camera.setResolution(width, height);
+		camera.setFPS(fps);
 
 		// Get a CvSink. This will capture Mats from the camera
 		CvSink cvSink = CameraServer.getInstance().getVideo(camera);
@@ -385,6 +387,7 @@ public class Robot extends IterativeRobot {
 	    }
 
 	};
+
 	Thread visionThread = new Thread(visionRun);
 	visionThread.setDaemon(true);
 	visionThread.start();

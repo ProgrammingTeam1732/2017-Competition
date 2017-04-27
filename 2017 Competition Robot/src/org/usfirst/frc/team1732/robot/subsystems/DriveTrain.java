@@ -50,7 +50,7 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 
     private final Solenoid shifter = new Solenoid(RobotMap.PCM_CAN_ID,
 	    RobotMap.DRIVE_TRAIN_SHIFTER_SOLENOID_DEVICE_NUMBER);
-    public static final boolean HIGH_GEAR = true; // false
+    public static final boolean HIGH_GEAR = false; // false
     public static final boolean LOW_GEAR = !HIGH_GEAR;
 
     // gyro
