@@ -30,9 +30,9 @@ public class KeylineHopperShootWings extends CommandGroup {
 	// Drive Along Keyline To Hopper
 	double keylineDriveDistance = 0;
 	if (isRed) {
-	    keylineDriveDistance = 65;
+	    keylineDriveDistance = 75;
 	} else {
-	    keylineDriveDistance = 65;
+	    keylineDriveDistance = 75;
 	}
 	addSequential(new DriveEncoders(keylineDriveDistance));
 
@@ -97,7 +97,7 @@ public class KeylineHopperShootWings extends CommandGroup {
 	addSequential(new EnableFlywheel());
 
 	// Drive to boiler
-	double driveToBoilerDistance = 60;
+	double driveToBoilerDistance = 55;
 	addSequential(new DriveEncoders(driveToBoilerDistance));
 
 	// Turn to face boiler

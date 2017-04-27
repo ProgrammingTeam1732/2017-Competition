@@ -10,20 +10,20 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class ScoreMiddleGear extends CommandGroup {
 
-	public ScoreMiddleGear(boolean useVision) {
-		this(useVision, -40);
-	}
+    public ScoreMiddleGear(boolean useVision) {
+	this(useVision, -40);
+    }
 
-	public ScoreMiddleGear(boolean useVision, double driveBackDistance) {
-		addSequential(new InitGearIntake());
+    public ScoreMiddleGear(boolean useVision, double driveBackDistance) {
+	addSequential(new InitGearIntake());
 
-		// wait to move
-		addSequential(new Wait(Robot.autoWaitTime.getValue()));
-		if (useVision) {
-			addSequential(new VisionPlaceGear(driveBackDistance, 80, false));
-		} else {
-			addSequential(new EncoderPlaceGear(59, driveBackDistance));
-		}
+	// wait to move
+	addSequential(new Wait(Robot.autoWaitTime.getValue()));
+	if (useVision) {
+	    addSequential(new VisionPlaceGear(driveBackDistance, 80, false));
+	} else {
+	    addSequential(new EncoderPlaceGear(63, driveBackDistance));
 	}
+    }
 
 }

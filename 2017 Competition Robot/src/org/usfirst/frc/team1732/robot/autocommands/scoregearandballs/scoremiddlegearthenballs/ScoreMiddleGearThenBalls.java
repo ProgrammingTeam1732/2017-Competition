@@ -22,7 +22,7 @@ public class ScoreMiddleGearThenBalls extends CommandGroup {
 	// GEAR SCORING
 
 	// places the gear, drives back
-	double driveBackDistance = -54;
+	double driveBackDistance = -49;
 	if (useVision) {
 	    addSequential(new ScoreMiddleGearVision(driveBackDistance));
 	} else {
@@ -37,9 +37,9 @@ public class ScoreMiddleGearThenBalls extends CommandGroup {
 	// turn to face boiler
 	double turnToBoilerAngle = 0;
 	if (isRed) {
-	    turnToBoilerAngle = 90;
+	    turnToBoilerAngle = 88;
 	} else {
-	    turnToBoilerAngle = -90;
+	    turnToBoilerAngle = -88;
 	}
 	addSequential(new TurnWithEncodersSimpleRamp(turnToBoilerAngle));
 
@@ -51,7 +51,7 @@ public class ScoreMiddleGearThenBalls extends CommandGroup {
 
 	// Drive to boiler
 	// drive fast for part of distance
-	double driveToBoilerFastDistance = 97;
+	double driveToBoilerFastDistance = 108;
 	double driveToBoilerFastLeftSpeed = 0.7;
 	double driveToBoilerFastRightSpeed = 0.7;
 	boolean driveToBoilerFastStop = false;
@@ -63,7 +63,7 @@ public class ScoreMiddleGearThenBalls extends CommandGroup {
 	// DriveEncoders(ScoreMiddleGearThenBallsData.DRIVE_3_SETPOINT));
 
 	// Face the boiler
-	double faceBoilerTime = 0.43;
+	double faceBoilerTime = 0.3;
 	double faceBoilerLeftSpeed = 0;
 	double faceBoilerRightSpeed = 0;
 	if (isRed) {

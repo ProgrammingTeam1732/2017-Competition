@@ -30,9 +30,9 @@ public class KeylineHopperShootWings extends CommandGroup {
 	// Drive Along Keyline To Hopper
 	double keylineDriveDistance = 0;
 	if (isRed) {
-	    keylineDriveDistance = 65;
+	    keylineDriveDistance = 70;
 	} else {
-	    keylineDriveDistance = 65;
+	    keylineDriveDistance = 70;
 	}
 	addSequential(new DriveEncoders(keylineDriveDistance));
 

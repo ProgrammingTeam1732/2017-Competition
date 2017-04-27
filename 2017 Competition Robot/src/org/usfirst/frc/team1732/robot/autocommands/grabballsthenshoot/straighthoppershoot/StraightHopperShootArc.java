@@ -33,7 +33,7 @@ public class StraightHopperShootArc extends CommandGroup {
 	addSequential(new Wait(Robot.autoWaitTime.getValue()));
 
 	// drive towards hopper
-	double driveTowardHopperDistance = 23;
+	double driveTowardHopperDistance = 35;
 	double driveTowardHopperSpeed = 1;
 	boolean stop = false;
 	addSequential(new DriveUntilEncoders(driveTowardHopperDistance, driveTowardHopperSpeed, driveTowardHopperSpeed,
@@ -43,13 +43,13 @@ public class StraightHopperShootArc extends CommandGroup {
 
 	DoubleSupplier leftArc;
 	DoubleSupplier rightArc;
-	double innerRadius = 32;
-	double outerRadius = innerRadius + DriveTrain.EFFECTIVE_TURNING_CIRCUMFERENCE;
-	double innerCircle = Math.PI * 2 * innerRadius / 4; // C = 2pi*r/4
-	double outerCircle = Math.PI * 2 * outerRadius / 4; // C = 2pi*r/4
-	double ratio = innerCircle / outerCircle;
-	// double A = a;
-	// double B = A / ratio;
+	double innerRadius = 40;
+	double outerRadius = innerRadius + DriveTrain.ROBOT_WIDTH_INCHES;
+	double innerCircleV1 = Math.PI * 2 * innerRadius / 4; // C = 2pi*r/4
+	double outerCircleV1 = Math.PI * 2 * outerRadius / 4; // C = 2pi*r/4
+	double ratio = outerCircleV1 / innerCircleV1;
+	double innerCircle = innerCircleV1 - 0;
+	double outerCircle = innerCircle * ratio;
 	if (isRed) {
 	    leftArc = () -> outerCircle;
 	    rightArc = () -> innerCircle;
@@ -118,7 +118,7 @@ public class StraightHopperShootArc extends CommandGroup {
 	addSequential(new DriveEncoders(driveToBoilerDistance));
 
 	// Turn to face boiler
-	double faceBoilerTime = .5;
+	double faceBoilerTime = .35;
 	double faceBoilerLeftSpeed = 0;
 	double faceBoilerRightSpeed = 0;
 	if (isRed) {

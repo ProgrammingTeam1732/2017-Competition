@@ -39,7 +39,9 @@ public class AutoChooser implements SmartDashboardGroup {
 	GrabBallsKeylineThenShootWings(KeylineHopperShootWings::new), // 7
 	TwoGearAutoLeftSide(TwoGearAutoLeft::new), // 8
 	TwoGearAutoRightSide(TwoGearAutoRight::new), // 9
-	StartBesideBoilerThenShoot(StartBesideBoilerAndShoot::new);// 10
+	StartBesideBoilerThenShoot(StartBesideBoilerAndShoot::new),
+	TestRight(new DriveTime(1, )),
+	TestLeft(new DriveTime(1, ));// 10
 
 	// MiddleGear(ScoreMiddleGearVision::new),
 

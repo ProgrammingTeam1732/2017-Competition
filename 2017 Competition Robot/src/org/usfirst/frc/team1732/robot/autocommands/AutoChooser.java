@@ -15,6 +15,7 @@ import org.usfirst.frc.team1732.robot.autocommands.scoregear.twogearauto.TwoGear
 import org.usfirst.frc.team1732.robot.autocommands.scoregear.twogearauto.TwoGearAutoRight;
 import org.usfirst.frc.team1732.robot.autocommands.scoregearandballs.scoremiddlegearthenballs.ScoreMiddleGearThenBallsEncoders;
 import org.usfirst.frc.team1732.robot.autocommands.shoot.besideboilerandshoot.StartBesideBoilerAndShoot;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveTime;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveEncodersSimpleRamp;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveUntilEncoders;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.TurnWithEncodersSimpleRamp;
@@ -48,7 +49,8 @@ public class AutoChooser implements SmartDashboardGroup {
 	TwoGearAutoLeftSide(TwoGearAutoLeft::new), // 8
 	TwoGearAutoRightSide(TwoGearAutoRight::new), // 9
 	StartBesideBoilerThenShoot(StartBesideBoilerAndShoot::new), // 10
-
+	TestLeft(() -> new DriveTime(1, 1, 0)),
+	TestRight(() -> new DriveTime(1, 0, 1)),
 	DitherTurnTest(() -> new DitherTurnWithVision(0)),
 	Turn90DegreesRamp(() -> new TurnWithEncodersSimpleRamp(90)),
 	ArcTurn(() -> new CommandGroup() {
@@ -148,7 +150,7 @@ public class AutoChooser implements SmartDashboardGroup {
 
     private final SendableChooser<AutoModes> autoChooser = new SendableChooser<>();
 
-    public static final AutoModes defaultAuto = AutoModes.GrabBallsKeylineThenShootNoWings;
+    public static final AutoModes defaultAuto = AutoModes.GrabBallsKeylineThenShootWings;
 
     public AutoChooser() {
 	autoChooser.addDefault(defaultAuto.ordinal() + ": " + defaultAuto.name(), defaultAuto);
