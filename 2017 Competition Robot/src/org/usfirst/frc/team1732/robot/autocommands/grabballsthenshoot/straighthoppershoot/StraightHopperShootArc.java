@@ -33,7 +33,7 @@ public class StraightHopperShootArc extends CommandGroup {
 	addSequential(new Wait(Robot.autoWaitTime.getValue()));
 
 	// drive towards hopper
-	double driveTowardHopperDistance = 35;
+	double driveTowardHopperDistance = 25;
 	double driveTowardHopperSpeed = 1;
 	boolean stop = false;
 	addSequential(new DriveUntilEncoders(driveTowardHopperDistance, driveTowardHopperSpeed, driveTowardHopperSpeed,
@@ -77,7 +77,7 @@ public class StraightHopperShootArc extends CommandGroup {
 	addSequential(new DriveTime(driveIntoHopperTime, driveIntoHopperSpeed));
 
 	// wait while picking up balls
-	double ballWaitTime = 1;
+	double ballWaitTime = 1.5;
 	addSequential(new Wait(ballWaitTime));
 
 	addSequential(new BrakeDriveNoShift());
