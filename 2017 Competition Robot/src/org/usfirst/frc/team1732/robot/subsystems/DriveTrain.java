@@ -23,15 +23,11 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 
-    public static final double RIGHT_PERCENTAGE_FORWARD = 1;
-    // public static final double RIGHT_PERCENTAGE_FORWARD = 1;//
-    // 0.95648717383821848004664142981469;
+    public static final double RIGHT_PERCENTAGE_FORWARD = 1;// 0.968;
     public static final double RIGHT_PERCENTAGE_BACKWARD = 1;
-    public static final double LEFT_PERCENTAGE_FORWARD = 1;// 0.95811863563969703302801219362789;
-    public static final double LEFT_PERCENTAGE_BACKWARD = 1;// 0.90787825604332140794575823714271;
-    // 0.94136026246386137267874459619899
+    public static final double LEFT_PERCENTAGE_FORWARD = 1;// 0.978;
+    public static final double LEFT_PERCENTAGE_BACKWARD = 1;
 
-    // 0.95648717383821848004664142981469 (old)
     // motors
     // left motors
     /**
@@ -85,7 +81,7 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
     public static final double encoderI = 0;
     public static final double encoderD = 0;
     public static final double ENCODER_DEADBAND_INCHES = 3; // 6
-    public static final double errorDifferenceScalar = 0.035;
+    public static final double errorDifferenceScalar = 0.045; // 0.035
 
     public static final double ENCODER_IZONE = 20;
     public static final double ENCODER_IZONE_I = 0.0004;

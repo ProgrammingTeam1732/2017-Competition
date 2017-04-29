@@ -2,44 +2,44 @@ package org.usfirst.frc.team1732.robot.autocommands.scoregearandballs.scoremiddl
 
 import org.usfirst.frc.team1732.robot.Robot;
 import org.usfirst.frc.team1732.robot.autocommands.scoregear.scoremiddlegear.ScoreMiddleGearEncoders;
-import org.usfirst.frc.team1732.robot.autocommands.scoregear.scoremiddlegear.ScoreMiddleGearVision;
 import org.usfirst.frc.team1732.robot.commands.ballsystem.flywheel.EnableFlywheel;
 import org.usfirst.frc.team1732.robot.commands.ballsystem.shooting.ShootTime;
 import org.usfirst.frc.team1732.robot.commands.ballsystem.shooting.ShuffleBallsWithWait;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.BrakeDriveNoShift;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveTime;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveEncoders;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveUntilEncoders;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.TurnWithEncodersSimpleRamp;
 import org.usfirst.frc.team1732.robot.commands.helpercommands.Wait;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class ScoreMiddleGearThenBalls extends CommandGroup {
+public class ScoreMiddleGearThenBallsHitWall extends CommandGroup {
 
-    public ScoreMiddleGearThenBalls(boolean useVision) {
+    public ScoreMiddleGearThenBallsHitWall() {
 	boolean isRed = Robot.isRedAlliance.getValue();
 
 	// GEAR SCORING
 
 	// places the gear, drives back
-	double driveBackDistance = -56;
-	if (useVision) {
-	    addSequential(new ScoreMiddleGearVision(driveBackDistance));
-	} else {
-	    addSequential(new ScoreMiddleGearEncoders(driveBackDistance));
-	}
+	double driveBackDistance = -57;
+	addSequential(new ScoreMiddleGearEncoders(driveBackDistance));
+	addSequential(new DriveTime(1, -0.5));
 
 	// BALL SCORING
-	addSequential(new BrakeDriveNoShift());
 
 	addSequential(new Wait(0.3));
+
+	addSequential(new DriveEncoders(12));
+
+	addSequential(new BrakeDriveNoShift());
 
 	// turn to face boiler
 	double turnToBoilerAngle = 0;
 	if (isRed) {
-	    turnToBoilerAngle = 96;
+	    turnToBoilerAngle = 98; // 96
 	} else {
-	    turnToBoilerAngle = -98; // -96;
+	    turnToBoilerAngle = -90; // -98;
 	}
 	addSequential(new TurnWithEncodersSimpleRamp(turnToBoilerAngle));
 
@@ -52,6 +52,11 @@ public class ScoreMiddleGearThenBalls extends CommandGroup {
 	// Drive to boiler
 	// drive fast for part of distance
 	double driveToBoilerFastDistance = 108;
+	if (isRed) {
+	    driveToBoilerFastDistance = 108;
+	} else {
+	    driveToBoilerFastDistance = 105;
+	}
 	double driveToBoilerFastLeftSpeed = 0.7;
 	double driveToBoilerFastRightSpeed = 0.7;
 	boolean driveToBoilerFastStop = false;

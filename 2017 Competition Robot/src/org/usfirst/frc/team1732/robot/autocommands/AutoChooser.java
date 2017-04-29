@@ -12,10 +12,13 @@ import org.usfirst.frc.team1732.robot.autocommands.scoregear.scoresidegear.Score
 import org.usfirst.frc.team1732.robot.autocommands.scoregear.twogearauto.TwoGearAutoLeft;
 import org.usfirst.frc.team1732.robot.autocommands.scoregear.twogearauto.TwoGearAutoRight;
 import org.usfirst.frc.team1732.robot.autocommands.scoregearandballs.scoremiddlegearthenballs.ScoreMiddleGearThenBallsEncoders;
+import org.usfirst.frc.team1732.robot.autocommands.scoregearandballs.scoremiddlegearthenballs.ScoreMiddleGearThenBallsHitWall;
 import org.usfirst.frc.team1732.robot.autocommands.shoot.besideboilerandshoot.StartBesideBoilerAndShoot;
 import org.usfirst.frc.team1732.robot.commands.ballsystem.flywheel.EnableFlywheel;
 import org.usfirst.frc.team1732.robot.commands.ballsystem.shooting.ShootTime;
 import org.usfirst.frc.team1732.robot.commands.ballsystem.shooting.ShuffleBallsWithWait;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveTime;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.ClearTotalDistance;
 import org.usfirst.frc.team1732.robot.commands.helpercommands.Wait;
 import org.usfirst.frc.team1732.robot.commands.vision.movement.DitherTurnWithVision;
 import org.usfirst.frc.team1732.robot.smartdashboard.MySmartDashboard;
@@ -48,6 +51,10 @@ public class AutoChooser implements SmartDashboardGroup {
 	StartBesideBoilerThenShoot(StartBesideBoilerAndShoot::new), // 10
 
 	// testing
+	WallMiddleGearAndShoot(() -> new ScoreMiddleGearThenBallsHitWall()),
+	TestForwardDrive(() -> new DriveTime(5, 0.5)),
+	TestBackwardDrive(() -> new DriveTime(5, -0.5)),
+	ClearEncoders(() -> new ClearTotalDistance()),
 	DitherTurnTest(() -> new DitherTurnWithVision(0)),
 	SlowShuffle(() -> new CommandGroup() {
 	    {
@@ -135,7 +142,7 @@ public class AutoChooser implements SmartDashboardGroup {
 
     private final SendableChooser<AutoModes> autoChooser = new SendableChooser<>();
 
-    public static final AutoModes defaultAuto = AutoModes.GrabBallsKeylineThenShootWings;
+    public static final AutoModes defaultAuto = AutoModes.TwoGearAutoLeftSide;
 
     public AutoChooser() {
 	autoChooser.addDefault(defaultAuto.ordinal() + ": " + defaultAuto.name(), defaultAuto);

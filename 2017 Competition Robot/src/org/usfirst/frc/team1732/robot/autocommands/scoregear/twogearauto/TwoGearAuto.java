@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class TwoGearAuto extends CommandGroup {
 
     private double droveBack;
+    public static final double DEFAULT_DRIVE_BACK_DISTANCE = -55;
 
     public TwoGearAuto(boolean isLeft) {
 	addSequential(new InitGearIntake());
@@ -32,10 +33,10 @@ public class TwoGearAuto extends CommandGroup {
 	    // droveBack = 10 - (Robot.driveTrain.getTotalLeftDistance() +
 	    // Robot.driveTrain.getTotalRightDistance()) / 2.0;
 	    // System.out.println(droveBack);
-	    droveBack = -55;
+	    droveBack = Robot.twoGearDriveBack.getValue(); // -55
 	    return droveBack;
 	};
-	DoubleSupplier firstGearDriveForwardDistance = () -> 59;
+	DoubleSupplier firstGearDriveForwardDistance = () -> 63;
 	addSequential(new EncoderPlaceGear(firstGearDriveForwardDistance, firstGearScoreDriveBack));
 
 	addSequential(new BrakeDriveNoShift());
@@ -43,9 +44,9 @@ public class TwoGearAuto extends CommandGroup {
 	// turns to face the gear on ground
 	double firstGearPickUpFaceGearAngle = 0;
 	if (isLeft) {
-	    firstGearPickUpFaceGearAngle = -90;
+	    firstGearPickUpFaceGearAngle = -98;
 	} else {
-	    firstGearPickUpFaceGearAngle = 90;
+	    firstGearPickUpFaceGearAngle = 95;
 	}
 	addSequential(new TurnWithEncodersSimpleRamp(firstGearPickUpFaceGearAngle));
 

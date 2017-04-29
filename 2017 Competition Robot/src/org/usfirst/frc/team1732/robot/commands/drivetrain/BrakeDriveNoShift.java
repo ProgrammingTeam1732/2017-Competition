@@ -22,7 +22,8 @@ public class BrakeDriveNoShift extends Command {
 	Robot.driveTrain.driveRaw(0, 0);
     }
 
-    public static final double BRAKE_P = 0.0246 / 2.0;// (1 / (13.5 * 12)) * 4;
+    public static final double BRAKE_P = 0.0246 / 2.0 * 1.5;// (1 / (13.5 * 12))
+							    // * 4;
 
     // Called repeatedly when this Command is scheduled to run
     @Override

@@ -6,6 +6,7 @@ import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team1732.robot.autocommands.AutoChooser;
+import org.usfirst.frc.team1732.robot.autocommands.scoregear.twogearauto.TwoGearAuto;
 import org.usfirst.frc.team1732.robot.commands.SetRobotToStartState;
 import org.usfirst.frc.team1732.robot.commands.ballsystem.ballintake.motor.BallIntakeSetIn;
 import org.usfirst.frc.team1732.robot.commands.ballsystem.ballintake.motor.BallIntakeSetOut;
@@ -105,6 +106,7 @@ public class Robot extends IterativeRobot {
     private static AutoChooser autoChooser;
     public static SmartDashboardItem<Boolean> isRedAlliance;
     public static SmartDashboardItem<Double> autoWaitTime;
+    public static SmartDashboardItem<Double> twoGearDriveBack;
     public static SmartDashboardItem<Double> startOnWallAndShootDistance;
 
     /**
@@ -126,6 +128,8 @@ public class Robot extends IterativeRobot {
 	    addTestingToSmartDashbaord();
 	    addCamera();
 	    dashboard.addItem(SmartDashboardItem.newNumberSender("robotPeriodic() frequency ms", this::getFrequency));
+	    twoGearDriveBack = dashboard.addItem(
+		    SmartDashboardItem.newDoubleReciever("2 Gear Drive Back", TwoGearAuto.DEFAULT_DRIVE_BACK_DISTANCE));
 
 	    // initially sends items that have been added to driverstation
 	    dashboard.init();
