@@ -31,6 +31,15 @@ public abstract class VisionTarget {
 	// bottom = null;
 	// }
 
+	public VisionTarget(Rectangle singleTarget){
+	    singleRectangle = true;
+	    left = singleTarget;
+	    right = singleTarget;
+	    top = singleTarget;
+	    bottom = singleTarget;
+	    boundingBox = new Rectangle(-1, singleTarget.x, singleTarget.y, singleTarget.width, singleTarget.height);
+	    score = 0;
+	}
 	/**
 	 * Creates a new vision target from two arbitrary rectangles
 	 * 

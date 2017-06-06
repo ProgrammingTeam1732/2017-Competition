@@ -15,6 +15,7 @@ import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.InitGear
 import org.usfirst.frc.team1732.robot.commands.helpercommands.Wait;
 import org.usfirst.frc.team1732.robot.commands.placegear.EncoderPlaceGear;
 import org.usfirst.frc.team1732.robot.commands.vision.movement.DitherTurnWithVision;
+import org.usfirst.frc.team1732.robot.commands.vision.movement.DitherTurnWithVisionForGroundGear;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -51,6 +52,8 @@ public class TwoGearAuto extends CommandGroup {
 	addSequential(new TurnWithEncodersSimpleRamp(firstGearPickUpFaceGearAngle));
 
 	addSequential(new BrakeDriveNoShift());
+	
+	addSequential(new DitherTurnWithVisionForGroundGear(0));
 
 	// wait to move
 	addSequential(new Wait(Robot.autoWaitTime.getValue()));
