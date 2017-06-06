@@ -61,6 +61,8 @@ public class VisionMain implements SmartDashboardGroup {
     public static final double VISION_DEADBAND_DEGREES = 2;
     public static final double MAX_OUTPUT = 0.4;
     public static final double MIN_OUTPUT = -MAX_OUTPUT;
+    
+    public static final double CHEESE_WHEEL_DEADBAND_DEGREES = 2;
 
     private static final int NUMBER_OF_SIGNATURES = 2;
 
@@ -74,6 +76,11 @@ public class VisionMain implements SmartDashboardGroup {
 	gearPID.setContinuous(false);
 	gearPID.setOutputRange(MIN_OUTPUT, MAX_OUTPUT);
 	gearPID.enable();
+	
+	cheeseWheelPID.setAbsoluteTolerance(CHEESE_WHEEL_DEADBAND_DEGREES);
+	cheeseWheelPID.setContinuous(false);
+	cheeseWheelPID.setOutputRange(MIN_OUTPUT, MAX_OUTPUT);
+	cheeseWheelPID.enable();
 	// outputStream = CameraServer.getInstance().putVideo( "Gear
 	// Rectangles", PixyCamera.IMAGE_WIDTH,
 	// PixyCamera.IMAGE_HEIGHT);
@@ -177,7 +184,11 @@ public class VisionMain implements SmartDashboardGroup {
 
     private void updateCheeseWheelTarget(){
 	try{
-	    cheeseWheelTarget = new CheeseWheelTarget(cheeseWheelRectangles[0]);
+	    Rectangle biggest = cheeseWheelRectangles[0];
+	    for(Rectangle r : cheeseWheelRectangles) {
+		if(r.getArea() > biggest.getArea()) biggest = r;
+	    }
+	    cheeseWheelTarget = new CheeseWheelTarget(biggest);
 	    isNewCheeseWheelDataAvailable = false;
 	}catch(Exception e){
 	    e.printStackTrace();

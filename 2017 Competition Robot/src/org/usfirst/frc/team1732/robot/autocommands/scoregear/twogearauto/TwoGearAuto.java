@@ -107,7 +107,7 @@ public class TwoGearAuto extends CommandGroup {
 	addSequential(new DitherTurnWithVision(0));
 
 	// scores second gear!!!
-	DoubleSupplier driveForwardSecondHalfDistance = () -> driveForwardDistance.getAsDouble() * (1.0 - proportion);
+	DoubleSupplier driveForwardSecondHalfDistance = () -> driveForwardDistance.getAsDouble() * (1.0 - proportion) - 6;
 
 	DoubleSupplier secondGearScoreDriveBackDistance = () -> -15;
 	addSequential(new SetEncoderPID(0.2, 0, 0));

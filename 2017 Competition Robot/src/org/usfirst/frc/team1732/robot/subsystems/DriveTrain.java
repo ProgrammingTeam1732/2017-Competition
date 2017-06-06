@@ -286,8 +286,8 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
     }
 
     public String driveRawAbsLimit(double left, double right, double lower, double upper) {
-	double leftDir = (left / Math.abs(left));
-	double rightDir = (right / Math.abs(right));
+	double leftDir = Math.signum(left);
+	double rightDir = Math.signum(right);
 	left = Math.abs(left) < lower ? leftDir * lower : Math.abs(left) > upper ? leftDir * upper : left;
 	right = Math.abs(right) < rightDir * lower ? lower : Math.abs(right) > upper ? rightDir * upper : right;
 	prevLeft = left;
