@@ -5,11 +5,11 @@ public class Rectangle {
 	public final int x, y, width, height, signature;
 
 	public Rectangle(int signature, int x, int y, int width, int height) {
-		this.signature = signature;
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
+		this.signature = signature;
 	}
 
 	public int getRightX() {
@@ -20,12 +20,12 @@ public class Rectangle {
 		return y + height;
 	}
 
-	public int getCenterX() {
-		return x + width / 2;
+	public int getCenterY() {
+		return (int) Math.round(y + height / 2.0);
 	}
 
-	public int getCenterY() {
-		return y + width / 2;
+	public int getCenterX() {
+		return (int) Math.round(x + width / 2.0);
 	}
 
 	@Override

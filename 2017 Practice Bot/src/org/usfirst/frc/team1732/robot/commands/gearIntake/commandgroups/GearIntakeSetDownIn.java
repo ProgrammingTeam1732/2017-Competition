@@ -1,7 +1,7 @@
 package org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups;
 
-import org.usfirst.frc.team1732.robot.commands.gearIntake.base.GearIntakeSetDown;
-import org.usfirst.frc.team1732.robot.commands.gearIntake.base.GearIntakeSetIn;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.base.motor.GearIntakeSetIn;
+import org.usfirst.frc.team1732.robot.commands.gearIntake.base.position.GearIntakeSetDown;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 

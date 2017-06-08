@@ -12,7 +12,7 @@ public class GearTarget extends VisionTarget {
 	 * The minimum score (max of 5) a gearTarget needs in order to be considered
 	 * a valid gear target
 	 */
-	public static final double MIN_TOTAL_SCORE = 1.5;
+	public static final double MIN_TOTAL_SCORE = 2;
 
 	// public GearTarget(Rectangle a) {
 	// super(a);
@@ -53,6 +53,7 @@ public class GearTarget extends VisionTarget {
 
 		// Widths and heights should be about the same
 		double widthRatioScore = getScore(((double) left.width) / right.width);
+		totalScore += widthRatioScore;
 		double heightRatioScore = getScore(((double) left.height) / right.height);
 		totalScore += heightRatioScore;
 
