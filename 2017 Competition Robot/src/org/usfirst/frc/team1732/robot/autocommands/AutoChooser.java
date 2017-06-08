@@ -21,6 +21,8 @@ import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveTime;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.ClearTotalDistance;
 import org.usfirst.frc.team1732.robot.commands.helpercommands.Wait;
 import org.usfirst.frc.team1732.robot.commands.vision.movement.DitherTurnWithVision;
+import org.usfirst.frc.team1732.robot.commands.vision.movement.TurnWithEncodersUntilCheeseWheel;
+import org.usfirst.frc.team1732.robot.commands.vision.movement.TurnWithEncodersUntilGearPeg;
 import org.usfirst.frc.team1732.robot.smartdashboard.MySmartDashboard;
 import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardGroup;
 import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardItem;
@@ -51,6 +53,8 @@ public class AutoChooser implements SmartDashboardGroup {
 	StartBesideBoilerThenShoot(StartBesideBoilerAndShoot::new), // 10
 
 	// testing
+	TurnUntilCheeseWheel(() -> new TurnWithEncodersUntilCheeseWheel(-120)),
+	TurnUntilGearPeg(() -> new TurnWithEncodersUntilGearPeg(120)),
 	WallMiddleGearAndShoot(() -> new ScoreMiddleGearThenBallsHitWall()),
 	TestForwardDrive(() -> new DriveTime(5, 0.5)),
 	TestBackwardDrive(() -> new DriveTime(5, -0.5)),
