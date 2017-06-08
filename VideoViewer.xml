@@ -1,12 +1,78 @@
 <xml version="1.0">
 <dashboard>
 	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.CameraServerViewer">
-		<location x="5" y="1"/>
+		<location x="1" y="0"/>
 		<width>1799</width>
 		<height>1012</height>
-		<property name="Camera Choice" value="Gear Rectangles"/>
+		<property name="Camera Choice" value="Video"/>
 	</static-widget>
 </dashboard>
 <live-window>
 </live-window>
+	<hidden field="MotorRTFrontReverse"/>
+	<hidden field="Wing"/>
+	<hidden field="Flywheel"/>
+	<hidden field="MotorRTBackForward"/>
+	<hidden field="Start wall and shoot wait distance"/>
+	<hidden field="Auto wait time"/>
+	<hidden field="BallIntakeSetOut"/>
+	<hidden field="Climber Arm"/>
+	<hidden field="robotPeriodic() frequency ms"/>
+	<hidden field="Climber"/>
+	<hidden field="Vision PID"/>
+	<hidden field="MotorLTFrontReverse"/>
+	<hidden field="BallIntakeSetStop"/>
+	<hidden field="Vision Main"/>
+	<hidden field="GearIntakeSetStopperIn"/>
+	<hidden field="ShiftHigh"/>
+	<hidden field="FeederSetOut"/>
+	<hidden field="Auto Number"/>
+	<hidden field="ShiftLow"/>
+	<hidden field="ShuffleBallsWithWait"/>
+	<hidden field="MotorRTBackStop"/>
+	<hidden field="GearIntakeSetIn"/>
+	<hidden field="Drive Train"/>
+	<hidden field="Is Red Alliance?"/>
+	<hidden field="Ball Intake"/>
+	<hidden field="GearIntakeSetUp"/>
+	<hidden field="MotorLTBackStop"/>
+	<hidden field="MotorLTBottomReverse"/>
+	<hidden field="Run Camera"/>
+	<hidden field="MotorLTBottomForward"/>
+	<hidden field="BallIntakeSetDown"/>
+	<hidden field="ClimberSetUp"/>
+	<hidden field="FeederSetStop"/>
+	<hidden field="MotorRTBottomStop"/>
+	<hidden field="ArmSetIn"/>
+	<hidden field="GearIntakeSetDown"/>
+	<hidden field="MotorLTBackReverse"/>
+	<hidden field="GearIntakeSetOut"/>
+	<hidden field="MotorRTBackReverse"/>
+	<hidden field="MotorLTFrontForward"/>
+	<hidden field="AUTO:"/>
+	<hidden field="MotorLTFrontStop"/>
+	<hidden field="MotorRTFrontForward"/>
+	<hidden field="ClimberSetStop"/>
+	<hidden field="Feeder"/>
+	<hidden field="MotorLTBottomStop"/>
+	<hidden field="EnableFlywheel"/>
+	<hidden field="FlywheelStop"/>
+	<hidden field="MotorRTFrontStop"/>
+	<hidden field="FlywheelReverse"/>
+	<hidden field="Gear Intake"/>
+	<hidden field="Test Vision"/>
+	<hidden field="FeederSetIn"/>
+	<hidden field="2 Gear Drive Back"/>
+	<hidden field="DisableFlywheel"/>
+	<hidden field="AutonomousChooser"/>
+	<hidden field="BallIntakeSetUp"/>
+	<hidden field="MotorRTBottomForward"/>
+	<hidden field="FlywheelForward"/>
+	<hidden field="MotorLTBackForward"/>
+	<hidden field="GearIntakeSetStop"/>
+	<hidden field="MotorRTBottomReverse"/>
+	<hidden field="ArmSetOut"/>
+	<hidden field="Gear Drive"/>
+	<hidden field="GearIntakeSetStopperOut"/>
+	<hidden field="BallIntakeSetIn"/>
 </xml>
