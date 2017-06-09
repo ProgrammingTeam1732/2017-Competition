@@ -9,14 +9,17 @@ import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardGroup;
 import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardItem;
 
 import com.ctre.CANTalon;
+import com.ctre.CANTalon.StatusFrameRate;
 import com.ctre.CANTalon.TalonControlMode;
 
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * 
@@ -28,41 +31,161 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
     public static final double LEFT_PERCENTAGE_FORWARD = 1;// 0.978;
     public static final double LEFT_PERCENTAGE_BACKWARD = 1;
 
-    // motors
-    // left motors
-    /**
-     * The motor that the other left motors follow
-     */
-    private final CANTalon leftMaster = new CANTalon(RobotMap.LEFT_MASTER_MOTOR_DEVICE_NUMBER);
-    private final CANTalon left1 = new CANTalon(RobotMap.LEFT_1_MOTOR_DEVICE_NUMBER);
-    private final CANTalon left2 = new CANTalon(RobotMap.LEFT_2_MOTOR_DEVICE_NUMBER);
-    // right motors
-    /**
-     * The motor the other right motors follow
-     */
-    private final CANTalon rightMaster = new CANTalon(RobotMap.RIGHT_MASTER_MOTOR_DEVICE_NUMBER);
-    private final CANTalon right1 = new CANTalon(RobotMap.RIGHT_1_MOTOR_DEVICE_NUMBER);
-    private final CANTalon right2 = new CANTalon(RobotMap.RIGHT_2_MOTOR_DEVICE_NUMBER);
-
     private final Solenoid shifter = new Solenoid(RobotMap.PCM_CAN_ID,
 	    RobotMap.DRIVE_TRAIN_SHIFTER_SOLENOID_DEVICE_NUMBER);
     public static final boolean HIGH_GEAR = false; // false
     public static final boolean LOW_GEAR = !HIGH_GEAR;
 
-    // gyro
-    // gyro sensors
-    private final AnalogGyro gyro = new AnalogGyro(RobotMap.GYRO_CHANNEL_NUMBER);
-    public static final double GYRO_VOLTS_PER_DEGREE_PER_SECOND = 0.007;
+    public static final double ROBOT_WIDTH_INCHES = 26;
+    public static final double ROBOT_LENGTH_INCHES = 34.5;
+    public static final double TURNING_CIRCUMFERENCE = Math.PI * ROBOT_WIDTH_INCHES;
+    public static final double EFFECTIVE_TURNING_CIRCUMFERENCE = TURNING_CIRCUMFERENCE * 1;
 
-    // gyro controllers
-    private final PIDController gyroPID = new PIDController(gyroP, gyroI, gyroD, gyro, DriveTrain::voidMethod);
-    public static final double GYRO_DEADBAND_DEGREES = 5; // 4
-    public static final double gyroP = 0.025; // 0.0192 //0.0085;
-    public static final double gyroI = 0; // 0.000005;
-    public static final double gyroD = 0.1;
+    public static final String NAME = "Drive Train";
 
-    public static final double GYRO_IZONE = 25;
-    public static final double GYRO_IZONE_I = -0.00032;
+    public DriveTrain() {
+	super(NAME);
+	configureTalons();
+	configureTalonEncoders();
+	// makes sure braking is enabled
+	setBrakeMode(true);
+	configureEncoders();
+	configureGyro();
+	shiftHighGear();
+	// turns on the gyro and encoders PID loops
+	gyroPID.enable();
+	leftEncoderPID.enable();
+	rightEncoderPID.enable();
+    }
+
+    // master is the motor that the other left motors follow
+    private final CANTalon leftMaster = new CANTalon(RobotMap.LEFT_MASTER_MOTOR_DEVICE_NUMBER);
+    private final CANTalon left1 = new CANTalon(RobotMap.LEFT_1_MOTOR_DEVICE_NUMBER);
+    private final CANTalon left2 = new CANTalon(RobotMap.LEFT_2_MOTOR_DEVICE_NUMBER);
+    // right motors
+    // master is the motor the other right motors follow
+    private final CANTalon rightMaster = new CANTalon(RobotMap.RIGHT_MASTER_MOTOR_DEVICE_NUMBER);
+    private final CANTalon right1 = new CANTalon(RobotMap.RIGHT_1_MOTOR_DEVICE_NUMBER);
+    private final CANTalon right2 = new CANTalon(RobotMap.RIGHT_2_MOTOR_DEVICE_NUMBER);
+
+    private void configureTalons() {
+	// reverses whole left side
+	leftMaster.setInverted(true);
+	left1.changeControlMode(TalonControlMode.Follower);
+	left1.set(leftMaster.getDeviceID());
+	left2.changeControlMode(TalonControlMode.Follower);
+	left2.set(leftMaster.getDeviceID());
+
+	// sets right motors to follow right master
+	right1.changeControlMode(TalonControlMode.Follower);
+	right1.set(rightMaster.getDeviceID());
+	right2.changeControlMode(TalonControlMode.Follower);
+	right2.set(rightMaster.getDeviceID());
+
+	leftMaster.setStatusFrameRateMs(StatusFrameRate.QuadEncoder, 20);
+	rightMaster.setStatusFrameRateMs(StatusFrameRate.QuadEncoder, 20);
+	changeToPercentVBus();
+    }
+
+    public static final int ENCODER_CODES_PER_REV = 1365;
+    public static final boolean REVERSE_LEFT_ENCODER = true;
+    public static final boolean REVERSE_RIGHT_ENCODER = false;
+
+    public static final double MAX_LEFT_RPM = 0;
+    public static final double MAX_RIGHT_RPM = 0;
+    public static final double DEFAULT_ACCELERATION = 0;
+    public static final double DEFAULT_VELOCITY = 0;
+
+    public static final double INCHES_PER_REV = 3.911 * Math.PI;
+
+    private void configureTalonEncoders() {
+	leftMaster.configEncoderCodesPerRev(ENCODER_CODES_PER_REV);
+	leftMaster.reverseSensor(REVERSE_LEFT_ENCODER);
+	leftMaster.configNominalOutputVoltage(+0.0f, -0.0f);
+	leftMaster.configPeakOutputVoltage(+12.0f, -12.0f);
+
+	rightMaster.configEncoderCodesPerRev(ENCODER_CODES_PER_REV);
+	rightMaster.reverseSensor(REVERSE_RIGHT_ENCODER);
+	rightMaster.configNominalOutputVoltage(+0.0f, -0.0f);
+	rightMaster.configPeakOutputVoltage(+12.0f, -12.0f);
+
+	leftMaster.setProfile(0);
+	rightMaster.setProfile(0);
+	setMotionMagicPID();
+	setMotionMagicCruiseVelocity(DEFAULT_VELOCITY);
+	setMotionMagicAcceleration(DEFAULT_ACCELERATION);
+    }
+
+    public void resetCANTalonPositions() {
+	leftMaster.setPosition(0);
+	rightMaster.setPosition(0);
+    }
+
+    public void setMotionMagicCruiseVelocity(double v) {
+	rightMaster.setMotionMagicCruiseVelocity(v);
+	leftMaster.setMotionMagicCruiseVelocity(v);
+    }
+
+    public void setMotionMagicAcceleration(double a) {
+	rightMaster.setMotionMagicAcceleration(a);
+	leftMaster.setMotionMagicAcceleration(a);
+    }
+
+    private void setMotionMagicPID() {
+	leftMaster.setF(0);
+	leftMaster.setP(0);
+	leftMaster.setI(0);
+	leftMaster.setD(0);
+
+	rightMaster.setF(0);
+	rightMaster.setP(0);
+	rightMaster.setI(0);
+	rightMaster.setD(0);
+    }
+
+    public void changeToMotionMagic() {
+	leftMaster.changeControlMode(TalonControlMode.MotionMagic);
+	rightMaster.changeControlMode(TalonControlMode.MotionMagic);
+    }
+
+    public void changeToPercentVBus() {
+	leftMaster.changeControlMode(TalonControlMode.PercentVbus);
+	rightMaster.changeControlMode(TalonControlMode.PercentVbus);
+    }
+
+    public void setMotionMagicSetpoint(double inches) {
+	if (leftMaster.getControlMode().equals(TalonControlMode.MotionMagic)
+		&& rightMaster.getControlMode().equals(TalonControlMode.MotionMagic)) {
+	    double rotations = inches / INCHES_PER_REV;
+	    rightMaster.set(rotations);
+	    leftMaster.set(rotations);
+	}
+    }
+
+    public void graphMagicMotionData() {
+	graph("Left", leftMaster);
+	graph("Right", rightMaster);
+    }
+
+    private int prints = 0;
+
+    private void graph(String side, CANTalon source) {
+	double speed = source.getSpeed();
+	double position = source.getPosition();
+	double throttle = (source.getOutputVoltage() / source.getBusVoltage()) * 1023;
+	double error = source.getClosedLoopError();
+	if (prints % 10 == 0) {
+	    String s = String.format("%s: Speed: %.3f, Position: %.0f, Throttle: %.2f, Error: %.2f", side, speed,
+		    position, throttle, error);
+	    prints = 0;
+	}
+	prints++;
+	SmartDashboard.putNumber(side + " RPM", speed);
+	SmartDashboard.putNumber(side + " Pos", position);
+	SmartDashboard.putNumber(side + " AppliedThrottle", throttle);
+	SmartDashboard.putNumber(side + " ClosedLoopError", error);
+    }
+
     // encoders
     // encoder sensors
     private final Encoder leftEncoder = new Encoder(RobotMap.LEFT_ENCODER_CHANNEL_A, RobotMap.LEFT_ENCODER_CHANNEL_B);
@@ -73,10 +196,17 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
     // public static final double LEFT_MOTOR_OFFSET = 1.0;
 
     // encoder controllers
-    private final PIDController leftEncoderPID = new PIDController(encoderP, encoderI, encoderD, leftEncoder,
-	    DriveTrain::voidMethod);
-    private final PIDController rightEncoderPID = new PIDController(encoderP, encoderI, encoderD, rightEncoder,
-	    DriveTrain::voidMethod);
+    // private final PIDController leftEncoderPID = new PIDController(encoderP,
+    // encoderI, encoderD, leftEncoder,
+    // DriveTrain::voidMethod);
+    // private final PIDController rightEncoderPID = new PIDController(encoderP,
+    // encoderI, encoderD, rightEncoder,
+    // DriveTrain::voidMethod);
+
+    private final PIDController leftEncoderPID = new PIDController(encoderP, encoderI, encoderD,
+	    makePIDSource(leftMaster), DriveTrain::voidMethod);
+    private final PIDController rightEncoderPID = new PIDController(encoderP, encoderI, encoderD,
+	    makePIDSource(rightMaster), DriveTrain::voidMethod);
     public static final double encoderP = 0.03; // 0.02
     public static final double encoderI = 0;
     public static final double encoderD = 0;
@@ -97,48 +227,8 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
     // Min and max output
     public static final double ENCODER_MAX_OUTPUT = 1;
     public static final double ENCODER_MIN_OUTPUT = -ENCODER_MAX_OUTPUT;
-    // public static final double ENCODER_NOMINAL_POSITIVE = 0.1;
-    // public static final double ENCODER_NOMINAL_NEGATIVE =
-    // -ENCODER_NOMINAL_POSITIVE;
-    public static final double GYRO_MAX_OUTPUT = 0.8;
-    public static final double GYRO_MIN_OUTPUT = -GYRO_MAX_OUTPUT;
-    // public static final double MAX_OUTPUT = 0.5;
-    // public static final double MIN_OUTPUT = -ENCODER_MAX_OUTPUT;
 
-    // public static final double VOLTAGE_RAMP_RATE = 6;
-
-    public static final double ROBOT_WIDTH_INCHES = 26;
-    public static final double ROBOT_LENGTH_INCHES = 34.5;
-    public static final double TURNING_CIRCUMFERENCE = Math.PI * ROBOT_WIDTH_INCHES;
-    public static final double EFFECTIVE_TURNING_CIRCUMFERENCE = TURNING_CIRCUMFERENCE * 1;
-
-    public static final String NAME = "Drive Train";
-
-    public DriveTrain() {
-	super(NAME);
-	// reverses whole left side
-	leftMaster.setInverted(true);
-	left1.changeControlMode(TalonControlMode.Follower);
-	left1.set(leftMaster.getDeviceID());
-	left2.changeControlMode(TalonControlMode.Follower);
-	left2.set(leftMaster.getDeviceID());
-
-	// leftMaster.setVoltageRampRate(VOLTAGE_RAMP_RATE);
-	// left1.setVoltageRampRate(VOLTAGE_RAMP_RATE);
-	// left2.setVoltageRampRate(VOLTAGE_RAMP_RATE);
-	// right1.setVoltageRampRate(VOLTAGE_RAMP_RATE);
-	// right2.setVoltageRampRate(VOLTAGE_RAMP_RATE);
-	// rightMaster.setVoltageRampRate(VOLTAGE_RAMP_RATE);
-
-	// sets right motors to follow right master
-	right1.changeControlMode(TalonControlMode.Follower);
-	right1.set(rightMaster.getDeviceID());
-	right2.changeControlMode(TalonControlMode.Follower);
-	right2.set(rightMaster.getDeviceID());
-
-	// makes sure braking is enabled
-	setBrakeMode(true);
-
+    private void configureEncoders() {
 	// configures the inches per count of the encoders
 	leftEncoder.setDistancePerPulse(INCHES_PER_ENCODER_COUNT);
 	rightEncoder.setDistancePerPulse(INCHES_PER_ENCODER_COUNT);
@@ -164,7 +254,27 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 	// sets the minimum/maximum PID loop output
 	leftEncoderPID.setOutputRange(ENCODER_MIN_OUTPUT, ENCODER_MAX_OUTPUT);
 	rightEncoderPID.setOutputRange(ENCODER_MIN_OUTPUT, ENCODER_MAX_OUTPUT);
+    }
 
+    // gyro
+    // gyro sensors
+    private final AnalogGyro gyro = new AnalogGyro(RobotMap.GYRO_CHANNEL_NUMBER);
+    public static final double GYRO_VOLTS_PER_DEGREE_PER_SECOND = 0.007;
+
+    // gyro controllers
+    private final PIDController gyroPID = new PIDController(gyroP, gyroI, gyroD, gyro, DriveTrain::voidMethod);
+    public static final double GYRO_DEADBAND_DEGREES = 5; // 4
+    public static final double gyroP = 0.025; // 0.0192 //0.0085;
+    public static final double gyroI = 0; // 0.000005;
+    public static final double gyroD = 0.1;
+
+    public static final double GYRO_IZONE = 25;
+    public static final double GYRO_IZONE_I = -0.00032;
+
+    public static final double GYRO_MAX_OUTPUT = 0.8;
+    public static final double GYRO_MIN_OUTPUT = -GYRO_MAX_OUTPUT;
+
+    private void configureGyro() {
 	// Gyro
 	// not actually needed, this gets done in the gyro constructor
 	// gyro.initGyro();
@@ -180,13 +290,6 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 	gyroPID.setContinuous(false);
 	// sets the minimum/maximum PID loop output
 	gyroPID.setOutputRange(GYRO_MIN_OUTPUT, GYRO_MAX_OUTPUT);
-
-	shiftHighGear();
-
-	// turns on the gyro and encoders PID loops
-	gyroPID.enable();
-	leftEncoderPID.enable();
-	rightEncoderPID.enable();
     }
 
     @Override
@@ -395,7 +498,7 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 		SmartDashboardItem.newNumberSender(leftDirectory + "Left Encoder Raw Counts", leftEncoder::getRaw));
 	dashboard.addItem(SmartDashboardItem.newNumberSender(leftDirectory + "Left Encoder Counts", leftEncoder::get));
 	dashboard.addItem(
-		SmartDashboardItem.newNumberSender(leftDirectory + "Left Encoder Distance", leftEncoder::getDistance));
+		SmartDashboardItem.newNumberSender(leftDirectory + "Left Encoder Distance", this::getLeftDistance));
 	dashboard.addItem(SmartDashboardItem.newNumberSender(leftDirectory + "Left Encoder Setpoint",
 		leftEncoderPID::getSetpoint));
 	dashboard.addItem(SmartDashboardItem.newNumberSender(leftDirectory + "Left Error", leftEncoderPID::getError));
@@ -410,8 +513,8 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 		SmartDashboardItem.newNumberSender(rightDirectory + "Right Encoder Raw Counts", rightEncoder::getRaw));
 	dashboard.addItem(
 		SmartDashboardItem.newNumberSender(rightDirectory + "Right Encoder Counts", rightEncoder::get));
-	dashboard.addItem(SmartDashboardItem.newNumberSender(rightDirectory + "Right Encoder Distance",
-		rightEncoder::getDistance));
+	dashboard.addItem(
+		SmartDashboardItem.newNumberSender(rightDirectory + "Right Encoder Distance", this::getRightDistance));
 	dashboard.addItem(SmartDashboardItem.newNumberSender(rightDirectory + "Right Encoder Setpoint",
 		rightEncoderPID::getSetpoint));
 	dashboard
@@ -590,14 +693,16 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
      * @return the total distance the left encoder has traveled
      */
     public double getTotalLeftDistance() {
-	return leftDistanceTraveled + leftEncoder.getDistance();
+	// return leftDistanceTraveled + getLeftDistance();
+	return leftDistanceTraveled + getTalonPosition(leftMaster);
     }
 
     /**
      * @return the total distance the right encoder has traveled
      */
     public double getTotalRightDistance() {
-	return rightDistanceTraveled + rightEncoder.getDistance();
+	// return leftDistanceTraveled + getRightDistance();
+	return rightDistanceTraveled + getTalonPosition(rightMaster);
     }
 
     /**
@@ -613,10 +718,13 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
      * distance travled variables
      */
     public void resetEncoders() {
-	leftDistanceTraveled += leftEncoder.getDistance();
-	rightDistanceTraveled += rightEncoder.getDistance();
-	leftEncoder.reset();
-	rightEncoder.reset();
+	// return leftDistanceTraveled + getLeftDistance();
+	leftDistanceTraveled += getTalonPosition(leftMaster);
+	// return leftDistanceTraveled + getRightDistance();
+	rightDistanceTraveled += getTalonPosition(rightMaster);
+	this.resetCANTalonPositions();
+	// leftEncoder.reset();
+	// rightEncoder.reset();
     }
 
     /**
@@ -625,7 +733,8 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
      * @return distance in inches measured by the left encoder
      */
     public double getLeftDistance() {
-	return leftEncoder.getDistance();
+	// leftEncoder.getDistance();
+	return getTalonPosition(leftMaster);
     }
 
     /**
@@ -634,7 +743,8 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
      * @return distance in inches measured by the right encoder
      */
     public double getRightDistance() {
-	return rightEncoder.getDistance();
+	// return rightEncoder.getDistance();
+	return getTalonPosition(rightMaster);
     }
 
     /**
@@ -786,11 +896,13 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
     }
 
     public double getLeftVelocity() {
-	return leftEncoder.getRate();
+	// return leftEncoder.getRate();
+	return getTalonVelocity(leftMaster);
     }
 
     public double getRightVelocity() {
-	return rightEncoder.getRate();
+	return getTalonVelocity(rightMaster);
+	// return rightEncoder.getRate();
     }
 
     public void resetEncoderPID() {
@@ -798,4 +910,38 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 	rightEncoderPID.setPID(encoderP, encoderI, encoderD);
     }
 
+    private double getTalonVelocity(CANTalon talon) {
+	return talon.getSpeed() * INCHES_PER_REV;
+    }
+
+    private double getTalonPosition(CANTalon talon) {
+	return talon.getPosition() * INCHES_PER_REV;
+    }
+
+    public PIDSource makePIDSource(CANTalon talon) {
+	PIDSource pidSource = new PIDSource() {
+
+	    private PIDSourceType type;
+
+	    @Override
+	    public void setPIDSourceType(PIDSourceType pidSource) {
+		type = pidSource;
+	    }
+
+	    @Override
+	    public PIDSourceType getPIDSourceType() {
+		return type;
+	    }
+
+	    @Override
+	    public double pidGet() {
+		if (type.equals(PIDSourceType.kDisplacement)) {
+		    return getTalonPosition(talon);
+		} else { // velocity
+		    return getTalonVelocity(talon);
+		}
+	    }
+	};
+	return pidSource;
+    }
 }
