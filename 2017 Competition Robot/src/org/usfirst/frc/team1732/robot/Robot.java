@@ -116,6 +116,7 @@ public class Robot extends IterativeRobot {
     @Override
     public void robotInit() {
 	try {
+	    System.out.println("Robot turning on");
 	    // initialize smartdashboard
 	    initializeMySmartDashboardItems();
 	    initializeSubsystems();
