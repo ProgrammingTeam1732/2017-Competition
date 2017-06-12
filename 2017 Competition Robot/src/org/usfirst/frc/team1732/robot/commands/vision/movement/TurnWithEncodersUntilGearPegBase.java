@@ -17,6 +17,7 @@ public class TurnWithEncodersUntilGearPegBase extends Command {
 
     public TurnWithEncodersUntilGearPegBase(DoubleSupplier angle) {
 	this.angle = angle;
+	requires(Robot.driveTrain);
     }
 
     public TurnWithEncodersUntilGearPegBase(double angle) {
@@ -53,6 +54,7 @@ public class TurnWithEncodersUntilGearPegBase extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
+	visionMain.run();
 	if (visionMain.canSeeGearPeg()) {
 	    foundOnce = true;
 	    Robot.driveTrain.resetEncoders();

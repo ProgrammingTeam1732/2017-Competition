@@ -196,17 +196,18 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
     // public static final double LEFT_MOTOR_OFFSET = 1.0;
 
     // encoder controllers
-    // private final PIDController leftEncoderPID = new PIDController(encoderP,
-    // encoderI, encoderD, leftEncoder,
-    // DriveTrain::voidMethod);
-    // private final PIDController rightEncoderPID = new PIDController(encoderP,
-    // encoderI, encoderD, rightEncoder,
-    // DriveTrain::voidMethod);
+    private final PIDController leftEncoderPID = new PIDController(encoderP, encoderI, encoderD, leftEncoder,
+	    DriveTrain::voidMethod);
+    private final PIDController rightEncoderPID = new PIDController(encoderP, encoderI, encoderD, rightEncoder,
+	    DriveTrain::voidMethod);
 
-    private final PIDController leftEncoderPID = new PIDController(encoderP, encoderI, encoderD,
-	    makePIDSource(leftMaster), DriveTrain::voidMethod);
-    private final PIDController rightEncoderPID = new PIDController(encoderP, encoderI, encoderD,
-	    makePIDSource(rightMaster), DriveTrain::voidMethod);
+    // private final PIDController leftEncoderPID = new PIDController(encoderP,
+    // encoderI, encoderD,
+    // makePIDSource(leftMaster), DriveTrain::voidMethod);
+    // private final PIDController rightEncoderPID = new PIDController(encoderP,
+    // encoderI, encoderD,
+    // makePIDSource(rightMaster), DriveTrain::voidMethod);
+
     public static final double encoderP = 0.03; // 0.02
     public static final double encoderI = 0;
     public static final double encoderD = 0;
@@ -677,7 +678,9 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 
     /**
      * Zeros the gyro so that the current angle is 0
+     * 
      */
+
     public void resetGyro() {
 	gyro.reset();
     }
@@ -693,16 +696,16 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
      * @return the total distance the left encoder has traveled
      */
     public double getTotalLeftDistance() {
-	// return leftDistanceTraveled + getLeftDistance();
-	return leftDistanceTraveled + getTalonPosition(leftMaster);
+	return leftDistanceTraveled + getLeftDistance();
+	// return leftDistanceTraveled + getTalonPosition(leftMaster);
     }
 
     /**
      * @return the total distance the right encoder has traveled
      */
     public double getTotalRightDistance() {
-	// return leftDistanceTraveled + getRightDistance();
-	return rightDistanceTraveled + getTalonPosition(rightMaster);
+	return leftDistanceTraveled + getRightDistance();
+	// return rightDistanceTraveled + getTalonPosition(rightMaster);
     }
 
     /**
@@ -718,13 +721,13 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
      * distance travled variables
      */
     public void resetEncoders() {
-	// return leftDistanceTraveled + getLeftDistance();
-	leftDistanceTraveled += getTalonPosition(leftMaster);
-	// return leftDistanceTraveled + getRightDistance();
-	rightDistanceTraveled += getTalonPosition(rightMaster);
-	this.resetCANTalonPositions();
-	// leftEncoder.reset();
-	// rightEncoder.reset();
+	leftDistanceTraveled += getLeftDistance();
+	// leftDistanceTraveled += getTalonPosition(leftMaster);
+	leftDistanceTraveled += getRightDistance();
+	// rightDistanceTraveled += getTalonPosition(rightMaster);
+	// this.resetCANTalonPositions();
+	leftEncoder.reset();
+	rightEncoder.reset();
     }
 
     /**
@@ -733,8 +736,8 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
      * @return distance in inches measured by the left encoder
      */
     public double getLeftDistance() {
-	// leftEncoder.getDistance();
-	return getTalonPosition(leftMaster);
+	return leftEncoder.getDistance();
+	// return getTalonPosition(leftMaster);
     }
 
     /**
@@ -743,8 +746,8 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
      * @return distance in inches measured by the right encoder
      */
     public double getRightDistance() {
-	// return rightEncoder.getDistance();
-	return getTalonPosition(rightMaster);
+	return rightEncoder.getDistance();
+	// return getTalonPosition(rightMaster);
     }
 
     /**
@@ -846,6 +849,7 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
     public void setEncoderPIDS(double p, double i, double d) {
 	leftEncoderPID.setPID(p, i, d);
 	rightEncoderPID.setPID(p, i, d);
+	// System.out.println("Set Encoder PIDs: " + p + ", " + i + ", " + d);
     }
 
     public void setGyroPIDS(double p, double i, double d) {
@@ -891,8 +895,7 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
     }
 
     public void setEncoderToTurningPID() {
-	leftEncoderPID.setPID(encoderTurningP, encoderTurningI, encoderTurningD);
-	rightEncoderPID.setPID(encoderTurningP, encoderTurningI, encoderTurningD);
+	setEncoderPIDS(encoderTurningP, encoderTurningI, encoderTurningD);
     }
 
     public double getLeftVelocity() {
@@ -906,8 +909,7 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
     }
 
     public void resetEncoderPID() {
-	leftEncoderPID.setPID(encoderP, encoderI, encoderD);
-	rightEncoderPID.setPID(encoderP, encoderI, encoderD);
+	setEncoderPIDS(encoderP, encoderI, encoderD);
     }
 
     private double getTalonVelocity(CANTalon talon) {
@@ -921,7 +923,7 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
     public PIDSource makePIDSource(CANTalon talon) {
 	PIDSource pidSource = new PIDSource() {
 
-	    private PIDSourceType type;
+	    private PIDSourceType type = PIDSourceType.kDisplacement;
 
 	    @Override
 	    public void setPIDSourceType(PIDSourceType pidSource) {

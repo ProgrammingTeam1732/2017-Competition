@@ -22,15 +22,18 @@ public class VisionMain implements SmartDashboardGroup {
     private Arduino gearArduino;
     // private Arduino boilerArduino;
 
+    private Rectangle[][] arduinoData = new Rectangle[NUMBER_OF_SIGNATURES][0];
+
     private GearTarget gearTarget;
-    private Rectangle[][] gearRectangles = new Rectangle[NUMBER_OF_SIGNATURES][0];
+    private Rectangle[] gearRectangles = new Rectangle[0];
     private double previousGearScore = 0;
     private boolean isNewGearDataAvailable = false;
-    
+
     private CheeseWheelTarget cheeseWheelTarget;
     private Rectangle[] cheeseWheelRectangles = new Rectangle[0];
+    private double previousCheeseWheelScore = 0;
     private boolean isNewCheeseWheelDataAvailable = false;
-    
+
     private BoilerTarget boilerTarget;
     private Rectangle[] boilerRectangles = new Rectangle[0];
     private double previousBoilerScore = 0;
@@ -50,10 +53,10 @@ public class VisionMain implements SmartDashboardGroup {
     public static final double boilerP = 0.02;
     public static final double boilerI = 0;
     public static final double boilerD = 0;
-    
+
     private final PIDSource cheeseWheelAngleSource = getCheeseWheelPIDSource();
-    private final PIDController cheeseWheelPID = new PIDController(cheeseWheelP, cheeseWheelI, cheeseWheelD, cheeseWheelAngleSource,
-	    VisionMain::voidMethod);
+    private final PIDController cheeseWheelPID = new PIDController(cheeseWheelP, cheeseWheelI, cheeseWheelD,
+	    cheeseWheelAngleSource, VisionMain::voidMethod);
     public static final double cheeseWheelP = 0.02;
     public static final double cheeseWheelI = 0;
     public static final double cheeseWheelD = 0;
@@ -61,12 +64,14 @@ public class VisionMain implements SmartDashboardGroup {
     public static final double VISION_DEADBAND_DEGREES = 2;
     public static final double MAX_OUTPUT = 0.4;
     public static final double MIN_OUTPUT = -MAX_OUTPUT;
-    
+
     public static final double CHEESE_WHEEL_DEADBAND_DEGREES = 2;
 
     private static final int NUMBER_OF_SIGNATURES = 2;
 
     public static final String NAME = "Vision Main";
+
+    public static final double ADJUSTMENT = 0;
 
     public VisionMain() {
 	gearArduino = new Arduino(SerialPort.Port.kUSB1);
@@ -76,11 +81,12 @@ public class VisionMain implements SmartDashboardGroup {
 	gearPID.setContinuous(false);
 	gearPID.setOutputRange(MIN_OUTPUT, MAX_OUTPUT);
 	gearPID.enable();
-	
+
 	cheeseWheelPID.setAbsoluteTolerance(CHEESE_WHEEL_DEADBAND_DEGREES);
 	cheeseWheelPID.setContinuous(false);
 	cheeseWheelPID.setOutputRange(MIN_OUTPUT, MAX_OUTPUT);
 	cheeseWheelPID.enable();
+	cheeseWheelPID.setSetpoint(ADJUSTMENT);
 	// outputStream = CameraServer.getInstance().putVideo( "Gear
 	// Rectangles", PixyCamera.IMAGE_WIDTH,
 	// PixyCamera.IMAGE_HEIGHT);
@@ -92,15 +98,22 @@ public class VisionMain implements SmartDashboardGroup {
      */
     public void run() {
 	if (isGearCameraEnabled()) {
-	    gearRectangles = parseData(gearArduino.getData(), gearRectangles);
-	    if(isNewCheeseWheelDataAvailable){
-		cheeseWheelRectangles = gearRectangles[1];
+	    arduinoData = parseData(gearArduino.getData(), arduinoData);
+	    if (isNewCheeseWheelDataAvailable) {
+		cheeseWheelRectangles = arduinoData[1];
+		updateCheeseWheelTarget();
+	    } else {
+		cheeseWheelRectangles = null;
 	    }
+
+	    gearRectangles = arduinoData[0];
 	    updateGearTarget();
-	    updateCheeseWheelTarget();
-	    // sendGearImage();
-	    // gearRectangles = new Rectangle[0];
+	} else {
+	    cheeseWheelTarget = null;
 	}
+	updateGearTarget();
+	// sendGearImage();
+	// gearRectangles = new Rectangle[0];
 	if (isBoilerCameraEnabled()) {
 	    // boilerRectangles = parseData(boilerArduino.getData(),
 	    // boilerRectangles);
@@ -137,20 +150,44 @@ public class VisionMain implements SmartDashboardGroup {
 	    else if (c == '^') {
 		found = false;
 		if (total != "") {
-		    String[] rects = total.split("\n");
-		    output = new Rectangle[NUMBER_OF_SIGNATURES][rects.length];
-		    for (int j = 0; j < rects.length; j++) {
-			String[] data = rects[j].split(" ");
-			try {
-			    if(Integer.parseInt(data[1]) == 2){
-				isNewCheeseWheelDataAvailable = true;
-			    }
-			    output[Integer.parseInt(data[1]) - 1][j] = new Rectangle(Integer.parseInt(data[1]),
-				    Integer.parseInt(data[3]), Integer.parseInt(data[5]), Integer.parseInt(data[7]),
-				    Integer.parseInt(data[9]));
-			    // System.out.println(j + ": " + rectangles[j]);
-			} catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+		    try {
+			String[] rects = total.split("\n");
+			int numberOfGearPegRects = 0;
+			int numberOFCheeseWheelRects = 0;
+
+			for (String rectangle : rects) {
+			    String[] data = rectangle.split(" ");
+			    if (Integer.parseInt(data[1]) == 1)
+				numberOfGearPegRects++;
+			    else if (Integer.parseInt(data[1]) == 2)
+				numberOFCheeseWheelRects++;
 			}
+			output = new Rectangle[NUMBER_OF_SIGNATURES][];
+			output[0] = new Rectangle[numberOfGearPegRects];
+			output[1] = new Rectangle[numberOFCheeseWheelRects];
+			int gearPegIndex = 0;
+			int cheeseWheelIndex = 0;
+			for (int j = 0; j < rects.length; j++) {
+			    String[] data = rects[j].split(" ");
+			    try {
+				int index = 0;
+				if (Integer.parseInt(data[1]) == 1) {
+				    index = gearPegIndex;
+				    gearPegIndex++;
+				} else if (Integer.parseInt(data[1]) == 2) {
+				    isNewCheeseWheelDataAvailable = true;
+				    index = cheeseWheelIndex;
+				    cheeseWheelIndex++;
+				}
+				output[Integer.parseInt(data[1]) - 1][index] = new Rectangle(Integer.parseInt(data[1]),
+					Integer.parseInt(data[3]), Integer.parseInt(data[5]), Integer.parseInt(data[7]),
+					Integer.parseInt(data[9]));
+				// System.out.println(j + ": " + rectangles[j]);
+			    } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+			    }
+			}
+		    } catch (Exception e) {
+			e.printStackTrace();
 		    }
 		}
 		total = "";
@@ -167,7 +204,7 @@ public class VisionMain implements SmartDashboardGroup {
      */
     private void updateGearTarget() {
 	try {
-	    gearTarget = GearTarget.getBestVisionTarget(gearRectangles[0]);
+	    gearTarget = GearTarget.getBestVisionTarget(gearRectangles);
 	    double score = 0;
 	    if (gearTarget != null)
 		score = gearTarget.getScore();
@@ -182,19 +219,20 @@ public class VisionMain implements SmartDashboardGroup {
 	}
     }
 
-    private void updateCheeseWheelTarget(){
-	try{
+    private void updateCheeseWheelTarget() {
+	try {
 	    Rectangle biggest = cheeseWheelRectangles[0];
-	    for(Rectangle r : cheeseWheelRectangles) {
-		if(r.getArea() > biggest.getArea()) biggest = r;
+	    for (Rectangle r : cheeseWheelRectangles) {
+		if (r.getArea() > biggest.getArea())
+		    biggest = r;
 	    }
 	    cheeseWheelTarget = new CheeseWheelTarget(biggest);
 	    isNewCheeseWheelDataAvailable = false;
-	}catch(Exception e){
-	    e.printStackTrace();
+	} catch (Exception e) {
+	    // e.printStackTrace();
 	}
     }
-    
+
     private void updateBoilerTarget() {
 	try {
 	    // for (Rectangle r : boilerRectangles)
@@ -271,15 +309,16 @@ public class VisionMain implements SmartDashboardGroup {
 	}
 	return boilerTarget.getHorizontalAngle(PixyCamera.HORIZONTAL_FIELD_OF_VIEW, PixyCamera.IMAGE_WIDTH);
     }
-    
-    public double getAngleToCheeseWheel(){
-	if(cheeseWheelTarget == null){
+
+    public double getAngleToCheeseWheel() {
+	if (cheeseWheelTarget == null) {
 	    return 0;
 	}
-	return cheeseWheelTarget.getHorizontalAngle(PixyCamera.HORIZONTAL_FIELD_OF_VIEW, PixyCamera.IMAGE_WIDTH);
+	return cheeseWheelTarget.getHorizontalAngle(PixyCamera.HORIZONTAL_FIELD_OF_VIEW, PixyCamera.IMAGE_WIDTH)
+		- ADJUSTMENT;
     }
-    
-    public boolean canSeeCheeseWheel(){
+
+    public boolean canSeeCheeseWheel() {
 	return cheeseWheelTarget != null;
     }
 
@@ -326,8 +365,8 @@ public class VisionMain implements SmartDashboardGroup {
 	    }
 	};
     }
-    
-    private PIDSource getCheeseWheelPIDSource(){
+
+    private PIDSource getCheeseWheelPIDSource() {
 	return new PIDSource() {
 	    @Override
 	    public void setPIDSourceType(PIDSourceType pidSource) {
@@ -353,6 +392,8 @@ public class VisionMain implements SmartDashboardGroup {
 	String directory = NAME + "/";
 	String visionDirectory = directory + "vision/";
 
+	dashboard.addItem(SmartDashboardItem.newNumberSender(visionDirectory + "Cheese Wheel Angle",
+		this::getAngleToCheeseWheel));
 	dashboard.addItem(SmartDashboardItem.newNumberSender(visionDirectory + "Gear Peg Score", this::getGearScore));
 	dashboard
 		.addItem(SmartDashboardItem.newNumberSender(visionDirectory + "Gear inches", this::getInchesToGearPeg));
@@ -412,8 +453,8 @@ public class VisionMain implements SmartDashboardGroup {
     public void setBoilerPIDValues(double p, double i, double d) {
 	boilerPID.setPID(p, i, d);
     }
-    
-    public double getCheeseWheelOutput(){
+
+    public double getCheeseWheelOutput() {
 	return cheeseWheelPID.get();
     }
 
@@ -428,7 +469,7 @@ public class VisionMain implements SmartDashboardGroup {
     public boolean isGearPIDOnTarget() {
 	return gearPID.onTarget();
     }
-    
+
     public boolean isCheeseWheelPIDOnTarget() {
 	return cheeseWheelPID.onTarget();
     }
@@ -459,7 +500,7 @@ public class VisionMain implements SmartDashboardGroup {
     public void sendGearImage() {
 	mat = new Mat(PixyCamera.IMAGE_HEIGHT, PixyCamera.IMAGE_WIDTH, org.opencv.core.CvType.CV_8UC3);
 	// Put a rectangle on the image
-	for (Rectangle r : gearRectangles[0]) {
+	for (Rectangle r : gearRectangles) {
 	    Imgproc.rectangle(mat, new Point(r.x, r.y), new Point(r.getRightX(), r.getBottomY()),
 		    new Scalar(255, 255, 255));
 	}

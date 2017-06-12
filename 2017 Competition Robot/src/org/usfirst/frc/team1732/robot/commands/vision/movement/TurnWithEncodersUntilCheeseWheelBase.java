@@ -21,20 +21,22 @@ public class TurnWithEncodersUntilCheeseWheelBase extends Command {
 
     public TurnWithEncodersUntilCheeseWheelBase(double angle) {
 	this(() -> angle);
+	requires(Robot.driveTrain);
+	requires(Robot.pixyCamera);
     }
 
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-	System.out.println("Starting turn with encoders");
+	System.out.println("Starting cheesewheel turn");
 	// Robot.driveTrain.setEncoderPIDS(0.125, 0, 0);
 	// Robot.driveTrain.setEncoderDeadband(3);
 	Robot.driveTrain.resetEncoders();
-	
+
 	double setpoint = angle.getAsDouble() / 360.0 * DriveTrain.TURNING_CIRCUMFERENCE;
 	Robot.driveTrain.setLeftEncoderSetpoint(setpoint);
 	Robot.driveTrain.setRightEncoderSetpoint(-setpoint);
-	Robot.driveTrain.setEncoderToTurningPID();
+	Robot.driveTrain.setEncoderPIDS(p, 0, d);
 	Robot.driveTrain.setEncoderDeadband(DriveTrain.ENCODER_TURNING_DEADBAND_INCHES);
 	// Robot.driveTrain.driveRaw(0, 0);
 	// Robot.driveTrain.setEncoderPIDS(0.125, 0, 0);
@@ -45,31 +47,49 @@ public class TurnWithEncodersUntilCheeseWheelBase extends Command {
 	// Robot.driveTrain.setLeftEncoderSetpoint(setpoint);
 	// Robot.driveTrain.setRightEncoderSetpoint(-setpoint);
 	Robot.pixyCamera.turnOnLights();
-	this.setTimeout(5);
+	// this.setTimeout(5);
     }
 
     private double previousAngle;
 
+    private final double izone = 6; // DriveTrain.ENCODER_IZONE_TURNING
+    private final double p = 0.05;
+    private final double i = 0.00;
+    private final double d = 0.00;
+    private final double minimumTurn = 7;
+
+    private long lastOnTarget;
+    private boolean lastOnTargetCheck = true;
+
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-	if (visionMain.canSeeCheeseWheel()) {
+	visionMain.run();
+	double averageDistance = (Math.abs(driveTrain.getRightDistance()) + Math.abs(driveTrain.getLeftDistance()))
+		/ 2.0;
+	if (visionMain.canSeeCheeseWheel() && averageDistance > minimumTurn) {
+	    if (visionMain.isCheeseWheelPIDOnTarget() && lastOnTargetCheck) {
+		lastOnTarget = System.currentTimeMillis();
+		lastOnTargetCheck = false;
+	    }
+	    if (!visionMain.isCheeseWheelPIDOnTarget()) {
+		lastOnTargetCheck = true;
+	    }
 	    foundOnce = true;
-	    Robot.driveTrain.resetEncoders();
 	    double angle = visionMain.getAngleToCheeseWheel();
+	    System.out.println("Sees cheesewheel");
 	    if (angle != previousAngle) {
 		previousAngle = angle;
-		double setpoint = angle / 360.0 * DriveTrain.TURNING_CIRCUMFERENCE;
-		Robot.driveTrain.setLeftEncoderSetpoint(setpoint);
-		Robot.driveTrain.setRightEncoderSetpoint(-setpoint);
+		double setpoint = (angle) / 360.0 * DriveTrain.TURNING_CIRCUMFERENCE;
+		Robot.driveTrain.setLeftEncoderSetpoint(setpoint + Robot.driveTrain.getLeftDistance() + setpoint);
+		Robot.driveTrain.setRightEncoderSetpoint(-setpoint + Robot.driveTrain.getRightDistance() - setpoint);
 	    }
 	}
-	if (Math.abs(driveTrain.getLeftPIDError()) < DriveTrain.ENCODER_IZONE_TURNING
-		|| Math.abs(driveTrain.getRightPIDError()) < DriveTrain.ENCODER_IZONE_TURNING) {
-	    driveTrain.setEncoderPIDS(DriveTrain.encoderTurningP, DriveTrain.ENCODER_IZONE_TURNING_I,
-		    DriveTrain.encoderTurningD);
+
+	if (Math.abs(driveTrain.getLeftPIDError()) < izone || Math.abs(driveTrain.getRightPIDError()) < izone) {
+	    driveTrain.setEncoderPIDS(p, i, d);
 	} else {
-	    driveTrain.setEncoderToTurningPID();
+	    driveTrain.setEncoderPIDS(p, 0, d);
 	}
 
 	double leftError = Robot.driveTrain.getLeftPIDError();
@@ -79,8 +99,8 @@ public class TurnWithEncodersUntilCheeseWheelBase extends Command {
 	double left = Robot.driveTrain.getLeftPIDOutput();
 	double right = Robot.driveTrain.getRightPIDOutput();
 
-	left = left + leftRightAdjustment;
-	right = right + leftRightAdjustment;
+	// left = left + leftRightAdjustment;
+	// right = right + leftRightAdjustment;
 	Robot.driveTrain.driveRaw(left, right);
 
 	// double left = Robot.driveTrain.getLeftPIDOutput();
@@ -91,14 +111,20 @@ public class TurnWithEncodersUntilCheeseWheelBase extends Command {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-	return (foundOnce && visionMain.isCheeseWheelPIDOnTarget()) || driveTrain.encodersOnTarget();
+	double averageDistance = (Math.abs(driveTrain.getRightDistance()) + Math.abs(driveTrain.getLeftDistance()))
+		/ 2.0;
+	return (foundOnce && visionMain.isCheeseWheelPIDOnTarget()
+		&& (System.currentTimeMillis() - lastOnTarget > 100 && !lastOnTargetCheck))
+		&& averageDistance > minimumTurn;
     }
 
     // Called once after isFinished returns true
     @Override
     protected void end() {
+	System.out.println("Finished cheese wheel turn");
 	Robot.driveTrain.driveRaw(0, 0);
 	Robot.driveTrain.resetEncoderPIDValues();
 	Robot.driveTrain.resetEncoderDeadband();
+	Robot.pixyCamera.turnOffLights();
     }
 }
