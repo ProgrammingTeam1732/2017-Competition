@@ -18,6 +18,7 @@ import org.usfirst.frc.team1732.robot.commands.ballsystem.flywheel.EnableFlywhee
 import org.usfirst.frc.team1732.robot.commands.ballsystem.shooting.ShootTime;
 import org.usfirst.frc.team1732.robot.commands.ballsystem.shooting.ShuffleBallsWithWait;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveTime;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.dualpid.VelocityTest;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.ClearTotalDistance;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.talon.MagicMotionTest;
 import org.usfirst.frc.team1732.robot.commands.helpercommands.Wait;
@@ -54,6 +55,7 @@ public class AutoChooser implements SmartDashboardGroup {
 	StartBesideBoilerThenShoot(StartBesideBoilerAndShoot::new), // 10
 
 	// testing
+	TestVelocityControl(() -> new VelocityTest(50)),
 	TestMotionMagic(() -> new MagicMotionTest(60)),
 	DriveFullSpeedForward(() -> new DriveTime(5, 1)),
 	DriveFullSpeedBackward(() -> new DriveTime(5, -1)),
@@ -150,7 +152,7 @@ public class AutoChooser implements SmartDashboardGroup {
 
     private final SendableChooser<AutoModes> autoChooser = new SendableChooser<>();
 
-    public static final AutoModes defaultAuto = AutoModes.WallMiddleGearAndShoot;
+    public static final AutoModes defaultAuto = AutoModes.TestVelocityControl;
 
     public AutoChooser() {
 	autoChooser.addDefault(defaultAuto.ordinal() + ": " + defaultAuto.name(), defaultAuto);

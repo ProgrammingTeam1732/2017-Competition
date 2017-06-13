@@ -52,6 +52,7 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 	configureEncoders();
 	configureGyro();
 	shiftHighGear();
+	configurePVpid();
 	// turns on the gyro and encoders PID loops
 	gyroPID.enable();
 	leftEncoderPID.enable();
@@ -197,9 +198,9 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 
     // encoder controllers
     private final PIDController leftEncoderPID = new PIDController(encoderP, encoderI, encoderD, leftEncoder,
-	    DriveTrain::voidMethod);
+	    DriveTrain::voidMethod, 20);
     private final PIDController rightEncoderPID = new PIDController(encoderP, encoderI, encoderD, rightEncoder,
-	    DriveTrain::voidMethod);
+	    DriveTrain::voidMethod, 20);
 
     // private final PIDController leftEncoderPID = new PIDController(encoderP,
     // encoderI, encoderD,
@@ -496,10 +497,8 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 	// Left
 	String leftDirectory = directory + "Left/";
 	dashboard.addItem(
-		SmartDashboardItem.newNumberSender(leftDirectory + "Left Encoder Raw Counts", leftEncoder::getRaw));
-	dashboard.addItem(SmartDashboardItem.newNumberSender(leftDirectory + "Left Encoder Counts", leftEncoder::get));
-	dashboard.addItem(
 		SmartDashboardItem.newNumberSender(leftDirectory + "Left Encoder Distance", this::getLeftDistance));
+	dashboard.addItem(SmartDashboardItem.newNumberSender(leftDirectory + "Left Rate", this::getLeftVelocity));
 	dashboard.addItem(SmartDashboardItem.newNumberSender(leftDirectory + "Left Encoder Setpoint",
 		leftEncoderPID::getSetpoint));
 	dashboard.addItem(SmartDashboardItem.newNumberSender(leftDirectory + "Left Error", leftEncoderPID::getError));
@@ -510,10 +509,7 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 
 	// Right
 	String rightDirectory = directory + "Right/";
-	dashboard.addItem(
-		SmartDashboardItem.newNumberSender(rightDirectory + "Right Encoder Raw Counts", rightEncoder::getRaw));
-	dashboard.addItem(
-		SmartDashboardItem.newNumberSender(rightDirectory + "Right Encoder Counts", rightEncoder::get));
+	dashboard.addItem(SmartDashboardItem.newNumberSender(rightDirectory + "Right Rate", this::getRightVelocity));
 	dashboard.addItem(
 		SmartDashboardItem.newNumberSender(rightDirectory + "Right Encoder Distance", this::getRightDistance));
 	dashboard.addItem(SmartDashboardItem.newNumberSender(rightDirectory + "Right Encoder Setpoint",
@@ -899,13 +895,14 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
     }
 
     public double getLeftVelocity() {
-	// return leftEncoder.getRate();
-	return getTalonVelocity(leftMaster);
+	double d = leftEncoder.getRate();
+	return d;
+	// return getTalonVelocity(leftMaster);
     }
 
     public double getRightVelocity() {
-	return getTalonVelocity(rightMaster);
-	// return rightEncoder.getRate();
+	// return getTalonVelocity(rightMaster);
+	return rightEncoder.getRate();
     }
 
     public void resetEncoderPID() {
@@ -946,4 +943,144 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 	};
 	return pidSource;
     }
+
+    public static final double MAX_LEFT_VEL = 150;
+    public static final double MAX_RIGHT_VEL = 140;
+
+    public static final double VEL_P = 0.5;
+    public static final double VEL_I = 0;
+    public static final double VEL_D = 0;
+    public static final double LEFT_VEL_F = 1.0 / MAX_LEFT_VEL;
+    public static final double RIGHT_VEL_F = 1.0 / MAX_RIGHT_VEL;
+
+    private final PIDController leftVelPID = new PIDController(VEL_P, VEL_I, VEL_D, 0, makeVelPID(leftEncoder),
+	    DriveTrain::voidMethod, 20);
+    private final PIDController rightVelPID = new PIDController(VEL_P, VEL_I, VEL_D, 0, makeVelPID(rightEncoder),
+	    DriveTrain::voidMethod, 20);
+
+    public static final double POS_P = 0.5;
+    public static final double POS_I = 0;
+    public static final double POS_D = 0;
+
+    private final PIDController leftPosPID = new PIDController(POS_P, POS_I, POS_D, leftEncoder, DriveTrain::voidMethod,
+	    20);
+    private final PIDController rightPosPID = new PIDController(POS_P, POS_I, POS_D, rightEncoder,
+	    DriveTrain::voidMethod, 20);
+
+    private PIDSource makeVelPID(Encoder e) {
+	PIDSource pidSource = new PIDSource() {
+	    PIDSourceType type = PIDSourceType.kDisplacement;
+
+	    @Override
+	    public void setPIDSourceType(PIDSourceType pidSource) {
+		type = pidSource;
+	    }
+
+	    @Override
+	    public PIDSourceType getPIDSourceType() {
+		return type;
+	    }
+
+	    @Override
+	    public double pidGet() {
+		return e.getRate();
+	    }
+	};
+	return pidSource;
+    }
+
+    private void configurePVpid() {
+	leftPosPID.setAbsoluteTolerance(ENCODER_DEADBAND_INCHES);
+	rightPosPID.setAbsoluteTolerance(ENCODER_DEADBAND_INCHES);
+
+	leftPosPID.setOutputRange(-144, 144);
+	rightPosPID.setOutputRange(-144, 144);
+
+	leftVelPID.setAbsoluteTolerance(5);
+	rightVelPID.setAbsoluteTolerance(5);
+
+	leftVelPID.setOutputRange(ENCODER_MIN_OUTPUT, ENCODER_MAX_OUTPUT);
+	rightVelPID.setOutputRange(ENCODER_MIN_OUTPUT, ENCODER_MAX_OUTPUT);
+
+	leftVelPID.enable();
+	rightVelPID.enable();
+
+	leftPosPID.enable();
+	rightPosPID.enable();
+    }
+
+    public void enablePosPID() {
+	leftPosPID.enable();
+	rightPosPID.enable();
+    }
+
+    public void disablePosPID() {
+	leftPosPID.disable();
+	rightPosPID.disable();
+    }
+
+    public double getLeftPosPIDOutput() {
+	return leftPosPID.get();
+    }
+
+    public boolean leftPosOnTarget() {
+	return leftPosPID.onTarget();
+    }
+
+    public void setLeftPosPIDSetpoint(double setpoint) {
+	leftPosPID.setSetpoint(setpoint);
+    }
+
+    public double getLeftPosPIDError() {
+	return leftPosPID.getError();
+    }
+
+    public double getRightPosPIDOutput() {
+	return rightPosPID.get();
+    }
+
+    public boolean rightPosOnTarget() {
+	return rightPosPID.onTarget();
+    }
+
+    public void setRightPosPIDSetpoint(double setpoint) {
+	rightPosPID.setSetpoint(setpoint);
+    }
+
+    public double getRightPosPIDError() {
+	return rightPosPID.getError();
+    }
+
+    public double getLeftVelPIDOutput() {
+	return leftVelPID.get() + leftVelPID.getSetpoint() * LEFT_VEL_F;
+    }
+
+    public boolean leftVelOnTarget() {
+	return leftVelPID.onTarget();
+    }
+
+    public void setLeftVelPIDSetpoint(double setpoint) {
+	leftVelPID.setSetpoint(setpoint);
+    }
+
+    public double getLeftVelPIDError() {
+	return leftVelPID.getError();
+    }
+
+    public double getRightVelPIDOutput() {
+	return rightVelPID.get() + rightVelPID.getSetpoint() * RIGHT_VEL_F;
+    }
+
+    public boolean rightVelOnTarget() {
+	return rightVelPID.onTarget();
+    }
+
+    public void setRightVelPIDSetpoint(double setpoint) {
+	rightVelPID.setSetpoint(setpoint);
+    }
+
+    public double getRightVelPIDError() {
+	return rightVelPID.getError();
+    }
+
 }
