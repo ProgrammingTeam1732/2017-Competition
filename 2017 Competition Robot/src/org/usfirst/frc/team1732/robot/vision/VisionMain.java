@@ -71,7 +71,7 @@ public class VisionMain implements SmartDashboardGroup {
 
     public static final String NAME = "Vision Main";
 
-    public static final double ADJUSTMENT = 0;
+    public static final double ADJUSTMENT = 6;
 
     public VisionMain() {
 	gearArduino = new Arduino(SerialPort.Port.kUSB1);
@@ -223,14 +223,27 @@ public class VisionMain implements SmartDashboardGroup {
 	try {
 	    Rectangle biggest = cheeseWheelRectangles[0];
 	    for (Rectangle r : cheeseWheelRectangles) {
-		if (r.getArea() > biggest.getArea())
+		if (isPossibleCheeseWheelTarget(r) && r.getArea() > biggest.getArea())
 		    biggest = r;
 	    }
 	    cheeseWheelTarget = new CheeseWheelTarget(biggest);
+	    System.out.printf("Area: %d   Width: %d   Height: %d   Width/Height Ratio: %.3f%n", biggest.getArea(),
+		    biggest.width, biggest.height, 1.0 * biggest.width / biggest.height);
 	    isNewCheeseWheelDataAvailable = false;
 	} catch (Exception e) {
 	    // e.printStackTrace();
 	}
+    }
+
+    private boolean isPossibleCheeseWheelTarget(Rectangle r) {
+	if (r.y < 100)
+	    return false;
+	double ratio = 1.0 * r.width / r.height;
+	int area = r.getArea();
+	if ((area <= 1000 && ratio >= 2.0) || (area >= 1000 && ratio <= 2.0))
+	    return true;
+	else
+	    return false;
     }
 
     private void updateBoilerTarget() {
