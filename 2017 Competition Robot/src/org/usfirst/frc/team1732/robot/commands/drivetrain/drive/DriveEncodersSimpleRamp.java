@@ -1,12 +1,9 @@
-package org.usfirst.frc.team1732.robot.commands.drivetrain.encoder;
+package org.usfirst.frc.team1732.robot.commands.drivetrain.drive;
 
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-/**
- *
- */
 public class DriveEncodersSimpleRamp extends CommandGroup {
 
     public DriveEncodersSimpleRamp(DoubleSupplier left, DoubleSupplier right) {

@@ -1,13 +1,12 @@
-package org.usfirst.frc.team1732.robot.commands.drivetrain;
+package org.usfirst.frc.team1732.robot.commands.drivetrain.brake;
 
 import org.usfirst.frc.team1732.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-/**
- *
- */
 public class BrakeDriveNoShift extends Command {
+
+    private static int id = 0;
 
     public BrakeDriveNoShift() {
 	// Use requires() here to declare subsystem dependencies
@@ -18,7 +17,7 @@ public class BrakeDriveNoShift extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-	System.out.println("start braking");
+	System.out.println("Start BrakeDriveNoShift " + id);
 	Robot.driveTrain.driveRaw(0, 0);
     }
 
@@ -28,8 +27,8 @@ public class BrakeDriveNoShift extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-	double leftV = Robot.driveTrain.getLeftVelocity();
-	double rightV = Robot.driveTrain.getRightVelocity();
+	double leftV = Robot.driveTrain.leftEncoder.getRate();
+	double rightV = Robot.driveTrain.rightEncoder.getRate();
 	double averageV = (Math.abs(leftV) + Math.abs(rightV)) / 2.0;
 	double output = averageV * BRAKE_P;
 	double left = -Math.copySign(output, leftV);
@@ -40,13 +39,16 @@ public class BrakeDriveNoShift extends Command {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-	return Math.abs(Robot.driveTrain.getLeftVelocity()) < 1 && Math.abs(Robot.driveTrain.getRightVelocity()) < 1;
+	return Math.abs(Robot.driveTrain.leftEncoder.getRate()) < 1
+		&& Math.abs(Robot.driveTrain.rightEncoder.getRate()) < 1;
     }
 
     // Called once after isFinished returns true
     @Override
     protected void end() {
-	System.out.println("end braking");
+	System.out.println("End BrakeDriveNoShift " + id);
+	id++;
+	Robot.driveTrain.driveRaw(0, 0);
     }
 
 }

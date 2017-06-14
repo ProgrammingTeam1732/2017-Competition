@@ -3,12 +3,13 @@ package org.usfirst.frc.team1732.robot.autocommands.scoregear.twogearauto;
 import java.util.function.DoubleSupplier;
 
 import org.usfirst.frc.team1732.robot.Robot;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.BrakeDriveNoShift;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.SetMotorSpeed;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.brake.BrakeDriveNoShift;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.drive.DriveEncoders;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.ClearTotalDistance;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveEncodersGetSetpointAtRuntime;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.ResetEncoderPID;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.SetEncoderPID;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.TurnWithEncodersSimpleRamp;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.motors.SetMotorSpeed;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.turn.TurnWithEncodersSimpleRamp;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.GearIntakeSetUpTimedIn;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.GrabGear;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.InitGearIntake;
@@ -31,7 +32,8 @@ public class TwoGearAuto extends CommandGroup {
 
 	// places the gear, drives back
 	DoubleSupplier firstGearScoreDriveBack = () -> {
-	    // droveBack = 10 - (Robot.driveTrain.getTotalLeftDistance() +
+	    // droveBack = 10 -
+	    // (Robot.driveTrain.mainController.left.getTotalDistance()() +
 	    // Robot.driveTrain.getTotalRightDistance()) / 2.0;
 	    // System.out.println(droveBack);
 	    droveBack = Robot.twoGearDriveBack.getValue(); // -55
@@ -52,7 +54,7 @@ public class TwoGearAuto extends CommandGroup {
 	addSequential(new TurnWithEncodersSimpleRamp(firstGearPickUpFaceGearAngle));
 
 	addSequential(new BrakeDriveNoShift());
-	
+
 	addSequential(new DitherTurnWithVisionForGroundGear(0));
 
 	// wait to move
@@ -82,9 +84,9 @@ public class TwoGearAuto extends CommandGroup {
 	addParallel(new GearIntakeSetUpTimedIn(raiseGearTime));
 
 	// drives back
-	DoubleSupplier firstGearPickupReturnToGearPeg = () -> (-Robot.driveTrain.getTotalLeftDistance()
-		+ -Robot.driveTrain.getTotalRightDistance()) / 2.0 + 7;
-	addSequential(new DriveEncodersGetSetpointAtRuntime(firstGearPickupReturnToGearPeg));
+	DoubleSupplier firstGearPickupReturnToGearPeg = () -> (-Robot.driveTrain.leftEncoder.getTotalDistance()
+		+ -Robot.driveTrain.rightEncoder.getTotalDistance()) / 2.0 + 7;
+	addSequential(new DriveEncoders(firstGearPickupReturnToGearPeg));
 
 	addSequential(new BrakeDriveNoShift());
 
@@ -103,14 +105,26 @@ public class TwoGearAuto extends CommandGroup {
 
 	DoubleSupplier driveForwardFirstHalfDistance = () -> driveForwardDistance.getAsDouble() * proportion;
 
-	addSequential(new DriveEncodersGetSetpointAtRuntime(driveForwardFirstHalfDistance));
+	addSequential(new DriveEncoders(driveForwardFirstHalfDistance));
 	addSequential(new DitherTurnWithVision(0));
 
 	// scores second gear!!!
-	DoubleSupplier driveForwardSecondHalfDistance = () -> driveForwardDistance.getAsDouble() * (1.0 - proportion) - 6;
+	DoubleSupplier driveForwardSecondHalfDistance = () -> driveForwardDistance.getAsDouble() * (1.0 - proportion)
+		- 6;
 
 	DoubleSupplier secondGearScoreDriveBackDistance = () -> -15;
-	addSequential(new SetEncoderPID(0.2, 0, 0));
+	addSequential(new SetEncoderPID(Robot.driveTrain.normalPID.changePID(0.2, 0, 0)));
 	addSequential(new EncoderPlaceGear(driveForwardSecondHalfDistance, secondGearScoreDriveBackDistance));
+	addSequential(new ResetEncoderPID());
+    }
+
+    @Override
+    protected void interrupted() {
+	end();
+    }
+
+    @Override
+    protected void end() {
+	Robot.driveTrain.mainController.resetPIDValues();
     }
 }

@@ -1,14 +1,11 @@
-package org.usfirst.frc.team1732.robot.commands.drivetrain.encoder;
+package org.usfirst.frc.team1732.robot.commands.drivetrain.turn;
 
 import java.util.function.DoubleSupplier;
 
-import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveTime;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.drive.DriveTime;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-/**
- *
- */
 public class TurnWithEncoders extends CommandGroup {
 
     public TurnWithEncoders(double angle) {

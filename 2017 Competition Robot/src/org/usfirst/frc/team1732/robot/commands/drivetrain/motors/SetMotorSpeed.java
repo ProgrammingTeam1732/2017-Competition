@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1732.robot.commands.drivetrain;
+package org.usfirst.frc.team1732.robot.commands.drivetrain.motors;
 
 import org.usfirst.frc.team1732.robot.Robot;
 
@@ -23,6 +23,7 @@ public class SetMotorSpeed extends InstantCommand {
     // Called once when the command executes
     @Override
     protected void initialize() {
+	System.out.println("Set Motor Speed " + left + ", " + right);
 	Robot.driveTrain.driveRaw(left, right);
     }
 

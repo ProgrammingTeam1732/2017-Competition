@@ -1,8 +1,8 @@
-package org.usfirst.frc.team1732.robot.commands.drivetrain.encoder;
+package org.usfirst.frc.team1732.robot.commands.drivetrain.turn;
 
 import java.util.function.DoubleSupplier;
 
-import org.usfirst.frc.team1732.robot.commands.drivetrain.BrakeDrive;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.brake.BrakeDrive;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 

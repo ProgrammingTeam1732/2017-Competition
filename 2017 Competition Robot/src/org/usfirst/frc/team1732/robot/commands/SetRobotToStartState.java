@@ -6,7 +6,7 @@ import org.usfirst.frc.team1732.robot.commands.ballsystem.feeder.FeederSetStop;
 import org.usfirst.frc.team1732.robot.commands.ballsystem.flywheel.DisableFlywheel;
 import org.usfirst.frc.team1732.robot.commands.climber.ArmSetIn;
 import org.usfirst.frc.team1732.robot.commands.climber.ClimberSetStop;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.SetMotorSpeed;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.motors.SetMotorSpeed;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.base.motor.GearIntakeSetStop;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.base.position.GearIntakeSetUp;
 

@@ -8,39 +8,41 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class GearIntakeInCurrentDistance extends Command {
 
-	private final double	setpoint;
-	private final double	minDistance;
+    private final double setpoint;
+    private final double minDistance;
 
-	public GearIntakeInCurrentDistance(double minDistance, double stopPoint) {
-		// Use requires() here to declare subsystem dependencies
-		// eg. requires(chassis);
-		requires(gearIntake);
-		setpoint = stopPoint;
-		this.minDistance = minDistance;
-	}
+    public GearIntakeInCurrentDistance(double minDistance, double stopPoint) {
+	// Use requires() here to declare subsystem dependencies
+	// eg. requires(chassis);
+	requires(gearIntake);
+	setpoint = stopPoint;
+	this.minDistance = minDistance;
+    }
 
-	public GearIntakeInCurrentDistance(double stopPoint) {
-		this(0, stopPoint);
-	}
+    public GearIntakeInCurrentDistance(double stopPoint) {
+	this(0, stopPoint);
+    }
 
-	// Called just before this Command runs the first time
-	@Override
-	protected void initialize() {
-		gearIntake.setIn();
-		Robot.driveTrain.resetEncoders();
-		Robot.driveTrain.setEncoderSetpoint(setpoint);
-	}
+    // Called just before this Command runs the first time
+    @Override
+    protected void initialize() {
+	gearIntake.setIn();
+	Robot.driveTrain.resetEncoders();
+	Robot.driveTrain.mainController.setSetpoint(setpoint);
+    }
 
-	// Make this return true when this Command no longer needs to run execute()
-	@Override
-	protected boolean isFinished() {
-		double average = (Robot.driveTrain.getLeftDistance() + Robot.driveTrain.getRightDistance()) / 2.0;
-		return gearIntake.gearIsIn()
-				|| (Robot.driveTrain.isErrorNegative() && Math.abs(average) > Math.abs(minDistance));
-	}
+    // Make this return true when this Command no longer needs to run execute()
+    @Override
+    protected boolean isFinished() {
+	double average = (Robot.driveTrain.leftEncoder.getDistance() + Robot.driveTrain.rightEncoder.getDistance())
+		/ 2.0;
+	return gearIntake.gearIsIn() || (Robot.driveTrain.mainController.areBothErrorNegative()
+		&& Math.abs(average) > Math.abs(minDistance));
+    }
 
-	// Called once after isFinished returns true
-	@Override
-	protected void end() {}
+    // Called once after isFinished returns true
+    @Override
+    protected void end() {
+    }
 
 }

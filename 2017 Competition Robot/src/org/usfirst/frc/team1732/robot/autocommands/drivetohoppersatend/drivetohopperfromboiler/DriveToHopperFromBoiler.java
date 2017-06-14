@@ -1,8 +1,8 @@
 package org.usfirst.frc.team1732.robot.autocommands.drivetohoppersatend.drivetohopperfromboiler;
 
 import org.usfirst.frc.team1732.robot.Robot;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveEncoders;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.TurnWithEncoders;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.drive.DriveEncoders;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.turn.TurnWithEncoders;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 

@@ -2,7 +2,7 @@ package org.usfirst.frc.team1732.robot.commands.test;
 
 import org.usfirst.frc.team1732.robot.commands.climber.ArmSetIn;
 import org.usfirst.frc.team1732.robot.commands.climber.ArmSetOut;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.SetMotorSpeed;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.motors.SetMotorSpeed;
 import org.usfirst.frc.team1732.robot.commands.helpercommands.Print;
 import org.usfirst.frc.team1732.robot.commands.helpercommands.Wait;
 

@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1732.robot.commands.drivetrain.encoder;
+package org.usfirst.frc.team1732.robot.commands.drivetrain.drive;
 
 import static org.usfirst.frc.team1732.robot.Robot.driveTrain;
 
@@ -6,10 +6,9 @@ import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-/**
- *
- */
-public class DriveEncodersGetSetpointAtRuntime extends Command {
+public class DriveEncoders extends Command {
+
+    private static int id = 0;
 
     private final DoubleSupplier leftDistance;
     private final DoubleSupplier rightDistance;
@@ -17,11 +16,11 @@ public class DriveEncodersGetSetpointAtRuntime extends Command {
     private double left = 0;
     private double right = 0;
 
-    public DriveEncodersGetSetpointAtRuntime(DoubleSupplier distanceInches) {
+    public DriveEncoders(DoubleSupplier distanceInches) {
 	this(distanceInches, distanceInches);
     }
 
-    public DriveEncodersGetSetpointAtRuntime(DoubleSupplier leftInches, DoubleSupplier rightInches) {
+    public DriveEncoders(DoubleSupplier leftInches, DoubleSupplier rightInches) {
 	// Use requires() here to declare subsystem dependencies
 	// eg. requires(chassis);
 	requires(driveTrain);
@@ -29,42 +28,35 @@ public class DriveEncodersGetSetpointAtRuntime extends Command {
 	rightDistance = rightInches;
     }
 
+    public DriveEncoders(double distanceInches) {
+	this(distanceInches, distanceInches);
+    }
+
+    public DriveEncoders(double leftInches, double rightInches) {
+	this(() -> leftInches, () -> rightInches);
+    }
+
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-	System.out.println("start drive with encoders");
-	driveTrain.resetEncoders();
+	System.out.println("Start DriveEncoders " + id);
 	left = ((int) (leftDistance.getAsDouble() * 1000)) / 1000.0;
 	right = ((int) (rightDistance.getAsDouble() * 1000)) / 1000.0;
-	System.out.println(left);
-	System.out.println(right);
-	System.out.println(left == right);
-	driveTrain.setLeftEncoderSetpoint(left);
-	driveTrain.setRightEncoderSetpoint(right);
+	driveTrain.resetEncoders();
+	driveTrain.mainController.setSetpoint(left, right);
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-	double leftOutput = driveTrain.getLeftPIDOutput();
-	double rightOutput = driveTrain.getRightPIDOutput();
+	double leftOutput = driveTrain.mainController.left.getOutput();
+	double rightOutput = driveTrain.mainController.right.getOutput();
 
-	// if (left > 0 || right > 0) {
-	if (left == right) {
-	    double adjust = driveTrain.getLeftRightAdjustment();
-	    // System.out.println("Left-right adjustment: " + adjust);
-	    // if (driveTrain.getLeftPIDError() < 0) {
-	    // leftOutput = leftOutput - adjust;
-	    // } else {
+	if (leftDistance == rightDistance) {
+	    double adjust = driveTrain.getLeftRightAdjustment(driveTrain.mainController.left, driveTrain.mainController.right);
 	    leftOutput = leftOutput + adjust;
-	    // }
-	    // if (driveTrain.getRightPIDError() < 0) {
-	    // rightOutput = rightOutput + adjust;
-	    // } else {
 	    rightOutput = rightOutput - adjust;
-	    // }
 	}
-	// }
 
 	double max = Math.max(Math.abs(leftOutput), Math.abs(rightOutput));
 
@@ -79,13 +71,15 @@ public class DriveEncodersGetSetpointAtRuntime extends Command {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-	return driveTrain.encodersOnTarget();
+	return driveTrain.mainController.areBothOnTarget();
     }
 
     // Called once after isFinished returns true
     @Override
     protected void end() {
-	System.out.println("end drive with encoders");
+	System.out.println("End DriveEncoders " + id);
 	driveTrain.driveRaw(0, 0);
+	id++;
     }
+
 }

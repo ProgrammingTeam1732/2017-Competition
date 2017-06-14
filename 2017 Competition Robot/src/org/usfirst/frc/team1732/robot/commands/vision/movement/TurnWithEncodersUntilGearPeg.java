@@ -2,7 +2,7 @@ package org.usfirst.frc.team1732.robot.commands.vision.movement;
 
 import java.util.function.DoubleSupplier;
 
-import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveTime;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.drive.DriveTime;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
