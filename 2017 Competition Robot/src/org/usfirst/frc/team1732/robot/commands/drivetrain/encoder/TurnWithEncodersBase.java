@@ -1,7 +1,6 @@
-package org.usfirst.frc.team1732.robot.commands.vision.movement;
+package org.usfirst.frc.team1732.robot.commands.drivetrain.encoder;
 
 import static org.usfirst.frc.team1732.robot.Robot.driveTrain;
-import static org.usfirst.frc.team1732.robot.Robot.visionMain;
 
 import java.util.function.DoubleSupplier;
 
@@ -10,17 +9,15 @@ import org.usfirst.frc.team1732.robot.subsystems.DriveTrain;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class TurnWithEncodersUntilGearPegBase extends Command {
+public class TurnWithEncodersBase extends Command {
 
     private final DoubleSupplier angle;
-    private boolean foundOnce = false;
 
-    public TurnWithEncodersUntilGearPegBase(DoubleSupplier angle) {
+    public TurnWithEncodersBase(DoubleSupplier angle) {
 	this.angle = angle;
-	requires(Robot.driveTrain);
     }
 
-    public TurnWithEncodersUntilGearPegBase(double angle) {
+    public TurnWithEncodersBase(double angle) {
 	this(() -> angle);
     }
 
@@ -31,8 +28,7 @@ public class TurnWithEncodersUntilGearPegBase extends Command {
 	// Robot.driveTrain.setEncoderPIDS(0.125, 0, 0);
 	// Robot.driveTrain.setEncoderDeadband(3);
 	Robot.driveTrain.resetEncoders();
-	previousAngle = angle.getAsDouble();
-	double setpoint = previousAngle / 360.0 * DriveTrain.TURNING_CIRCUMFERENCE;
+	double setpoint = angle.getAsDouble() / 360.0 * DriveTrain.TURNING_CIRCUMFERENCE;
 	Robot.driveTrain.setLeftEncoderSetpoint(setpoint);
 	Robot.driveTrain.setRightEncoderSetpoint(-setpoint);
 	Robot.driveTrain.setEncoderToTurningPID();
@@ -45,27 +41,11 @@ public class TurnWithEncodersUntilGearPegBase extends Command {
 	// Robot.driveTrain.TURNING_CIRCUMFERENCE;
 	// Robot.driveTrain.setLeftEncoderSetpoint(setpoint);
 	// Robot.driveTrain.setRightEncoderSetpoint(-setpoint);
-	Robot.pixyCamera.turnOnLights();
-	this.setTimeout(5);
     }
-
-    private double previousAngle;
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-	visionMain.run();
-	if (visionMain.canSeeGearPeg()) {
-	    foundOnce = true;
-	    Robot.driveTrain.resetEncoders();
-	    double angle = visionMain.getAngleToGearPeg();
-	    if (angle != previousAngle) {
-		previousAngle = angle;
-		double setpoint = angle / 360.0 * DriveTrain.TURNING_CIRCUMFERENCE;
-		Robot.driveTrain.setLeftEncoderSetpoint(setpoint);
-		Robot.driveTrain.setRightEncoderSetpoint(-setpoint);
-	    }
-	}
 	if (Math.abs(driveTrain.getLeftPIDError()) < DriveTrain.ENCODER_IZONE_TURNING
 		|| Math.abs(driveTrain.getRightPIDError()) < DriveTrain.ENCODER_IZONE_TURNING) {
 	    driveTrain.setEncoderPIDS(DriveTrain.encoderTurningP, DriveTrain.ENCODER_IZONE_TURNING_I,
@@ -93,7 +73,7 @@ public class TurnWithEncodersUntilGearPegBase extends Command {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-	return (foundOnce && visionMain.isGearPIDOnTarget()) || driveTrain.encodersOnTarget();
+	return Robot.driveTrain.encodersOnTarget();
     }
 
     // Called once after isFinished returns true

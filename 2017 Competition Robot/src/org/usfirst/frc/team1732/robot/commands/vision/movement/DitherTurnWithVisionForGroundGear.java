@@ -6,6 +6,7 @@ import static org.usfirst.frc.team1732.robot.Robot.visionMain;
 import org.usfirst.frc.team1732.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DitherTurnWithVisionForGroundGear extends Command {
 
@@ -43,7 +44,7 @@ public class DitherTurnWithVisionForGroundGear extends Command {
     protected void execute() {
 	visionMain.run();
 	// double angle = visionMain.getAngleToGearPeg();
-	if (visionMain.canSeeCheeseWheel()) {
+	if (visionMain.canSeeCheeseWheel()) {  
 	    foundOnce = true;
 	    double gearPIDOutput = visionMain.getCheeseWheelOutput();
 	    // double output = 0;
@@ -62,7 +63,7 @@ public class DitherTurnWithVisionForGroundGear extends Command {
 	    }
 	    // driveTrain.driveRawAbsoluteLimit(-gearPIDOutput, gearPIDOutput,
 	    // minimum, maximum);
-	    driveTrain.driveRawAbsLimit(gearPIDOutput, -gearPIDOutput, .178, 1);
+	    SmartDashboard.putString("Cheese Wheel Drive", driveTrain.driveRawAbsLimit(gearPIDOutput, -gearPIDOutput, .178, 1));
 	}
     }
 

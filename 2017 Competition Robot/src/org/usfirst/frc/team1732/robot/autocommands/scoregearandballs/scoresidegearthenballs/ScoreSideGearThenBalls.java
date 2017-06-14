@@ -6,11 +6,11 @@ import org.usfirst.frc.team1732.robot.autocommands.scoregear.scoresidegear.Score
 import org.usfirst.frc.team1732.robot.commands.ballsystem.flywheel.EnableFlywheel;
 import org.usfirst.frc.team1732.robot.commands.ballsystem.shooting.ShootTime;
 import org.usfirst.frc.team1732.robot.commands.ballsystem.shooting.ShuffleBallsWithWait;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.drive.DriveEncoders;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.drive.DriveTime;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.drive.DriveUntilEncoders;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveTime;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.ClearTotalDistance;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.turn.TurnWithEncoders;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveEncoders;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveUntilEncoders;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.TurnWithEncoders;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.InitGearIntake;
 import org.usfirst.frc.team1732.robot.commands.helpercommands.Wait;
 import org.usfirst.frc.team1732.robot.commands.placegear.EncoderPlaceGear;

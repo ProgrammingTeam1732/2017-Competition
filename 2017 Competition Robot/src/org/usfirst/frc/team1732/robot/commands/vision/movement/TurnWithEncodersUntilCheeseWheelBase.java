@@ -6,8 +6,7 @@ import static org.usfirst.frc.team1732.robot.Robot.visionMain;
 import java.util.function.DoubleSupplier;
 
 import org.usfirst.frc.team1732.robot.Robot;
-import org.usfirst.frc.team1732.robot.subsystems.drivetrain.DriveTrain;
-import org.usfirst.frc.team1732.robot.subsystems.drivetrain.PIDData;
+import org.usfirst.frc.team1732.robot.subsystems.DriveTrain;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -30,18 +29,33 @@ public class TurnWithEncodersUntilCheeseWheelBase extends Command {
     @Override
     protected void initialize() {
 	System.out.println("Starting cheesewheel turn");
+	// Robot.driveTrain.setEncoderPIDS(0.125, 0, 0);
+	// Robot.driveTrain.setEncoderDeadband(3);
 	Robot.driveTrain.resetEncoders();
 
 	double setpoint = angle.getAsDouble() / 360.0 * DriveTrain.TURNING_CIRCUMFERENCE;
-	Robot.driveTrain.mainController.setSetpoint(setpoint, -setpoint);
-	Robot.driveTrain.mainController.setPIDValues(pidValues);
+	Robot.driveTrain.setLeftEncoderSetpoint(setpoint);
+	Robot.driveTrain.setRightEncoderSetpoint(-setpoint);
+	Robot.driveTrain.setEncoderPIDS(p, 0, d);
+	Robot.driveTrain.setEncoderDeadband(DriveTrain.ENCODER_TURNING_DEADBAND_INCHES);
+	// Robot.driveTrain.driveRaw(0, 0);
+	// Robot.driveTrain.setEncoderPIDS(0.125, 0, 0);
+	// Robot.driveTrain.setEncoderDeadband(3);
+	// Robot.driveTrain.resetEncoders();
+	// double setpoint = angle.getAsDouble() / 360.0 *
+	// Robot.driveTrain.TURNING_CIRCUMFERENCE;
+	// Robot.driveTrain.setLeftEncoderSetpoint(setpoint);
+	// Robot.driveTrain.setRightEncoderSetpoint(-setpoint);
 	Robot.pixyCamera.turnOnLights();
 	// this.setTimeout(5);
     }
 
     private double previousAngle;
 
-    private final PIDData pidValues = new PIDData(0.05, 0, 0.14, 0, 6, driveTrain.turningPID.deadband, 1, -1);
+    private final double izone = 6; // DriveTrain.ENCODER_IZONE_TURNING
+    private final double p = 0.05;
+    private final double i = 0.00;
+    private final double d = 0.14;
     private final double minimumTurn = 7;
 
     private long lastOnTarget;
@@ -51,8 +65,8 @@ public class TurnWithEncodersUntilCheeseWheelBase extends Command {
     @Override
     protected void execute() {
 	visionMain.run();
-	double averageDistance = (Math.abs(driveTrain.leftEncoder.getDistance())
-		+ Math.abs(driveTrain.rightEncoder.getDistance())) / 2.0;
+	double averageDistance = (Math.abs(driveTrain.getRightDistance()) + Math.abs(driveTrain.getLeftDistance()))
+		/ 2.0;
 	if (visionMain.canSeeCheeseWheel() && averageDistance > minimumTurn) {
 	    if (visionMain.isCheeseWheelPIDOnTarget() && lastOnTargetCheck) {
 		lastOnTarget = System.currentTimeMillis();
@@ -67,18 +81,23 @@ public class TurnWithEncodersUntilCheeseWheelBase extends Command {
 	    if (angle != previousAngle) {
 		previousAngle = angle;
 		double setpoint = (angle) / 360.0 * DriveTrain.TURNING_CIRCUMFERENCE;
-		double leftSet = setpoint + Robot.driveTrain.leftEncoder.getDistance() + setpoint;
-		double rightSet = -setpoint + Robot.driveTrain.rightEncoder.getDistance() - setpoint;
-		Robot.driveTrain.mainController.adjustSetpoint(leftSet, rightSet);
+		Robot.driveTrain.setLeftEncoderSetpoint(setpoint + Robot.driveTrain.getLeftDistance() + setpoint);
+		Robot.driveTrain.setRightEncoderSetpoint(-setpoint + Robot.driveTrain.getRightDistance() - setpoint);
 	    }
 	}
 
-	double leftError = Robot.driveTrain.mainController.left.getError();
-	double rightError = Robot.driveTrain.mainController.right.getError();
-	double leftRightAdjustment = (leftError + rightError) * DriveTrain.ERROR_DIFFERENCE_SCALAR;
+	if (Math.abs(driveTrain.getLeftPIDError()) < izone || Math.abs(driveTrain.getRightPIDError()) < izone) {
+	    driveTrain.setEncoderPIDS(p, i, d);
+	} else {
+	    driveTrain.setEncoderPIDS(p, 0, d);
+	}
 
-	double left = Robot.driveTrain.mainController.left.getOutput();
-	double right = Robot.driveTrain.mainController.right.getOutput();
+	double leftError = Robot.driveTrain.getLeftPIDError();
+	double rightError = Robot.driveTrain.getRightPIDError();
+	double leftRightAdjustment = (leftError + rightError) * DriveTrain.errorDifferenceScalar;
+
+	double left = Robot.driveTrain.getLeftPIDOutput();
+	double right = Robot.driveTrain.getRightPIDOutput();
 
 	// left = left + leftRightAdjustment;
 	// right = right + leftRightAdjustment;
@@ -92,8 +111,8 @@ public class TurnWithEncodersUntilCheeseWheelBase extends Command {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-	double averageDistance = (Math.abs(driveTrain.leftEncoder.getDistance())
-		+ Math.abs(driveTrain.rightEncoder.getDistance())) / 2.0;
+	double averageDistance = (Math.abs(driveTrain.getRightDistance()) + Math.abs(driveTrain.getLeftDistance()))
+		/ 2.0;
 	return (foundOnce && visionMain.isCheeseWheelPIDOnTarget()
 		&& (System.currentTimeMillis() - lastOnTarget > 100 && !lastOnTargetCheck))
 		&& averageDistance > minimumTurn;
@@ -104,7 +123,8 @@ public class TurnWithEncodersUntilCheeseWheelBase extends Command {
     protected void end() {
 	System.out.println("Finished cheese wheel turn");
 	Robot.driveTrain.driveRaw(0, 0);
-	Robot.driveTrain.mainController.resetPIDValues();
+	Robot.driveTrain.resetEncoderPIDValues();
+	Robot.driveTrain.resetEncoderDeadband();
 	Robot.pixyCamera.turnOffLights();
     }
 }

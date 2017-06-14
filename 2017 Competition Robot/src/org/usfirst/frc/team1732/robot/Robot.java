@@ -26,6 +26,8 @@ import org.usfirst.frc.team1732.robot.commands.climber.ArmSetIn;
 import org.usfirst.frc.team1732.robot.commands.climber.ArmSetOut;
 import org.usfirst.frc.team1732.robot.commands.climber.ClimberSetStop;
 import org.usfirst.frc.team1732.robot.commands.climber.ClimberSetUp;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.ShiftHigh;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.ShiftLow;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.motors.motorleftback.MotorLTBackForward;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.motors.motorleftback.MotorLTBackReverse;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.motors.motorleftback.MotorLTBackStop;
@@ -44,8 +46,6 @@ import org.usfirst.frc.team1732.robot.commands.drivetrain.motors.motorrightbotto
 import org.usfirst.frc.team1732.robot.commands.drivetrain.motors.motorrightfront.MotorRTFrontForward;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.motors.motorrightfront.MotorRTFrontReverse;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.motors.motorrightfront.MotorRTFrontStop;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.shift.ShiftHigh;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.shift.ShiftLow;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.base.motor.GearIntakeSetIn;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.base.motor.GearIntakeSetOut;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.base.motor.GearIntakeSetStop;
@@ -59,12 +59,12 @@ import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardItem;
 import org.usfirst.frc.team1732.robot.subsystems.Arm;
 import org.usfirst.frc.team1732.robot.subsystems.BallIntake;
 import org.usfirst.frc.team1732.robot.subsystems.Climber;
+import org.usfirst.frc.team1732.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team1732.robot.subsystems.Feeder;
 import org.usfirst.frc.team1732.robot.subsystems.Flywheel;
 import org.usfirst.frc.team1732.robot.subsystems.GearIntake;
 import org.usfirst.frc.team1732.robot.subsystems.PixyCamera;
 import org.usfirst.frc.team1732.robot.subsystems.Wings;
-import org.usfirst.frc.team1732.robot.subsystems.drivetrain.DriveTrain;
 import org.usfirst.frc.team1732.robot.triggers.Triggers;
 import org.usfirst.frc.team1732.robot.vision.VisionMain;
 
@@ -404,6 +404,8 @@ public class Robot extends IterativeRobot {
      * -motors turned off
      */
     private void setRobotToDefaultStates() {
+	driveTrain.clearEncoderIntgral();
+	driveTrain.clearGyroIntgral();
 	// moters
 	feeder.setStop(); // stop feeder
 	flywheel.disableAutoControl(); // turn off flywheel

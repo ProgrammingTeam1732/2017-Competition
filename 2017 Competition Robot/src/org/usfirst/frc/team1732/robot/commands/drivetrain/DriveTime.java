@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1732.robot.commands.drivetrain.drive;
+package org.usfirst.frc.team1732.robot.commands.drivetrain;
 
 import static org.usfirst.frc.team1732.robot.Robot.driveTrain;
 
@@ -6,10 +6,10 @@ import org.usfirst.frc.team1732.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
+/**
+ *
+ */
 public class DriveTime extends Command {
-
-    private static int id = 0;
-
     private double left;
     private double right;
 
@@ -29,7 +29,6 @@ public class DriveTime extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-	System.out.println("Start DriveTime " + id);
 	driveTrain.driveRaw(left, right);
     }
 
@@ -40,10 +39,10 @@ public class DriveTime extends Command {
     @Override
     protected void execute() {
 	double d;
-	if (Math.abs((d = Robot.driveTrain.leftEncoder.getRate())) > Math.abs(leftMax)) {
+	if (Math.abs((d = Robot.driveTrain.getLeftVelocity())) > Math.abs(leftMax)) {
 	    leftMax = d;
 	}
-	if (Math.abs((d = Robot.driveTrain.rightEncoder.getRate())) > Math.abs(rightMax)) {
+	if (Math.abs((d = Robot.driveTrain.getRightVelocity())) > Math.abs(rightMax)) {
 	    rightMax = d;
 	}
     }
@@ -57,8 +56,6 @@ public class DriveTime extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-	System.out.println("End DriveTime " + id);
-	id++;
 	System.out.println("Max Velocity");
 	System.out.println(leftMax);
 	System.out.println(rightMax);

@@ -1,8 +1,8 @@
 package org.usfirst.frc.team1732.robot.autocommands.scoregear.scoresidegear.base;
 
-import org.usfirst.frc.team1732.robot.commands.drivetrain.brake.BrakeDrive;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.drive.DriveEncoders;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.turn.TurnWithEncodersSimpleRamp;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.BrakeDrive;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveEncoders;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.TurnWithEncodersSimpleRamp;
 import org.usfirst.frc.team1732.robot.commands.helpercommands.Wait;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;

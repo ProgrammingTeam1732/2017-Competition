@@ -1,14 +1,14 @@
-package org.usfirst.frc.team1732.robot.commands.drivetrain.drive;
+package org.usfirst.frc.team1732.robot.commands.drivetrain.encoder;
 
 import static org.usfirst.frc.team1732.robot.Robot.driveTrain;
 
 import java.util.function.DoubleSupplier;
 
+import org.usfirst.frc.team1732.robot.Robot;
+
 import edu.wpi.first.wpilibj.command.Command;
 
 public class DriveEncodersStraightRamp extends Command {
-
-    private static int id = 0;
 
     public DriveEncodersStraightRamp(DoubleSupplier left, DoubleSupplier right) {
 	this(left, right, DEFAULT_STOP_RAMP_PERCENTAGE, DEFAULT_STOP_FLAT_PERCENTAGE);
@@ -16,7 +16,6 @@ public class DriveEncodersStraightRamp extends Command {
 
     public DriveEncodersStraightRamp(DoubleSupplier left, DoubleSupplier right, double stopRampPercent,
 	    double stopFlatPercent) {
-	requires(driveTrain);
 	this.leftSupplier = left;
 	this.rightSupplier = right;
 	if (stopFlatPercent < stopRampPercent)
@@ -29,11 +28,23 @@ public class DriveEncodersStraightRamp extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-	System.out.println("Start DriveEncodersStraightRamp " + id);
+	// TODO: might need to use a different set of PID for ramping puposes
+	// Robot.driveTrain.setEncoderPIDS(0.125, 0, 0);
+	// Robot.driveTrain.setEncoderDeadband(3);
+	Robot.driveTrain.resetEncoders();
+
 	driveTrain.resetEncoders();
+
+	driveTrain.resetEncoderPID();
+	driveTrain.resetEncoderDeadband();
+
 	leftSetpoint = ((int) (leftSupplier.getAsDouble() * 1000)) / 1000.0;
 	rightSetpoint = ((int) (rightSupplier.getAsDouble() * 1000)) / 1000.0;
-	driveTrain.mainController.setSetpoint(leftSetpoint, rightSetpoint);
+	System.out.println(leftSetpoint);
+	System.out.println(rightSetpoint);
+	System.out.println(leftSetpoint == rightSetpoint);
+	driveTrain.setLeftEncoderSetpoint(leftSetpoint);
+	driveTrain.setRightEncoderSetpoint(rightSetpoint);
 
 	leftRightSetpointRatio = leftSetpoint / rightSetpoint;
 	rightLeftSetpointRatio = rightSetpoint / leftSetpoint;
@@ -61,8 +72,8 @@ public class DriveEncodersStraightRamp extends Command {
     @Override
     protected void execute() {
 	// the error is how far away the robot is from the setpoint
-	double leftError = Math.abs(driveTrain.mainController.left.getError());
-	double rightError = Math.abs(driveTrain.mainController.right.getError());
+	double leftError = Math.abs(driveTrain.getLeftPIDError());
+	double rightError = Math.abs(driveTrain.getRightPIDError());
 
 	double leftPercent = leftError / Math.abs(leftSetpoint);
 	double rightPercent = rightError / Math.abs(rightSetpoint);
@@ -74,8 +85,8 @@ public class DriveEncodersStraightRamp extends Command {
 	    // if we have completed 20%, and will stop at 30%, then do 2/3 power
 	    // TODO: should this division below be stopRamp or stopFlat? both
 	    // might be valid ways
-	    double leftOutput = driveTrain.mainController.left.getOutput();
-	    double rightOutput = driveTrain.mainController.right.getOutput();
+	    double leftOutput = driveTrain.getLeftPIDOutput();
+	    double rightOutput = driveTrain.getRightPIDOutput();
 	    double output = (leftOutput + rightOutput) / 2.0;
 
 	    // if (Math.abs(prevLeft - leftOutput) > RAMP_RATE) {
@@ -90,7 +101,7 @@ public class DriveEncodersStraightRamp extends Command {
 		output = RAMP_RATE * Math.signum(output) + prevOutput;
 	    }
 
-	    double adjust = driveTrain.getLeftRightAdjustment(driveTrain.mainController.left, driveTrain.mainController.right);
+	    double adjust = driveTrain.getLeftRightAdjustment();
 
 	    leftOutput = output + adjust * leftRightSetpointRatio;
 	    rightOutput = output - adjust * rightLeftSetpointRatio;
@@ -110,11 +121,11 @@ public class DriveEncodersStraightRamp extends Command {
 	} else if (percentCompleted >= stopRampPercentage && percentCompleted <= stopFlatPercentage) {
 	    // move at previous set speed until STOP_FLAT_PERCENTAGE is reached
 	} else { // finish drive normally
-	    double leftOutput = driveTrain.mainController.left.getOutput();
-	    double rightOutput = driveTrain.mainController.right.getOutput();
+	    double leftOutput = driveTrain.getLeftPIDOutput();
+	    double rightOutput = driveTrain.getRightPIDOutput();
 	    double output = (leftOutput + rightOutput) / 2.0;
 
-	    double adjust = driveTrain.getLeftRightAdjustment(driveTrain.mainController.left, driveTrain.mainController.right);
+	    double adjust = driveTrain.getLeftRightAdjustment();
 
 	    leftOutput = output + adjust * leftRightSetpointRatio;
 	    rightOutput = output - adjust * rightLeftSetpointRatio;
@@ -138,16 +149,16 @@ public class DriveEncodersStraightRamp extends Command {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-	boolean leftOvershoot = Math.abs(driveTrain.leftEncoder.getDistance()) > Math.abs(leftSetpoint);
-	boolean rightOvershoot = Math.abs(driveTrain.rightEncoder.getDistance()) > Math.abs(rightSetpoint);
-	return driveTrain.mainController.areBothOnTarget() || (leftOvershoot || rightOvershoot);
+	boolean leftOvershoot = Math.abs(Robot.driveTrain.getLeftDistance()) > Math.abs(leftSetpoint);
+	boolean rightOvershoot = Math.abs(Robot.driveTrain.getRightDistance()) > Math.abs(rightSetpoint);
+	return Robot.driveTrain.encodersOnTarget() || (leftOvershoot || rightOvershoot);
     }
 
     // Called once after isFinished returns true
     @Override
     protected void end() {
-	System.out.println("End DriveEncodersStraightRamp " + id);
-	id++;
 	driveTrain.driveRaw(0, 0);
+	driveTrain.resetEncoderPIDValues();
+	driveTrain.resetEncoderDeadband();
     }
 }

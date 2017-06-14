@@ -1,17 +1,14 @@
-package org.usfirst.frc.team1732.robot.commands.drivetrain.drive;
+package org.usfirst.frc.team1732.robot.commands.drivetrain.encoder;
 
 import static org.usfirst.frc.team1732.robot.Robot.driveTrain;
 
 import java.util.function.DoubleSupplier;
 
-import org.usfirst.frc.team1732.robot.subsystems.drivetrain.DriveTrain;
-import org.usfirst.frc.team1732.robot.subsystems.drivetrain.PIDData;
+import org.usfirst.frc.team1732.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 public class DriveEncodersSimpleRampBase extends Command {
-
-    private static int id = 0;
 
     public DriveEncodersSimpleRampBase(DoubleSupplier left, DoubleSupplier right) {
 	this(left, right, DEFAULT_STOP_RAMP_PERCENTAGE, DEFAULT_STOP_FLAT_PERCENTAGE);
@@ -19,14 +16,36 @@ public class DriveEncodersSimpleRampBase extends Command {
 
     public DriveEncodersSimpleRampBase(DoubleSupplier left, DoubleSupplier right, double stopRampPercent,
 	    double stopFlatPercent) {
-	requires(driveTrain);
 	this.leftSupplier = left;
 	this.rightSupplier = right;
 	if (stopFlatPercent < stopRampPercent)
 	    stopFlatPercent = stopRampPercent;
 	this.stopRampPercentage = stopRampPercent;
 	this.stopFlatPercentage = stopFlatPercent;
-	setTimeout(5);
+	setTimeout(1);
+    }
+
+    // Called just before this Command runs the first time
+    @Override
+    protected void initialize() {
+	// TODO: might need to use a different set of PID for ramping puposes
+	// Robot.driveTrain.setEncoderPIDS(0.125, 0, 0);
+	// Robot.driveTrain.setEncoderDeadband(3);
+	Robot.driveTrain.resetEncoders();
+
+	driveTrain.resetEncoders();
+
+	driveTrain.setEncoderToTurningPID();
+	driveTrain.setEncoderDeadband(5);
+
+	leftSetpoint = leftSupplier.getAsDouble();
+	rightSetpoint = rightSupplier.getAsDouble();
+
+	leftRightSetpointRatio = leftSetpoint / rightSetpoint;
+	rightLeftSetpointRatio = rightSetpoint / leftSetpoint;
+
+	driveTrain.setLeftEncoderSetpoint(leftSetpoint);
+	driveTrain.setRightEncoderSetpoint(rightSetpoint);
     }
 
     private final DoubleSupplier leftSupplier;
@@ -43,37 +62,13 @@ public class DriveEncodersSimpleRampBase extends Command {
     private double prevOutput = 0;
     private static final double RAMP_RATE = 0.025; // max delta % Volt
 						   // per 20 ms
-
-    // Called just before this Command runs the first time
-    @Override
-    protected void initialize() {
-	System.out.println("Start DriveEncodersSimpleRampBase " + id);
-	// TODO: might need to use a different set of PID for ramping puposes
-	// driveTrain.setEncoderPIDS(0.125, 0, 0);
-	// driveTrain.setEncoderDeadband(3);
-	driveTrain.resetEncoders();
-
-	driveTrain.resetEncoders();
-
-	PIDData newValues = DriveTrain.normalPID.changeDeadband(5);
-	driveTrain.mainController.setPIDValues(newValues);
-
-	leftSetpoint = leftSupplier.getAsDouble();
-	rightSetpoint = rightSupplier.getAsDouble();
-
-	leftRightSetpointRatio = leftSetpoint / rightSetpoint;
-	rightLeftSetpointRatio = rightSetpoint / leftSetpoint;
-
-	driveTrain.mainController.setSetpoint(leftSetpoint, rightSetpoint);
-    }
-
     // Called repeatedly when this Command is scheduled to run
 
     @Override
     protected void execute() {
 	// the error is how far away the robot is from the setpoint
-	double leftError = Math.abs(driveTrain.mainController.left.getError());
-	double rightError = Math.abs(driveTrain.mainController.right.getError());
+	double leftError = Math.abs(driveTrain.getLeftPIDError());
+	double rightError = Math.abs(driveTrain.getRightPIDError());
 
 	double leftPercent = leftError / Math.abs(leftSetpoint);
 	double rightPercent = rightError / Math.abs(rightSetpoint);
@@ -119,8 +114,8 @@ public class DriveEncodersSimpleRampBase extends Command {
 	// <= stopFlatPercentage) {
 	// // move at previous set speed until STOP_FLAT_PERCENTAGE is reached
 	// } else { // finish drive normally
-	double leftOutput = driveTrain.mainController.left.getOutput();
-	double rightOutput = driveTrain.mainController.right.getOutput();
+	double leftOutput = driveTrain.getLeftPIDOutput();
+	double rightOutput = driveTrain.getRightPIDOutput();
 
 	double output = (leftOutput + rightOutput) / 2.0;
 
@@ -152,17 +147,16 @@ public class DriveEncodersSimpleRampBase extends Command {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-	boolean leftOvershoot = Math.abs(driveTrain.leftEncoder.getDistance()) > Math.abs(leftSetpoint);
-	boolean rightOvershoot = Math.abs(driveTrain.rightEncoder.getDistance()) > Math.abs(rightSetpoint);
-	return driveTrain.mainController.areBothOnTarget() || (leftOvershoot || rightOvershoot);
+	boolean leftOvershoot = Math.abs(Robot.driveTrain.getLeftDistance()) > Math.abs(leftSetpoint);
+	boolean rightOvershoot = Math.abs(Robot.driveTrain.getRightDistance()) > Math.abs(rightSetpoint);
+	return Robot.driveTrain.encodersOnTarget() || (leftOvershoot || rightOvershoot);
     }
 
     // Called once after isFinished returns true
     @Override
     protected void end() {
-	System.out.println("End DriveEncodersSimpleRampBase" + id);
-	id++;
-	driveTrain.mainController.resetPIDValues();
 	driveTrain.driveRaw(0, 0);
+	driveTrain.resetEncoderPIDValues();
+	driveTrain.resetEncoderDeadband();
     }
 }

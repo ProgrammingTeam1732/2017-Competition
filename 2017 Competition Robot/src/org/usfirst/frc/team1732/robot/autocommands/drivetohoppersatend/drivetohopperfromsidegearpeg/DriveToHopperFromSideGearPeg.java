@@ -1,7 +1,7 @@
 package org.usfirst.frc.team1732.robot.autocommands.drivetohoppersatend.drivetohopperfromsidegearpeg;
 
-import org.usfirst.frc.team1732.robot.commands.drivetrain.drive.DriveEncoders;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.turn.TurnWithEncoders;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveEncoders;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.TurnWithEncoders;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 

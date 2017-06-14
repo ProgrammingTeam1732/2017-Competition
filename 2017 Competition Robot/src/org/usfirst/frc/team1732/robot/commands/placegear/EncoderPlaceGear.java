@@ -3,8 +3,8 @@ package org.usfirst.frc.team1732.robot.commands.placegear;
 import java.util.function.DoubleSupplier;
 
 import org.usfirst.frc.team1732.robot.Robot;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.brake.BrakeDriveNoShift;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.drive.DriveEncoders;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.BrakeDriveNoShift;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveEncodersGetSetpointAtRuntime;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.ResetEncoderPID;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.SetEncoderPID;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.base.motor.GearIntakeOutTime;
@@ -13,7 +13,6 @@ import org.usfirst.frc.team1732.robot.commands.gearIntake.base.motor.GearIntakeS
 import org.usfirst.frc.team1732.robot.commands.gearIntake.base.position.GearIntakeSetDown;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.base.position.GearIntakeSetUp;
 import org.usfirst.frc.team1732.robot.commands.helpercommands.Wait;
-import org.usfirst.frc.team1732.robot.subsystems.drivetrain.DriveTrain;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -35,7 +34,7 @@ public class EncoderPlaceGear extends CommandGroup {
 	    DoubleSupplier rightDriveBackDistance) {
 	// drive into gear peg
 	// addSequential(new TurnWithVision(0));
-	addSequential(new SetEncoderPID(DriveTrain.normalPID.changePID(0.1, 0, 0)));
+	addSequential(new SetEncoderPID(0.1, 0, 0));
 	addParallel(new CommandGroup() {
 	    {
 		addSequential(new GearIntakeSetIn());
@@ -43,7 +42,7 @@ public class EncoderPlaceGear extends CommandGroup {
 		addSequential(new GearIntakeSetStop());
 	    }
 	});
-	addSequential(new DriveEncoders(driveForwardDistance));
+	addSequential(new DriveEncodersGetSetpointAtRuntime(driveForwardDistance));
 	// addSequential(new DriveEncodersStraightRamp(driveForwardDistance,
 	// driveForwardDistance));
 
@@ -58,8 +57,8 @@ public class EncoderPlaceGear extends CommandGroup {
 	    }
 	});
 	addSequential(new BrakeDriveNoShift());
-	addSequential(new SetEncoderPID(DriveTrain.normalPID.changePID(0.05, 0, 0)));
-	addSequential(new DriveEncoders(leftDriveBackDistance, rightDriveBackDistance));
+	addSequential(new SetEncoderPID(.05, 0, 0));
+	addSequential(new DriveEncodersGetSetpointAtRuntime(leftDriveBackDistance, rightDriveBackDistance));
 	addSequential(new ResetEncoderPID());
     }
 
@@ -70,6 +69,6 @@ public class EncoderPlaceGear extends CommandGroup {
 
     @Override
     public void end() {
-	Robot.driveTrain.mainController.resetPIDValues();
+	Robot.driveTrain.resetEncoderPID();
     }
 }

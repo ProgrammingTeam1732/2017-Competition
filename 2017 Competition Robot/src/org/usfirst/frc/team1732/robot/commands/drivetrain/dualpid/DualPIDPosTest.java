@@ -17,14 +17,15 @@ public class DualPIDPosTest extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-	Robot.driveTrain.positionController.setSetpoint(setpoint);
-	double left = Robot.driveTrain.velocityController.left.getOutput();
-	double right = Robot.driveTrain.velocityController.right.getOutput();
+	Robot.driveTrain.setLeftPosPIDSetpoint(setpoint);
+	Robot.driveTrain.setRightPosPIDSetpoint(setpoint);
+	double left = Robot.driveTrain.getLeftVelPIDOutput();
+	double right = Robot.driveTrain.getRightVelPIDOutput();
 	Robot.driveTrain.driveRaw(left, right);
-	SmartDashboard.putBoolean("Left Pos On Target", Robot.driveTrain.positionController.left.onTarget());
-	SmartDashboard.putBoolean("Right Pos On Target", Robot.driveTrain.positionController.right.onTarget());
-	SmartDashboard.putNumber("Left Pos Error", Robot.driveTrain.positionController.left.getError());
-	SmartDashboard.putNumber("Right Pos Error", Robot.driveTrain.positionController.right.getError());
+	SmartDashboard.putBoolean("Left Pos On Target", Robot.driveTrain.leftPosOnTarget());
+	SmartDashboard.putBoolean("Right Pos On Target", Robot.driveTrain.rightPosOnTarget());
+	SmartDashboard.putNumber("Left Pos Error", Robot.driveTrain.getLeftPosPIDError());
+	SmartDashboard.putNumber("Right Pos Error", Robot.driveTrain.getRightPosPIDError());
     }
 
     // Called repeatedly when this Command is scheduled to run

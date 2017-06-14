@@ -1,7 +1,7 @@
 package org.usfirst.frc.team1732.robot.commands.drivetrain.talon;
 
 import org.usfirst.frc.team1732.robot.Robot;
-import org.usfirst.frc.team1732.robot.subsystems.drivetrain.DriveTrain;
+import org.usfirst.frc.team1732.robot.subsystems.DriveTrain;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -26,7 +26,7 @@ public class MagicMotionTest extends Command {
 	Robot.driveTrain.setMotionMagicAcceleration(acceleration);
 	Robot.driveTrain.setMotionMagicCruiseVelocity(velocity);
 	Robot.driveTrain.setMotionMagicSetpoint(setpoint);
-	Robot.driveTrain.resetEncoders();
+	Robot.driveTrain.resetCANTalonPositions();
     }
 
     // Called repeatedly when this Command is scheduled to run

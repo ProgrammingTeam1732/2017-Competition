@@ -1,8 +1,8 @@
-package org.usfirst.frc.team1732.robot.commands.drivetrain.turn;
+package org.usfirst.frc.team1732.robot.commands.drivetrain.encoder;
 
 import java.util.function.DoubleSupplier;
 
-import org.usfirst.frc.team1732.robot.commands.drivetrain.drive.DriveTime;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveTime;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 

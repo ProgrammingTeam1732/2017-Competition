@@ -17,7 +17,7 @@ import org.usfirst.frc.team1732.robot.autocommands.shoot.besideboilerandshoot.St
 import org.usfirst.frc.team1732.robot.commands.ballsystem.flywheel.EnableFlywheel;
 import org.usfirst.frc.team1732.robot.commands.ballsystem.shooting.ShootTime;
 import org.usfirst.frc.team1732.robot.commands.ballsystem.shooting.ShuffleBallsWithWait;
-import org.usfirst.frc.team1732.robot.commands.drivetrain.drive.DriveTime;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.DriveTime;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.dualpid.VelocityTest;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.ClearTotalDistance;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.talon.MagicMotionTest;
