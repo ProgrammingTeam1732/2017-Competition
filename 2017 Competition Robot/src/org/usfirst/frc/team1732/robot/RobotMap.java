@@ -38,7 +38,8 @@ public class RobotMap {
     public static final int FLYWHEEL_MOTOR_DEVICE_NUMBER = 4;
 
     // Climber
-    public static final int CLIMBER_MOTOR_DEVICE_NUMBER = 8;
+    public static final int CLIMBER_MOTOR_DEVICE_NUMBER_1 = 8;
+    public static final int CLIMBER_MOTOR_DEVICE_NUMBER_2 = 3;
     public static final int ARM_SOLENOID_DEVICE_NUMBER = 7;
 
     // Ball Intake (Floor/Chute/Hopper)
