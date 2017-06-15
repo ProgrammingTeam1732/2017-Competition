@@ -6,6 +6,7 @@ import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardGroup;
 import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardItem;
 
 import com.ctre.CANTalon;
+import com.ctre.CANTalon.TalonControlMode;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -14,37 +15,46 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class Climber extends Subsystem implements SmartDashboardGroup {
 
-	private final CANTalon		motor		= new CANTalon(RobotMap.CLIMBER_MOTOR_DEVICE_NUMBER);
-	public static final double	UP_SPEED	= 1;													// 1
-	public static final double	STOP_SPEED	= 0;
-	public static final double	DOWN_SPEED	= -0.5;													// -0.5
+    private final CANTalon motor1 = new CANTalon(RobotMap.CLIMBER_MOTOR_DEVICE_NUMBER_1);
+    private final CANTalon motor2 = new CANTalon(RobotMap.CLIMBER_MOTOR_DEVICE_NUMBER_2);
 
-	public static final String NAME = "Climber";
+    public static final double UP_SPEED = 1; // 1
+    public static final double STOP_SPEED = 0;
+    public static final double DOWN_SPEED = -0.5; // -0.5
 
-	@Override
-	public void initDefaultCommand() {}
+    public static final String NAME = "Climber";
 
-	/**
-	 * Runs the motor to climb up
-	 */
-	public void setUp() {
-		motor.set(UP_SPEED);
-	}
+    public Climber() {
+	motor2.changeControlMode(TalonControlMode.Follower);
+	motor2.set(RobotMap.CLIMBER_MOTOR_DEVICE_NUMBER_1);
+	motor2.reverseOutput(true);
+    }
 
-	public void setDown() {
-		motor.set(DOWN_SPEED);
-	}
+    @Override
+    public void initDefaultCommand() {
+    }
 
-	/**
-	 * Stops the motor
-	 */
-	public void setStop() {
-		motor.set(STOP_SPEED);
-	}
+    /**
+     * Runs the motor to climb up
+     */
+    public void setUp() {
+	motor1.set(UP_SPEED);
+    }
 
-	@Override
-	public void addToSmartDashboard(MySmartDashboard dashboard) {
-		String directory = NAME + "/";
-		dashboard.addItem(SmartDashboardItem.newNumberSender(directory + "Climber Output", motor::get));
-	}
+    public void setDown() {
+	motor1.set(DOWN_SPEED);
+    }
+
+    /**
+     * Stops the motor
+     */
+    public void setStop() {
+	motor1.set(STOP_SPEED);
+    }
+
+    @Override
+    public void addToSmartDashboard(MySmartDashboard dashboard) {
+	String directory = NAME + "/";
+	dashboard.addItem(SmartDashboardItem.newNumberSender(directory + "Climber Output", motor1::get));
+    }
 }
