@@ -198,9 +198,9 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
 
     // encoder controllers
     private final PIDController leftEncoderPID = new PIDController(encoderP, encoderI, encoderD, leftEncoder,
-	    DriveTrain::voidMethod, 20);
+	    DriveTrain::voidMethod);// , 20);
     private final PIDController rightEncoderPID = new PIDController(encoderP, encoderI, encoderD, rightEncoder,
-	    DriveTrain::voidMethod, 20);
+	    DriveTrain::voidMethod);// , 20);
 
     // private final PIDController leftEncoderPID = new PIDController(encoderP,
     // encoderI, encoderD,
@@ -954,18 +954,18 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
     public static final double RIGHT_VEL_F = 1.0 / MAX_RIGHT_VEL;
 
     private final PIDController leftVelPID = new PIDController(VEL_P, VEL_I, VEL_D, 0, makeVelPID(leftEncoder),
-	    DriveTrain::voidMethod, 20);
+	    DriveTrain::voidMethod);// , 20);
     private final PIDController rightVelPID = new PIDController(VEL_P, VEL_I, VEL_D, 0, makeVelPID(rightEncoder),
-	    DriveTrain::voidMethod, 20);
+	    DriveTrain::voidMethod);// , 20);
 
     public static final double POS_P = 0.5;
     public static final double POS_I = 0;
     public static final double POS_D = 0;
 
-    private final PIDController leftPosPID = new PIDController(POS_P, POS_I, POS_D, leftEncoder, DriveTrain::voidMethod,
-	    20);
+    private final PIDController leftPosPID = new PIDController(POS_P, POS_I, POS_D, leftEncoder,
+	    DriveTrain::voidMethod);// 20);
     private final PIDController rightPosPID = new PIDController(POS_P, POS_I, POS_D, rightEncoder,
-	    DriveTrain::voidMethod, 20);
+	    DriveTrain::voidMethod);// , 20);
 
     private PIDSource makeVelPID(Encoder e) {
 	PIDSource pidSource = new PIDSource() {
