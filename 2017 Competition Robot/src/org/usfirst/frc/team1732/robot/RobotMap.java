@@ -15,6 +15,7 @@ public class RobotMap {
     public static final int LEFT_JOYSTICK_USB = 2;
     public static final int RIGHT_JOYSTICK_USB = 1;
     public static final int BUTTONS_USB = 0;
+    public static final int DIAL_USB = 3;
 
     // Drive Train
     public static final int LEFT_MASTER_MOTOR_DEVICE_NUMBER = 5;
@@ -40,6 +41,7 @@ public class RobotMap {
     // Climber
     public static final int CLIMBER_MOTOR_DEVICE_NUMBER_1 = 8;
     public static final int CLIMBER_MOTOR_DEVICE_NUMBER_2 = 3;
+
     public static final int ARM_SOLENOID_DEVICE_NUMBER = 7;
 
     // Ball Intake (Floor/Chute/Hopper)
@@ -59,6 +61,6 @@ public class RobotMap {
 
     public static final int PCM_CAN_ID = 0;
 
-    public static final int LIGHT_MOTOR_DEVICE_NUMBER = 3;
+    public static final int LIGHT_MOTOR_DEVICE_NUMBER = 0;
 
 }
