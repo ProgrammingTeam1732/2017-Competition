@@ -227,8 +227,10 @@ public class VisionMain implements SmartDashboardGroup {
 		    biggest = r;
 	    }
 	    cheeseWheelTarget = new CheeseWheelTarget(biggest);
-	    System.out.printf("Area: %d   Width: %d   Height: %d   Width/Height Ratio: %.3f%n", biggest.getArea(),
-		    biggest.width, biggest.height, 1.0 * biggest.width / biggest.height);
+	    // System.out.printf("Area: %d Width: %d Height: %d Width/Height
+	    // Ratio: %.3f%n", biggest.getArea(),
+	    // biggest.width, biggest.height, 1.0 * biggest.width /
+	    // biggest.height);
 	    isNewCheeseWheelDataAvailable = false;
 	} catch (Exception e) {
 	    // e.printStackTrace();
