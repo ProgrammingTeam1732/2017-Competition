@@ -56,10 +56,12 @@ public class TurnWithEncodersUntilCheeseWheelBase extends Command {
     private final double p = 0.05;
     private final double i = 0.00;
     private final double d = 0.14;
-    private final double minimumTurn = 7;
+    private final double minimumTurn = 10;
 
     private long lastOnTarget;
     private boolean lastOnTargetCheck = true;
+
+    private int cheeseCount = 0;
 
     // Called repeatedly when this Command is scheduled to run
     @Override
@@ -67,6 +69,9 @@ public class TurnWithEncodersUntilCheeseWheelBase extends Command {
 	visionMain.run();
 	double averageDistance = (Math.abs(driveTrain.getRightDistance()) + Math.abs(driveTrain.getLeftDistance()))
 		/ 2.0;
+	if (visionMain.canSeeCheeseWheel()) {
+	    System.out.println("Sees cheesewheel " + cheeseCount++);
+	}
 	if (visionMain.canSeeCheeseWheel() && averageDistance > minimumTurn) {
 	    if (visionMain.isCheeseWheelPIDOnTarget() && lastOnTargetCheck) {
 		lastOnTarget = System.currentTimeMillis();
@@ -77,7 +82,6 @@ public class TurnWithEncodersUntilCheeseWheelBase extends Command {
 	    }
 	    foundOnce = true;
 	    double angle = visionMain.getAngleToCheeseWheel();
-	    System.out.println("Sees cheesewheel");
 	    if (angle != previousAngle) {
 		previousAngle = angle;
 		double setpoint = (angle) / 360.0 * DriveTrain.TURNING_CIRCUMFERENCE;
@@ -113,8 +117,9 @@ public class TurnWithEncodersUntilCheeseWheelBase extends Command {
     protected boolean isFinished() {
 	double averageDistance = (Math.abs(driveTrain.getRightDistance()) + Math.abs(driveTrain.getLeftDistance()))
 		/ 2.0;
-	return (foundOnce && visionMain.isCheeseWheelPIDOnTarget()
-		&& (System.currentTimeMillis() - lastOnTarget > 100 && !lastOnTargetCheck))
+	return foundOnce && Math.abs(visionMain.getAngleToCheeseWheel()) < visionMain.CHEESE_WHEEL_DEADBAND_DEGREES
+	// && (System.currentTimeMillis() - lastOnTarget > 100 &&
+	// !lastOnTargetCheck))
 		&& averageDistance > minimumTurn;
     }
 

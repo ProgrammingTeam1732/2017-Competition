@@ -7,6 +7,7 @@ import org.usfirst.frc.team1732.robot.commands.drivetrain.BrakeDriveNoShift;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.SetMotorSpeed;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.ClearTotalDistance;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.DriveEncodersGetSetpointAtRuntime;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.ResetEncoderPID;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.SetEncoderPID;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.TurnWithEncodersSimpleRamp;
 import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.GearIntakeSetUpTimedIn;
@@ -15,14 +16,14 @@ import org.usfirst.frc.team1732.robot.commands.gearIntake.commandgroups.InitGear
 import org.usfirst.frc.team1732.robot.commands.helpercommands.Wait;
 import org.usfirst.frc.team1732.robot.commands.placegear.EncoderPlaceGear;
 import org.usfirst.frc.team1732.robot.commands.vision.movement.DitherTurnWithVision;
-import org.usfirst.frc.team1732.robot.commands.vision.movement.DitherTurnWithVisionForGroundGear;
+import org.usfirst.frc.team1732.robot.commands.vision.movement.TurnWithEncodersUntilCheeseWheel;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class TwoGearAuto extends CommandGroup {
 
     private double droveBack;
-    public static final double DEFAULT_DRIVE_BACK_DISTANCE = -55;
+    public static final double DEFAULT_DRIVE_BACK_DISTANCE = -40;
 
     public TwoGearAuto(boolean isLeft) {
 	addSequential(new InitGearIntake());
@@ -49,11 +50,13 @@ public class TwoGearAuto extends CommandGroup {
 	} else {
 	    firstGearPickUpFaceGearAngle = 95;
 	}
-	addSequential(new TurnWithEncodersSimpleRamp(firstGearPickUpFaceGearAngle));
 
-	addSequential(new BrakeDriveNoShift());
-	
-	addSequential(new DitherTurnWithVisionForGroundGear(0));
+	// addSequential(new
+	// TurnWithEncodersSimpleRamp(firstGearPickUpFaceGearAngle));
+	//
+	// addSequential(new BrakeDriveNoShift());
+
+	addSequential(new TurnWithEncodersUntilCheeseWheel(firstGearPickUpFaceGearAngle));
 
 	// wait to move
 	addSequential(new Wait(Robot.autoWaitTime.getValue()));
@@ -68,7 +71,7 @@ public class TwoGearAuto extends CommandGroup {
 	boolean gearPickupUseTimeout = false; // will use distance to end
 					      // command
 	// double gearPickupTimeout = 2.5;
-	double gearPickupMaxDistance = 70;
+	double gearPickupMaxDistance = 75;
 	// addSequential(new GrabGear(gearPickupUseTimeout, gearPickupTimeout));
 	addSequential(new GrabGear(gearPickupUseTimeout, gearPickupMaxDistance));
 
@@ -81,10 +84,12 @@ public class TwoGearAuto extends CommandGroup {
 	double raiseGearTime = 1;
 	addParallel(new GearIntakeSetUpTimedIn(raiseGearTime));
 
+	addSequential(new SetEncoderPID(0.02, 0, 0));
 	// drives back
 	DoubleSupplier firstGearPickupReturnToGearPeg = () -> (-Robot.driveTrain.getTotalLeftDistance()
-		+ -Robot.driveTrain.getTotalRightDistance()) / 2.0 + 7;
+		+ -Robot.driveTrain.getTotalRightDistance()) / 2.0 - 40;
 	addSequential(new DriveEncodersGetSetpointAtRuntime(firstGearPickupReturnToGearPeg));
+	addSequential(new ResetEncoderPID());
 
 	addSequential(new BrakeDriveNoShift());
 
@@ -107,7 +112,8 @@ public class TwoGearAuto extends CommandGroup {
 	addSequential(new DitherTurnWithVision(0));
 
 	// scores second gear!!!
-	DoubleSupplier driveForwardSecondHalfDistance = () -> driveForwardDistance.getAsDouble() * (1.0 - proportion) - 6;
+	DoubleSupplier driveForwardSecondHalfDistance = () -> driveForwardDistance.getAsDouble() * (1.0 - proportion)
+		- 6;
 
 	DoubleSupplier secondGearScoreDriveBackDistance = () -> -15;
 	addSequential(new SetEncoderPID(0.2, 0, 0));

@@ -127,7 +127,7 @@ public class Robot extends IterativeRobot {
 	    addSubsystemsToSmartDashboard();
 	    addAutonomousToSmartDashboard();
 	    addTestingToSmartDashbaord();
-	    addCamera();
+	    // addCamera();
 	    dashboard.addItem(SmartDashboardItem.newNumberSender("robotPeriodic() frequency ms", this::getFrequency));
 	    twoGearDriveBack = dashboard.addItem(
 		    SmartDashboardItem.newDoubleReciever("2 Gear Drive Back", TwoGearAuto.DEFAULT_DRIVE_BACK_DISTANCE));
@@ -174,6 +174,7 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void teleopPeriodic() {
+	// climber.setUp();
 	Scheduler.getInstance().run();
     }
 
@@ -234,7 +235,9 @@ public class Robot extends IterativeRobot {
 	autoChooser.addToSmartDashboard(dashboard);
 	dashboard.addItem(SmartDashboardItem.newStringSender("AUTO:", () -> {
 	    try {
-		return autoChooser.getSelected().name();
+		String s = autoChooser.getSelected().name();
+		// System.out.println(s);
+		return s;
 	    } catch (Exception e) {
 		return "Error";
 	    }
