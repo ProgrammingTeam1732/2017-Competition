@@ -44,16 +44,10 @@ public class TwoGearAuto extends CommandGroup {
 	addSequential(new BrakeDriveNoShift());
 
 	// turns to face the gear on ground
-	double firstGearPickUpFaceGearAngle = 0;
-	if (isLeft) {
-	    firstGearPickUpFaceGearAngle = -98;
-	} else {
-	    firstGearPickUpFaceGearAngle = 95;
-	}
+	double firstGearPickUpFaceGearAngle = (isLeft) ? -98 : 95;
 
 	// addSequential(new
 	// TurnWithEncodersSimpleRamp(firstGearPickUpFaceGearAngle));
-	//
 	// addSequential(new BrakeDriveNoShift());
 
 	addSequential(new TurnWithEncodersUntilCheeseWheel(firstGearPickUpFaceGearAngle));

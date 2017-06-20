@@ -39,7 +39,7 @@ public class ScoreMiddleGearThenBallsHitWall extends CommandGroup {
 	if (isRed) {
 	    turnToBoilerAngle = 98; // 96
 	} else {
-	    turnToBoilerAngle = -90; // -98;
+	    turnToBoilerAngle = -100; // -98;
 	}
 	addSequential(new TurnWithEncodersSimpleRamp(turnToBoilerAngle));
 

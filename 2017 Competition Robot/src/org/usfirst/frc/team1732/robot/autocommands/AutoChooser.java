@@ -58,13 +58,13 @@ public class AutoChooser implements SmartDashboardGroup {
 	StartBesideBoilerThenShoot(StartBesideBoilerAndShoot::new), // 10
 
 	// testing
-	TestVelocityControl(() -> new VelocityTest(50)),
-	TestMotionMagic(() -> new MagicMotionTest(60)),
-	DriveFullSpeedForward(() -> new DriveTime(5, 1)),
-	DriveFullSpeedBackward(() -> new DriveTime(5, -1)),
-	TurnUntilCheeseWheel(() -> new TurnWithEncodersUntilCheeseWheel(-120)),
-	TurnUntilGearPeg(() -> new TurnWithEncodersUntilGearPeg(120)),
-	WallMiddleGearAndShoot(() -> new ScoreMiddleGearThenBallsHitWall()),
+	TestVelocityControl(() -> new VelocityTest(50)), // 11
+	TestMotionMagic(() -> new MagicMotionTest(60)), // 12
+	DriveFullSpeedForward(() -> new DriveTime(5, 1)), // 13
+	DriveFullSpeedBackward(() -> new DriveTime(5, -1)), // 14
+	TurnUntilCheeseWheel(() -> new TurnWithEncodersUntilCheeseWheel(-120)), // 15
+	TurnUntilGearPeg(() -> new TurnWithEncodersUntilGearPeg(120)), // 16
+	WallMiddleGearAndShoot(() -> new ScoreMiddleGearThenBallsHitWall()), // 17
 	TestForwardDrive(() -> new DriveTime(5, 0.5)),
 	TestBackwardDrive(() -> new DriveTime(5, -0.5)),
 	ClearEncoders(() -> new ClearTotalDistance()),

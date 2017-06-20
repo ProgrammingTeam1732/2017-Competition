@@ -7,20 +7,15 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class DriveToHopperFromSideGearPeg extends CommandGroup {
 
-	public DriveToHopperFromSideGearPeg(boolean isLeft) {
-		// drive back a little
-		double driveBackDistance = -20;
-		addSequential(new DriveEncoders(driveBackDistance));
-		// turn to face down field
-		double angle = 0;
-		if (isLeft) {
-			angle = -60;
-		} else {
-			angle = 60;
-		}
-		addSequential(new TurnWithEncoders(angle));
-		// drive down field
-		double driveDownDistance = 40;
-		addSequential(new DriveEncoders(driveDownDistance));
-	}
+    public DriveToHopperFromSideGearPeg(boolean isLeft) {
+	// drive back a little
+	double driveBackDistance = -20;
+	addSequential(new DriveEncoders(driveBackDistance));
+	// turn to face down field
+	double angle = (isLeft) ? -90 : 90;
+	addSequential(new TurnWithEncoders(angle));
+	// drive down field
+	double driveDownDistance = 40;
+	addSequential(new DriveEncoders(driveDownDistance));
+    }
 }
