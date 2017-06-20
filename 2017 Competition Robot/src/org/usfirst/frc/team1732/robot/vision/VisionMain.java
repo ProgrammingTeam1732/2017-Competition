@@ -226,13 +226,23 @@ public class VisionMain implements SmartDashboardGroup {
 		if (isPossibleCheeseWheelTarget(r) && r.getArea() > biggest.getArea())
 		    biggest = r;
 	    }
-	    cheeseWheelTarget = new CheeseWheelTarget(biggest);
-	    System.out.printf("Area: %d   Width: %d   Height: %d   Width/Height Ratio: %.3f%n", biggest.getArea(),
-		    biggest.width, biggest.height, 1.0 * biggest.width / biggest.height);
+	    if (isPossibleCheeseWheelTarget(biggest)) {
+		cheeseWheelTarget = new CheeseWheelTarget(biggest);
+		double pred = predictedCheeseWheelRatio(biggest.getArea());
+		double rat = 1.0 * biggest.width / biggest.height;
+		System.out.printf("Area: %d Width/Height Ratio: %.3f Predicted %.3f Error %.3f %n", biggest.getArea(),
+			rat, pred, Math.abs(rat - pred));
+	    } else {
+		cheeseWheelTarget = null;
+	    }
 	    isNewCheeseWheelDataAvailable = false;
 	} catch (Exception e) {
 	    // e.printStackTrace();
 	}
+    }
+
+    private double predictedCheeseWheelRatio(double area) {
+	return Math.pow(area, -0.231) * 9.5378;
     }
 
     private boolean isPossibleCheeseWheelTarget(Rectangle r) {
@@ -240,10 +250,15 @@ public class VisionMain implements SmartDashboardGroup {
 	    return false;
 	double ratio = 1.0 * r.width / r.height;
 	int area = r.getArea();
-	if ((area <= 1000 && ratio >= 2.0) || (area >= 1000 && ratio <= 2.0))
-	    return true;
-	else
+	if (area <= 300)
 	    return false;
+	if (ratio <= 1.5)
+	    return false;
+	// cool maths
+	double predictedRatio = predictedCheeseWheelRatio(area);
+	if (Math.abs(predictedRatio - ratio) > 0.3)
+	    return false;
+	return true;
     }
 
     private void updateBoilerTarget() {
@@ -407,6 +422,8 @@ public class VisionMain implements SmartDashboardGroup {
 
 	dashboard.addItem(SmartDashboardItem.newNumberSender(visionDirectory + "Cheese Wheel Angle",
 		this::getAngleToCheeseWheel));
+	dashboard.addItem(
+		SmartDashboardItem.newBooleanSender(visionDirectory + "Can see cheese", this::canSeeCheeseWheel));
 	dashboard.addItem(SmartDashboardItem.newNumberSender(visionDirectory + "Gear Peg Score", this::getGearScore));
 	dashboard
 		.addItem(SmartDashboardItem.newNumberSender(visionDirectory + "Gear inches", this::getInchesToGearPeg));

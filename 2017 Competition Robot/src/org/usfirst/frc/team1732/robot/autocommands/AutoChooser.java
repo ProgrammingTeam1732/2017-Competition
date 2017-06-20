@@ -2,6 +2,8 @@ package org.usfirst.frc.team1732.robot.autocommands;
 
 import java.util.function.Supplier;
 
+import org.usfirst.frc.team1732.robot.Robot;
+import org.usfirst.frc.team1732.robot.RobotMap;
 import org.usfirst.frc.team1732.robot.autocommands.grabballsthenshoot.keylinehoppershoot.KeylineHopperShoot;
 import org.usfirst.frc.team1732.robot.autocommands.grabballsthenshoot.keylinehoppershoot.KeylineHopperShootWings;
 import org.usfirst.frc.team1732.robot.autocommands.grabballsthenshoot.straighthoppershoot.StraightHopperShoot;
@@ -29,6 +31,7 @@ import org.usfirst.frc.team1732.robot.smartdashboard.MySmartDashboard;
 import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardGroup;
 import org.usfirst.frc.team1732.robot.smartdashboard.SmartDashboardItem;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -163,14 +166,30 @@ public class AutoChooser implements SmartDashboardGroup {
 	SmartDashboard.putData("AutonomousChooser", autoChooser);
     }
 
+    private Joystick buttons = new Joystick(RobotMap.DIAL_USB);
+
     public AutoModes getSelected() {
-	int value = 0;
-	if (chosenauto != null)
-	    value = chosenauto.getValue().intValue();
-	if (value < 0 || value >= AutoModes.values().length)
-	    value = 0;
-	return AutoModes.values()[value];
-	// return autoChooser.getSelected().getSelected();
+	AutoModes selected;
+	if (Robot.oi.overridePressed()) {
+	    int value = 0;
+	    if (chosenauto != null)
+		value = chosenauto.getValue().intValue();
+	    if (value < 0 || value >= AutoModes.values().length)
+		value = 0;
+	    selected = AutoModes.values()[value];
+	} else {
+	    int index = 1;
+	    for (int i = 2; i <= 10; i++) {
+		if (buttons.getRawButton(i)) {
+		    // System.out.println(i);
+		    index = i;
+		    break;
+		}
+	    }
+	    selected = AutoModes.values()[index - 1];
+	}
+	// System.out.println(selected);
+	return selected;
     }
 
     private SmartDashboardItem<Double> chosenauto;

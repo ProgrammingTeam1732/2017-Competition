@@ -237,6 +237,10 @@ public class OI {
 	};
     }
 
+    public boolean overridePressed() {
+	return override.get();
+    }
+
     // Buttons from controller
     // private final Joystick controller = new Joystick(0);
     // private final Button A = new JoystickButton(controller, 2);
