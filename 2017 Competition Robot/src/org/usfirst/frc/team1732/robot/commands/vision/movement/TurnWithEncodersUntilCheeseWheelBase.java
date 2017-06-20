@@ -29,6 +29,7 @@ public class TurnWithEncodersUntilCheeseWheelBase extends Command {
     @Override
     protected void initialize() {
 	System.out.println("Starting cheesewheel turn");
+	Robot.pixyCamera.turnOffLights();
 	// Robot.driveTrain.setEncoderPIDS(0.125, 0, 0);
 	// Robot.driveTrain.setEncoderDeadband(3);
 	Robot.driveTrain.resetEncoders();
@@ -46,15 +47,15 @@ public class TurnWithEncodersUntilCheeseWheelBase extends Command {
 	// Robot.driveTrain.TURNING_CIRCUMFERENCE;
 	// Robot.driveTrain.setLeftEncoderSetpoint(setpoint);
 	// Robot.driveTrain.setRightEncoderSetpoint(-setpoint);
-	Robot.pixyCamera.turnOnLights();
+	// Robot.pixyCamera.turnOnLights();
 	// this.setTimeout(5);
     }
 
     private double previousAngle;
 
-    private final double izone = 6; // DriveTrain.ENCODER_IZONE_TURNING
+    private final double izone = 3.7; // DriveTrain.ENCODER_IZONE_TURNING
     private final double p = 0.05;
-    private final double i = 0.00;
+    private final double i = 0.005;
     private final double d = 0.14;
     private final double minimumTurn = 10;
 
@@ -85,8 +86,8 @@ public class TurnWithEncodersUntilCheeseWheelBase extends Command {
 	    if (angle != previousAngle) {
 		previousAngle = angle;
 		double setpoint = (angle) / 360.0 * DriveTrain.TURNING_CIRCUMFERENCE;
-		Robot.driveTrain.setLeftEncoderSetpoint(setpoint + Robot.driveTrain.getLeftDistance() + setpoint);
-		Robot.driveTrain.setRightEncoderSetpoint(-setpoint + Robot.driveTrain.getRightDistance() - setpoint);
+		Robot.driveTrain.setLeftEncoderSetpoint(setpoint + Robot.driveTrain.getLeftDistance());
+		Robot.driveTrain.setRightEncoderSetpoint(-setpoint + Robot.driveTrain.getRightDistance());
 	    }
 	}
 
@@ -117,9 +118,8 @@ public class TurnWithEncodersUntilCheeseWheelBase extends Command {
     protected boolean isFinished() {
 	double averageDistance = (Math.abs(driveTrain.getRightDistance()) + Math.abs(driveTrain.getLeftDistance()))
 		/ 2.0;
-	return foundOnce && Math.abs(visionMain.getAngleToCheeseWheel()) < visionMain.CHEESE_WHEEL_DEADBAND_DEGREES
-	// && (System.currentTimeMillis() - lastOnTarget > 100 &&
-	// !lastOnTargetCheck))
+	return (foundOnce && visionMain.isCheeseWheelPIDOnTarget()
+		&& (System.currentTimeMillis() - lastOnTarget > 100 && !lastOnTargetCheck))
 		&& averageDistance > minimumTurn;
     }
 
@@ -130,6 +130,5 @@ public class TurnWithEncodersUntilCheeseWheelBase extends Command {
 	Robot.driveTrain.driveRaw(0, 0);
 	Robot.driveTrain.resetEncoderPIDValues();
 	Robot.driveTrain.resetEncoderDeadband();
-	Robot.pixyCamera.turnOffLights();
     }
 }

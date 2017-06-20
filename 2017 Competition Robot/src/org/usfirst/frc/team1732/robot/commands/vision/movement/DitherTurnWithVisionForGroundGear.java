@@ -31,7 +31,7 @@ public class DitherTurnWithVisionForGroundGear extends Command {
     @Override
     protected void initialize() {
 	System.out.println("Start dither vision turn");
-	Robot.pixyCamera.turnOnLights();
+	Robot.pixyCamera.turnOffLights();
 	visionMain.setGearSetpoint(angleSetpoint);
 	startTime = System.currentTimeMillis();
 	absStartTime = startTime;
@@ -44,7 +44,7 @@ public class DitherTurnWithVisionForGroundGear extends Command {
     protected void execute() {
 	visionMain.run();
 	// double angle = visionMain.getAngleToGearPeg();
-	if (visionMain.canSeeCheeseWheel()) {  
+	if (visionMain.canSeeCheeseWheel()) {
 	    foundOnce = true;
 	    double gearPIDOutput = visionMain.getCheeseWheelOutput();
 	    // double output = 0;
@@ -63,7 +63,8 @@ public class DitherTurnWithVisionForGroundGear extends Command {
 	    }
 	    // driveTrain.driveRawAbsoluteLimit(-gearPIDOutput, gearPIDOutput,
 	    // minimum, maximum);
-	    SmartDashboard.putString("Cheese Wheel Drive", driveTrain.driveRawAbsLimit(gearPIDOutput, -gearPIDOutput, .178, 1));
+	    SmartDashboard.putString("Cheese Wheel Drive",
+		    driveTrain.driveRawAbsLimit(gearPIDOutput, -gearPIDOutput, .178, 1));
 	}
     }
 
@@ -79,6 +80,5 @@ public class DitherTurnWithVisionForGroundGear extends Command {
     protected void end() {
 	System.out.println("End dither vision turn");
 	driveTrain.driveRaw(0, 0);
-	Robot.pixyCamera.turnOffLights();
     }
 }

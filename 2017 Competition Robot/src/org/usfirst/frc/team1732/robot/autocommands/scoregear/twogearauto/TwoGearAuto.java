@@ -3,6 +3,7 @@ package org.usfirst.frc.team1732.robot.autocommands.scoregear.twogearauto;
 import java.util.function.DoubleSupplier;
 
 import org.usfirst.frc.team1732.robot.Robot;
+import org.usfirst.frc.team1732.robot.commands.drivetrain.BrakeDrive;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.BrakeDriveNoShift;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.SetMotorSpeed;
 import org.usfirst.frc.team1732.robot.commands.drivetrain.encoder.ClearTotalDistance;
@@ -78,7 +79,7 @@ public class TwoGearAuto extends CommandGroup {
 	// stop robot
 	// double stopSpeed = 0;
 	// addSequential(new SetMotorSpeed(stopSpeed));
-	addSequential(new BrakeDriveNoShift());
+	addSequential(new BrakeDrive());
 
 	// raises gear intake
 	double raiseGearTime = 1;
@@ -86,8 +87,8 @@ public class TwoGearAuto extends CommandGroup {
 
 	addSequential(new SetEncoderPID(0.02, 0, 0));
 	// drives back
-	DoubleSupplier firstGearPickupReturnToGearPeg = () -> (-Robot.driveTrain.getTotalLeftDistance()
-		+ -Robot.driveTrain.getTotalRightDistance()) / 2.0 - 40;
+	DoubleSupplier firstGearPickupReturnToGearPeg = () -> (Robot.driveTrain.getTotalLeftDistance()
+		+ Robot.driveTrain.getTotalRightDistance()) / -2.0;
 	addSequential(new DriveEncodersGetSetpointAtRuntime(firstGearPickupReturnToGearPeg));
 	addSequential(new ResetEncoderPID());
 

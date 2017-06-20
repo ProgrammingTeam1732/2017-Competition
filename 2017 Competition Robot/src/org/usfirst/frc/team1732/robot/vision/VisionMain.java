@@ -71,7 +71,7 @@ public class VisionMain implements SmartDashboardGroup {
 
     public static final String NAME = "Vision Main";
 
-    public static final double ADJUSTMENT = 6;
+    public static final double ADJUSTMENT = 3;
 
     public VisionMain() {
 	gearArduino = new Arduino(SerialPort.Port.kUSB1);
@@ -86,7 +86,7 @@ public class VisionMain implements SmartDashboardGroup {
 	cheeseWheelPID.setContinuous(false);
 	cheeseWheelPID.setOutputRange(MIN_OUTPUT, MAX_OUTPUT);
 	cheeseWheelPID.enable();
-	cheeseWheelPID.setSetpoint(ADJUSTMENT);
+	cheeseWheelPID.setSetpoint(0);
 	// outputStream = CameraServer.getInstance().putVideo( "Gear
 	// Rectangles", PixyCamera.IMAGE_WIDTH,
 	// PixyCamera.IMAGE_HEIGHT);
@@ -219,6 +219,8 @@ public class VisionMain implements SmartDashboardGroup {
 	}
     }
 
+    private int limitCheesePrints = 0;
+
     private void updateCheeseWheelTarget() {
 	try {
 	    Rectangle biggest = cheeseWheelRectangles[0];
@@ -226,12 +228,16 @@ public class VisionMain implements SmartDashboardGroup {
 		if (isPossibleCheeseWheelTarget(r) && r.getArea() > biggest.getArea())
 		    biggest = r;
 	    }
-	    if (isPossibleCheeseWheelTarget(biggest)) {
-		cheeseWheelTarget = new CheeseWheelTarget(biggest);
-		double pred = predictedCheeseWheelRatio(biggest.getArea());
-		double rat = 1.0 * biggest.width / biggest.height;
+
+	    double pred = predictedCheeseWheelRatio(biggest.getArea());
+	    double rat = 1.0 * biggest.width / biggest.height;
+	    if (limitCheesePrints % 5 == 0)
 		System.out.printf("Area: %d Width/Height Ratio: %.3f Predicted %.3f Error %.3f %n", biggest.getArea(),
 			rat, pred, Math.abs(rat - pred));
+	    limitCheesePrints++;
+	    if (isPossibleCheeseWheelTarget(biggest)) {
+		cheeseWheelTarget = new CheeseWheelTarget(biggest);
+
 	    } else {
 		cheeseWheelTarget = null;
 	    }
@@ -242,21 +248,21 @@ public class VisionMain implements SmartDashboardGroup {
     }
 
     private double predictedCheeseWheelRatio(double area) {
-	return Math.pow(area, -0.231) * 9.5378;
+	return Math.pow(area, -0.221) * 8.3443;
     }
 
     private boolean isPossibleCheeseWheelTarget(Rectangle r) {
-	if (r.y < 100)
+	if (r.y > 200 - 28)
 	    return false;
 	double ratio = 1.0 * r.width / r.height;
 	int area = r.getArea();
-	if (area <= 300)
+	if (area <= 150)
 	    return false;
-	if (ratio <= 1.5)
+	if (ratio <= 1.3)
 	    return false;
 	// cool maths
 	double predictedRatio = predictedCheeseWheelRatio(area);
-	if (Math.abs(predictedRatio - ratio) > 0.3)
+	if (Math.abs(predictedRatio - ratio) > 0.4)
 	    return false;
 	return true;
     }

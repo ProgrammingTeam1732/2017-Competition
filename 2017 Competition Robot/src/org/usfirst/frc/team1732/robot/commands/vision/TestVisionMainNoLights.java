@@ -7,17 +7,16 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class TestVisionMain extends Command {
+public class TestVisionMainNoLights extends Command {
 
-    public TestVisionMain() {
+    public TestVisionMainNoLights() {
 	super("Test Vision");
 	requires(Robot.pixyCamera);
     }
 
     @Override
     protected void initialize() {
-	// Robot.pixyCamera.turnOnLights();
-	System.out.println("Lights initializing");
+	System.out.println("Test start");
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -34,8 +33,7 @@ public class TestVisionMain extends Command {
 
     @Override
     protected void end() {
-	// Robot.pixyCamera.turnOffLights();
-	System.out.println("Lights ending off");
+	System.out.println("Test end");
     }
 
     @Override
