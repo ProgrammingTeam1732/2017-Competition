@@ -18,12 +18,7 @@ public class ScoreSideGearPart1 extends CommandGroup {
 	addSequential(new Wait(0.25));
 
 	// turn to face gear peg
-	double angle = 0;
-	if (isLeft) {
-	    angle = 60;
-	} else {
-	    angle = -60;
-	}
+	double angle = (isLeft) ? 60 : -60;
 	addSequential(new TurnWithEncodersSimpleRamp(angle));
 
 	// wait after turning
