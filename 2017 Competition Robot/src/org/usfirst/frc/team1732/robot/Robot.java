@@ -1,6 +1,8 @@
 
 package org.usfirst.frc.team1732.robot;
 
+import java.util.function.Supplier;
+
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
@@ -233,20 +235,53 @@ public class Robot extends IterativeRobot {
     private void addAutonomousToSmartDashboard() {
 	autoChooser = new AutoChooser();
 	autoChooser.addToSmartDashboard(dashboard);
-	dashboard.addItem(SmartDashboardItem.newStringSender("AUTO:", () -> {
-	    try {
-		String s = autoChooser.getSelected().name();
-		// System.out.println(s);
-		return s;
-	    } catch (Exception e) {
-		return "Error";
+	dashboard.addItem(SmartDashboardItem.newStringSender("AUTO:", new Supplier<String>() {
+
+	    private String auto;
+	    private int longest = 32;
+
+	    {
+		auto = autoChooser.getSelected().name();
+		System.out.println(format(auto));
 	    }
+
+	    private String format(String s) {
+		int length = s.length();
+		String result = "";
+		String auto = "!!!AUTO!!!";
+		int i;
+		for (i = 0; i < (longest - length) / 2; i++) {
+		    result += " ";
+		}
+		result += s;
+		for (; i < longest - length; i++) {
+		    result += " ";
+		}
+		result = auto + " " + result + " " + auto;
+		return result;
+	    }
+
+	    @Override
+	    public String get() {
+		try {
+		    String s = autoChooser.getSelected().name();
+		    if (!s.equals(auto)) {
+			System.out.println(format(s));
+			auto = s;
+		    }
+		    return s;
+		} catch (Exception e) {
+		    return "Error";
+		}
+	    }
+
 	}));
     }
 
     private void addTestingToSmartDashbaord() {
 	SmartDashboard.putData(new ShuffleBallsWithWait());
 	SmartDashboard.putData(new TestVisionMain());
+	// SmartDashboard.putData(new TestVisionMainNoLights());
 
 	SmartDashboard.putData(new FlywheelForward());
 	SmartDashboard.putData(new FlywheelReverse());
