@@ -14,62 +14,62 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class StartOnWallAndShoot extends CommandGroup {
 
-	public StartOnWallAndShoot() {
-		boolean isRed = Robot.isRedAlliance.getValue();
+    public StartOnWallAndShoot() {
+	boolean isRed = Robot.isRedAlliance.getValue();
 
-		addSequential(new InitGearIntake());
+	addSequential(new InitGearIntake());
 
-		// wait to move
-		addSequential(new Wait(Robot.autoWaitTime::getValue));
+	// wait to move
+	addSequential(new Wait(Robot.autoWaitTime::getValue));
 
-		// turn on flywheel
-		addSequential(new EnableFlywheel());
+	// turn on flywheel
+	addSequential(new EnableFlywheel());
 
-		// drive to boiler
-		double distanceToBoiler = Robot.startOnWallAndShootDistance.getValue();
-		addSequential(new DriveEncoders(distanceToBoiler));
+	// drive to boiler
+	double distanceToBoiler = Robot.startOnWallAndShootDistance.getValue();
+	addSequential(new DriveEncoders(distanceToBoiler));
 
-		// face boiler
-		double faceBoilerTime = 2;
-		double faceBoilerLeftSpeed = 0;
-		double faceBoilerRightSpeed = 0;
-		if (isRed) {
-			faceBoilerLeftSpeed = 0.7;
-			faceBoilerRightSpeed = 0.1;
-		} else {
-			faceBoilerLeftSpeed = 0.1;
-			faceBoilerRightSpeed = 0.7;
-		}
-		addSequential(new DriveTime(faceBoilerTime, faceBoilerLeftSpeed, faceBoilerRightSpeed));
-
-		double shootTime = 15;
-		// Creep Forward while shooting
-		double creepTime = shootTime;
-		double creepSpeed = 0.3;
-		addParallel(new DriveTime(creepTime, creepSpeed));
-
-		// Shuffle balls while shooting, wait until against boiler to shuffle
-		addParallel(new CommandGroup() {
-			{
-				addSequential(new Wait(2));
-				addSequential(new ShuffleBallsWithWait(), shootTime);
-			}
-		});
-
-		// shoot balls
-		addSequential(new ShootTime(shootTime));
-		addSequential(new DriveToHopperFromBoiler());
+	// face boiler
+	double faceBoilerTime = 2;
+	double faceBoilerLeftSpeed = 0;
+	double faceBoilerRightSpeed = 0;
+	if (isRed) {
+	    faceBoilerLeftSpeed = 0.7;
+	    faceBoilerRightSpeed = 0.1;
+	} else {
+	    faceBoilerLeftSpeed = 0.1;
+	    faceBoilerRightSpeed = 0.7;
 	}
+	addSequential(new DriveTime(faceBoilerTime, faceBoilerLeftSpeed, faceBoilerRightSpeed));
 
-	@Override
-	public void interrupted() {
-		end();
-	}
+	double shootTime = 15;
+	// Creep Forward while shooting
+	double creepTime = shootTime;
+	double creepSpeed = 0.3;
+	addParallel(new DriveTime(creepTime, creepSpeed));
 
-	@Override
-	public void end() {
-		Robot.feeder.setStop(); // stop feeder
-		Robot.gearIntake.setUp(); // make sure gearIntake is up after shuffling
-		Robot.flywheel.disableAutoControl(); // turn off flywheel
-	}
+	// Shuffle balls while shooting, wait until against boiler to shuffle
+	addParallel(new CommandGroup() {
+	    {
+		addSequential(new Wait(2));
+		addSequential(new ShuffleBallsWithWait(), shootTime);
+	    }
+	});
+
+	// shoot balls
+	addSequential(new ShootTime(shootTime));
+	addSequential(new DriveToHopperFromBoiler());
+    }
+
+    @Override
+    public void interrupted() {
+	end();
+    }
+
+    @Override
+    public void end() {
+	Robot.feeder.setStop(); // stop feeder
+	Robot.gearIntake.setUp(); // make sure gearIntake is up after shuffling
+	Robot.flywheel.disableAutoControl(); // turn off flywheel
+    }
 }

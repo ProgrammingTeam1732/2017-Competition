@@ -13,7 +13,6 @@ import org.usfirst.frc.team1732.robot.autocommands.scoregear.scoresidegear.Score
 import org.usfirst.frc.team1732.robot.autocommands.scoregear.scoresidegear.ScoreSideGearWithTurningVisionRight;
 import org.usfirst.frc.team1732.robot.autocommands.scoregear.twogearauto.TwoGearAutoLeft;
 import org.usfirst.frc.team1732.robot.autocommands.scoregear.twogearauto.TwoGearAutoRight;
-import org.usfirst.frc.team1732.robot.autocommands.scoregearandballs.scoremiddlegearthenballs.ScoreMiddleGearThenBallsEncoders;
 import org.usfirst.frc.team1732.robot.autocommands.scoregearandballs.scoremiddlegearthenballs.ScoreMiddleGearThenBallsHitWall;
 import org.usfirst.frc.team1732.robot.autocommands.shoot.besideboilerandshoot.StartBesideBoilerAndShoot;
 import org.usfirst.frc.team1732.robot.commands.ballsystem.flywheel.EnableFlywheel;
@@ -48,7 +47,8 @@ public class AutoChooser implements SmartDashboardGroup {
 	MiddleGearEncoders(ScoreMiddleGearEncoders::new), // 0
 	RightGear(ScoreSideGearWithTurningVisionRight::new), // 1
 	LeftGear(ScoreSideGearWithTurningVisionLeft::new), // 2
-	MiddleGearThenShootBallsEncoders(ScoreMiddleGearThenBallsEncoders::new), // 3
+	MiddleGearThenShootBallsEncoders(() -> new ScoreMiddleGearThenBallsHitWall()), // ScoreMiddleGearThenBallsEncoders::new),
+										       // 3
 	GrabBallsForwardThenShoot(StraightHopperShoot::new), // 4
 	GrabBallsForwardThenShootArc(StraightHopperShootArc::new), // 5
 	GrabBallsKeylineThenShootNoWings(KeylineHopperShoot::new), // 6
@@ -155,7 +155,7 @@ public class AutoChooser implements SmartDashboardGroup {
 
     private final SendableChooser<AutoModes> autoChooser = new SendableChooser<>();
 
-    public static final AutoModes defaultAuto = AutoModes.TestVelocityControl;
+    public static final AutoModes defaultAuto = AutoModes.MiddleGearThenShootBallsEncoders;
 
     public AutoChooser() {
 	autoChooser.addDefault(defaultAuto.ordinal() + ": " + defaultAuto.name(), defaultAuto);

@@ -12,7 +12,7 @@ public class DriveToHopperFromSideGearPeg extends CommandGroup {
 	double driveBackDistance = -20;
 	addSequential(new DriveEncoders(driveBackDistance));
 	// turn to face down field
-	double angle = (isLeft) ? -90 : 90;
+	double angle = (isLeft) ? -80 : 80;
 	addSequential(new TurnWithEncoders(angle));
 	// drive down field
 	double driveDownDistance = 40;

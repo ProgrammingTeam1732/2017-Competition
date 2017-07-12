@@ -16,7 +16,7 @@ public class TestVisionMain extends Command {
 
     @Override
     protected void initialize() {
-	// Robot.pixyCamera.turnOnLights();
+	Robot.pixyCamera.turnOnLights();
 	System.out.println("Lights initializing");
     }
 
@@ -34,7 +34,7 @@ public class TestVisionMain extends Command {
 
     @Override
     protected void end() {
-	// Robot.pixyCamera.turnOffLights();
+	Robot.pixyCamera.turnOffLights();
 	System.out.println("Lights ending off");
     }
 

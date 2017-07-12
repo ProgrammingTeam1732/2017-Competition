@@ -144,6 +144,7 @@ public class Robot extends IterativeRobot {
     @Override
     public void robotPeriodic() {
 	dashboard.run();
+	// System.out.println(autoChooser.getSelected());
     }
 
     @Override

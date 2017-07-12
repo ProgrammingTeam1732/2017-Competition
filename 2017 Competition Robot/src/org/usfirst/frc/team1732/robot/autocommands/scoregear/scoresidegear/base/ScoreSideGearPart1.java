@@ -11,7 +11,7 @@ public class ScoreSideGearPart1 extends CommandGroup {
 
     public ScoreSideGearPart1(boolean isLeft) {
 	// drive forward to turn to position
-	double driveForward = (isLeft) ? 85 : 78;
+	double driveForward = (isLeft) ? 83 : 78;
 	addSequential(new DriveEncoders(driveForward));
 
 	addSequential(new BrakeDrive());

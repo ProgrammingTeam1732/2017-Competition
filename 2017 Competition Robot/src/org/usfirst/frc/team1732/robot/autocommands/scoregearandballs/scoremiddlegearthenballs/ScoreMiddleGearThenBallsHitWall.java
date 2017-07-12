@@ -35,12 +35,7 @@ public class ScoreMiddleGearThenBallsHitWall extends CommandGroup {
 	addSequential(new BrakeDriveNoShift());
 
 	// turn to face boiler
-	double turnToBoilerAngle = 0;
-	if (isRed) {
-	    turnToBoilerAngle = 98;
-	} else {
-	    turnToBoilerAngle = -110;
-	}
+	double turnToBoilerAngle = (isRed) ? 98 : -110;
 	addSequential(new TurnWithEncodersSimpleRamp(turnToBoilerAngle));
 
 	// wait to move
@@ -51,12 +46,8 @@ public class ScoreMiddleGearThenBallsHitWall extends CommandGroup {
 
 	// Drive to boiler
 	// drive fast for part of distance
-	double driveToBoilerFastDistance = 108;
-	if (isRed) {
-	    driveToBoilerFastDistance = 108;
-	} else {
-	    driveToBoilerFastDistance = 105;
-	}
+	double driveToBoilerFastDistance = (isRed) ? 108 : 105;
+
 	double driveToBoilerFastLeftSpeed = 0.7;
 	double driveToBoilerFastRightSpeed = 0.7;
 	boolean driveToBoilerFastStop = false;
