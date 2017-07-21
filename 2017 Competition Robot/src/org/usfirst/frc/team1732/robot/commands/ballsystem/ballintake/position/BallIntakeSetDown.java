@@ -9,13 +9,14 @@ import edu.wpi.first.wpilibj.command.InstantCommand;
  */
 public class BallIntakeSetDown extends InstantCommand {
 
-	public BallIntakeSetDown() {
-		requires(Robot.ballIntake);
-	}
+    public BallIntakeSetDown() {
+	requires(Robot.ballIntake);
+    }
 
-	@Override
-	protected void initialize() {
-		Robot.ballIntake.setPositionDown();
-	}
+    @Override
+    protected void initialize() {
+	System.out.println("Ball Intake Set Down");
+	Robot.ballIntake.setPositionDown();
+    }
 
 }

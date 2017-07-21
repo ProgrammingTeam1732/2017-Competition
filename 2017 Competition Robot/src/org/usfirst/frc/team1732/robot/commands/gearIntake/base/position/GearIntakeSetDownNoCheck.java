@@ -6,13 +6,14 @@ import edu.wpi.first.wpilibj.command.InstantCommand;
 
 public class GearIntakeSetDownNoCheck extends InstantCommand {
 
-	public GearIntakeSetDownNoCheck() {
-		super();
-		requires(Robot.gearIntake);
-	}
+    public GearIntakeSetDownNoCheck() {
+	super();
+	requires(Robot.gearIntake);
+    }
 
-	@Override
-	protected void initialize() {
-		Robot.gearIntake.setDown();
-	}
+    @Override
+    protected void initialize() {
+	System.out.println("Gear Intake Set Down No Check");
+	Robot.gearIntake.setDown();
+    }
 }

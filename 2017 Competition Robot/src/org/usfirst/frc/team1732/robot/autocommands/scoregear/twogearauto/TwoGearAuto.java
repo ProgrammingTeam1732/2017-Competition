@@ -81,12 +81,25 @@ public class TwoGearAuto extends CommandGroup {
 
 	addSequential(new SetEncoderPID(0.02, 0, 0));
 	// drives back
-	DoubleSupplier firstGearPickupReturnToGearPeg = () -> (Robot.driveTrain.getTotalLeftDistance()
-		+ Robot.driveTrain.getTotalRightDistance()) / -2.0;
+	DoubleSupplier firstGearPickupReturnToGearPeg = () -> {
+	    boolean leftIsZero = Math.abs(Robot.driveTrain.getLeftDistance()) < 0.01;
+	    boolean rightIsZero = Math.abs(Robot.driveTrain.getRightDistance()) < 0.01;
+	    System.out.println("left is zero: " + leftIsZero);
+	    System.out.println("right is zero: " + rightIsZero);
+	    double distance = 0;
+	    if (leftIsZero && rightIsZero) {
+		distance = (Robot.driveTrain.getTotalLeftDistance() + Robot.driveTrain.getTotalRightDistance()) / -2.0;
+	    } else if (leftIsZero || rightIsZero) {
+		distance = (Robot.driveTrain.getTotalLeftDistance() + Robot.driveTrain.getTotalRightDistance()) / -3.0;
+	    } else {
+		distance = (Robot.driveTrain.getTotalLeftDistance() + Robot.driveTrain.getTotalRightDistance()) / -4.0;
+	    }
+	    return distance + 10;
+	};
 	addSequential(new DriveEncodersGetSetpointAtRuntime(firstGearPickupReturnToGearPeg));
 	addSequential(new ResetEncoderPID());
 
-	addSequential(new BrakeDriveNoShift());
+	addSequential(new BrakeDrive());
 
 	// turns to face gear peg
 	double firstGearPickupFaceGearPeg = -firstGearPickUpFaceGearAngle;
@@ -108,7 +121,7 @@ public class TwoGearAuto extends CommandGroup {
 
 	// scores second gear!!!
 	DoubleSupplier driveForwardSecondHalfDistance = () -> driveForwardDistance.getAsDouble() * (1.0 - proportion)
-		- 6;
+		+ 5 - 6;
 
 	DoubleSupplier secondGearScoreDriveBackDistance = () -> -15;
 	addSequential(new SetEncoderPID(0.2, 0, 0));

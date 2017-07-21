@@ -10,8 +10,13 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  */
 public class GearIntakeSetDownOut extends CommandGroup {
 
-	public GearIntakeSetDownOut() {
-		addSequential(new GearIntakeSetDown());
-		addSequential(new GearIntakeSetOut());
-	}
+    public GearIntakeSetDownOut() {
+	addSequential(new GearIntakeSetDown());
+	addSequential(new GearIntakeSetOut());
+    }
+
+    @Override
+    public void interrupted() {
+	System.out.println("Some other thing is canceling this command");
+    }
 }

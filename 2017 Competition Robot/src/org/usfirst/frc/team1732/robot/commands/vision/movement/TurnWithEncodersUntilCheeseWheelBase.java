@@ -54,9 +54,9 @@ public class TurnWithEncodersUntilCheeseWheelBase extends Command {
     private double previousAngle;
 
     private final double izone = 3.7; // DriveTrain.ENCODER_IZONE_TURNING
-    private final double p = 0.05;
-    private final double i = 0.005;
-    private final double d = 0.14;
+    private final double p = 0.09; // 0.05; // 0.07
+    private final double i = 0.007; // 0.005
+    private final double d = 0.0; // 0.14;
     private final double minimumTurn = 10;
 
     private long lastOnTarget;

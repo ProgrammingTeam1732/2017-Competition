@@ -700,7 +700,7 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
      * @return the total distance the right encoder has traveled
      */
     public double getTotalRightDistance() {
-	return leftDistanceTraveled + getRightDistance();
+	return rightDistanceTraveled + getRightDistance();
 	// return rightDistanceTraveled + getTalonPosition(rightMaster);
     }
 
@@ -719,7 +719,7 @@ public class DriveTrain extends Subsystem implements SmartDashboardGroup {
     public void resetEncoders() {
 	leftDistanceTraveled += getLeftDistance();
 	// leftDistanceTraveled += getTalonPosition(leftMaster);
-	leftDistanceTraveled += getRightDistance();
+	rightDistanceTraveled += getRightDistance();
 	// rightDistanceTraveled += getTalonPosition(rightMaster);
 	// this.resetCANTalonPositions();
 	leftEncoder.reset();

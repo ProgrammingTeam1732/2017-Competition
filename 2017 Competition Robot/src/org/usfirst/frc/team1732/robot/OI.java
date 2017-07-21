@@ -148,6 +148,8 @@ public class OI {
     private final Trigger gearScore = new Trigger() {
 	@Override
 	public boolean get() {
+	    // if (buttonGearScore.get() || joystickGearScore.get())
+	    // System.out.println("Score Triggered");
 	    return buttonGearScore.get() || joystickGearScore.get();
 	}
     };
@@ -155,6 +157,8 @@ public class OI {
     private final Trigger gearPickup = new Trigger() {
 	@Override
 	public boolean get() {
+	    // if (buttonGearPickup.get() || joystickGearPickup.get())
+	    // System.out.println("Pickup Triggered");
 	    return buttonGearPickup.get() || joystickGearPickup.get();
 	}
     };

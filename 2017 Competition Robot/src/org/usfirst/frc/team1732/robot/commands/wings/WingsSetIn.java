@@ -6,17 +6,19 @@ import edu.wpi.first.wpilibj.command.InstantCommand;
 
 public class WingsSetIn extends InstantCommand {
 
-	public WingsSetIn() {
-		super();
-		// Use requires() here to declare subsystem dependencies
-		// eg. requires(chassis);
-		requires(Robot.wings);
-	}
+    public WingsSetIn() {
+	super();
+	// Use requires() here to declare subsystem dependencies
+	// eg. requires(chassis);
+	requires(Robot.wings);
+    }
 
-	// Called once when the command executes
-	@Override
-	protected void initialize() {
-		Robot.wings.setIn();
-	}
+    // Called once when the command executes
+    @Override
+    protected void initialize() {
+	System.out.println("Wings Set In");
+
+	Robot.wings.setIn();
+    }
 
 }

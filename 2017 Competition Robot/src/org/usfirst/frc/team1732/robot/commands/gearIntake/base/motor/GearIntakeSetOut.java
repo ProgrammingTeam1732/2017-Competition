@@ -9,15 +9,16 @@ import edu.wpi.first.wpilibj.command.InstantCommand;
  */
 public class GearIntakeSetOut extends InstantCommand {
 
-	public GearIntakeSetOut() {
-		super();
-		requires(Robot.gearIntake);
-	}
+    public GearIntakeSetOut() {
+	super();
+	requires(Robot.gearIntake);
+    }
 
-	// Called once when the command executes
-	@Override
-	protected void initialize() {
-		Robot.gearIntake.setOut();
-	}
+    // Called once when the command executes
+    @Override
+    protected void initialize() {
+	System.out.println("Gear Intake Set Out");
+	Robot.gearIntake.setOut();
+    }
 
 }

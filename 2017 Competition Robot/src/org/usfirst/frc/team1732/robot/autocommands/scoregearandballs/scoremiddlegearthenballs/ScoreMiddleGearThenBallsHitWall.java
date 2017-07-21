@@ -30,7 +30,8 @@ public class ScoreMiddleGearThenBallsHitWall extends CommandGroup {
 
 	addSequential(new Wait(0.3));
 
-	addSequential(new DriveEncoders(12));
+	double driveForwardAfterWall = (isRed) ? 12 : 15;
+	addSequential(new DriveEncoders(driveForwardAfterWall));
 
 	addSequential(new BrakeDriveNoShift());
 
@@ -46,7 +47,7 @@ public class ScoreMiddleGearThenBallsHitWall extends CommandGroup {
 
 	// Drive to boiler
 	// drive fast for part of distance
-	double driveToBoilerFastDistance = (isRed) ? 108 : 105;
+	double driveToBoilerFastDistance = (isRed) ? 108 : 112;
 
 	double driveToBoilerFastLeftSpeed = 0.7;
 	double driveToBoilerFastRightSpeed = 0.7;
@@ -63,9 +64,11 @@ public class ScoreMiddleGearThenBallsHitWall extends CommandGroup {
 	double faceBoilerLeftSpeed = 0;
 	double faceBoilerRightSpeed = 0;
 	if (isRed) {
+	    faceBoilerTime = 0.3;
 	    faceBoilerLeftSpeed = 0.5;
 	    faceBoilerRightSpeed = -0.1;
 	} else {
+	    faceBoilerTime = 0.4;
 	    faceBoilerLeftSpeed = -0.1;
 	    faceBoilerRightSpeed = 0.5;
 	}
